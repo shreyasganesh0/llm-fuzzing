@@ -1,0 +1,19 @@
+# stub — fill in for future session
+name: lcms
+tier: 2
+fuzzbench_benchmark: lcms-2017-03-21
+
+upstream:
+  repo: https://github.com/mm2/Little-CMS.git
+  commit: !from_pinned lcms.upstream_commit
+
+tests:
+  framework: custom_c
+  locations:
+    - testbed/testcms2.c
+  discovery_pattern: 'Check\('
+
+fuzzbench:
+  harness_source: !from_pinned lcms.harness_source
+  harness_file: !from_pinned lcms.harness_path
+  libfuzzer_extra_flags: !from_pinned lcms.libfuzzer_extra_flags

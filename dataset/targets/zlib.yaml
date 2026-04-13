@@ -1,0 +1,20 @@
+# stub — fill in for future session
+name: zlib
+tier: 3
+fuzzbench_benchmark: zlib_zlib_uncompress_fuzzer
+
+upstream:
+  repo: https://github.com/madler/zlib.git
+  commit: !from_pinned zlib.upstream_commit
+
+tests:
+  framework: custom_c
+  locations:
+    - test/example.c
+    - test/infcover.c
+  discovery_pattern: 'test_.*\(|check_.*\('
+
+fuzzbench:
+  harness_source: !from_pinned zlib.harness_source
+  harness_file: !from_pinned zlib.harness_path
+  libfuzzer_extra_flags: !from_pinned zlib.libfuzzer_extra_flags

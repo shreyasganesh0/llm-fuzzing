@@ -1,0 +1,183 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "6c1a1e71e3a029eb",
+      "content_b64": "IStcdXsxMEZGRkZ9",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:180",
+        "re2/parse.cc:183"
+      ],
+      "reasoning": "This Unicode character pushes the rune_max_ to its maximum value, triggering the uncovered branch.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8805a5625db5f002",
+      "content_b64": "wU9bXHV7MTBGRkZGfV0=",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:180",
+        "re2/parse.cc:183"
+      ],
+      "reasoning": "This character class contains the Unicode character that pushes the rune_max_ to its maximum value, triggering the uncovered branch.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b30fc0c3fbe1e1f3",
+      "content_b64": "T6UoPzphKykq",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This pattern triggers the nested repetition branch and may push the parser into a state where the uncovered branch is taken.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "81ae30ae6ad51ffb",
+      "content_b64": "DqpccHtHcmVla30r",
+      "target_gaps": [
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This Unicode property class may trigger the special case handling for character classes, which may lead to the uncovered branch.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b0f1bb97df5b2de3",
+      "content_b64": "TCxccHtHcmVla30/",
+      "target_gaps": [
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This Unicode property class may trigger the special case handling for character classes, which may lead to the uncovered branch.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "799a9253d628e9fc",
+      "content_b64": "XZRccHtHcmVla30rfFxwe0dyZWVrfT8=",
+      "target_gaps": [
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This pattern may trigger the special case handling for character classes, which may lead to the uncovered branch.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bbbaa06b54592ace",
+      "content_b64": "ZzYoPzphK3xccHtHcmVla30rKSo=",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This pattern triggers the nested repetition branch and may push the parser into a state where the uncovered branch is taken.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "ce75c0195425027d",
+      "content_b64": "5q9cdXsxMEZGRkZ9fFxwe0dyZWVrfSs=",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This pattern may trigger the special case handling for character classes and may push the parser into a state where the uncovered branch is taken.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8015d858fdce40cb",
+      "content_b64": "PJJcdXsxMEZGRkZ9fFxwe0dyZWVrfT8=",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This pattern may trigger the special case handling for character classes and may push the parser into a state where the uncovered branch is taken.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2241a4a3ffcf70e4",
+      "content_b64": "5MlccHtHcmVla30rfFx1ezEwRkZGRn0=",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:217",
+        "re2/parse.cc:218"
+      ],
+      "reasoning": "This pattern may trigger the special case handling for character classes and may push the parser into a state where the uncovered branch is taken.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\u{10FFFF}\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:180\", \"re2/parse.cc:183\"],\n      \"reasoning\": \"This Unicode character pushes the rune_max_ to its maximum value, triggering the uncovered branch.\"\n    },\n    {\n      \"regex\": \"[\\\\u{10FFFF}]\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:180\", \"re2/parse.cc:183\"],\n      \"reasoning\": \"This character class contains the Unicode character that pushes the rune_max_ to its maximum value, triggering the uncovered branch.\"\n    },\n    {\n      \"regex\": \"(?:a+)*\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This pattern triggers the nested repetition branch and may push the parser into a state where the uncovered branch is taken.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This Unicode property class may trigger the special case handling for character classes, which may lead to the uncovered branch.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}?\",\n      \"target_gaps\": [\"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This Unicode property class may trigger the special case handling for character classes, which may lead to the uncovered branch.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+|\\\\p{Greek}?\",\n      \"target_gaps\": [\"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This pattern may trigger the special case handling for character classes, which may lead to the uncovered branch.\"\n    },\n    {\n      \"regex\": \"(?:a+|\\\\p{Greek}+)*\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This pattern triggers the nested repetition branch and may push the parser into a state where the uncovered branch is taken.\"\n    },\n    {\n      \"regex\": \"\\\\u{10FFFF}|\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This pattern may trigger the special case handling for character classes and may push the parser into a state where the uncovered branch is taken.\"\n    },\n    {\n      \"regex\": \"\\\\u{10FFFF}|\\\\p{Greek}?\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This pattern may trigger the special case handling for character classes and may push the parser into a state where the uncovered branch is taken.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+|\\\\u{10FFFF}\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:217\", \"re2/parse.cc:218\"],\n      \"reasoning\": \"This pattern may trigger the special case handling for character classes and may push the parser into a state where the uncovered branch is taken.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6072,
+    "output_tokens": 778,
+    "cost_usd": 0.001507,
+    "latency_ms": 3869.6080209920183,
+    "prompt_hash": "119220362302d3ade47ba48919b4f21ac8ee4d3529a789737bea21de17dca1ce",
+    "timestamp": "2026-04-13T18:52:29.657776+00:00",
+    "generation_wall_clock_s": 3.869608872992103,
+    "target": "re2",
+    "phase": "phase3",
+    "experiment_tag": "sample=0,experiment=exp1",
+    "cached": false
+  }
+}

@@ -1,0 +1,11 @@
+# libFuzzer with random syntactically-valid seeds (plan §Baseline 6).
+# Same seed count as llm_seeds so the comparison is fair.
+name: random_seeds
+trials: 20
+duration_s: 82800
+rss_limit_mb: 2048
+timeout_s: 25
+max_len: 4096
+dictionary: null
+seed_corpus_dir: null  # synthesis/results/seeds/<target>/random
+snapshot_interval_s: 900

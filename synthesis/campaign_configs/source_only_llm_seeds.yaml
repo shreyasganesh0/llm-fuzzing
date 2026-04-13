@@ -1,0 +1,11 @@
+# Experiment 2 Config 7 — libFuzzer with source-only LLM seeds (no unit tests).
+# Seeds come from synthesis/results/seeds/<target>/source_only/<model>.
+name: source_only_llm_seeds
+trials: 20
+duration_s: 82800
+rss_limit_mb: 2048
+timeout_s: 25
+max_len: 4096
+dictionary: null
+seed_corpus_dir: null
+snapshot_interval_s: 900

@@ -1,0 +1,11 @@
+# libFuzzer baseline: upstream unit-test inputs as seeds.
+# These come from Phase 1 input_data extraction — real developer-authored tests.
+name: unittest_seeds
+trials: 20
+duration_s: 82800
+rss_limit_mb: 2048
+timeout_s: 25
+max_len: 4096
+dictionary: null
+seed_corpus_dir: null  # populated from dataset/<target>/unittest_seeds/
+snapshot_interval_s: 900

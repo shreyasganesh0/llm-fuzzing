@@ -1,0 +1,10 @@
+# libFuzzer baseline: empty corpus (plan §Phase 3.4).
+name: empty
+trials: 20
+duration_s: 82800
+rss_limit_mb: 2048
+timeout_s: 25
+max_len: 4096
+dictionary: null
+seed_corpus_dir: null
+snapshot_interval_s: 900

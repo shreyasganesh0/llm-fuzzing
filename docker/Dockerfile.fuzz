@@ -1,0 +1,19 @@
+# Minimal runtime image for 23h libFuzzer campaigns (Phase 3).
+# Kept intentionally small: libFuzzer is linked in the harness binary;
+# this image only needs LLVM runtime + coverage tools for post-campaign analysis.
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y \
+    llvm-15 llvm-15-tools \
+    libstdc++6 libgcc1 \
+    python3 \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN ln -sf /usr/bin/llvm-cov-15 /usr/bin/llvm-cov && \
+    ln -sf /usr/bin/llvm-profdata-15 /usr/bin/llvm-profdata && \
+    ln -sf /usr/bin/llvm-symbolizer-15 /usr/bin/llvm-symbolizer
+
+WORKDIR /campaign
+CMD ["/bin/bash"]

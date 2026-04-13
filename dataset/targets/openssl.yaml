@@ -1,0 +1,21 @@
+# stub — fill in for future session
+name: openssl
+tier: 2
+fuzzbench_benchmark: openssl_x509
+
+upstream:
+  repo: https://github.com/openssl/openssl.git
+  commit: !from_pinned openssl.upstream_commit
+
+tests:
+  framework: perl_tap
+  locations:
+    - test/recipes/*.t
+    - test/*test.c
+  discovery_pattern: 'ADD_TEST\(|simple_test\('
+
+fuzzbench:
+  harness_source: !from_pinned openssl.harness_source
+  harness_file: !from_pinned openssl.harness_path
+  dictionary: !from_pinned openssl.dictionary_path
+  libfuzzer_extra_flags: !from_pinned openssl.libfuzzer_extra_flags

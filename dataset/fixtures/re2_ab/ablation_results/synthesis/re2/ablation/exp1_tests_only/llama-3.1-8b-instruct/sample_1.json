@@ -1,0 +1,174 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "7314b895f672631e",
+      "content_b64": "XM8oP1A8ZzE+YSsp",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c8ec97159a134601",
+      "content_b64": "JLkoYSopKg==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c22819578ecd4f8d",
+      "content_b64": "NrFccHtHcmVla30r",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8429043629cace2d",
+      "content_b64": "mOUoPz1hYmMp",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Lookarounds (rejected)",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2fcb1ae6599879b7",
+      "content_b64": "YU9hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted reps",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4ef2dfed80f0d873",
+      "content_b64": "wzJbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "64bc525574e965aa",
+      "content_b64": "go4oXGQrKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Capture groups",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5311b3d52ce73a3b",
+      "content_b64": "E7koXHcrKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Word characters",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1ba9c818358b5940",
+      "content_b64": "IPgoXFB7TH0rKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Non-letter characters",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "76545623e1d8d56e",
+      "content_b64": "rV8oPzphKykr",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Non-capturing groups",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<g1>a+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Named captures\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Nested repetitions\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Unicode classes\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Lookarounds (rejected)\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted reps\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Character classes\"\n    },\n    {\n      \"regex\": \"(\\\\d+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Capture groups\"\n    },\n    {\n      \"regex\": \"(\\\\w+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Word characters\"\n    },\n    {\n      \"regex\": \"(\\\\P{L}+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Non-letter characters\"\n    },\n    {\n      \"regex\": \"(?:a+)+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Non-capturing groups\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 1474,
+    "output_tokens": 511,
+    "cost_usd": 0.00043670000000000004,
+    "latency_ms": 3524.345664991415,
+    "prompt_hash": "e0ec2bead8e22c424322728c7e0e9867cc586adbd78999eccd50d44834b81a2f",
+    "timestamp": "2026-04-13T18:41:06.425443+00:00",
+    "generation_wall_clock_s": 3.524346616002731,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_tests_only,sample=1",
+    "cached": false
+  }
+}

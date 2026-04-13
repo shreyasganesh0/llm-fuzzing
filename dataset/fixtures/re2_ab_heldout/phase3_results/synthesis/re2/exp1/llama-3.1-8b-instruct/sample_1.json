@@ -1,0 +1,186 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "7eaf610b1ee52c58",
+      "content_b64": "GQAoP1A8ZzE+YSspXChcKQ==",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:180",
+        "re2/parse.cc:183"
+      ],
+      "reasoning": "Named capture group with parentheses to trigger branch 1, 2, and 3",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "08885f257dc3e31a",
+      "content_b64": "0Y1bXmEtekEtWjAtOV1cKFwp",
+      "target_gaps": [
+        "re2/parse.cc:217",
+        "re2/parse.cc:218",
+        "re2/parse.cc:223"
+      ],
+      "reasoning": "Character class with parentheses to trigger branch 6, 7, and 8",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "544aa7148a6037ac",
+      "content_b64": "hiJccHtHcmVla31cKFwp",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:217",
+        "re2/parse.cc:223"
+      ],
+      "reasoning": "Unicode class with parentheses to trigger branch 1, 6, and 8",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7a9c07c25ec40269",
+      "content_b64": "yesoPzphK3xiKyk=",
+      "target_gaps": [
+        "re2/parse.cc:247",
+        "re2/parse.cc:263",
+        "re2/parse.cc:273"
+      ],
+      "reasoning": "Named repetition with a large number of alternatives to trigger branch 10, 13, and 14",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0a4c52846538c517",
+      "content_b64": "4w5cKFwp",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:193",
+        "re2/parse.cc:197"
+      ],
+      "reasoning": "Empty parentheses to trigger branch 1, 4, and 5",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a6d714a50524ab75",
+      "content_b64": "laNhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:193",
+        "re2/parse.cc:197"
+      ],
+      "reasoning": "Large counted repetition to trigger branch 1, 4, and 5",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1875652446f9141e",
+      "content_b64": "yBQoP1A8ZzE+YSspfFwoXCk=",
+      "target_gaps": [
+        "re2/parse.cc:171",
+        "re2/parse.cc:193",
+        "re2/parse.cc:197"
+      ],
+      "reasoning": "Alternation with a named capture group and an empty parentheses to trigger branch 1, 4, and 5",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "78f195a499126224",
+      "content_b64": "ydpbXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/parse.cc:247",
+        "re2/parse.cc:263",
+        "re2/parse.cc:273"
+      ],
+      "reasoning": "Character class with a large number of characters to trigger branch 10, 13, and 14",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2e75e4d5325ff62b",
+      "content_b64": "LHtcKGErXCk=",
+      "target_gaps": [
+        "re2/parse.cc:193",
+        "re2/parse.cc:197",
+        "re2/parse.cc:217"
+      ],
+      "reasoning": "Nested parentheses to trigger branch 4, 5, and 7",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d7eb5547fdb52001",
+      "content_b64": "FD8oPzphK3xcKFwpKQ==",
+      "target_gaps": [
+        "re2/parse.cc:247",
+        "re2/parse.cc:263",
+        "re2/parse.cc:273"
+      ],
+      "reasoning": "Named repetition with an empty parentheses to trigger branch 10, 13, and 14",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<g1>a+)\\\\(\\\\)\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:180\", \"re2/parse.cc:183\"],\n      \"reasoning\": \"Named capture group with parentheses to trigger branch 1, 2, and 3\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\\\\(\\\\)\",\n      \"target_gaps\": [\"re2/parse.cc:217\", \"re2/parse.cc:218\", \"re2/parse.cc:223\"],\n      \"reasoning\": \"Character class with parentheses to trigger branch 6, 7, and 8\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}\\\\(\\\\)\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:217\", \"re2/parse.cc:223\"],\n      \"reasoning\": \"Unicode class with parentheses to trigger branch 1, 6, and 8\"\n    },\n    {\n      \"regex\": \"(?:a+|b+)\",\n      \"target_gaps\": [\"re2/parse.cc:247\", \"re2/parse.cc:263\", \"re2/parse.cc:273\"],\n      \"reasoning\": \"Named repetition with a large number of alternatives to trigger branch 10, 13, and 14\"\n    },\n    {\n      \"regex\": \"\\\\(\\\\)\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:193\", \"re2/parse.cc:197\"],\n      \"reasoning\": \"Empty parentheses to trigger branch 1, 4, and 5\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:193\", \"re2/parse.cc:197\"],\n      \"reasoning\": \"Large counted repetition to trigger branch 1, 4, and 5\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)|\\\\(\\\\)\",\n      \"target_gaps\": [\"re2/parse.cc:171\", \"re2/parse.cc:193\", \"re2/parse.cc:197\"],\n      \"reasoning\": \"Alternation with a named capture group and an empty parentheses to trigger branch 1, 4, and 5\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/parse.cc:247\", \"re2/parse.cc:263\", \"re2/parse.cc:273\"],\n      \"reasoning\": \"Character class with a large number of characters to trigger branch 10, 13, and 14\"\n    },\n    {\n      \"regex\": \"\\\\(a+\\\\)\",\n      \"target_gaps\": [\"re2/parse.cc:193\", \"re2/parse.cc:197\", \"re2/parse.cc:217\"],\n      \"reasoning\": \"Nested parentheses to trigger branch 4, 5, and 7\"\n    },\n    {\n      \"regex\": \"(?:a+|\\\\(\\\\))\",\n      \"target_gaps\": [\"re2/parse.cc:247\", \"re2/parse.cc:263\", \"re2/parse.cc:273\"],\n      \"reasoning\": \"Named repetition with an empty parentheses to trigger branch 10, 13, and 14\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6072,
+    "output_tokens": 752,
+    "cost_usd": 0.00150128,
+    "latency_ms": 5324.8693569912575,
+    "prompt_hash": "abc4efb22deee860dc7c0d0c1e1ea0f59ef99662aa2888c663a80a38e47707b5",
+    "timestamp": "2026-04-13T18:52:34.983805+00:00",
+    "generation_wall_clock_s": 5.324870319003821,
+    "target": "re2",
+    "phase": "phase3",
+    "experiment_tag": "sample=1,experiment=exp1",
+    "cached": false
+  }
+}

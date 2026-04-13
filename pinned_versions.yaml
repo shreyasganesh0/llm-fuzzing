@@ -1,0 +1,161 @@
+# pinned_versions.yaml — Single source of truth for all upstream + FuzzBench version pins.
+#
+# RE2 + fuzzbench + fuzzer-test-suite: filled from web research against
+#   https://github.com/google/fuzzer-test-suite/blob/master/re2-2014-12-09/build.sh
+# Other targets: still <FILL>. Resolve by:
+#   1. Check google/fuzzer-test-suite/<benchmark>/build.sh for get_git_revision calls
+#      OR google/oss-fuzz/projects/<project>/Dockerfile for version pins.
+#   2. Record the exact commit hash.
+#   3. Also fetch the dictionary file path if present.
+
+fuzzbench:
+  repo: https://github.com/google/fuzzbench.git
+  commit: 3234e151d70f6093272a9b4155e68ee57faf986c  # HEAD as of 2026-04-12
+
+fuzzer_test_suite:
+  repo: https://github.com/google/fuzzer-test-suite.git
+  commit: 6955fc97efedfda7dcc0979658b169d7eeb5ccd6  # HEAD as of 2026-04-12
+
+targets:
+  re2:
+    upstream_repo: https://github.com/google/re2.git
+    upstream_commit: 499ef7eff7455ce9c9fae86111d4a77b6ac335de  # from fuzzer-test-suite/re2-2014-12-09/build.sh
+    fuzzbench_benchmark: re2-2014-12-09
+    harness_source: fuzzer-test-suite
+    harness_path: re2-2014-12-09/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 4096
+    seeds: none
+
+  harfbuzz:
+    upstream_repo: https://github.com/harfbuzz/harfbuzz.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: harfbuzz-1.3.2
+    harness_source: fuzzer-test-suite
+    harness_path: harfbuzz-1.3.2/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: varies
+
+  openssl:
+    upstream_repo: https://github.com/openssl/openssl.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: openssl_x509
+    harness_source: oss-fuzz
+    harness_path: projects/openssl/fuzz/x509.c
+    dictionary_path: projects/openssl/fuzz/x509.dict
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 10240
+    seeds: 2241
+
+  sqlite3:
+    upstream_repo: https://github.com/sqlite/sqlite.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: sqlite3_ossfuzz
+    harness_source: oss-fuzz
+    harness_path: projects/sqlite3/ossfuzz.c
+    dictionary_path: projects/sqlite3/sql.dict
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 16384
+    seeds: 1258
+
+  libxml2:
+    upstream_repo: https://gitlab.gnome.org/GNOME/libxml2.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: libxml2-v2.9.2
+    harness_source: fuzzer-test-suite
+    harness_path: libxml2-v2.9.2/target.cc
+    dictionary_path: libxml2-v2.9.2/xml.dict
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: none
+
+  libjpeg_turbo:
+    upstream_repo: https://github.com/libjpeg-turbo/libjpeg-turbo.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: libjpeg-turbo-07-2017
+    harness_source: fuzzer-test-suite
+    harness_path: libjpeg-turbo-07-2017/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 1048576
+    seeds: varies
+
+  lcms:
+    upstream_repo: https://github.com/mm2/Little-CMS.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: lcms-2017-03-21
+    harness_source: fuzzer-test-suite
+    harness_path: lcms-2017-03-21/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: varies
+
+  proj:
+    upstream_repo: https://github.com/OSGeo/PROJ.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: proj4-2017-08-14
+    harness_source: oss-fuzz
+    harness_path: projects/proj4/proj_crs_to_crs_fuzzer.c
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 4096
+    seeds: varies
+
+  libpng:
+    upstream_repo: https://github.com/glennrp/libpng.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: libpng-1.2.56
+    harness_source: fuzzer-test-suite
+    harness_path: libpng-1.2.56/target.cc
+    dictionary_path: libpng-1.2.56/png.dict
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 1048576
+    seeds: varies
+
+  freetype2:
+    upstream_repo: https://gitlab.freedesktop.org/freetype/freetype.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: freetype2-2017
+    harness_source: fuzzer-test-suite
+    harness_path: freetype2-2017/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 1048576
+    seeds: varies
+
+  zlib:
+    upstream_repo: https://github.com/madler/zlib.git
+    upstream_commit: <FILL>
+    fuzzbench_benchmark: zlib_zlib_uncompress_fuzzer
+    harness_source: oss-fuzz
+    harness_path: projects/zlib/uncompress_fuzzer.c
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: none

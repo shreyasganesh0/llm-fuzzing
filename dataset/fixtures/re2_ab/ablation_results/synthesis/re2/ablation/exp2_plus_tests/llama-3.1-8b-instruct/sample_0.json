@@ -1,0 +1,168 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "6c6533ebe2079b52",
+      "content_b64": "r4YoP1A8eD5hKylcMVwx",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Named captures with repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "eb533f3417077372",
+      "content_b64": "OYphezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9059416ef9ecd28e",
+      "content_b64": "g5JccHtHcmVla30rXHB7R3JlZWt9Kw==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Unicode classes with repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6c1565cfa52c525e",
+      "content_b64": "bnQoYSopKihhKikq",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42"
+      ],
+      "reasoning": "Nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8638231f1312c5e8",
+      "content_b64": "e6BbXmEtekEtWjAtOV0rW15hLXpBLVowLTldKw==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Character classes with repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b9f9215d90e5e7f8",
+      "content_b64": "Ot0oP1A8eD5hKyl8KD9QPHk+Yisp",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Named captures with alternatives",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a1f1da6903a9b71c",
+      "content_b64": "qTthezEwMCx9YnsxMDAsfQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted repetitions with different characters",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cb9524f2c903fe81",
+      "content_b64": "YCNccHtHcmVla30rXHB7TGF0aW59Kw==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Unicode classes with different properties",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6399865995749125",
+      "content_b64": "MhMoYSopKyhhKikq",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42"
+      ],
+      "reasoning": "Nested repetitions with different quantifiers",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e697ca03e90a3ad7",
+      "content_b64": "rBBbXmEtekEtWjAtOV0rW15hLXpBLVowLTldKg==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Character classes with different quantifiers",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)\\\\1\\\\1\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Named captures with repetition\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted repetition\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Unicode classes with repetition\"\n    },\n    {\n      \"regex\": \"(a*)*(a*)*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\"],\n      \"reasoning\": \"Nested repetitions\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Character classes with repetition\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)|(?P<y>b+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Named captures with alternatives\"\n    },\n    {\n      \"regex\": \"a{100,}b{100,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted repetitions with different characters\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Latin}+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Unicode classes with different properties\"\n    },\n    {\n      \"regex\": \"(a*)+(a*)*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\"],\n      \"reasoning\": \"Nested repetitions with different quantifiers\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Character classes with different quantifiers\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 3633,
+    "output_tokens": 517,
+    "cost_usd": 0.000913,
+    "latency_ms": 2665.567921998445,
+    "prompt_hash": "d464b40886c54ceae6aadf5b82e02c7d45450f742c7c0c9494cae2f47f1b4485",
+    "timestamp": "2026-04-13T18:41:29.642876+00:00",
+    "generation_wall_clock_s": 2.6655685040022945,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_tests,sample=0",
+    "cached": false
+  }
+}

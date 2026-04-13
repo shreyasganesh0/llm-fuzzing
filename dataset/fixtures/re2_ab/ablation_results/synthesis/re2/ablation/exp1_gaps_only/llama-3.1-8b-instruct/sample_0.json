@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures may trigger GrowStack() and Push() in various cases.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Nested repetitions may cause multiple Push() calls and stack growth.\"\n    },\n    {\n      \"regex\": \"\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Unicode classes may require GrowStack() and Push() for long sequences.\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Lookarounds may trigger GrowStack() and Push() in various cases.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetitions may cause multiple Push() calls and stack growth.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Character classes may require GrowStack() and Push() for long sequences.\"\n    },\n    {\n      \"regex\": \"(a|b)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Alternations may trigger GrowStack() and Push() in various cases.\"\n    },\n    {\n      \"regex\": \"a{0,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Counted repetitions with upper bounds may cause multiple Push() calls and stack growth.\"\n    },\n    {\n      \"regex\": \"a*?\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Optional repetitions may trigger GrowStack() and Push() in various cases.\"\n    },\n    {\n      \"regex\": \"a{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Exact counted repetitions may cause multiple Push() calls and stack growth.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 863,
+    "cost_usd": 0.00133496,
+    "latency_ms": 4525.396555996849,
+    "prompt_hash": "dcf562d6581e97728ef5aef25d06c27ee2b02dc483df558f46e8619837e0ebce",
+    "timestamp": "2026-04-13T18:40:38.236106+00:00",
+    "generation_wall_clock_s": 4.525398048994248,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=0",
+    "cached": false
+  }
+}

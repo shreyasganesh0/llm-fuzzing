@@ -1,0 +1,20 @@
+# stub — fill in for future session
+name: sqlite3
+tier: 2
+fuzzbench_benchmark: sqlite3_ossfuzz
+
+upstream:
+  repo: https://github.com/sqlite/sqlite.git
+  commit: !from_pinned sqlite3.upstream_commit
+
+tests:
+  framework: tcl
+  locations:
+    - test/*.test
+  discovery_pattern: 'do_test|do_execsql_test|do_catchsql_test'
+
+fuzzbench:
+  harness_source: !from_pinned sqlite3.harness_source
+  harness_file: !from_pinned sqlite3.harness_path
+  dictionary: !from_pinned sqlite3.dictionary_path
+  libfuzzer_extra_flags: !from_pinned sqlite3.libfuzzer_extra_flags

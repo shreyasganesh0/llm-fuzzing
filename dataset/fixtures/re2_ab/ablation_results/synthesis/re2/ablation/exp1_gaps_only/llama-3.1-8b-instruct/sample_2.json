@@ -1,0 +1,196 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "8e7a427fa84115a1",
+      "content_b64": "6rRccHtHcmVla31ccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves Unicode classes, which may trigger the growth of the stack in the BitState class.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cc0f59e951021fbd",
+      "content_b64": "kTAoYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves nested repetitions, which may cause the parser/compiler to recurse and potentially trigger the growth of the stack.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c84d92f9e255cd6d",
+      "content_b64": "fb1hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves a large counted repetition, which may cause the parser/compiler to overflow the stack.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "56ae6d22870e3722",
+      "content_b64": "lr0oP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves a named capture, which may trigger the growth of the stack in the BitState class.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7bd84c31592a75fd",
+      "content_b64": "oMtbXmEtekEtWjAtOV17MTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves a character class with a large number of characters, which may cause the parser/compiler to overflow the stack.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0bf05d62bd727f8e",
+      "content_b64": "2T4oPz0oYWJjKSk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves a lookaround, which may trigger the growth of the stack in the BitState class.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "00b68bab468e5fd8",
+      "content_b64": "G39ccHtHcmVla30rXHB7R3JlZWt9",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves Unicode classes, which may trigger the growth of the stack in the BitState class.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "ffbb92b7f10105dd",
+      "content_b64": "ei4oYSopKw==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves nested repetitions, which may cause the parser/compiler to recurse and potentially trigger the growth of the stack.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e61d858089fd3efd",
+      "content_b64": "IwhhezEsMTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves a large counted repetition, which may cause the parser/compiler to overflow the stack.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "aef43587daef3bfa",
+      "content_b64": "2tQoP1A8eD5hKykr",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "This regex involves a named capture and a repetition, which may trigger the growth of the stack in the BitState class.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves Unicode classes, which may trigger the growth of the stack in the BitState class.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves nested repetitions, which may cause the parser/compiler to recurse and potentially trigger the growth of the stack.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves a large counted repetition, which may cause the parser/compiler to overflow the stack.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves a named capture, which may trigger the growth of the stack in the BitState class.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves a character class with a large number of characters, which may cause the parser/compiler to overflow the stack.\"\n    },\n    {\n      \"regex\": \"(?=(abc))\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves a lookaround, which may trigger the growth of the stack in the BitState class.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Greek}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves Unicode classes, which may trigger the growth of the stack in the BitState class.\"\n    },\n    {\n      \"regex\": \"(a*)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves nested repetitions, which may cause the parser/compiler to recurse and potentially trigger the growth of the stack.\"\n    },\n    {\n      \"regex\": \"a{1,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves a large counted repetition, which may cause the parser/compiler to overflow the stack.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex involves a named capture and a repetition, which may trigger the growth of the stack in the BitState class.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 865,
+    "cost_usd": 0.0013353999999999998,
+    "latency_ms": 3831.9271390064387,
+    "prompt_hash": "1603e3e7684405be4bcc0715f581018ba8527c1b4b3153a567f8b424b39c11ad",
+    "timestamp": "2026-04-13T18:40:48.242522+00:00",
+    "generation_wall_clock_s": 3.8319276310066925,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=2",
+    "cached": false
+  }
+}

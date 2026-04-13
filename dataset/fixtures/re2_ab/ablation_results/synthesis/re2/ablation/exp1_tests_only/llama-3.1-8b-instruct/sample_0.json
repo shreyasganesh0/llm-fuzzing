@@ -1,0 +1,184 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "b283df3824fdc3d7",
+      "content_b64": "4XBccHtHcmVla30r",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises Unicode classes, a feature that should be parsed correctly by the re2 compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bd187954ddfab81d",
+      "content_b64": "WiooYSopKg==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises nested repetitions, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c7a2483736dc8f63",
+      "content_b64": "vW5hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises large counted repetitions, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "728edc53b65da8cf",
+      "content_b64": "gggoP1A8ZzE+YSspfChlKSg/UDxnMj53KikrKD9QPGcxPmIrKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises named captures and alternative groups, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d2f4923a8344978d",
+      "content_b64": "3KUoP1A8ZzE+YSspKD9QPGcyPmIrKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises named captures and repetition, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5e9925b56ff6c8b3",
+      "content_b64": "KXphW15hLXpBLVowLTldKw==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises character classes and repetition, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "eabcfefb3b4a0492",
+      "content_b64": "FCVhKD89Yik=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises lookarounds, which should be correctly rejected by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f10588df1f280db4",
+      "content_b64": "2XdccHtHcmVla30=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises Unicode classes, a feature that should be parsed correctly by the re2 compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "abcd1bb4efd584ed",
+      "content_b64": "od1hK3xiKw==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises alternative groups, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "15c73a8c73a61d74",
+      "content_b64": "qW5bXmEtekEtWl0=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14",
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "This pattern exercises character classes, which should be correctly parsed by the re2 parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises Unicode classes, a feature that should be parsed correctly by the re2 compiler.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises nested repetitions, which should be correctly parsed by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises large counted repetitions, which should be correctly parsed by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)|(e)(?P<g2>w*)+(?P<g1>b+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises named captures and alternative groups, which should be correctly parsed by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises named captures and repetition, which should be correctly parsed by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"a[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises character classes and repetition, which should be correctly parsed by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"a(?=b)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises lookarounds, which should be correctly rejected by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises Unicode classes, a feature that should be parsed correctly by the re2 compiler.\"\n    },\n    {\n      \"regex\": \"a+|b+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises alternative groups, which should be correctly parsed by the re2 parser/compiler.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z]\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\", \"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"This pattern exercises character classes, which should be correctly parsed by the re2 parser/compiler.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 1474,
+    "output_tokens": 803,
+    "cost_usd": 0.0005009400000000001,
+    "latency_ms": 3745.4901989985956,
+    "prompt_hash": "ed417625210bb2325f7d0d0f742fa2ae9e08cf48f5f27946cbb8c81dc82ba701",
+    "timestamp": "2026-04-13T18:41:02.899843+00:00",
+    "generation_wall_clock_s": 3.7454911200038623,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_tests_only,sample=0",
+    "cached": false
+  }
+}

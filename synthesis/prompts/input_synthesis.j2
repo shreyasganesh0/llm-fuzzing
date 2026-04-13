@@ -1,0 +1,58 @@
+{{ system_prompt }}
+
+You are generating test inputs for a C/C++ library to reach UNCOVERED code branches.
+
+TARGET: {{ target_name }}
+HARNESS: {{ harness_code }}
+
+The following are examples from REAL unit tests written by the {{ target_name }}
+developers (not generated for this experiment):
+
+{% for example in few_shot_examples %}
+=== Example: What real test inputs look like ===
+Test from {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+
+Input used: {{ example.input_data }}
+Functions covered: {{ example.functions_covered | join(', ') }}
+{% endfor %}
+
+=== COVERAGE GAPS ===
+The upstream {{ target_name }} test suite ({{ total_upstream_tests }} tests by
+project maintainers) achieves {{ union_coverage_pct }}% line coverage.
+The following branches are NOT covered by ANY upstream test:
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Code context:
+```{{ source_language }}
+{{ gap.code_context }}
+```
+Condition: {{ gap.condition_description }}
+
+{% endfor %}
+
+Generate {{ num_inputs }} distinct inputs (as {{ input_format }}) that target
+these uncovered branches. For EACH input:
+1. The input itself
+2. Which gap branch(es) you expect it to reach
+3. Your reasoning (trace the execution path from harness entry)
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `inputs` must contain AT MOST {{ num_inputs }} entries.
+- Every `content_b64` must be UNIQUE — no two entries with the same bytes.
+- Every `reasoning` must describe a DIFFERENT execution path — do not copy/paste the same reasoning across entries.
+- If you cannot think of {{ num_inputs }} distinct inputs, emit fewer. Never pad with duplicates.
+
+Schema:
+{
+  "inputs": [
+    {
+      "content_b64": "<base64-encoded bytes, unique per entry>",
+      "target_gaps": ["<real_file>:<real_line>", "..."],
+      "reasoning": "<trace unique to this input>"
+    }
+  ]
+}

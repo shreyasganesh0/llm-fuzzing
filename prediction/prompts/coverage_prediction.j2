@@ -1,0 +1,53 @@
+{{ system_prompt }}
+
+You are analyzing C/C++ code to predict which code regions a unit test exercises.
+
+The following tests are REAL unit tests written by the {{ target_name }} project
+maintainers, extracted from the upstream repository at commit {{ upstream_commit }}.
+
+{% for example in few_shot_examples %}
+=== Example {{ loop.index }} ===
+[UNIT TEST - from {{ example.upstream_file }}:{{ example.upstream_line }}]
+{{ example.test_code }}
+
+[SOURCE CODE]
+{{ example.source_excerpt }}
+
+[MEASURED COVERAGE]
+Functions covered: {{ example.functions_covered | join(', ') }}
+Functions NOT covered: {{ example.functions_not_covered | join(', ') }}
+Branch coverage summary:
+{% for branch in example.branches %}
+  {{ branch.location }}: {{ branch.status }}
+{% endfor %}
+Total: {{ example.coverage_pct }}% line coverage
+
+{% endfor %}
+
+=== YOUR TASK ===
+Predict the coverage for this UNSEEN unit test (also from the upstream {{ target_name }} repository).
+
+[UNIT TEST - from {{ target_test.upstream_file }}:{{ target_test.upstream_line }}]
+{{ target_test.test_code }}
+
+[SOURCE CODE]
+{{ target_test.source_excerpt }}
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- Every entry in `branches` must be DISTINCT (unique `location`). Do NOT repeat entries.
+- `location` MUST be a real `path:integer` pair from the source above (e.g. `re2/re2.cc:482`). Never emit the literal string `LINE` or `<line>`.
+- `branches` must contain at MOST 15 entries. If you are unsure, emit fewer — NEVER pad with duplicates or placeholders.
+- `true_taken` and `false_taken` are literal booleans: `true` or `false`.
+
+Schema:
+{
+  "functions_covered": ["<real function name>", "..."],
+  "functions_not_covered": ["<real function name>", "..."],
+  "branches": [
+    {"location": "<real_file>:<real_line_number>", "true_taken": true, "false_taken": false}
+  ],
+  "estimated_line_coverage_pct": 42.5,
+  "reasoning": "one or two sentences"
+}

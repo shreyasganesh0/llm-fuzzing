@@ -1,0 +1,22 @@
+# LoRA hyperparameters for Llama 3.1 8B (Config E / Config G with CoT).
+# Source: plan §Phase 4.1b.
+model_name: meta-llama/Llama-3.1-8B-Instruct
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: ["q_proj", "v_proj"]
+training:
+  epochs: 3
+  learning_rate: 2.0e-4
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  bf16: true
+  max_seq_length: 4096
+data:
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  stratify_by: target

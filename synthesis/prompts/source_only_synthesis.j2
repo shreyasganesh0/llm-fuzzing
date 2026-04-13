@@ -1,0 +1,53 @@
+{{ system_prompt_source_only }}
+
+You are generating test inputs for a C/C++ library to maximize code
+coverage. You have ONLY the source code and the fuzzer harness — no
+existing test suite or coverage data to work from.
+
+TARGET: {{ target_name }}
+INPUT FORMAT: {{ input_format }}
+
+[FUZZER HARNESS]
+{{ harness_code }}
+
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}
+
+Study the source code carefully. Identify code paths that require
+specific, structured inputs to reach — paths that a random-mutation
+fuzzer would struggle with.
+
+Generate {{ num_inputs }} distinct inputs (as {{ input_format }}) that
+collectively exercise as many DIFFERENT code paths as possible.
+Prioritize depth over breadth: target the hard-to-reach branches,
+not the shallow ones the fuzzer will find on its own.
+
+For EACH input:
+1. The input itself (as base64-encoded bytes in `content_b64`)
+2. Which code paths you expect it to exercise (as file:line pairs in `target_gaps`)
+3. Your reasoning: trace the execution from harness entry through
+   the library code, identifying which branches are taken
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `inputs` must contain AT MOST {{ num_inputs }} entries.
+- Every `content_b64` must be UNIQUE — no two entries with identical bytes.
+- Every `reasoning` must describe a DIFFERENT execution path — do not duplicate or paraphrase.
+- `target_gaps` entries must be real `path:integer` pairs from the source above. Never emit the literal string `LINE`.
+- If you cannot produce {{ num_inputs }} genuinely distinct inputs, emit fewer. Never pad with repeats.
+
+Schema:
+{
+  "inputs": [
+    {
+      "content_b64": "<base64 bytes unique to this entry>",
+      "target_gaps": ["<real_file>:<real_line_number>", "..."],
+      "reasoning": "<execution trace unique to this input>"
+    }
+  ]
+}

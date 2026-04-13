@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "844e72bd8c99388f",
+      "content_b64": "LYooP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named captures can trigger complex parsing paths.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cc0f59e951021fbd",
+      "content_b64": "kTAoYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Nested repetitions can push the parser to its limits.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2113a3d3a78bd4b8",
+      "content_b64": "C8VccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Unicode classes require the parser to handle complex Unicode properties.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "002b0cced2a4ab63",
+      "content_b64": "N+koPz1hYmMp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Lookarounds are rejected and can trigger error paths.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8c315153e36c8c84",
+      "content_b64": "5CphezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Large counted repetitions can test the parser's ability to handle large numbers.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a273884e8a445be6",
+      "content_b64": "N/VbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:200"
+      ],
+      "reasoning": "Character classes can test the parser's ability to handle complex character sets.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b44a7b8ffe6029c4",
+      "content_b64": "J8YoP1A8eD5hKykoPz1hYmMp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Combining named captures and lookarounds can trigger complex error paths.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "83e5b04aa598f781",
+      "content_b64": "jpBccHtHcmVla30rKD89YWJjKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Combining Unicode classes and lookarounds can trigger complex error paths.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1843ce51c54719f0",
+      "content_b64": "mOFhezEwMDAsfVxwe0dyZWVrfSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Combining large counted repetitions and Unicode classes can test the parser's limits.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "abf378f4fb965d8f",
+      "content_b64": "C7ZbXmEtekEtWjAtOV17MTAwMCx9",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:200"
+      ],
+      "reasoning": "Combining character classes and large counted repetitions can test the parser's ability to handle complex character sets.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures can trigger complex parsing paths.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Nested repetitions can push the parser to its limits.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Unicode classes require the parser to handle complex Unicode properties.\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Lookarounds are rejected and can trigger error paths.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Large counted repetitions can test the parser's ability to handle large numbers.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:200\"],\n      \"reasoning\": \"Character classes can test the parser's ability to handle complex character sets.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Combining named captures and lookarounds can trigger complex error paths.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Combining Unicode classes and lookarounds can trigger complex error paths.\"\n    },\n    {\n      \"regex\": \"a{1000,}\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Combining large counted repetitions and Unicode classes can test the parser's limits.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:200\"],\n      \"reasoning\": \"Combining character classes and large counted repetitions can test the parser's ability to handle complex character sets.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 7364,
+    "output_tokens": 606,
+    "cost_usd": 0.0017533999999999998,
+    "latency_ms": 3168.5692820028635,
+    "prompt_hash": "4a76903bf220ebecdd259ab032a2ac51f96cf8d2d9000cef1016ee3cc9f247be",
+    "timestamp": "2026-04-13T18:41:26.647216+00:00",
+    "generation_wall_clock_s": 3.168569852001383,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=2",
+    "cached": false
+  }
+}

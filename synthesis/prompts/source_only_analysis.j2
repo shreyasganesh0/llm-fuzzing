@@ -1,0 +1,52 @@
+{{ system_prompt_source_only }}
+
+You are analyzing C/C++ source code to identify branches that would be
+difficult for a coverage-guided fuzzer (libFuzzer) to reach through
+random mutation alone.
+
+TARGET: {{ target_name }}
+
+[FUZZER HARNESS]
+{{ harness_code }}
+
+The harness receives raw bytes via LLVMFuzzerTestOneInput and calls
+library functions. A coverage-guided fuzzer will mutate these bytes
+to explore new code paths.
+
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ({{ file.line_count }} lines) ===
+{{ file.content }}
+
+{% endfor %}
+
+Analyze this code and identify the {{ num_branches }} branches that would
+be HARDEST for a random-mutation fuzzer to reach. For each branch:
+
+1. The file and line number
+2. The condition that must be satisfied
+3. WHY random mutation is unlikely to satisfy it
+   (e.g., requires specific magic bytes, multi-field consistency,
+   state built up over multiple calls, rare numeric relationships)
+4. Your confidence level (HIGH / MEDIUM / LOW)
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `hard_branches` must contain AT MOST {{ num_branches }} entries — fewer is fine.
+- Every entry must be DISTINCT: unique `(file, line)` pair, unique `condition`, unique `difficulty_reason`. Do NOT duplicate or paraphrase the same branch.
+- `file` must be a real path from the source above. `line` must be a real integer line number from that file.
+- If you run out of genuinely distinct hard branches before reaching {{ num_branches }}, STOP — emit a shorter array. Never pad with repeats or copies of the example below.
+
+Schema (the values below are ILLUSTRATIVE — replace with your own real findings, do not copy them verbatim):
+{
+  "hard_branches": [
+    {
+      "file": "<real source file>",
+      "line": <real integer line number>,
+      "condition": "<the actual condition at that line>",
+      "difficulty_reason": "<specific reason unique to this branch>",
+      "confidence": "HIGH"
+    }
+  ]
+}

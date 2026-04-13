@@ -1,0 +1,44 @@
+[
+  {
+    "cell": "exp1_full",
+    "seeds": 20,
+    "edges": 1243,
+    "lines": 2530
+  },
+  {
+    "cell": "exp2_source",
+    "seeds": 30,
+    "edges": 1133,
+    "lines": 2385
+  },
+  {
+    "cell": "exp1_gaps_only",
+    "seeds": 10,
+    "edges": 879,
+    "lines": 1979
+  },
+  {
+    "cell": "exp1_tests_only",
+    "seeds": 30,
+    "edges": 1093,
+    "lines": 2293
+  },
+  {
+    "cell": "exp2_plus_gaps",
+    "seeds": 30,
+    "edges": 1250,
+    "lines": 2626
+  },
+  {
+    "cell": "exp2_plus_tests",
+    "seeds": 30,
+    "edges": 1210,
+    "lines": 2524
+  },
+  {
+    "cell": "random",
+    "seeds": 30,
+    "edges": 980,
+    "lines": 2081
+  }
+]

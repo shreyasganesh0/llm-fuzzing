@@ -1,0 +1,33 @@
+{{ system_prompt }}
+
+These are real unit tests from the {{ target_name }} project (upstream commit
+{{ upstream_commit }}), pulled from the project's own test suite.
+
+{% for example in few_shot_examples %}
+== Example {{ loop.index }} ==
+Test ({{ example.upstream_file }}:{{ example.upstream_line }}):
+{{ example.test_code }}
+
+Source excerpt:
+{{ example.source_excerpt }}
+
+Measured result: the test exercises {{ example.functions_covered | join(', ') }}
+({{ example.coverage_pct }}% line coverage overall). It does NOT reach
+{{ example.functions_not_covered | join(', ') }}.
+
+{% endfor %}
+
+== Your turn ==
+Consider this unseen unit test:
+
+Test ({{ target_test.upstream_file }}:{{ target_test.upstream_line }}):
+{{ target_test.test_code }}
+
+Source excerpt:
+{{ target_test.source_excerpt }}
+
+In plain prose, describe which functions this test will call and which
+branches it will take. Then state an overall estimated line coverage
+percentage. Do NOT produce JSON — write natural language only. Be specific:
+refer to functions by name (e.g. "calls RE2::FullMatch") and to branches by
+file:line.

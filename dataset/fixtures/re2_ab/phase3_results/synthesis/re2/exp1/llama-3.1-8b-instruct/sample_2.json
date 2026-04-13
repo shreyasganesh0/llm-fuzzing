@@ -1,0 +1,178 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "d855c6a39a208c75",
+      "content_b64": "DLwoP1A8eD5hKykr",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "This pattern has a named capture, which will force the parser to use the Perl syntax, and then we have a repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "817d2468ea555ab4",
+      "content_b64": "WnFbYS16QS1aXSt7MTAwMCx9",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern has a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2113a3d3a78bd4b8",
+      "content_b64": "C8VccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern has a Unicode class, which will cause the parser to use the Perl syntax, and then we have a repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1e408df4cc2b6a0c",
+      "content_b64": "rQhhKD9QPHg+YSspKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "This pattern has a named capture, which will force the parser to use the Perl syntax, and then we have a nested repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a9ac8148b2f6485c",
+      "content_b64": "ReJbXmEtekEtWjAtOV17MTAwMCx9",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern has a character class and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1d34b99c41fa4e0b",
+      "content_b64": "UpEoP1A8eD5hKykrfGEoP1A8eD5hKykq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "This pattern has two branches with named captures, which will force the parser to use the Perl syntax, and then we have repetitions, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9478482cd301dd03",
+      "content_b64": "7fBccHtHcmVla30rfGEoP1A8eD5hKykq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "This pattern has two branches with a Unicode class and a named capture, which will force the parser to use the Perl syntax, and then we have a repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a8ffc2b8b492ce2f",
+      "content_b64": "LCFbYS16QS1aXSt8W15hLXpBLVowLTldezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern has two branches with a character class and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6bea1ec73b6a2be4",
+      "content_b64": "QfNhKD9QPHg+YSspKnxhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern has two branches with a named capture and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9c55eeb88949ddb1",
+      "content_b64": "IIEoP1A8eD5hKykrfFxwe0dyZWVrfSt8YXsxMDAwLH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern has three branches with a named capture, a Unicode class, and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"This pattern has a named capture, which will force the parser to use the Perl syntax, and then we have a repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.\"\n    },\n    {\n      \"regex\": \"[a-zA-Z]+{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern has a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern has a Unicode class, which will cause the parser to use the Perl syntax, and then we have a repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.\"\n    },\n    {\n      \"regex\": \"a(?P<x>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"This pattern has a named capture, which will force the parser to use the Perl syntax, and then we have a nested repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern has a character class and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)+|a(?P<x>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"This pattern has two branches with named captures, which will force the parser to use the Perl syntax, and then we have repetitions, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+|a(?P<x>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"This pattern has two branches with a Unicode class and a named capture, which will force the parser to use the Perl syntax, and then we have a repetition, which may cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::Push`.\"\n    },\n    {\n      \"regex\": \"[a-zA-Z]+|[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern has two branches with a character class and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.\"\n    },\n    {\n      \"regex\": \"a(?P<x>a+)*|a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern has two branches with a named capture and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)+|\\\\p{Greek}+|a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern has three branches with a named capture, a Unicode class, and a large counted repetition, which will cause the `GrowStack` method to be called, hitting the uncovered branches in `BitState::GrowStack` and `BitState::TrySearch`.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5714,
+    "output_tokens": 1081,
+    "cost_usd": 0.0014949,
+    "latency_ms": 6280.412167994655,
+    "prompt_hash": "732c117c47aeca7b2277c50a4a2c95fd1726977452bb2f21474788a21282a122",
+    "timestamp": "2026-04-13T12:00:08.178073+00:00",
+    "generation_wall_clock_s": 6.280412848995184,
+    "target": "re2",
+    "phase": "phase3",
+    "experiment_tag": "sample=2,experiment=exp1",
+    "cached": false
+  }
+}

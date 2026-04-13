@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has two identical named captures which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex has a large counted repetition which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?:a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has a nested repetition which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:123\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has a Unicode class which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:124\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has a character class which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has two different named captures which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"a{1001}\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"This regex has a large counted repetition which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?:a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has a nested repetition which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:123\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has a Unicode class which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:124\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This regex has a character class which can cause the `njob_ >= maxjob_` condition to be true, triggering the uncovered branches.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5714,
+    "output_tokens": 768,
+    "cost_usd": 0.00142604,
+    "latency_ms": 4381.258151988732,
+    "prompt_hash": "5b63a75869209c9089ff6054cd19d3094e9713eed0af1b36c7a4aa9e453437ea",
+    "timestamp": "2026-04-13T12:00:01.896714+00:00",
+    "generation_wall_clock_s": 4.3812593539914815,
+    "target": "re2",
+    "phase": "phase3",
+    "experiment_tag": "sample=1,experiment=exp1",
+    "cached": false
+  }
+}

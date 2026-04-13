@@ -1,0 +1,102 @@
+{
+  "exp1": {
+    "lines": 2385,
+    "edges": 1133
+  },
+  "exp2": {
+    "lines": 2081,
+    "edges": 980
+  },
+  "union": {
+    "lines": 2438,
+    "edges": 1195
+  },
+  "intersection": {
+    "lines": 2028,
+    "edges": 918
+  },
+  "exp1_only_edges": 215,
+  "exp2_only_edges": 62,
+  "exp1_only_by_file": [
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/parse.cc",
+      82
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/simplify.cc",
+      49
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/compile.cc",
+      27
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/onepass.cc",
+      14
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/dfa.cc",
+      13
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/regexp.cc",
+      10
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/util/stringpiece.cc",
+      8
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/prog.cc",
+      6
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/re2.cc",
+      4
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/walker-inl.h",
+      1
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/util/rune.cc",
+      1
+    ]
+  ],
+  "exp2_only_by_file": [
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/parse.cc",
+      29
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/compile.cc",
+      9
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/dfa.cc",
+      7
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/prog.cc",
+      6
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/regexp.cc",
+      4
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/re2.cc",
+      3
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/re2/simplify.cc",
+      3
+    ],
+    [
+      "/home/shreyasganesh/projects/llm-fuzzing/phase1_dataset/targets/src/re2/upstream/util/rune.cc",
+      1
+    ]
+  ],
+  "jaccard_lines": 0.8318,
+  "jaccard_edges": 0.7682
+}

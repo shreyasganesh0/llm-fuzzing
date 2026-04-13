@@ -1,0 +1,56 @@
+[
+  {
+    "test_name": "Regexp.BigRef",
+    "test_code": "// Test that overflowed ref counts work.\nTEST(Regexp, BigRef) {\n  Regexp* re;\n  re = Regexp::Parse(\"x\", Regexp::NoParseFlags, NULL);\n  for (int i = 0; i < 100000; i++)\n    re->Incref();\n  for (int i = 0; i < 100000; i++)\n    re->Decref();\n  CHECK_EQ(re->Ref(), 1);\n  re->Decref();\n}",
+    "test_file": "re2/testing/regexp_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/regexp_test.cc",
+    "upstream_line": 14,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "Regexp::Parse",
+      "Regexp::Incref",
+      "Regexp::Decref",
+      "Regexp::Ref",
+      "CHECK_EQ"
+    ]
+  },
+  {
+    "test_name": "Regexp.NamedCaptures",
+    "test_code": "TEST(Regexp, NamedCaptures) {\n  Regexp* x;\n  RegexpStatus status;\n  x = Regexp::Parse(\n      \"(?P<g1>a+)|(e)(?P<g2>w*)+(?P<g1>b+)\", Regexp::PerlX, &status);\n  EXPECT_TRUE(status.ok());\n  EXPECT_EQ(4, x->NumCaptures());\n  const map<string, int>* have = x->NamedCaptures();\n  EXPECT_TRUE(have != NULL);\n  EXPECT_EQ(2, have->size());\n  map<string, int> want;\n  want[\"g1\"] = 1;\n  want[\"g2\"] = 3;\n  EXPECT_EQ(want, *have);\n  x->Decref();\n  delete have;\n}",
+    "test_file": "re2/testing/regexp_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/regexp_test.cc",
+    "upstream_line": 42,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "Regexp::Parse",
+      "Regexp::NumCaptures",
+      "Regexp::NamedCaptures",
+      "EXPECT_TRUE",
+      "EXPECT_EQ"
+    ]
+  },
+  {
+    "test_name": "Regexp.CaptureNames",
+    "test_code": "TEST(Regexp, CaptureNames) {\n  Regexp* x;\n  RegexpStatus status;\n  x = Regexp::Parse(\n      \"(?P<g1>a+)|(e)(?P<g2>w*)+(?P<g1>b+)\", Regexp::PerlX, &status);\n  EXPECT_TRUE(status.ok());\n  EXPECT_EQ(4, x->NumCaptures());\n  const map<int, string>* have = x->CaptureNames();\n  EXPECT_TRUE(have != NULL);\n  EXPECT_EQ(3, have->size());\n  map<int, string> want;\n  want[1] = \"g1\";\n  want[3] = \"g2\";\n  want[4] = \"g1\";\n\n  EXPECT_EQ(want, *have);\n  x->Decref();\n  delete have;\n}",
+    "test_file": "re2/testing/regexp_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/regexp_test.cc",
+    "upstream_line": 61,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "Regexp::Parse",
+      "Regexp::NumCaptures",
+      "Regexp::CaptureNames",
+      "EXPECT_TRUE",
+      "EXPECT_EQ"
+    ]
+  }
+]

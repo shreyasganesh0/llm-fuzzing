@@ -1,0 +1,24 @@
+# stub — fill in for future session (fill upstream commit in pinned_versions.yaml first)
+name: harfbuzz
+tier: 1
+fuzzbench_benchmark: harfbuzz-1.3.2
+
+upstream:
+  repo: https://github.com/harfbuzz/harfbuzz.git
+  commit: !from_pinned harfbuzz.upstream_commit
+
+tests:
+  framework: glib
+  locations:
+    - test/api/test-buffer.c
+    - test/api/test-font.c
+    - test/api/test-shape.c
+    - test/api/test-unicode.c
+    - test/api/test-blob.c
+    - test/api/test-subset.c
+  discovery_pattern: 'g_test_add_func\('
+
+fuzzbench:
+  harness_source: !from_pinned harfbuzz.harness_source
+  harness_file: !from_pinned harfbuzz.harness_path
+  libfuzzer_extra_flags: !from_pinned harfbuzz.libfuzzer_extra_flags

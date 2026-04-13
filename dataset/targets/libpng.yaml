@@ -1,0 +1,21 @@
+# stub — fill in for future session
+name: libpng
+tier: 3
+fuzzbench_benchmark: libpng-1.2.56
+
+upstream:
+  repo: https://github.com/glennrp/libpng.git
+  commit: !from_pinned libpng.upstream_commit
+
+tests:
+  framework: custom_c
+  locations:
+    - contrib/libtests/pngvalid.c
+    - contrib/libtests/pngstest.c
+  discovery_pattern: 'test_.*\(|check_.*\('
+
+fuzzbench:
+  harness_source: !from_pinned libpng.harness_source
+  harness_file: !from_pinned libpng.harness_path
+  dictionary: !from_pinned libpng.dictionary_path
+  libfuzzer_extra_flags: !from_pinned libpng.libfuzzer_extra_flags

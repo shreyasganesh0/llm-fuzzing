@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# LLVM coverage
+*.profraw
+*.profdata
+*.gcda
+*.gcno
+
+# Cloned upstream + build artifacts
+dataset/targets/src/
+dataset/data/
+!dataset/data/.gitkeep
+
+# LLM response cache
+.cache/
+.llm_cache/
+
+# Results (single canonical sink)
+results/
+!results/.gitkeep
+!results/*/.gitkeep
+analysis/figures/
+!analysis/figures/.gitkeep
+
+# Seeds
+seeds/
+
+# Fine-tuning artifacts
+finetuning/adapters/
+finetuning/checkpoints/
+finetuning/results/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Secrets (API keys, credentials — never commit)
+secrets/

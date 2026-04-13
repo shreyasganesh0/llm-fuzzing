@@ -1,0 +1,45 @@
+{
+  "version": "2.0.1",
+  "type": "llvm.coverage.json.export",
+  "data": [
+    {
+      "files": [
+        {
+          "filename": "/repo/re2/re2.cc",
+          "segments": [
+            [10, 1, 5, true, true, false],
+            [11, 1, 5, true, true, false],
+            [12, 1, 0, true, true, false],
+            [13, 1, 3, true, true, false]
+          ],
+          "branches": [
+            [20, 5, 20, 30, 3, 2, 0, 0, 0],
+            [25, 5, 25, 30, 1, 0, 0, 0, 0]
+          ],
+          "summary": {
+            "lines": {"count": 4, "covered": 3, "percent": 75.0},
+            "functions": {"count": 2, "covered": 2, "percent": 100.0}
+          }
+        },
+        {
+          "filename": "/usr/include/system.h",
+          "segments": [[1, 1, 1, true, true, false]],
+          "branches": [],
+          "summary": {"lines": {"count": 1, "covered": 1}}
+        }
+      ],
+      "functions": [
+        {
+          "name": "re2::RE2::FullMatch",
+          "filenames": ["/repo/re2/re2.cc"],
+          "regions": [[10, 1, 15, 1, 5, 0, 0, 0]]
+        },
+        {
+          "name": "re2::RE2::PartialMatch",
+          "filenames": ["/repo/re2/re2.cc"],
+          "regions": [[16, 1, 22, 1, 0, 0, 0, 0]]
+        }
+      ]
+    }
+  ]
+}

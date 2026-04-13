@@ -1,0 +1,125 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "few_shot_count": 0,
+  "context_size": "file",
+  "prompt_variant": "primary",
+  "test_name": "Regexp.BigRef",
+  "prediction": {
+    "functions_covered": [
+      "Regexp::Parse",
+      "Regexp::Incref",
+      "Regexp::Decref",
+      "Regexp::Ref",
+      "Regexp::Concat",
+      "Regexp::ToString",
+      "Regexp::RequiredPrefix"
+    ],
+    "functions_not_covered": [
+      "EgrepTest",
+      "EgrepLiterals",
+      "PrefixTest",
+      "Regexp::LikePerl",
+      "Regexp::Latin1",
+      "Regexp::Dump"
+    ],
+    "branches": [
+      {
+        "location": "re2/regexp.cc:14",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:15",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:16",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:17",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:18",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:19",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:20",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:21",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:22",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:23",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:24",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:25",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:26",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:27",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:28",
+        "true_taken": true,
+        "false_taken": false
+      }
+    ],
+    "estimated_line_coverage_pct": 50.0,
+    "reasoning": "The test exercises the Regexp class's ref counting and parsing functionality, covering various branches in the code. The test's loops and conditional statements cover multiple lines in the code."
+  },
+  "parse_status": "ok",
+  "raw_response": "{\n  \"functions_covered\": [\"Regexp::Parse\", \"Regexp::Incref\", \"Regexp::Decref\", \"Regexp::Ref\", \"Regexp::Concat\", \"Regexp::ToString\", \"Regexp::RequiredPrefix\"],\n  \"functions_not_covered\": [\"EgrepTest\", \"EgrepLiterals\", \"PrefixTest\", \"Regexp::LikePerl\", \"Regexp::Latin1\", \"Regexp::Dump\"],\n  \"branches\": [\n    {\"location\": \"re2/regexp.cc:14\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:15\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:16\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:17\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:18\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:19\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:20\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:21\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:22\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:23\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:24\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:25\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:26\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:27\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:28\", \"true_taken\": true, \"false_taken\": false}\n  ],\n  \"estimated_line_coverage_pct\": 50,\n  \"reasoning\": \"The test exercises the Regexp class's ref counting and parsing functionality, covering various branches in the code. The test's loops and conditional statements cover multiple lines in the code.\"\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "input_tokens": 2343,
+    "output_tokens": 529,
+    "cost_usd": 0.00063184,
+    "latency_ms": 4649.108999998134,
+    "prompt_hash": "306402a197f7d9d70ebb1d09eb34fb48e528fa16ed73daf3194c707855c3805e",
+    "timestamp": "2026-04-13T04:20:58.664304+00:00",
+    "generation_wall_clock_s": 4.649110202000884,
+    "target": "re2",
+    "phase": "phase2",
+    "experiment_tag": "shot=0,ctx=file,variant=primary",
+    "cached": false
+  },
+  "metrics": null
+}

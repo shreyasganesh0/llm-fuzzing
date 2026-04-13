@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "69e4f64214f9882d",
+      "content_b64": "Bo9ccHtHcmVla30r",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Stress Unicode classes in named captures and capture names",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6dcb322c05c18b45",
+      "content_b64": "afQoP1A8ZzE+YSsp",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Named captures in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7ae851df1ea8f0be",
+      "content_b64": "5i5bXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Character classes in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "66c4ca7fc8134ead",
+      "content_b64": "zwEoYSopKg==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Nested repetitions in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1a8e582b19a3fafd",
+      "content_b64": "YQYoP1A8ZzI+dyopKyg/UDxnMT5iKyk=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Nested named captures in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a17c07dd76a1453f",
+      "content_b64": "g7IoP1A8ZzE+YSspfChlKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Alternation with named capture in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2ecb2248bef87043",
+      "content_b64": "63lccHtHcmVla317MTAwMCx9",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted repetitions in Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "257818115ed8607a",
+      "content_b64": "3otbYS16QS1aMC05XXsxMDAwLH0=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted repetitions in character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c670b8c50b0321ba",
+      "content_b64": "SyEoYXsxMDAwLH0p",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted repetitions in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "31f1fc8a1295ef81",
+      "content_b64": "hbYoP1A8ZzE+YSspfChlKSg/UDxnMj53KikrKD9QPGcxPmIrKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Complex nested named captures in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Stress Unicode classes in named captures and capture names\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Named captures in the parser/compiler\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Character classes in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Nested repetitions in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<g2>w*)+(?P<g1>b+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Nested named captures in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)|(e)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Alternation with named capture in the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted repetitions in Unicode classes\"\n    },\n    {\n      \"regex\": \"[a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted repetitions in character classes\"\n    },\n    {\n      \"regex\": \"(a{1000,})\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted repetitions in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)|(e)(?P<g2>w*)+(?P<g1>b+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Complex nested named captures in the parser/compiler\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 1474,
+    "output_tokens": 619,
+    "cost_usd": 0.00046046000000000005,
+    "latency_ms": 5411.271913006203,
+    "prompt_hash": "fc1a0432d024a0054d68cf3bc38e1e527628d21f7a19c6b203bd4fc00c926cc5",
+    "timestamp": "2026-04-13T18:41:11.837868+00:00",
+    "generation_wall_clock_s": 5.411272395009291,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_tests_only,sample=2",
+    "cached": false
+  }
+}

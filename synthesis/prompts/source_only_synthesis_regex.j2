@@ -1,0 +1,73 @@
+{{ system_prompt_source_only }}
+
+You are generating REGEX PATTERNS to maximize code coverage in the
+{{ target_name }} regular-expression library. {{ target_name }} is a C++
+regex engine; the hard-to-reach code lives in the PARSER and COMPILER,
+so novel regex syntax is more valuable than exotic input strings.
+
+You have ONLY the source code and the fuzzer harness — no existing test
+suite, no coverage data.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex. The tooling will prepend random flag
+bytes for you.
+
+**YOUR JOB**: produce the REGEX STRING ONLY, as plain text UTF-8.
+**DO NOT** base64-encode. **DO NOT** escape. **DO NOT** wrap in quotes
+inside the regex field. Just the pattern itself.
+
+TARGET: {{ target_name }}
+
+[FUZZER HARNESS]
+{{ harness_code }}
+
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}
+
+=== YOUR TASK ===
+Study the source. Identify code paths that require specific, structured
+regex syntax to reach — paths a random-mutation fuzzer would struggle
+with.
+
+Produce {{ num_inputs }} DISTINCT regex patterns that collectively
+exercise as many DIFFERENT code paths as possible. Prioritize DEPTH
+(hard-to-reach branches) over BREADTH (shallow branches the fuzzer
+hits on its own).
+
+Keep each pattern 1-60 characters (the harness rejects total input
+size > 64 bytes).
+
+Examples of the kind of patterns that stress the parser/compiler:
+  - Named captures:         (?P<x>a+)
+  - Nested repetitions:     (a*)*
+  - Unicode classes:        \p{Greek}+
+  - Lookarounds (rejected): (?=abc)
+  - Large counted reps:     a{1000,}
+  - Character classes:      [^a-zA-Z0-9]
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain AT MOST {{ num_inputs }} entries.
+- Every `regex` must be UNIQUE.
+- `regex` is plain text, NOT base64, NOT escaped JSON — just the raw
+  pattern. If your pattern contains `"` or `\`, escape them using
+  standard JSON string-escape rules.
+- `target_gaps` entries must be real `path:integer` pairs from the
+  source above.
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["<file>:<line>", "..."],
+      "reasoning": "<why this regex is interesting for coverage>"
+    }
+  ]
+}

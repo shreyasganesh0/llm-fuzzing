@@ -1,0 +1,59 @@
+name: re2
+tier: 1
+version: "2014-12-09"
+fuzzbench_benchmark: re2-2014-12-09
+
+upstream:
+  repo: https://github.com/google/re2.git
+  commit: !from_pinned re2.upstream_commit
+  license: BSD-3-Clause
+
+tests:
+  framework: googletest
+  locations:
+    - re2/testing/re2_test.cc
+    - re2/testing/parse_test.cc
+    - re2/testing/compile_test.cc
+    - re2/testing/search_test.cc
+    - re2/testing/set_test.cc
+    - re2/testing/required_prefix_test.cc
+    - re2/testing/dfa_test.cc
+    - re2/testing/exhaustive_test.cc
+    - re2/testing/exhaustive1_test.cc
+    - re2/testing/exhaustive2_test.cc
+    - re2/testing/exhaustive3_test.cc
+    - re2/testing/mimics_pcre_test.cc
+    - re2/testing/random_test.cc
+    - re2/testing/string_generator_test.cc
+    - re2/testing/filtered_re2_test.cc
+  discovery_pattern: 'TEST\(|TEST_F\('
+  estimated_test_count: "1000+"
+  build_cmd: "cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang && make"
+  run_cmd: "./{test_binary} --gtest_filter={test_name}"
+
+source_files:
+  primary:
+    - re2/re2.cc
+    - re2/compile.cc
+    - re2/dfa.cc
+    - re2/nfa.cc
+    - re2/parse.cc
+    - re2/prog.cc
+    - re2/simplify.cc
+  secondary:
+    - re2/bitstate.cc
+    - re2/onepass.cc
+    - re2/set.cc
+
+fuzzbench:
+  harness_source: !from_pinned re2.harness_source
+  harness_file: !from_pinned re2.harness_path
+  dictionary: !from_pinned re2.dictionary_path
+  seeds: !from_pinned re2.seeds
+  input_format: "regex_pattern + test_string (text)"
+  libfuzzer_extra_flags: !from_pinned re2.libfuzzer_extra_flags
+
+build:
+  coverage_flags: "-fprofile-instr-generate -fcoverage-mapping"
+  sanitizer_flags: "-fsanitize=address,undefined"
+  fuzzer_flags: "-fsanitize=fuzzer"

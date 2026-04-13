@@ -1,0 +1,21 @@
+# stub — fill in for future session
+name: libxml2
+tier: 1
+fuzzbench_benchmark: libxml2-v2.9.2
+
+upstream:
+  repo: https://gitlab.gnome.org/GNOME/libxml2.git
+  commit: !from_pinned libxml2.upstream_commit
+
+tests:
+  framework: custom_c
+  locations:
+    - testapi.c
+    - runtest.c
+  discovery_pattern: 'test_.*\(|static int .*test'
+
+fuzzbench:
+  harness_source: !from_pinned libxml2.harness_source
+  harness_file: !from_pinned libxml2.harness_path
+  dictionary: !from_pinned libxml2.dictionary_path
+  libfuzzer_extra_flags: !from_pinned libxml2.libfuzzer_extra_flags

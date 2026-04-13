@@ -1,0 +1,282 @@
+[
+  {
+    "test_name": "RE2.HexTests",
+    "test_code": "TEST(RE2, HexTests) {\n\n  VLOG(1) << \"hex tests\";\n\n#define CHECK_HEX(type, value) \\\n  do { \\\n    type v; \\\n    CHECK(RE2::FullMatch(#value, \"([0-9a-fA-F]+)[uUlL]*\", RE2::Hex(&v))); \\\n    CHECK_EQ(v, 0x ## value); \\\n    CHECK(RE2::FullMatch(\"0x\" #value, \"([0-9a-fA-FxX]+)[uUlL]*\", RE2::CRadix(&v))); \\\n    CHECK_EQ(v, 0x ## value); \\\n  } while(0)\n\n  CHECK_HEX(short,              2bad);\n  CHECK_HEX(unsigned short,     2badU);\n  CHECK_HEX(int,                dead);\n  CHECK_HEX(unsigned int,       deadU);\n  CHECK_HEX(long,               7eadbeefL);\n  CHECK_HEX(unsigned long,      deadbeefUL);\n  CHECK_HEX(long long,          12345678deadbeefLL);\n  CHECK_HEX(unsigned long long, cafebabedeadbeefULL);\n\n#undef CHECK_HEX\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 21,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "VLOG",
+      "CHECK",
+      "RE2::FullMatch",
+      "RE2::Hex",
+      "RE2::CRadix",
+      "while"
+    ]
+  },
+  {
+    "test_name": "RE2.OctalTests",
+    "test_code": "TEST(RE2, OctalTests) {\n  VLOG(1) << \"octal tests\";\n\n#define CHECK_OCTAL(type, value) \\\n  do { \\\n    type v; \\\n    CHECK(RE2::FullMatch(#value, \"([0-7]+)[uUlL]*\", RE2::Octal(&v))); \\\n    CHECK_EQ(v, 0 ## value); \\\n    CHECK(RE2::FullMatch(\"0\" #value, \"([0-9a-fA-FxX]+)[uUlL]*\", RE2::CRadix(&v))); \\\n    CHECK_EQ(v, 0 ## value); \\\n  } while(0)\n\n  CHECK_OCTAL(short,              77777);\n  CHECK_OCTAL(unsigned short,     177777U);\n  CHECK_OCTAL(int,                17777777777);\n  CHECK_OCTAL(unsigned int,       37777777777U);\n  CHECK_OCTAL(long,               17777777777L);\n  CHECK_OCTAL(unsigned long,      37777777777UL);\n  CHECK_OCTAL(long long,          777777777777777777777LL);\n  CHECK_OCTAL(unsigned long long, 1777777777777777777777ULL);\n\n#undef CHECK_OCTAL\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 46,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "VLOG",
+      "CHECK",
+      "RE2::FullMatch",
+      "RE2::Octal",
+      "RE2::CRadix",
+      "while"
+    ]
+  },
+  {
+    "test_name": "RE2.DecimalTests",
+    "test_code": "TEST(RE2, DecimalTests) {\n  VLOG(1) << \"decimal tests\";\n\n#define CHECK_DECIMAL(type, value) \\\n  do { \\\n    type v; \\\n    CHECK(RE2::FullMatch(#value, \"(-?[0-9]+)[uUlL]*\", &v)); \\\n    CHECK_EQ(v, value); \\\n    CHECK(RE2::FullMatch(#value, \"(-?[0-9a-fA-FxX]+)[uUlL]*\", RE2::CRadix(&v))); \\\n    CHECK_EQ(v, value); \\\n  } while(0)\n\n  CHECK_DECIMAL(short,              -1);\n  CHECK_DECIMAL(unsigned short,     9999);\n  CHECK_DECIMAL(int,                -1000);\n  CHECK_DECIMAL(unsigned int,       12345U);\n  CHECK_DECIMAL(long,               -10000000L);\n  CHECK_DECIMAL(unsigned long,      3083324652U);\n  CHECK_DECIMAL(long long,          -100000000000000LL);\n  CHECK_DECIMAL(unsigned long long, 1234567890987654321ULL);\n\n#undef CHECK_DECIMAL\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 70,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "VLOG",
+      "CHECK",
+      "RE2::FullMatch",
+      "RE2::CRadix",
+      "while"
+    ]
+  },
+  {
+    "test_name": "RE2.Replace",
+    "test_code": "TEST(RE2, Replace) {\n  VLOG(1) << \"TestReplace\";\n\n  struct ReplaceTest {\n    const char *regexp;\n    const char *rewrite;\n    const char *original;\n    const char *single;\n    const char *global;\n    int        greplace_count;\n  };\n  static const ReplaceTest tests[] = {\n    { \"(qu|[b-df-hj-np-tv-z]*)([a-z]+)\",\n      \"\\\\2\\\\1ay\",\n      \"the quick brown fox jumps over the lazy dogs.\",\n      \"ethay quick brown fox jumps over the lazy dogs.\",\n      \"ethay ickquay ownbray oxfay umpsjay overay ethay azylay ogsday.\",\n      9 },\n    { \"\\\\w+\",\n      \"\\\\0-NOSPAM\",\n      \"abcd.efghi@google.com\",\n      \"abcd-NOSPAM.efghi@google.com\",\n      \"abcd-NOSPAM.efghi-NOSPAM@google-NOSPAM.com-NOSPAM\",\n      4 },\n    { \"^\",\n      \"(START)\",\n      \"foo\",\n      \"(START)foo\",\n      \"(START)foo\",\n      1 },\n    { \"^\",\n      \"(START)\",\n      \"\",\n      \"(START)\",\n      \"(START)\",\n      1 },\n    { \"$\",\n      \"(END)\",\n      \"\",\n      \"(END)\",\n      \"(END)\",\n      1 },\n    { \"b\",\n      \"bb\",\n      \"ababababab\",\n      \"abbabababab\",\n      \"abbabbabbabbabb\",\n      5 },\n    { \"b\",\n      \"bb\",\n      \"bbbbbb\",\n      \"bbbbbbb\",\n      \"bbbbbbbbbbbb\",\n      6 },\n    { \"b+\",\n      \"bb\",\n      \"bbbbbb\",\n      \"bb\",\n      \"bb\",\n      1 },\n    { \"b*\",\n      \"bb\",\n      \"bbbbbb\",\n      \"bb\",\n      \"bb\",\n      1 },\n    { \"b*\",\n      \"bb\",\n      \"aaaaa\",\n      \"bbaaaaa\",\n      \"bbabbabbabbabbabb\",\n      6 },\n    // Check newline handling\n    { \"a.*a\",\n      \"(\\\\0)\",\n      \"aba\\naba\",\n      \"(aba)\\naba\",\n      \"(aba)\\n(aba)\",\n      2 },\n    { \"\", NULL, NULL, NULL, NULL, 0 }\n  };\n\n  for (const ReplaceTest *t = tests; t->original != NULL; ++t) {\n    VLOG(1) << StringPrintf(\"\\\"%s\\\" =~ s/%s/%s/g\", t->original, t->regexp, t->rewrite);\n    string one(t->original);\n    CHECK(RE2::Replace(&one, t->regexp, t->rewrite));\n    CHECK_EQ(one, t->single);\n    string all(t->original);\n    CHECK_EQ(RE2::GlobalReplace(&all, t->regexp, t->rewrite), t->greplace_count)\n      << \"Got: \" << all;\n    CHECK_EQ(all, t->global);\n  }\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 94,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "VLOG",
+      "n",
+      "for",
+      "StringPrintf",
+      "one",
+      "CHECK",
+      "RE2::Replace",
+      "all",
+      "RE2::GlobalReplace"
+    ]
+  },
+  {
+    "test_name": "CheckRewriteString.all",
+    "test_code": "TEST(CheckRewriteString, all) {\n  TestCheckRewriteString(\"abc\", \"foo\", true);\n  TestCheckRewriteString(\"abc\", \"foo\\\\\", false);\n  TestCheckRewriteString(\"abc\", \"foo\\\\0bar\", true);\n\n  TestCheckRewriteString(\"a(b)c\", \"foo\", true);\n  TestCheckRewriteString(\"a(b)c\", \"foo\\\\0bar\", true);\n  TestCheckRewriteString(\"a(b)c\", \"foo\\\\1bar\", true);\n  TestCheckRewriteString(\"a(b)c\", \"foo\\\\2bar\", false);\n  TestCheckRewriteString(\"a(b)c\", \"f\\\\\\\\2o\\\\1o\", true);\n\n  TestCheckRewriteString(\"a(b)(c)\", \"foo\\\\12\", true);\n  TestCheckRewriteString(\"a(b)(c)\", \"f\\\\2o\\\\1o\", true);\n  TestCheckRewriteString(\"a(b)(c)\", \"f\\\\oo\\\\1\", false);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 196,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "TestCheckRewriteString",
+      "a"
+    ]
+  },
+  {
+    "test_name": "RE2.Extract",
+    "test_code": "TEST(RE2, Extract) {\n  VLOG(1) << \"TestExtract\";\n\n  string s;\n\n  CHECK(RE2::Extract(\"boris@kremvax.ru\", \"(.*)@([^.]*)\", \"\\\\2!\\\\1\", &s));\n  CHECK_EQ(s, \"kremvax!boris\");\n\n  CHECK(RE2::Extract(\"foo\", \".*\", \"'\\\\0'\", &s));\n  CHECK_EQ(s, \"'foo'\");\n  // check that false match doesn't overwrite\n  CHECK(!RE2::Extract(\"baz\", \"bar\", \"'\\\\0'\", &s));\n  CHECK_EQ(s, \"'foo'\");\n}\n\nTEST(RE2, Consume) {\n  VLOG(1) << \"TestConsume\";\n\n  RE2 r(\"\\\\s*(\\\\w+)\");    // matches a word, possibly proceeded by whitespace\n  string word;\n\n  string s(\"   aaa b!@#$@#$cccc\");\n  StringPiece input(s);\n\n  CHECK(RE2::Consume(&input, r, &word));\n  CHECK_EQ(word, \"aaa\") << \" input: \" << input;\n  CHECK(RE2::Consume(&input, r, &word));\n  CHECK_EQ(word, \"b\") << \" input: \" << input;\n  CHECK(! RE2::Consume(&input, r, &word)) << \" input: \" << input;\n}\n\nTEST(RE2, ConsumeN) {\n  const string s(\" one two three 4\");\n  StringPiece input(s);\n\n  RE2::Arg argv[2];\n  const RE2::Arg* const args[2] = { &argv[0], &argv[1] };\n\n  // 0 arg\n  EXPECT_TRUE(RE2::ConsumeN(&input, \"\\\\s*(\\\\w+)\", args, 0));  // Skips \"one\".\n\n  // 1 arg\n  string word;\n  argv[0] = &word;\n  EXPECT_TRUE(RE2::ConsumeN(&input, \"\\\\s*(\\\\w+)\", args, 1));\n  EXPECT_EQ(\"two\", word);\n\n  // Multi-args\n  int n;\n  argv[1] = &n;\n  EXPECT_TRUE(RE2::ConsumeN(&input, \"\\\\s*(\\\\w+)\\\\s*(\\\\d+)\", args, 2));\n  EXPECT_EQ(\"three\", word);\n  EXPECT_EQ(4, n);\n}\n\nTEST(RE2, FindAndConsume) {\n  VLOG(1) << \"TestFindAndConsume\";\n\n  RE2 r(\"(\\\\w+)\");      // matches a word\n  string word;\n\n  string s(\"   aaa b!@#$@#$cccc\");\n  StringPiece input(s);\n\n  CHECK(RE2::FindAndConsume(&input, r, &word));\n  CHECK_EQ(word, \"aaa\");\n  CHECK(RE2::FindAndConsume(&input, r, &word));\n  CHECK_EQ(word, \"b\");\n  CHECK(RE2::FindAndConsume(&input, r, &word));\n  CHECK_EQ(word, \"cccc\");\n  CHECK(! RE2::FindAndConsume(&input, r, &word));\n\n  // Check that FindAndConsume works without any submatches.\n  // Earlier version used uninitialized data for\n  // length to consume.\n  input = \"aaa\";\n  CHECK(RE2::FindAndConsume(&input, \"aaa\"));\n  CHECK_EQ(input, \"\");\n}\n\nTEST(RE2, FindAndConsumeN) {\n  const string s(\" one two three 4\");\n  StringPiece input(s);\n\n  RE2::Arg argv[2];\n  const RE2::Arg* const args[2] = { &argv[0], &argv[1] };\n\n  // 0 arg\n  EXPECT_TRUE(RE2::FindAndConsumeN(&input, \"(\\\\w+)\", args, 0));  // Skips \"one\".\n\n  // 1 arg\n  string word;\n  argv[0] = &word;\n  EXPECT_TRUE(RE2::FindAndConsumeN(&input, \"(\\\\w+)\", args, 1));\n  EXPECT_EQ(\"two\", word);\n\n  // Multi-args\n  int n;\n  argv[1] = &n;\n  EXPECT_TRUE(RE2::FindAndConsumeN(&input, \"(\\\\w+)\\\\s*(\\\\d+)\", args, 2));\n  EXPECT_EQ(\"three\", word);\n  EXPECT_EQ(4, n);\n}\n\nTEST(RE2, MatchNumberPeculiarity) {\n  VLOG(1) << \"TestMatchNumberPeculiarity\";\n\n  RE2 r(\"(foo)|(bar)|(baz)\");\n  string word1;\n  string word2;\n  string word3;\n\n  CHECK(RE2::PartialMatch(\"foo\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"foo\");\n  CHECK_EQ(word2, \"\");\n  CHECK_EQ(word3, \"\");\n  CHECK(RE2::PartialMatch(\"bar\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"\");\n  CHECK_EQ(word2, \"bar\");\n  CHECK_EQ(word3, \"\");\n  CHECK(RE2::PartialMatch(\"baz\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"\");\n  CHECK_EQ(word2, \"\");\n  CHECK_EQ(word3, \"baz\");\n  CHECK(!RE2::PartialMatch(\"f\", r, &word1, &word2, &word3));\n\n  string a;\n  CHECK(RE2::FullMatch(\"hello\", \"(foo)|hello\", &a));\n  CHECK_EQ(a, \"\");\n}\n\nTEST(RE2, Match) {\n  RE2 re(\"((\\\\w+):([0-9]+))\");   // extracts host and port\n  StringPiece group[4];\n\n  // No match.\n  StringPiece s = \"zyzzyva\";\n  CHECK(!re.Match(s, 0, s.size(), RE2::UNANCHORED,\n                  group, arraysize(group)));\n\n  // Matches and extracts.\n  s = \"a chrisr:9000 here\";\n  CHECK(re.Match(s, 0, s.size(), RE2::UNANCHORED,\n                 group, arraysize(group)));\n  CHECK_EQ(group[0], \"chrisr:9000\");\n  CHECK_EQ(group[1], \"chrisr:9000\");\n  CHECK_EQ(group[2], \"chrisr\");\n  CHECK_EQ(group[3], \"9000\");\n\n  string all, host;\n  int port;\n  CHECK(RE2::PartialMatch(\"a chrisr:9000 here\", re, &all, &host, &port));\n  CHECK_EQ(all, \"chrisr:9000\");\n  CHECK_EQ(host, \"chrisr\");\n  CHECK_EQ(port, 9000);\n}\n\nstatic void TestRecursion(int size, const char *pattern) {\n  // Fill up a string repeating the pattern given\n  string domain;\n  domain.resize(size);\n  int patlen = strlen(pattern);\n  for (int i = 0; i < size; ++i) {\n    domain[i] = pattern[i % patlen];\n  }\n  // Just make sure it doesn't crash due to too much recursion.\n  RE2 re(\"([a-zA-Z0-9]|-)+(\\\\.([a-zA-Z0-9]|-)+)*(\\\\.)?\", RE2::Quiet);\n  RE2::FullMatch(domain, re);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 212,
+    "framework": "googletest",
+    "input_data": {
+      "pattern": "hello",
+      "text": "(foo)|hello"
+    },
+    "called_functions": [
+      "VLOG",
+      "CHECK",
+      "RE2::Extract",
+      "r",
+      "s",
+      "input",
+      "RE2::Consume",
+      "RE2::ConsumeN",
+      "RE2::FindAndConsume",
+      "RE2::FindAndConsumeN",
+      "RE2::PartialMatch",
+      "RE2::FullMatch",
+      "re",
+      "Match",
+      "size",
+      "arraysize",
+      "TestRecursion",
+      "resize",
+      "for"
+    ]
+  },
+  {
+    "test_name": "RE2.Consume",
+    "test_code": "TEST(RE2, Consume) {\n  VLOG(1) << \"TestConsume\";\n\n  RE2 r(\"\\\\s*(\\\\w+)\");    // matches a word, possibly proceeded by whitespace\n  string word;\n\n  string s(\"   aaa b!@#$@#$cccc\");\n  StringPiece input(s);\n\n  CHECK(RE2::Consume(&input, r, &word));\n  CHECK_EQ(word, \"aaa\") << \" input: \" << input;\n  CHECK(RE2::Consume(&input, r, &word));\n  CHECK_EQ(word, \"b\") << \" input: \" << input;\n  CHECK(! RE2::Consume(&input, r, &word)) << \" input: \" << input;\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 227,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "VLOG",
+      "r",
+      "s",
+      "input",
+      "CHECK",
+      "RE2::Consume"
+    ]
+  },
+  {
+    "test_name": "RE2.ConsumeN",
+    "test_code": "TEST(RE2, ConsumeN) {\n  const string s(\" one two three 4\");\n  StringPiece input(s);\n\n  RE2::Arg argv[2];\n  const RE2::Arg* const args[2] = { &argv[0], &argv[1] };\n\n  // 0 arg\n  EXPECT_TRUE(RE2::ConsumeN(&input, \"\\\\s*(\\\\w+)\", args, 0));  // Skips \"one\".\n\n  // 1 arg\n  string word;\n  argv[0] = &word;\n  EXPECT_TRUE(RE2::ConsumeN(&input, \"\\\\s*(\\\\w+)\", args, 1));\n  EXPECT_EQ(\"two\", word);\n\n  // Multi-args\n  int n;\n  argv[1] = &n;\n  EXPECT_TRUE(RE2::ConsumeN(&input, \"\\\\s*(\\\\w+)\\\\s*(\\\\d+)\", args, 2));\n  EXPECT_EQ(\"three\", word);\n  EXPECT_EQ(4, n);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 243,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "s",
+      "input",
+      "RE2::ConsumeN"
+    ]
+  },
+  {
+    "test_name": "RE2.FindAndConsume",
+    "test_code": "TEST(RE2, FindAndConsume) {\n  VLOG(1) << \"TestFindAndConsume\";\n\n  RE2 r(\"(\\\\w+)\");      // matches a word\n  string word;\n\n  string s(\"   aaa b!@#$@#$cccc\");\n  StringPiece input(s);\n\n  CHECK(RE2::FindAndConsume(&input, r, &word));\n  CHECK_EQ(word, \"aaa\");\n  CHECK(RE2::FindAndConsume(&input, r, &word));\n  CHECK_EQ(word, \"b\");\n  CHECK(RE2::FindAndConsume(&input, r, &word));\n  CHECK_EQ(word, \"cccc\");\n  CHECK(! RE2::FindAndConsume(&input, r, &word));\n\n  // Check that FindAndConsume works without any submatches.\n  // Earlier version used uninitialized data for\n  // length to consume.\n  input = \"aaa\";\n  CHECK(RE2::FindAndConsume(&input, \"aaa\"));\n  CHECK_EQ(input, \"\");\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 267,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "VLOG",
+      "r",
+      "s",
+      "input",
+      "CHECK",
+      "RE2::FindAndConsume"
+    ]
+  },
+  {
+    "test_name": "RE2.FindAndConsumeN",
+    "test_code": "TEST(RE2, FindAndConsumeN) {\n  const string s(\" one two three 4\");\n  StringPiece input(s);\n\n  RE2::Arg argv[2];\n  const RE2::Arg* const args[2] = { &argv[0], &argv[1] };\n\n  // 0 arg\n  EXPECT_TRUE(RE2::FindAndConsumeN(&input, \"(\\\\w+)\", args, 0));  // Skips \"one\".\n\n  // 1 arg\n  string word;\n  argv[0] = &word;\n  EXPECT_TRUE(RE2::FindAndConsumeN(&input, \"(\\\\w+)\", args, 1));\n  EXPECT_EQ(\"two\", word);\n\n  // Multi-args\n  int n;\n  argv[1] = &n;\n  EXPECT_TRUE(RE2::FindAndConsumeN(&input, \"(\\\\w+)\\\\s*(\\\\d+)\", args, 2));\n  EXPECT_EQ(\"three\", word);\n  EXPECT_EQ(4, n);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 292,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "s",
+      "input",
+      "RE2::FindAndConsumeN"
+    ]
+  },
+  {
+    "test_name": "RE2.MatchNumberPeculiarity",
+    "test_code": "TEST(RE2, MatchNumberPeculiarity) {\n  VLOG(1) << \"TestMatchNumberPeculiarity\";\n\n  RE2 r(\"(foo)|(bar)|(baz)\");\n  string word1;\n  string word2;\n  string word3;\n\n  CHECK(RE2::PartialMatch(\"foo\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"foo\");\n  CHECK_EQ(word2, \"\");\n  CHECK_EQ(word3, \"\");\n  CHECK(RE2::PartialMatch(\"bar\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"\");\n  CHECK_EQ(word2, \"bar\");\n  CHECK_EQ(word3, \"\");\n  CHECK(RE2::PartialMatch(\"baz\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"\");\n  CHECK_EQ(word2, \"\");\n  CHECK_EQ(word3, \"baz\");\n  CHECK(!RE2::PartialMatch(\"f\", r, &word1, &word2, &word3));\n\n  string a;\n  CHECK(RE2::FullMatch(\"hello\", \"(foo)|hello\", &a));\n  CHECK_EQ(a, \"\");\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 316,
+    "framework": "googletest",
+    "input_data": {
+      "pattern": "hello",
+      "text": "(foo)|hello"
+    },
+    "called_functions": [
+      "VLOG",
+      "r",
+      "CHECK",
+      "RE2::PartialMatch",
+      "RE2::FullMatch"
+    ]
+  },
+  {
+    "test_name": "RE2.Match",
+    "test_code": "TEST(RE2, Match) {\n  RE2 re(\"((\\\\w+):([0-9]+))\");   // extracts host and port\n  StringPiece group[4];\n\n  // No match.\n  StringPiece s = \"zyzzyva\";\n  CHECK(!re.Match(s, 0, s.size(), RE2::UNANCHORED,\n                  group, arraysize(group)));\n\n  // Matches and extracts.\n  s = \"a chrisr:9000 here\";\n  CHECK(re.Match(s, 0, s.size(), RE2::UNANCHORED,\n                 group, arraysize(group)));\n  CHECK_EQ(group[0], \"chrisr:9000\");\n  CHECK_EQ(group[1], \"chrisr:9000\");\n  CHECK_EQ(group[2], \"chrisr\");\n  CHECK_EQ(group[3], \"9000\");\n\n  string all, host;\n  int port;\n  CHECK(RE2::PartialMatch(\"a chrisr:9000 here\", re, &all, &host, &port));\n  CHECK_EQ(all, \"chrisr:9000\");\n  CHECK_EQ(host, \"chrisr\");\n  CHECK_EQ(port, 9000);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 343,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "re",
+      "CHECK",
+      "Match",
+      "size",
+      "arraysize",
+      "RE2::PartialMatch"
+    ]
+  },
+  {
+    "test_name": "QuoteMeta.Simple",
+    "test_code": "TEST(QuoteMeta, Simple) {\n  TestQuoteMeta(\"foo\");\n  TestQuoteMeta(\"foo.bar\");\n  TestQuoteMeta(\"foo\\\\.bar\");\n  TestQuoteMeta(\"[1-9]\");\n  TestQuoteMeta(\"1.5-2.0?\");\n  TestQuoteMeta(\"\\\\d\");\n  TestQuoteMeta(\"Who doesn't like ice cream?\");\n  TestQuoteMeta(\"((a|b)c?d*e+[f-h]i)\");\n  TestQuoteMeta(\"((?!)xxx).*yyy\");\n  TestQuoteMeta(\"([\");\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 404,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "TestQuoteMeta"
+    ]
+  },
+  {
+    "test_name": "QuoteMeta.SimpleNegative",
+    "test_code": "TEST(QuoteMeta, SimpleNegative) {\n  NegativeTestQuoteMeta(\"foo\", \"bar\");\n  NegativeTestQuoteMeta(\"...\", \"bar\");\n  NegativeTestQuoteMeta(\"\\\\.\", \".\");\n  NegativeTestQuoteMeta(\"\\\\.\", \"..\");\n  NegativeTestQuoteMeta(\"(a)\", \"a\");\n  NegativeTestQuoteMeta(\"(a|b)\", \"a\");\n  NegativeTestQuoteMeta(\"(a|b)\", \"(a)\");\n  NegativeTestQuoteMeta(\"(a|b)\", \"a|b\");\n  NegativeTestQuoteMeta(\"[0-9]\", \"0\");\n  NegativeTestQuoteMeta(\"[0-9]\", \"0-9\");\n  NegativeTestQuoteMeta(\"[0-9]\", \"[9]\");\n  NegativeTestQuoteMeta(\"((?!)xxx)\", \"xxx\");\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 416,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "NegativeTestQuoteMeta"
+    ]
+  },
+  {
+    "test_name": "QuoteMeta.Latin1",
+    "test_code": "TEST(QuoteMeta, Latin1) {\n  TestQuoteMeta(\"3\\xb2 = 9\", RE2::Latin1);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 431,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": [
+      "TestQuoteMeta"
+    ]
+  }
+]

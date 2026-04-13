@@ -1,0 +1,10 @@
+# libFuzzer baseline: FuzzBench-provided seed corpus.
+name: fuzzbench_seeds
+trials: 20
+duration_s: 82800
+rss_limit_mb: 2048
+timeout_s: 25
+max_len: 4096
+dictionary: null  # overridden per-target if pinned_versions has one
+seed_corpus_dir: null  # supplied via --seed-corpus-dir
+snapshot_interval_s: 900

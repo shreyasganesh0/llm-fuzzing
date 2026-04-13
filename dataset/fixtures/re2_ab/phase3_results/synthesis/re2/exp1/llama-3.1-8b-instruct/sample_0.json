@@ -1,0 +1,206 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "b6c1f73022b790c0",
+      "content_b64": "bSlcdXsxMjM0fSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Requires Unicode escape sequence, likely to cause stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bd187954ddfab81d",
+      "content_b64": "WiooYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Nested repetitions may cause stack overflow",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "12c05165bfe03b31",
+      "content_b64": "9OJbXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large character class may cause stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b3e5b41c2fa89da7",
+      "content_b64": "3OMoP1A8ZzE+YSsp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures may cause stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1de0eb76fb0b72ac",
+      "content_b64": "BUxhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large counted repetition may cause stack overflow",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "681b5e15a0e60a45",
+      "content_b64": "jocoYXxiKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Nested alternations may cause stack overflow",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b44a0d75a9fa8166",
+      "content_b64": "xZpbYS16XSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large character class may cause stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3a865600a776902f",
+      "content_b64": "f6Jcdys=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Unicode word character may cause stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "06196b853975ac2e",
+      "content_b64": "Uz8oP1A8ZzE+YSspKD9QPGcyPmIrKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures and repetitions may cause stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8d2c4d57d0cae412",
+      "content_b64": "PPAoPzphfGIpKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Nested non-capturing alternations may cause stack overflow",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\u{1234}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Requires Unicode escape sequence, likely to cause stack growth\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Nested repetitions may cause stack overflow\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large character class may cause stack growth\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures may cause stack growth\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetition may cause stack overflow\"\n    },\n    {\n      \"regex\": \"(a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Nested alternations may cause stack overflow\"\n    },\n    {\n      \"regex\": \"[a-z]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large character class may cause stack growth\"\n    },\n    {\n      \"regex\": \"\\\\w+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Unicode word character may cause stack growth\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures and repetitions may cause stack growth\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Nested non-capturing alternations may cause stack overflow\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5714,
+    "output_tokens": 822,
+    "cost_usd": 0.0014379199999999999,
+    "latency_ms": 4011.633211004664,
+    "prompt_hash": "754f5c8f04c7ede10a63e27921ad555630a3d00472c7a6dadbf52217e8512182",
+    "timestamp": "2026-04-13T11:59:57.509289+00:00",
+    "generation_wall_clock_s": 4.0116340329987,
+    "target": "re2",
+    "phase": "phase3",
+    "experiment_tag": "sample=0,experiment=exp1",
+    "cached": false
+  }
+}

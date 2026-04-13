@@ -1,0 +1,19 @@
+# stub — fill in for future session
+name: proj
+tier: 2
+fuzzbench_benchmark: proj4-2017-08-14
+
+upstream:
+  repo: https://github.com/OSGeo/PROJ.git
+  commit: !from_pinned proj.upstream_commit
+
+tests:
+  framework: googletest
+  locations:
+    - test/unit
+  discovery_pattern: 'TEST\(|TEST_F\('
+
+fuzzbench:
+  harness_source: !from_pinned proj.harness_source
+  harness_file: !from_pinned proj.harness_path
+  libfuzzer_extra_flags: !from_pinned proj.libfuzzer_extra_flags

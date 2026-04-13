@@ -1,0 +1,24 @@
+# Compose entrypoints for UTCF work. Phase 1 uses `build`; Phase 3 uses `fuzz`.
+# Volumes are bind-mounted so dataset/ and results/ persist on the host.
+services:
+  build:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.build
+    image: utcf/build:local
+    volumes:
+      - ../:/workspace
+      - ../secrets:/workspace/secrets:ro
+    working_dir: /workspace
+    command: ["/bin/bash"]
+
+  fuzz:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.fuzz
+    image: utcf/fuzz:local
+    volumes:
+      - ../synthesis/results:/campaign/results
+      - ../synthesis/campaign_configs:/campaign/configs:ro
+    working_dir: /campaign
+    command: ["/bin/bash"]

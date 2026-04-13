@@ -1,0 +1,55 @@
+{
+  "total_upstream_tests": 15,
+  "union_coverage_pct": 42.0,
+  "gap_branches": [
+    {
+      "file": "re2/testing/re2_test.cc",
+      "line": 100,
+      "code_context": "if (cond_0) { ... }",
+      "condition_description": "branch 0 never taken in held-out tests",
+      "reachability_score": 0.5
+    },
+    {
+      "file": "re2/testing/re2_test.cc",
+      "line": 117,
+      "code_context": "if (cond_1) { ... }",
+      "condition_description": "branch 1 never taken in held-out tests",
+      "reachability_score": 0.5
+    },
+    {
+      "file": "re2/testing/re2_test.cc",
+      "line": 134,
+      "code_context": "if (cond_2) { ... }",
+      "condition_description": "branch 2 never taken in held-out tests",
+      "reachability_score": 0.5
+    }
+  ],
+  "gap_functions": [
+    {
+      "file": "re2/testing/re2_test.cc",
+      "function": "UncoveredFn0"
+    },
+    {
+      "file": "re2/testing/re2_test.cc",
+      "function": "UncoveredFn1"
+    }
+  ],
+  "per_test_unique_coverage": {
+    "RE2.HexTests": 1,
+    "RE2.OctalTests": 1,
+    "RE2.DecimalTests": 1,
+    "RE2.Replace": 1,
+    "CheckRewriteString.all": 1,
+    "RE2.Extract": 1,
+    "RE2.Consume": 1,
+    "RE2.ConsumeN": 1,
+    "RE2.FindAndConsume": 1,
+    "RE2.FindAndConsumeN": 1,
+    "RE2.MatchNumberPeculiarity": 1,
+    "RE2.Match": 1,
+    "QuoteMeta.Simple": 1,
+    "QuoteMeta.SimpleNegative": 1,
+    "QuoteMeta.Latin1": 1
+  },
+  "coverage_overlap_matrix": {}
+}

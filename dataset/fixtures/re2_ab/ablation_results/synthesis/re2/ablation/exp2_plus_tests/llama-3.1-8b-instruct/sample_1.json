@@ -1,0 +1,159 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "193fbc1a0917d1d2",
+      "content_b64": "FPwoP1A8eD5hKyk=",
+      "target_gaps": [
+        "regexp_test.cc:42",
+        "regexp_test.cc:61"
+      ],
+      "reasoning": "Named captures, similar to the test cases at these lines",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c8ec97159a134601",
+      "content_b64": "JLkoYSopKg==",
+      "target_gaps": [
+        "regexp_test.cc:61"
+      ],
+      "reasoning": "Nested repetitions, similar to the test case at this line",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c22819578ecd4f8d",
+      "content_b64": "NrFccHtHcmVla30r",
+      "target_gaps": [],
+      "reasoning": "Unicode classes, which should be parsed correctly",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8429043629cace2d",
+      "content_b64": "mOUoPz1hYmMp",
+      "target_gaps": [
+        "regexp_test.cc:61"
+      ],
+      "reasoning": "Lookarounds, which should be rejected by the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2fcb1ae6599879b7",
+      "content_b64": "YU9hezEwMDAsfQ==",
+      "target_gaps": [
+        "regexp_test.cc:61"
+      ],
+      "reasoning": "Large counted reps, similar to the test case at this line",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4ef2dfed80f0d873",
+      "content_b64": "wzJbXmEtekEtWjAtOV0=",
+      "target_gaps": [],
+      "reasoning": "Character classes, which should be parsed correctly",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "faed15d155ae0d66",
+      "content_b64": "QFAoPzphfGIpKg==",
+      "target_gaps": [
+        "regexp_test.cc:61"
+      ],
+      "reasoning": "Non-capturing groups, which should be parsed correctly",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "535c8e8e6ab23d2d",
+      "content_b64": "vZNcZHszfQ==",
+      "target_gaps": [],
+      "reasoning": "Simple numeric class, which should be parsed correctly",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "49aac6641483ad2b",
+      "content_b64": "duAoPzphfGIpKg==",
+      "target_gaps": [
+        "regexp_test.cc:61"
+      ],
+      "reasoning": "Non-capturing groups, similar to the previous pattern",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2dfb8d4ff29073a0",
+      "content_b64": "RZlccHtMYXRpbn0=",
+      "target_gaps": [],
+      "reasoning": "Unicode property class, which should be parsed correctly",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"regexp_test.cc:42\", \"regexp_test.cc:61\"],\n      \"reasoning\": \"Named captures, similar to the test cases at these lines\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"regexp_test.cc:61\"],\n      \"reasoning\": \"Nested repetitions, similar to the test case at this line\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [],\n      \"reasoning\": \"Unicode classes, which should be parsed correctly\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"regexp_test.cc:61\"],\n      \"reasoning\": \"Lookarounds, which should be rejected by the parser/compiler\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"regexp_test.cc:61\"],\n      \"reasoning\": \"Large counted reps, similar to the test case at this line\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [],\n      \"reasoning\": \"Character classes, which should be parsed correctly\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"regexp_test.cc:61\"],\n      \"reasoning\": \"Non-capturing groups, which should be parsed correctly\"\n    },\n    {\n      \"regex\": \"\\\\d{3}\",\n      \"target_gaps\": [],\n      \"reasoning\": \"Simple numeric class, which should be parsed correctly\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"regexp_test.cc:61\"],\n      \"reasoning\": \"Non-capturing groups, similar to the previous pattern\"\n    },\n    {\n      \"regex\": \"\\\\p{Latin}\",\n      \"target_gaps\": [],\n      \"reasoning\": \"Unicode property class, which should be parsed correctly\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 3633,
+    "output_tokens": 439,
+    "cost_usd": 0.0008958400000000001,
+    "latency_ms": 4359.207043002243,
+    "prompt_hash": "f78a1e373b79a82186be1af0c198c24a2888734381259ab8c215dceb5cada969",
+    "timestamp": "2026-04-13T18:41:34.003050+00:00",
+    "generation_wall_clock_s": 4.359207973990124,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_tests,sample=1",
+    "cached": false
+  }
+}

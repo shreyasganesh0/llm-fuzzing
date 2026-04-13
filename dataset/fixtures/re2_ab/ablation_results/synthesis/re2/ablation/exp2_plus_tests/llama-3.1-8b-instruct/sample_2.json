@@ -1,0 +1,168 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "69e4f64214f9882d",
+      "content_b64": "Bo9ccHtHcmVla30r",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Unicode classes are not well-tested, and this regex is a good candidate to cover the PARSER and COMPILER.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "eff89c5cd700e979",
+      "content_b64": "Kr1hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Large counted repetitions are an interesting edge case for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9718672309067642",
+      "content_b64": "joUoYSopKg==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42"
+      ],
+      "reasoning": "Nested repetitions are a good test for the parser/compiler's ability to handle complex patterns.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2950a98eda920a56",
+      "content_b64": "DnxbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Character classes are a common feature in regex patterns, and this one is a good candidate to test the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4c3c38d7c08d5e5f",
+      "content_b64": "EFAoP1A8ZzE+YSspfChlKSg/UDxnMj53KikrKD9QPGcxPmIrKQ==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42",
+        "re2/testing/regexp_test.cc:61"
+      ],
+      "reasoning": "Named captures are a complex feature that requires good test coverage, and this regex is a good candidate to test the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "71bab033d7ec43db",
+      "content_b64": "//9hLipiLipj",
+      "target_gaps": [
+        "testinstall.cc:15"
+      ],
+      "reasoning": "This regex is a good candidate to test the parser/compiler's ability to handle complex patterns and repetition.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bc817503e77e7fc8",
+      "content_b64": "8V1hK3xiKw==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Alternation is a common feature in regex patterns, and this one is a good candidate to test the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6ddebf37d4df3e37",
+      "content_b64": "LzRcZHsxMDAwLH0=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Large counted repetitions with specific characters are an interesting edge case for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7d07171d23f28e74",
+      "content_b64": "CxZbYS16QS1aXSs=",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:14"
+      ],
+      "reasoning": "Character classes are a common feature in regex patterns, and this one is a good candidate to test the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bbf9bb88b4555d55",
+      "content_b64": "IwAoYXswLH0pKg==",
+      "target_gaps": [
+        "re2/testing/regexp_test.cc:42"
+      ],
+      "reasoning": "Nested repetitions with zero-or-more quantifiers are an interesting edge case for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Unicode classes are not well-tested, and this regex is a good candidate to cover the PARSER and COMPILER.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Large counted repetitions are an interesting edge case for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\"],\n      \"reasoning\": \"Nested repetitions are a good test for the parser/compiler's ability to handle complex patterns.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Character classes are a common feature in regex patterns, and this one is a good candidate to test the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)|(e)(?P<g2>w*)+(?P<g1>b+)\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\", \"re2/testing/regexp_test.cc:61\"],\n      \"reasoning\": \"Named captures are a complex feature that requires good test coverage, and this regex is a good candidate to test the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a.*b.*c\",\n      \"target_gaps\": [\"testinstall.cc:15\"],\n      \"reasoning\": \"This regex is a good candidate to test the parser/compiler's ability to handle complex patterns and repetition.\"\n    },\n    {\n      \"regex\": \"a+|b+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Alternation is a common feature in regex patterns, and this one is a good candidate to test the parser/compiler.\"\n    },\n    {\n      \"regex\": \"\\\\d{1000,}\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Large counted repetitions with specific characters are an interesting edge case for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"[a-zA-Z]+\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:14\"],\n      \"reasoning\": \"Character classes are a common feature in regex patterns, and this one is a good candidate to test the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(a{0,})*\",\n      \"target_gaps\": [\"re2/testing/regexp_test.cc:42\"],\n      \"reasoning\": \"Nested repetitions with zero-or-more quantifiers are an interesting edge case for the parser/compiler.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 3633,
+    "output_tokens": 627,
+    "cost_usd": 0.0009372,
+    "latency_ms": 5766.122977001942,
+    "prompt_hash": "440fba724d67c83b241d10eb848b028c55909997f6c52b0ae144f2e6c001ff37",
+    "timestamp": "2026-04-13T18:41:39.770455+00:00",
+    "generation_wall_clock_s": 5.766123948997119,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_tests,sample=2",
+    "cached": false
+  }
+}

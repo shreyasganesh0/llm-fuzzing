@@ -1,0 +1,19 @@
+# stub — fill in for future session
+name: freetype2
+tier: 3
+fuzzbench_benchmark: freetype2-2017
+
+upstream:
+  repo: https://gitlab.freedesktop.org/freetype/freetype.git
+  commit: !from_pinned freetype2.upstream_commit
+
+tests:
+  framework: custom_c
+  locations:
+    - src/tools
+  discovery_pattern: 'test_.*\('
+
+fuzzbench:
+  harness_source: !from_pinned freetype2.harness_source
+  harness_file: !from_pinned freetype2.harness_path
+  libfuzzer_extra_flags: !from_pinned freetype2.libfuzzer_extra_flags

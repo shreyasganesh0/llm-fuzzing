@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "utcf"
+version = "0.1.0"
+description = "Unit Test-Conditioned LLM-Guided Fuzzing research framework"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Shreyas Ganesh" }]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+  "core*",
+  "dataset*",
+  "prediction*",
+  "synthesis*",
+  "transfer*",
+  "finetuning*",
+  "sanity*",
+  "analysis*",
+]
+exclude = ["docs*", "secrets*", "docker*"]
+
+[tool.pytest.ini_options]
+testpaths = [
+  "dataset/tests",
+  "prediction/tests",
+  "synthesis/tests",
+  "transfer/tests",
+  "finetuning/tests",
+  "core/tests",
+]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "-ra --strict-markers"
+timeout = 60
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]  # line length handled separately
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["B", "SIM", "E741"]
+# Phase scripts bootstrap sys.path before importing the top-level packages so
+# they work as `python dataset/scripts/foo.py` — E402 is intentional.
+"dataset/scripts/**" = ["E402"]
+"prediction/scripts/**" = ["E402"]
+"synthesis/scripts/**" = ["E402"]
+"transfer/scripts/**" = ["E402"]
+"finetuning/scripts/**" = ["E402"]
+"analysis/scripts/**" = ["E402"]
+"sanity/**" = ["E402"]

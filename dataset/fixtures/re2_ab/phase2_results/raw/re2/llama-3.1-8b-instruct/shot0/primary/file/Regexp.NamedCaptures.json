@@ -1,0 +1,120 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "few_shot_count": 0,
+  "context_size": "file",
+  "prompt_variant": "primary",
+  "test_name": "Regexp.NamedCaptures",
+  "prediction": {
+    "functions_covered": [
+      "Regexp::Parse",
+      "Regexp::Decref",
+      "Regexp::NumCaptures",
+      "Regexp::NamedCaptures",
+      "Regexp::CaptureNames"
+    ],
+    "functions_not_covered": [
+      "Regexp::Concat",
+      "Regexp::Incref",
+      "Regexp::RequiredPrefix"
+    ],
+    "branches": [
+      {
+        "location": "re2/regexp.cc:123",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:456",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:789",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1011",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1111",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1212",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1313",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1414",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1515",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1616",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1717",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1818",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:1919",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:2020",
+        "true_taken": true,
+        "false_taken": false
+      },
+      {
+        "location": "re2/regexp.cc:2121",
+        "true_taken": true,
+        "false_taken": false
+      }
+    ],
+    "estimated_line_coverage_pct": 50.0,
+    "reasoning": "The test exercises the Regexp::Parse function and its related methods, but does not cover the Regexp::Concat and Regexp::RequiredPrefix functions. The branches covered are mostly related to the parsing and capturing of regular expressions."
+  },
+  "parse_status": "ok",
+  "raw_response": "{\n  \"functions_covered\": [\"Regexp::Parse\", \"Regexp::Decref\", \"Regexp::NumCaptures\", \"Regexp::NamedCaptures\", \"Regexp::CaptureNames\"],\n  \"functions_not_covered\": [\"Regexp::Concat\", \"Regexp::Incref\", \"Regexp::RequiredPrefix\"],\n  \"branches\": [\n    {\"location\": \"re2/regexp.cc:123\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:456\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:789\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1011\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1111\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1212\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1313\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1414\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1515\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1616\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1717\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1818\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:1919\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:2020\", \"true_taken\": true, \"false_taken\": false},\n    {\"location\": \"re2/regexp.cc:2121\", \"true_taken\": true, \"false_taken\": false}\n  ],\n  \"estimated_line_coverage_pct\": 50.0,\n  \"reasoning\": \"The test exercises the Regexp::Parse function and its related methods, but does not cover the Regexp::Concat and Regexp::RequiredPrefix functions. The branches covered are mostly related to the parsing and capturing of regular expressions.\"\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "input_tokens": 2400,
+    "output_tokens": 530,
+    "cost_usd": 0.0006446000000000001,
+    "latency_ms": 2570.8681649994105,
+    "prompt_hash": "326f7ac41c29a03c2426fd815afb5e465db8c47b18ffb3b23c4d9026c45237a9",
+    "timestamp": "2026-04-13T04:20:54.014034+00:00",
+    "generation_wall_clock_s": 2.570869026996661,
+    "target": "re2",
+    "phase": "phase2",
+    "experiment_tag": "shot=0,ctx=file,variant=primary",
+    "cached": false
+  },
+  "metrics": null
+}

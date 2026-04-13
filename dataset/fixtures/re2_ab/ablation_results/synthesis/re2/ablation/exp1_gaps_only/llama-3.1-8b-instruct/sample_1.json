@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?:a|b)*{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Large counted repetition with alternation, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Long character class, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\\\\1{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Named capture with repetition, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Long Unicode class, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?:a*)*{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Nested repetition with alternation, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(a+){1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Counted repetition with alternation, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Long Unicode class with repetition, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?:a|b){1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Large alternation with repetition, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}*{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Long Unicode class with repetition, likely to trigger stack growth and hit the uncovered branches in the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?:a+){1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 0,
+    "output_tokens": 1024,
+    "cost_usd": 0.00022528,
+    "latency_ms": 6140.422804004629,
+    "prompt_hash": "3a38a5a72ad589f3b17d434f55030656c49c65968ccde47c74e01828523ea132",
+    "timestamp": "2026-04-13T18:40:44.377775+00:00",
+    "generation_wall_clock_s": 6.1404233960056445,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=1",
+    "cached": false
+  }
+}

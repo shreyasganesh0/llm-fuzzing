@@ -1,0 +1,141 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "bec954f15411180e",
+      "content_b64": "H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "To reach the uncovered branch in re2/bitstate.cc:112, we need to make sure that njob_ >= maxjob_. This can be done by creating a large number of jobs and then trying to push another job onto the stack. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) After the stack has been grown, the Push function will be called again, and this time it will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:112.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "16a98c1b2f3ea524",
+      "content_b64": "H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "To reach the uncovered branch in re2/bitstate.cc:121, we need to make sure that njob_ >= maxjob_ and that the GrowStack function returns false. This can be done by creating a large number of jobs and then trying to push another job onto the stack while the stack is already full. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) If the stack is already full, the GrowStack function will return false, and the Push function will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:121.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1d91063478b7c2e0",
+      "content_b64": "H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "To reach the uncovered branch in re2/bitstate.cc:122, we need to make sure that njob_ >= maxjob_ and that the GrowStack function returns false. This can be done by creating a large number of jobs and then trying to push another job onto the stack while the stack is already full. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) If the stack is already full, the GrowStack function will return false, and the Push function will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:122.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b81e11d90054a3b6",
+      "content_b64": "H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "To reach the uncovered branch in re2/bitstate.cc:126, we need to make sure that njob_ >= maxjob_. This can be done by creating a large number of jobs and then trying to push another job onto the stack. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) After the stack has been grown, the Push function will be called again, and this time it will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:126.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c9d06d1247a96915",
+      "content_b64": "H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "To reach the uncovered branch in re2/bitstate.cc:131, we need to make sure that njob_ >= maxjob_. This can be done by creating a large number of jobs and then trying to push another job onto the stack. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) After the stack has been grown, the Push function will be called again, and this time it will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:131.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"inputs\": [\n    {\n      \"content_b64\": \"H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"To reach the uncovered branch in re2/bitstate.cc:112, we need to make sure that njob_ >= maxjob_. This can be done by creating a large number of jobs and then trying to push another job onto the stack. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) After the stack has been grown, the Push function will be called again, and this time it will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:112.\"\n    },\n    {\n      \"content_b64\": \"H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"To reach the uncovered branch in re2/bitstate.cc:121, we need to make sure that njob_ >= maxjob_ and that the GrowStack function returns false. This can be done by creating a large number of jobs and then trying to push another job onto the stack while the stack is already full. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) If the stack is already full, the GrowStack function will return false, and the Push function will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:121.\"\n    },\n    {\n      \"content_b64\": \"H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"To reach the uncovered branch in re2/bitstate.cc:122, we need to make sure that njob_ >= maxjob_ and that the GrowStack function returns false. This can be done by creating a large number of jobs and then trying to push another job onto the stack while the stack is already full. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) If the stack is already full, the GrowStack function will return false, and the Push function will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:122.\"\n    },\n    {\n      \"content_b64\": \"H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"To reach the uncovered branch in re2/bitstate.cc:126, we need to make sure that njob_ >= maxjob_. This can be done by creating a large number of jobs and then trying to push another job onto the stack. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) After the stack has been grown, the Push function will be called again, and this time it will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:126.\"\n    },\n    {\n      \"content_b64\": \"H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"To reach the uncovered branch in re2/bitstate.cc:131, we need to make sure that njob_ >= maxjob_. This can be done by creating a large number of jobs and then trying to push another job onto the stack. The execution path is as follows: 1) Create a large number of jobs by calling Regexp::Parse and then calling Push for each job. 2) After creating the jobs, try to push another job onto the stack by calling Push again. This will trigger the GrowStack function, which will reallocate the memory and increase the size of the stack. 3) After the stack has been grown, the Push function will be called again, and this time it will check if njob_ >= maxjob_. If it is, it will trigger the uncovered branch in re2/bitstate.cc:131.\"\n    },\n    {\n      \"content_b64\": \"H4sIAAAAAAAAAJ0bXWqDMAy8yMzO3OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5Oz8AAAA\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"To reach the uncovered branch in re2/bitstate.cc:147, we need to make sure",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 0,
+    "output_tokens": 1537,
+    "cost_usd": 0.00033814,
+    "latency_ms": 8715.412285004277,
+    "prompt_hash": "8ceb71770fa7feee604d744ed09698881be7be8e3a4cdffa51b781b4a1e644dd",
+    "timestamp": "2026-04-13T04:22:02.665526+00:00",
+    "generation_wall_clock_s": 8.715413466998143,
+    "target": "re2",
+    "phase": "phase3",
+    "experiment_tag": "sample=2,experiment=exp1",
+    "cached": true
+  }
+}

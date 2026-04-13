@@ -1,0 +1,19 @@
+# stub — fill in for future session
+name: libjpeg_turbo
+tier: 2
+fuzzbench_benchmark: libjpeg-turbo-07-2017
+
+upstream:
+  repo: https://github.com/libjpeg-turbo/libjpeg-turbo.git
+  commit: !from_pinned libjpeg_turbo.upstream_commit
+
+tests:
+  framework: ctest
+  locations:
+    - CMakeLists.txt
+  discovery_pattern: 'add_test\('
+
+fuzzbench:
+  harness_source: !from_pinned libjpeg_turbo.harness_source
+  harness_file: !from_pinned libjpeg_turbo.harness_path
+  libfuzzer_extra_flags: !from_pinned libjpeg_turbo.libfuzzer_extra_flags

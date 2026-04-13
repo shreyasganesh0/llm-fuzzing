@@ -1,0 +1,47 @@
+{{ system_prompt }}
+
+You are a code coverage measurement tool. Your job is to report, for a given
+unit test, which branches of the source code are exercised.
+
+The following are prior measurements from the {{ target_name }} project
+(upstream commit {{ upstream_commit }}):
+
+{% for example in few_shot_examples %}
+-- Measurement {{ loop.index }} --
+TEST ({{ example.upstream_file }}:{{ example.upstream_line }}):
+{{ example.test_code }}
+
+SOURCE:
+{{ example.source_excerpt }}
+
+RESULT:
+branches={% for branch in example.branches %}{{ branch.location }}={{ branch.status }}{% if not loop.last %},{% endif %}{% endfor %}
+functions_covered={{ example.functions_covered | join(',') }}
+line_coverage_pct={{ example.coverage_pct }}
+
+{% endfor %}
+
+-- New measurement --
+TEST ({{ target_test.upstream_file }}:{{ target_test.upstream_line }}):
+{{ target_test.test_code }}
+
+SOURCE:
+{{ target_test.source_excerpt }}
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- Every entry in `branches` must be DISTINCT (unique `location`). Do NOT repeat.
+- `location` MUST be `<real_path>:<real_integer>` — never the literal string `LINE`.
+- `branches` contains AT MOST 15 entries. If unsure, emit fewer — never pad.
+- `true_taken` and `false_taken` are booleans: `true` or `false`.
+
+Output the measurement as valid JSON, in this field order:
+{
+  "branches": [
+    {"location": "<real_file>:<real_line_number>", "true_taken": true, "false_taken": false}
+  ],
+  "functions_covered": ["<real function name>"],
+  "functions_not_covered": ["<real function name>"],
+  "estimated_line_coverage_pct": 42.5
+}

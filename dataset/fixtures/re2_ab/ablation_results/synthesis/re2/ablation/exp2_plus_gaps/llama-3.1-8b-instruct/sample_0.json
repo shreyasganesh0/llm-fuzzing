@@ -1,0 +1,172 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "bfb5a71d2aef13be",
+      "content_b64": "WCYoPzphKikq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Stresses nested repetitions in the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1e3013dade7b1549",
+      "content_b64": "54pccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Exercises Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6ce72e021391e975",
+      "content_b64": "yWEoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Tests named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f916a441bed82dc6",
+      "content_b64": "CdNhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Pushes large counted repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7ed2141221b9fde1",
+      "content_b64": "bxZbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Tests character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0bc42c3da01f4087",
+      "content_b64": "9oBcdXsxMDAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Exercises Unicode code point U+10000",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c51e56d4793674d2",
+      "content_b64": "qv8oPzphKikqKD86YSop",
+      "target_gaps": [
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Further stresses nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "05937d36839425f7",
+      "content_b64": "vCdccHtMYXRpbn0r",
+      "target_gaps": [
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Exercises a different Unicode character class",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5a023d966ba3cc57",
+      "content_b64": "R8IoP1A8eD5hKykoP1A8eT5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Tests multiple named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1447f29863e2b544",
+      "content_b64": "LIRhezEwMDF9",
+      "target_gaps": [
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Exercises a large counted repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?:a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Stresses nested repetitions in the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Exercises Unicode classes\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Tests named captures\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Pushes large counted repetitions\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Tests character classes\"\n    },\n    {\n      \"regex\": \"\\\\u{10000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Exercises Unicode code point U+10000\"\n    },\n    {\n      \"regex\": \"(?:a*)*(?:a*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Further stresses nested repetitions\"\n    },\n    {\n      \"regex\": \"\\\\p{Latin}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Exercises a different Unicode character class\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Tests multiple named captures\"\n    },\n    {\n      \"regex\": \"a{1001}\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Exercises a large counted repetition\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 7364,
+    "output_tokens": 495,
+    "cost_usd": 0.00172898,
+    "latency_ms": 2605.8279870048864,
+    "prompt_hash": "77dcd384c324fe1fba3e30b148194e80e8906260257b13d660ad111f3936e9bc",
+    "timestamp": "2026-04-13T18:41:14.775820+00:00",
+    "generation_wall_clock_s": 2.6058291090012062,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=0",
+    "cached": false
+  }
+}
