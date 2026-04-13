@@ -72,8 +72,9 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 ├── Makefile                       # Top-level orchestration
 ├── pyproject.toml                 # Python 3.10+
 ├── requirements.txt
+├── pinned_versions.yaml           # [NEW audit] Pinned upstream + FuzzBench commit SHAs, dict paths, harness paths for all 11 targets
 │
-├── phase1_dataset/                # Phase 1: Dataset Construction
+├── dataset/                # Phase 1: Dataset Construction
 │   ├── README.md
 │   ├── targets/                   # Target configurations (verified upstream test locations)
 │   │   ├── re2.yaml               # Tier 1: Google Test, ~1000+ tests
@@ -111,7 +112,7 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 │       ├── test_dataset.py        # Verify final dataset structure + no fabricated tests
 │       └── test_contamination.py  # [NEW v3] Verify contamination probe ran + results recorded
 │
-├── phase2_prediction/             # Phase 2: LLM Coverage Prediction
+├── prediction/             # Phase 2: LLM Coverage Prediction
 │   ├── README.md
 │   ├── prompts/
 │   │   ├── coverage_prediction.j2 # Jinja2 template: predict coverage from test+source
@@ -134,7 +135,7 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 │       ├── test_evaluate.py       # Verify metric calculations match expected formulas
 │       └── test_sensitivity.py    # [NEW v3] Verify sensitivity ablation ran for all models
 │
-├── phase3_synthesis/              # Phase 3: Gap-Targeted Input Synthesis & Fuzzing
+├── synthesis/              # Phase 3: Gap-Targeted Input Synthesis & Fuzzing
 │   ├── README.md
 │   ├── scripts/
 │   │   ├── generate_inputs.py     # Use LLM to generate gap-filling inputs
@@ -161,22 +162,37 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 │       ├── test_dedup.py          # [NEW v3] Verify dedup logic
 │       └── test_random_gen.py     # [NEW v3] Verify random baseline produces valid inputs
 │
-├── phase4_finetuning/             # Phase 4: Fine-Tuning Evaluation
+├── transfer/                # [NEW audit] Cross-Target Transfer (RQ4)
+│   ├── README.md
+│   ├── scripts/
+│   │   ├── build_loo_prompt.py        # Leave-one-out prompt assembly (few-shot pool excludes target-under-test)
+│   │   ├── run_transfer_prediction.py # Coverage prediction on held-out target using cross-target examples
+│   │   ├── run_transfer_synthesis.py  # Input synthesis for held-out target using cross-target examples
+│   │   ├── run_tier3_evaluation.py    # Evaluate on Tier 3 targets (never used for training)
+│   │   └── evaluate_transfer.py       # Compute LOO matrix + format-similarity stratification
+│   ├── results/
+│   │   └── .gitkeep
+│   └── tests/
+│       ├── test_loo_exclusion.py      # Verify few-shot pool never includes the held-out target
+│       └── test_tier3_isolation.py    # Verify Tier 3 targets never appear in any training context
+│
+├── finetuning/             # Phase 4: Fine-Tuning Evaluation
 │   ├── README.md
 │   ├── scripts/
 │   │   ├── prepare_finetune_data.py  # Convert dataset to Alpaca JSONL (upstream tests only)
 │   │   ├── add_cot_traces.py         # Annotate WHY upstream tests cover what they cover
 │   │   ├── finetune.py               # LoRA fine-tuning (HF PEFT + Transformers)
 │   │   ├── run_finetuned.py          # Run fine-tuned model on eval set
-│   │   └── compare_all.py            # Final comparison across all configs A-G
+│   │   └── compare_all.py            # Final comparison across all configs A-I
 │   ├── configs/
 │   │   ├── lora_8b.yaml
 │   │   └── lora_70b.yaml
 │   └── tests/
 │       ├── test_data_format.py        # Verify training data contains only upstream tests
-│       └── test_lora_load.py
+│       ├── test_lora_load.py
+│       └── test_finetuned_output.py   # [NEW audit] Verify fine-tuned model produces valid JSON predictions end-to-end
 │
-├── experiment2_source_only/       # [NEW v3.1] Experiment 2: Source-Code-Only LLM Synthesis
+├── synthesis/       # [NEW v3.1] Experiment 2: Source-Code-Only LLM Synthesis
 │   ├── README.md
 │   ├── prompts/
 │   │   ├── source_only_analysis.j2      # Prompt: analyze source code, identify hard branches
@@ -214,8 +230,9 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 │   │   ├── 04_finetuning_comparison.ipynb
 │   │   ├── 05_paper_figures.ipynb
 │   │   ├── 06_contamination_analysis.ipynb   # [NEW v3]
-│   │   └── 07_failure_mode_analysis.ipynb    # [NEW v3]
-│   │   └── 08_exp1_vs_exp2_comparison.ipynb  # [NEW v3.1]
+│   │   ├── 07_failure_mode_analysis.ipynb    # [NEW v3]
+│   │   ├── 08_exp1_vs_exp2_comparison.ipynb  # [NEW v3.1]
+│   │   └── 09_transfer_evaluation.ipynb      # [NEW audit] Cross-target transfer results
 │   └── figures/
 │       └── .gitkeep
 │
@@ -233,6 +250,181 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 
 ---
 
+## pinned_versions.yaml (NEW audit — BLOCKING)
+
+Every target must have its upstream commit SHA, FuzzBench commit SHA, harness path, dictionary path, and libFuzzer-specific flags pinned in a single source of truth. All `targets/*.yaml` files and all scripts read from this file. Without this, Claude Code will have to guess commit SHAs and miss target-specific flags (dictionaries, timeouts, memory limits) that can shift coverage by 20%+.
+
+```yaml
+# pinned_versions.yaml — Single source of truth for all upstream + FuzzBench version pins
+#
+# INSTRUCTIONS: Fill in every <FILL> placeholder before any script runs.
+# To find the correct upstream commit for a FuzzBench benchmark:
+#   1. Check google/fuzzbench repo → benchmarks/<benchmark_name>/Makefile
+#      or benchmarks/<benchmark_name>/benchmark.yaml for the pinned version.
+#   2. For fuzzer-test-suite targets, check google/fuzzer-test-suite → <target>/Makefile
+#      for the download URL / git tag.
+#   3. Record the exact commit hash from `git log --oneline -1` after checkout.
+
+fuzzbench:
+  repo: https://github.com/google/fuzzbench.git
+  commit: <FILL: pinned FuzzBench commit hash>
+
+fuzzer_test_suite:
+  repo: https://github.com/google/fuzzer-test-suite.git
+  commit: <FILL: pinned fuzzer-test-suite commit hash>
+
+targets:
+  re2:
+    upstream_repo: https://github.com/google/re2.git
+    upstream_commit: <FILL: commit matching FuzzBench re2-2014-12-09>
+    fuzzbench_benchmark: re2-2014-12-09
+    harness_source: fuzzer-test-suite
+    harness_path: re2-2014-12-09/target.cc
+    dictionary_path: null  # No dictionary shipped for RE2
+    libfuzzer_extra_flags:
+      timeout: 25          # Per-input timeout in seconds
+      rss_limit_mb: 2048
+      max_len: 4096        # RE2 inputs are regex+string, relatively short
+    seeds: none
+
+  harfbuzz:
+    upstream_repo: https://github.com/harfbuzz/harfbuzz.git
+    upstream_commit: <FILL: commit matching FuzzBench harfbuzz-1.3.2>
+    fuzzbench_benchmark: harfbuzz-1.3.2
+    harness_source: fuzzer-test-suite
+    harness_path: harfbuzz-1.3.2/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536       # Font files can be large
+    seeds: varies
+
+  openssl:
+    upstream_repo: https://github.com/openssl/openssl.git
+    upstream_commit: <FILL: commit matching FuzzBench openssl_x509>
+    fuzzbench_benchmark: openssl_x509
+    harness_source: oss-fuzz
+    harness_path: projects/openssl/fuzz/x509.c
+    dictionary_path: projects/openssl/fuzz/x509.dict  # ASN.1/DER tokens
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 10240
+    seeds: 2241  # DER certificate files
+
+  sqlite3:
+    upstream_repo: https://github.com/sqlite/sqlite.git
+    upstream_commit: <FILL: commit matching FuzzBench sqlite3_ossfuzz>
+    fuzzbench_benchmark: sqlite3_ossfuzz
+    harness_source: oss-fuzz
+    harness_path: projects/sqlite3/ossfuzz.c
+    dictionary_path: projects/sqlite3/sql.dict  # SQL keyword tokens
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 16384       # SQL statements can be complex
+    seeds: 1258
+
+  libxml2:
+    upstream_repo: https://gitlab.gnome.org/GNOME/libxml2.git
+    upstream_commit: <FILL: commit matching FuzzBench libxml2-v2.9.2>
+    fuzzbench_benchmark: libxml2-v2.9.2
+    harness_source: fuzzer-test-suite
+    harness_path: libxml2-v2.9.2/target.cc
+    dictionary_path: libxml2-v2.9.2/xml.dict  # XML tokens if available, else null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: none
+
+  libjpeg_turbo:
+    upstream_repo: https://github.com/libjpeg-turbo/libjpeg-turbo.git
+    upstream_commit: <FILL: commit matching FuzzBench libjpeg-turbo-07-2017>
+    fuzzbench_benchmark: libjpeg-turbo-07-2017
+    harness_source: fuzzer-test-suite
+    harness_path: libjpeg-turbo-07-2017/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 1048576     # JPEG files can be large
+    seeds: varies
+
+  lcms:
+    upstream_repo: https://github.com/mm2/Little-CMS.git
+    upstream_commit: <FILL: commit matching FuzzBench lcms-2017-03-21>
+    fuzzbench_benchmark: lcms-2017-03-21
+    harness_source: fuzzer-test-suite
+    harness_path: lcms-2017-03-21/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: varies
+
+  proj:
+    upstream_repo: https://github.com/OSGeo/PROJ.git
+    upstream_commit: <FILL: commit matching FuzzBench proj4-2017-08-14>
+    fuzzbench_benchmark: proj4-2017-08-14
+    harness_source: oss-fuzz
+    harness_path: projects/proj4/proj_crs_to_crs_fuzzer.c
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 4096
+    seeds: varies
+
+  libpng:
+    upstream_repo: https://github.com/glennrp/libpng.git
+    upstream_commit: <FILL: commit matching FuzzBench libpng-1.2.56>
+    fuzzbench_benchmark: libpng-1.2.56
+    harness_source: fuzzer-test-suite
+    harness_path: libpng-1.2.56/target.cc
+    dictionary_path: libpng-1.2.56/png.dict  # PNG chunk tokens
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 1048576
+    seeds: varies
+
+  freetype2:
+    upstream_repo: https://gitlab.freedesktop.org/freetype/freetype.git
+    upstream_commit: <FILL: commit matching FuzzBench freetype2-2017>
+    fuzzbench_benchmark: freetype2-2017
+    harness_source: fuzzer-test-suite
+    harness_path: freetype2-2017/target.cc
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 1048576
+    seeds: varies
+
+  zlib:
+    upstream_repo: https://github.com/madler/zlib.git
+    upstream_commit: <FILL: commit matching FuzzBench zlib_zlib_uncompress_fuzzer>
+    fuzzbench_benchmark: zlib_zlib_uncompress_fuzzer
+    harness_source: oss-fuzz
+    harness_path: projects/zlib/uncompress_fuzzer.c
+    dictionary_path: null
+    libfuzzer_extra_flags:
+      timeout: 25
+      rss_limit_mb: 2048
+      max_len: 65536
+    seeds: none
+```
+
+**IMPORTANT:** Every `<FILL>` must be resolved before `fetch_target.sh` can run. To find the correct commit hash:
+1. For `fuzzer-test-suite` targets: check the Makefile download URL in `google/fuzzer-test-suite/<target>/Makefile` → download the tarball → extract the version → look up that version's git tag in the upstream repo.
+2. For `oss-fuzz` targets: check `google/oss-fuzz/projects/<project>/Dockerfile` for the version pin → look up the corresponding commit hash.
+3. All target YAMLs (`targets/*.yaml`) MUST read `upstream.commit` from this file rather than specifying it inline.
+
+---
+
 ## Phase 1: Dataset Construction
 
 ### Goal
@@ -242,7 +434,7 @@ Extract real upstream unit tests and produce (test, source, coverage) triples fo
 
 #### 1.1 Target Configuration Files
 
-Each YAML config must specify the EXACT upstream test locations verified by our research.
+Each YAML config must specify the EXACT upstream test locations verified by our research. The `upstream.commit` field MUST be read from `pinned_versions.yaml` (not hardcoded).
 
 ```yaml
 # targets/re2.yaml
@@ -253,7 +445,7 @@ fuzzbench_benchmark: re2-2014-12-09
 
 upstream:
   repo: https://github.com/google/re2.git
-  commit: <pinned commit matching FuzzBench re2-2014-12-09>
+  commit: !from_pinned re2.upstream_commit   # Resolved from pinned_versions.yaml at load time
   license: BSD-3-Clause
 
 tests:
@@ -294,10 +486,12 @@ source_files:
     - re2/set.cc
 
 fuzzbench:
-  harness_source: fuzzer-test-suite  # NOT oss-fuzz
-  harness_file: target.cc
-  seeds: none  # Empty seed corpus in FuzzBench
+  harness_source: !from_pinned re2.harness_source  # fuzzer-test-suite, NOT oss-fuzz
+  harness_file: !from_pinned re2.harness_path       # target.cc
+  dictionary: !from_pinned re2.dictionary_path       # null for RE2
+  seeds: !from_pinned re2.seeds                      # none
   input_format: "regex_pattern + test_string (text)"
+  libfuzzer_extra_flags: !from_pinned re2.libfuzzer_extra_flags
 
 build:
   coverage_flags: "-fprofile-instr-generate -fcoverage-mapping"
@@ -378,12 +572,15 @@ tests:
 # NOT the FuzzBench repo. FuzzBench only provides harnesses, not tests.
 #
 # Steps:
-# 1. Parse YAML config for repo URL and commit hash
-# 2. Clone upstream repo at exact commit
-# 3. Verify commit hash matches (git rev-parse HEAD)
-# 4. Record provenance: {repo, commit, clone_date, git_log_head}
-# 5. Fetch FuzzBench harness from google/fuzzbench or fuzzer-test-suite
-# 6. Store in targets/src/<target_name>/
+# 1. Parse YAML config for repo URL; read commit hash from pinned_versions.yaml
+# 2. Verify pinned_versions.yaml has no <FILL> placeholders for this target
+# 3. Clone upstream repo at exact commit
+# 4. Verify commit hash matches (git rev-parse HEAD)
+# 5. Record provenance: {repo, commit, clone_date, git_log_head}
+# 6. Fetch FuzzBench harness from google/fuzzbench or fuzzer-test-suite
+#    (using harness_path from pinned_versions.yaml)
+# 7. If dictionary_path is set in pinned_versions.yaml, fetch the dictionary file
+# 8. Store in targets/src/<target_name>/
 ```
 
 #### 1.3 build_instrumented.sh
@@ -420,12 +617,42 @@ Output: JSON list of test objects, each containing:
   - upstream_file: str (path within upstream repo)
   - upstream_line: int (line number where test starts)
   - framework: str (e.g., "googletest", "glib", "custom_c")
-  - input_data: Optional[str] (if the test uses file inputs)
+  - input_data: Optional[str] (literal input values extracted from test)
   - called_functions: List[str] (statically extracted function calls)
 
 PROVENANCE IS MANDATORY. Every test object MUST include upstream_repo,
 upstream_commit, upstream_file, and upstream_line. Tests without
 provenance metadata are rejected.
+
+INPUT DATA EXTRACTION (NEW audit — addresses hallucination risk):
+  input_data is best-effort extracted via tree-sitter string-literal
+  harvesting with target-specific rules:
+    - RE2: first two string arguments of RE2::FullMatch/PartialMatch/
+      FindAndConsume calls (pattern + test string)
+    - SQLite: SQL string argument of do_execsql_test / do_test
+    - libxml2: file path argument from test data directories, or
+      inline XML string literals
+    - OpenSSL: file path arguments from test data (test/certs/*.pem, etc.)
+    - HarfBuzz: font file path + text string from shaping test data
+    - libjpeg-turbo: JPEG file path from CTest command arguments
+    - lcms: ICC profile paths from Check*() test bodies
+    - PROJ: coordinate transform string literals
+  If no literal input can be extracted (e.g., input is computed
+  programmatically), set input_data = null and log the skip.
+
+CALLED FUNCTIONS EXTRACTION (NEW audit — addresses tooling ambiguity):
+  called_functions are extracted using tree-sitter AST analysis ONLY
+  (no semantic resolution). The algorithm:
+    1. Parse the test function body with tree-sitter C/C++ parser
+    2. Extract all call_expression nodes
+    3. For C++: extract the callee as-is (e.g., "RE2::FullMatch",
+       "xmlParseMemory") — do NOT attempt to resolve virtual dispatch
+       or template instantiations
+    4. Filter out standard library calls (assert, printf, malloc, etc.)
+    5. Filter out test framework calls (ASSERT_TRUE, g_assert, etc.)
+  This is intentionally shallow — deep resolution would require clangd
+  or cscope and is out of scope. The called_functions field is used for
+  source context prioritization, not for precise call-graph analysis.
 """
 ```
 
@@ -490,9 +717,16 @@ Extract tests from SQLite TCL test files.
 Parses .test files for do_test, do_execsql_test, do_catchsql_test invocations.
 Each invocation is one test. Extracts the SQL input and expected output.
 
-NOTE: SQLite has 51,445 tests. We extract ALL of them but may subsample
+NOTE: SQLite has 51,445 tests. We extract ALL of them but MUST subsample
 for LLM few-shot prompts due to context window limits. Subsampling uses
-stratified random selection with a fixed seed.
+stratified random selection (FIXED SEED=42) with the following algorithm:
+  1. Group tests by test type: do_test, do_execsql_test, do_catchsql_test
+  2. Within each type, bin by test file (the .test file it comes from)
+  3. Select proportionally from each (type, file) stratum
+  4. Default subsample size: 500 tests (configurable via --sqlite-subsample-n)
+  5. For coverage measurement, run ALL 51,445 tests (no subsampling)
+  6. For few-shot prompt construction, use the 500-test subsample
+  7. Tie-break within a stratum: sort by (file_name, line_number), take first N
 """
 ```
 
@@ -567,12 +801,37 @@ Output: coverage_gaps.json containing:
   - union_coverage: all lines/branches covered by ANY upstream test
   - gap_branches: branches in source that NO upstream test covers
   - gap_functions: functions that NO upstream test calls
-  - per_branch_context: surrounding code for each gap (for LLM prompts)
+  - per_branch_context: ±10 lines of source surrounding each gap branch
+    (i.e., 21 lines total: the branch line ±10). If the branch is within
+    10 lines of file start/end, extend in the other direction to maintain
+    21 lines. This context window is chosen to fit multiple gaps within
+    the LLM's token budget while providing enough surrounding code for
+    the LLM to understand the condition.
+  - condition_description: per-gap, a one-sentence natural-language
+    description of what input condition would trigger this branch
 
 Also computes:
+  - total_upstream_tests: int (count of all tests with valid coverage)
+  - union_coverage_pct: float (overall % of branches covered by any test)
   - per_test_unique_coverage: branches covered by exactly one test
   - coverage_overlap_matrix: pairwise Jaccard similarity between tests
-  - total_coverage_pct: overall coverage achieved by the upstream test suite
+
+CONDITION DESCRIPTION GENERATION (NEW audit — addresses template variable gap):
+  gap.condition_description is produced by a lightweight LLM pass:
+    1. For each gap branch, extract the per_branch_context (±10 lines)
+    2. Send a batch prompt to GPT-4o (temperature=0, cached by branch hash):
+       "Given this code context, describe in one sentence what input
+        condition would cause execution to take this branch."
+    3. Cache results keyed by sha256(per_branch_context).
+    4. If the LLM API is unavailable, fall back to a heuristic:
+       extract the if-condition expression and format as
+       "Requires <condition_expression> to be true/false."
+  This is a one-time cost per target and is cached across runs.
+
+NAMING CONSISTENCY (NEW audit):
+  The output JSON uses field names total_upstream_tests and union_coverage_pct
+  (matching the input_synthesis.j2 template variables). These replace the
+  previous total_coverage_pct field.
 """
 ```
 
@@ -613,8 +872,13 @@ be recall, not reasoning.
 Protocol (adapted from Golchin & Surdeanu, "Time Travel in LLMs", 2023):
 
   PROBE 1 — Verbatim Completion:
-    For each target, select 10 upstream tests. Give the LLM the first 3 lines
-    of the test function and ask it to complete the rest. Measure:
+    For each target, select 10 upstream tests using stratified random
+    sampling (FIXED SEED=123): stratify by coverage decile (10 equal-width
+    bins of total_coverage_pct), select 1 test per decile. If a decile has
+    no tests, select from the nearest occupied decile. Tests are drawn from
+    the HELD-OUT evaluation set (not the training/few-shot set).
+    Give the LLM the first 3 lines of the test function and ask it to
+    complete the rest. Measure:
       - BLEU score between LLM completion and actual upstream test
       - Exact-match rate of assertion lines
       - Character-level edit distance (normalized)
@@ -649,19 +913,46 @@ The contamination report is included as a table in the paper.
 """
 ```
 
+#### test_contamination.py specification (NEW audit)
+
+```python
+"""
+Verify that the contamination probe ran correctly and results are recorded.
+
+Assertions:
+  1. contamination_report.json exists for every (target, model) pair
+     in the experiment matrix (8 targets × 3 models = 24 reports)
+  2. Each report contains all three probe results:
+     - verbatim_bleu_scores: list of exactly 10 floats (one per probe test)
+     - metadata_recall: float in [0.0, 1.0]
+     - no_source_prediction_accuracy: float in [0.0, 1.0]
+     - contamination_risk_level: one of "LOW", "MEDIUM", "HIGH"
+  3. contamination_risk_level is computed correctly:
+     - HIGH: BLEU > 0.75 for >50% of probe tests
+     - MEDIUM: BLEU > 0.75 for 20-50% of probe tests OR metadata_recall > 0.5
+     - LOW: otherwise
+  4. No (target, model) pair was silently excluded from results
+  5. The 10 probe tests per target are drawn from the held-out set
+     (verified by cross-referencing with the Phase 2 held-out split)
+"""
+```
+
 ### Phase 1 Verification
 
 After Phase 1 completes, verify:
+- [ ] All `<FILL>` placeholders in `pinned_versions.yaml` have been resolved to actual commit SHAs (NEW audit)
 - [ ] At least 8 targets have been processed (4 Tier 1, 4 Tier 2)
 - [ ] Each Tier 1 target has >= 50 extracted tests with valid coverage
 - [ ] Each Tier 2 target has >= 10 extracted tests with valid coverage
 - [ ] **Every test has provenance metadata linking to upstream repo:file:line**
-- [ ] **No test was written by this project — all test_code originates from upstream**
+- [ ] **No test was written by this project — all test_code originates from upstream; verified by diffing each test_code against the upstream file at upstream_file:upstream_line** (NEW audit — concrete check)
 - [ ] Coverage JSON matches the schema in dataset_schema.py
 - [ ] coverage_gaps.json exists and has non-empty gap lists for each target
+- [ ] coverage_gaps.json contains `total_upstream_tests` and `union_coverage_pct` fields (NEW audit)
+- [ ] coverage_gaps.json contains `condition_description` for each gap branch (NEW audit)
 - [ ] **Contamination probe ran for all (target, model) pairs** (NEW v3)
 - [ ] **Contamination report generated and no target silently excluded** (NEW v3)
-- [ ] `python -m pytest phase1_dataset/tests/` passes (including test_provenance.py AND test_contamination.py)
+- [ ] `python -m pytest dataset/tests/` passes (including test_provenance.py AND test_contamination.py)
 
 ---
 
@@ -785,10 +1076,29 @@ VALIDATION: Before building any prompt, verify that:
 
 Handles:
   - Token counting (tiktoken for OpenAI, approximate for others)
-  - Source context truncation (prioritize functions called by test)
-  - Few-shot example selection: random, stratified by coverage %
+  - Source context size selection (NEW audit — RQ3 ablation):
+    Three context sizes, controlled by --context-size parameter:
+      function_only: Include only the function bodies called by the test
+                     (identified via called_functions from extract_tests.py)
+      file:          Include the entire source file(s) containing those functions
+      multi_file:    Include the source file(s) plus files they #include
+                     (one level of transitive includes, excluding system headers)
+    Default: file (used unless running the context-size ablation sweep)
+  - Source context truncation (within a context size tier, prioritize
+    functions listed in called_functions, then surrounding code)
+  - Few-shot example selection (NEW audit — explicit algorithm):
+    Strategy: stratified by coverage decile.
+      1. Compute total_coverage_pct for each candidate few-shot example
+      2. Bin into 5 equal-width coverage buckets:
+         [0-20%), [20-40%), [40-60%), [60-80%), [80-100%]
+      3. For N-shot prompt, select ceil(N/5) examples from each bucket
+         (round-robin across buckets if N is not divisible by 5)
+      4. Within each bucket, select uniformly at random (FIXED SEED=42)
+      5. If a bucket has fewer candidates than needed, backfill from
+         the nearest non-empty bucket
+    This ensures the few-shot examples span the full coverage spectrum.
   - Binary input encoding as hex with format annotations
-  - Held-out test selection: randomized with FIXED SEED for reproducibility
+  - Held-out test selection: randomized with FIXED SEED=42 for reproducibility
 """
 ```
 
@@ -798,7 +1108,24 @@ Handles:
 """
 Send prompts to LLM APIs and collect responses.
 
-Supports: OpenAI (GPT-4o), Anthropic (Claude Sonnet), local (Llama 3.1 via vLLM/Ollama)
+Supports: OpenAI (GPT-4o), Anthropic (Claude Sonnet), local (Llama 3.1 via vLLM)
+
+Local model serving specification (NEW audit — addresses infra gap):
+  - Server: vLLM (preferred over Ollama for batch throughput + OpenAI-compatible API)
+  - GPU: minimum 1× A100 80GB for 70B (4-bit quantized via bitsandbytes)
+         or 1× A100 40GB for 8B (full precision)
+  - Quantization: 4-bit NF4 for 70B (same as fine-tuning QLoRA config);
+                  none for 8B
+  - Batch size: max_num_seqs=16 for 70B, max_num_seqs=32 for 8B
+  - Endpoint: http://localhost:8000/v1 (OpenAI-compatible)
+  - Launch command (70B):
+      python -m vllm.entrypoints.openai.api_server \
+        --model meta-llama/Llama-3.1-70B-Instruct \
+        --quantization bitsandbytes --load-format bitsandbytes \
+        --max-num-seqs 16 --max-model-len 4096
+  - All local-model runs MUST log the same per-call fields as API calls
+    (model string, tokens, latency). Cost is computed as GPU-hours × $/hour
+    (document the GPU rate used).
 
 MANDATORY LOGGING per API call:
   - model: exact model string (e.g., "gpt-4o-2024-08-06")
@@ -827,12 +1154,22 @@ Metrics:
   - Function-level: precision, recall, F1
   - Branch-level: precision, recall, F1
   - Coverage estimation: MAE of predicted vs actual %
-  - Ranking quality: NDCG of predicted branch ordering
+  - Ranking quality (NEW audit fix): Spearman rank correlation of
+    predicted branch difficulty ordering. NOTE: The original NDCG metric
+    was uncomputable because the coverage-prediction JSON schema returns
+    branches as a set (with boolean taken/not-taken), not a ranked list.
+    Fix: the predicted "ordering" is derived by sorting branches by the
+    LLM's confidence (branches it predicts as both true+false taken rank
+    higher than single-direction). Ground-truth ordering is by actual
+    execution count from coverage.json (if available) or binary
+    covered/not-covered. Spearman correlation is more appropriate than
+    NDCG for this binary-heavy ranking.
 
 Aggregation dimensions:
   - Per-target (mean across held-out tests)
   - Per-model (mean across all targets)
   - Per-few-shot-count (learning curve as N increases)
+  - Per-context-size (function_only vs file vs multi_file)  # [NEW audit — RQ3]
   - Per-tier (Tier 1 vs Tier 2 vs Tier 3)
   - Per-contamination-level (LOW vs MEDIUM vs HIGH)  # [NEW v3]
 
@@ -857,7 +1194,23 @@ Protocol:
     - Removes the structured JSON schema from the prompt
     - Instead asks: "Describe which functions this test will call and
       which branches it will take. Then estimate line coverage %."
-    - Post-process free-text response into the same JSON schema for comparison
+    - Post-process free-text response into the same JSON schema using
+      a DETERMINISTIC two-step extraction (NEW audit — no secondary LLM):
+        Step 1: Regex extraction.
+          - Function names: match patterns like "calls <func>", "<func> is called",
+            "covers <func>", "exercises <func>" using regex:
+            r'(?:calls?|covers?|exercises?|invokes?|enters?)\s+[`"]?(\w+(?:::\w+)*)[`"]?'
+          - Branch predictions: match "line \d+" or "file.cc:\d+" patterns
+          - Coverage estimate: match "<number>%" pattern
+        Step 2: Validation.
+          - Filter extracted function names against the known function list
+            from the target's source files (reject hallucinated names)
+          - Convert to the standard JSON schema
+      This deterministic pipeline ensures the ablation measures PROMPT
+      sensitivity, not post-processor noise. If regex extraction fails
+      to parse the response (<3 function names extracted), mark that
+      response as "parse_failure" and exclude from accuracy computation
+      (report the parse failure rate as a separate metric).
 
   Variant B (coverage_prediction_rephrase_B.j2):
     - Keeps JSON output but changes the framing:
@@ -890,11 +1243,14 @@ Output: prompt_sensitivity_report.json
 - [ ] **Temperature=0.0 for all prediction runs** (NEW v3)
 - [ ] Response parsing handles malformed JSON gracefully
 - [ ] Metrics computed for all (model, target, few-shot-count) combinations
+- [ ] **Context-size ablation completed: all 3 context sizes × all Tier 1 targets × GPT-4o 5-shot** (NEW audit — RQ3)
+- [ ] **Metrics aggregated by context_size dimension in metrics.json** (NEW audit)
 - [ ] **Metrics broken down by contamination level** (NEW v3)
 - [ ] **Prompt sensitivity ablation completed for all Tier 1 targets** (NEW v3)
 - [ ] **prompt_sensitivity_report.json exists with sensitivity_flag** (NEW v3)
+- [ ] **Variant A parse failure rate documented** (NEW audit)
 - [ ] Cost log complete with per-call token counts, USD costs, **and wall-clock seconds** (NEW v3)
-- [ ] `python -m pytest phase2_prediction/tests/` passes (including test_sensitivity.py)
+- [ ] `python -m pytest prediction/tests/` passes (including test_sensitivity.py)
 
 ---
 
@@ -913,7 +1269,16 @@ Use input_synthesis.j2 template to generate gap-filling inputs.
 
 For each target:
   1. Load coverage_gaps.json (gaps relative to upstream test coverage)
-  2. Prioritize gaps by estimated reachability
+  2. Prioritize gaps by estimated reachability (NEW audit — explicit algorithm):
+     Reachability score = 1.0 / (min_call_depth_from_harness + 1)
+     where min_call_depth_from_harness is the shortest path in the static
+     call graph from LLVMFuzzerTestOneInput to the function containing the
+     gap branch. Computed using tree-sitter call-expression extraction
+     (same shallow analysis as extract_tests.py's called_functions).
+     If no path is found (unreachable or analysis too shallow), assign
+     score = 0.1 (lowest priority, still included).
+     Sort gaps by reachability score descending; break ties by file:line.
+     Select the top max_gaps (default=20) for the prompt.
   3. Build prompt with gap descriptions + upstream test examples
   4. Query LLM for N=20 inputs per target
      - Temperature=0.7, top_p=0.95, 3 samples per prompt (see §LLM Parameters)
@@ -1000,17 +1365,37 @@ CONFIGURATIONS (6 total — was 5 in v2):
   5. combined:       libFuzzer with unittest_seeds + llm_seeds
   6. random_seeds:   libFuzzer with random syntactically-valid inputs (from 3.1b)  # [NEW v3]
 
-libFuzzer invocation:
+libFuzzer invocation (NEW audit — complete flag set):
   ./target_fuzzer corpus_dir/ seeds_dir/ \
     -max_total_time=82800 \
     -print_final_stats=1 \
     -jobs=1 -workers=1 \
-    -seed=<recorded_random_seed>
+    -seed=<recorded_random_seed> \
+    -timeout=<from pinned_versions.yaml: targets.<target>.libfuzzer_extra_flags.timeout> \
+    -rss_limit_mb=<from pinned_versions.yaml: targets.<target>.libfuzzer_extra_flags.rss_limit_mb> \
+    -max_len=<from pinned_versions.yaml: targets.<target>.libfuzzer_extra_flags.max_len> \
+    [-dict=<from pinned_versions.yaml: targets.<target>.dictionary_path, if not null>]
+
+  NOTE: The -timeout, -rss_limit_mb, -max_len, and -dict flags are
+  CRITICAL for matching FuzzBench baselines. Dictionary use alone can
+  shift coverage by 20%+. All flags are read from pinned_versions.yaml
+  so they are consistent across all 8 configs (including Experiment 2).
+  If a target has no dictionary (dictionary_path: null), omit -dict.
 
 Coverage measurement (separate from fuzzer's internal tracking):
-  After each 15-minute snapshot, replay the corpus through a
-  coverage-instrumented build and record Clang source-based edge count.
-  This is the SAME measurement method FuzzBench uses.
+  POST-HOC replay (not inline during fuzzing). After each 15-minute
+  snapshot interval:
+    1. Copy the current corpus directory to a timestamped snapshot
+    2. After the campaign ends, replay ALL snapshots through the
+       Phase 1 COVERAGE BUILD (build variant #1 from build_instrumented.sh,
+       compiled with -fprofile-instr-generate -fcoverage-mapping)
+    3. For each snapshot:
+       a. llvm-profdata merge all .profraw files
+       b. llvm-cov export to count unique source-based edges
+    4. Record (timestamp, edges_covered, corpus_size) in coverage_over_time.csv
+  This is the SAME measurement method FuzzBench uses. Post-hoc replay
+  avoids instrumenting the fuzzer build and ensures coverage numbers are
+  comparable across all configurations.
 
 Output per trial:
   - coverage_over_time.csv: timestamp, edges_covered, corpus_size
@@ -1059,6 +1444,15 @@ NOVEL METRICS (beyond FuzzBench standard):
   - Cost efficiency: edges gained per dollar of LLM API cost
   - Time-to-gap-closure: wall-clock time to reach each gap branch
   - LLM vs Random delta: per-target, is LLM statistically better than random? (NEW v3)
+  - Seed survival rate (NEW audit — promoted from failure_analysis.py):
+    % of LLM seeds still present in the libFuzzer corpus at 1h and 23h.
+    Identification method: compute sha256 content hash of each LLM seed
+    before campaign start. At each snapshot, hash all corpus entries and
+    check membership. A seed "survives" if its exact content hash is
+    found OR if any corpus entry's coverage profile is a strict superset
+    of the seed's coverage profile (indicating the fuzzer mutated it
+    into something better but didn't discard the coverage contribution).
+    Report: survival_rate_1h, survival_rate_23h per target per config.
 
 All figures use matplotlib + seaborn. Output to analysis/figures/
 All raw data published as CSVs with experiment configuration hashes.
@@ -1140,6 +1534,13 @@ Analysis 2 — Wasted Seed Analysis:
     - Does it parse? (harness doesn't crash immediately)
     - Does it contribute unique coverage? (new edges not in unittest_seeds)
     - Does it survive in the corpus after 1 hour? (libFuzzer didn't discard it)
+  Seed identification (NEW audit — disambiguation):
+    Seeds are tracked by sha256 content hash computed before the campaign.
+    A seed "survives" at time T if its exact hash appears in the corpus
+    snapshot at T, OR if any corpus entry at T has a coverage profile
+    that is a strict superset of the seed's initial coverage (indicating
+    productive mutation). The latter check prevents undercounting when
+    libFuzzer mutates a good seed into a better variant.
   Report:
     - parse_rate: % of LLM seeds that don't immediately crash
     - unique_coverage_rate: % that contribute at least 1 new edge
@@ -1162,7 +1563,7 @@ Output: failure_analysis.json + failure_mode_plots/
 
 - [ ] LLM-generated seeds exist for all Tier 1+2 targets
 - [ ] **Random-baseline seeds exist for all Tier 1+2 targets** (NEW v3)
-- [ ] **Random seed parse success rate > 10% for all targets** (NEW v3)
+- [ ] **Random seed parse success rate > 10% for all targets** (NEW v3; rationale: if the harness immediately rejects >90% of random inputs, the baseline is meaningless per research doc §5.2 — the random generator needs redesign for that target)
 - [ ] Validation report shows % of inputs parseable by target
 - [ ] Fuzzing campaigns completed: **6** configs × 20 trials × 8 targets = **960** campaigns
 - [ ] Each campaign ran for exactly 82,800 seconds (23 hours)
@@ -1175,7 +1576,168 @@ Output: failure_analysis.json + failure_mode_plots/
 - [ ] **Crash dedup pipeline ran; dedup_report.json exists per target** (NEW v3)
 - [ ] **failure_analysis.json exists; corpus pollution flagged where present** (NEW v3)
 - [ ] **generation_wall_clock_s logged for all targets** (NEW v3)
-- [ ] `python -m pytest phase3_synthesis/tests/` passes
+- [ ] `python -m pytest synthesis/tests/` passes
+
+---
+
+## Phase Transfer: Cross-Target Transfer Evaluation (NEW audit — BLOCKING for RQ4)
+
+### Motivation
+
+The research document §5.2 Phase 3 and §6.1 RQ4 define an entire experiment: "Does this skill transfer across targets?" Without this phase, RQ4 is unanswerable and a reviewer will flag the omission. This phase tests whether the LLM's ability to predict coverage and generate inputs generalizes to targets it has never seen.
+
+### Goal
+
+Evaluate cross-target transfer via (a) leave-one-out cross-validation across Tier 1+2 targets and (b) zero-shot evaluation on Tier 3 held-out targets (libpng, FreeType, zlib).
+
+### Tasks
+
+#### T.1 build_loo_prompt.py
+
+```python
+"""
+Build leave-one-out (LOO) prompts for cross-target transfer evaluation.
+
+For each held-out target T_held_out in Tier 1+2:
+  1. Collect few-shot examples ONLY from OTHER targets' upstream tests
+     (i.e., the few-shot pool EXCLUDES all tests from T_held_out)
+  2. Select N few-shot examples using the same stratified-by-coverage
+     algorithm as build_prompt.py (5 coverage bins, round-robin)
+     EXCEPT: stratify across targets too — ensure examples come from
+     at least 3 different source targets (if N >= 3)
+  3. Build the coverage_prediction.j2 prompt with these cross-target examples
+  4. For input synthesis: build the input_synthesis.j2 prompt with
+     cross-target examples, using T_held_out's coverage_gaps.json
+
+For Tier 3 targets (libpng, FreeType, zlib):
+  1. These targets are NEVER used in any few-shot pool (they are held-out)
+  2. Few-shot examples come from Tier 1+2 targets only
+  3. Source context comes from the Tier 3 target's upstream code
+  4. Coverage gaps come from the Tier 3 target's (limited) test suite
+
+VALIDATION:
+  - Assert that T_held_out's tests NEVER appear in the few-shot pool
+  - Assert that Tier 3 targets NEVER appear in any training context
+  - Log which source targets contributed each few-shot example
+
+Output: loo_prompts/<held_out_target>/<model>/
+        tier3_prompts/<tier3_target>/<model>/
+"""
+```
+
+#### T.2 run_transfer_prediction.py
+
+```python
+"""
+Run coverage prediction using cross-target examples.
+
+For each held-out target (8 Tier 1+2 LOO + 3 Tier 3):
+  1. Load LOO prompts from build_loo_prompt.py
+  2. Run prediction with each LLM (GPT-4o, Claude, Llama 70B)
+  3. Temperature=0.0 (same as Phase 2)
+  4. Compare predictions against Phase 1 ground-truth coverage
+
+Key comparison: LOO prediction accuracy vs within-target prediction
+accuracy (from Phase 2). The DELTA measures how much accuracy degrades
+when the LLM doesn't see any examples from the target under test.
+
+Output: transfer_prediction_results/<target>/<model>/
+"""
+```
+
+#### T.3 run_transfer_synthesis.py
+
+```python
+"""
+Generate gap-filling inputs using cross-target examples.
+
+For each held-out target:
+  1. Build input synthesis prompt with cross-target few-shot examples
+  2. Generate inputs: temperature=0.7, 3 samples, same as Phase 3
+  3. Validate inputs against the target's harness
+  4. Compare immediate coverage with within-target LLM seeds (Phase 3)
+
+This measures whether the LLM can generalize input-generation strategies
+learned from one target's tests to a completely different target.
+
+Output: transfer_seeds/<held_out_target>/<model>/
+"""
+```
+
+#### T.4 run_tier3_evaluation.py
+
+```python
+"""
+Special evaluation for Tier 3 targets (never used in training).
+
+Tier 3 targets (libpng, FreeType, zlib) have too few tests to serve
+as few-shot sources but serve as pure held-out evaluation targets.
+
+For each Tier 3 target:
+  1. Extract the (few) upstream tests + coverage profiles (Phase 1 data)
+  2. Build LOO prompts using only Tier 1+2 examples
+  3. Run prediction + synthesis
+  4. If the target has enough tests for coverage measurement:
+     run a small fuzzing campaign (5 trials × 6h instead of 20 × 23h,
+     to save compute — Tier 3 is secondary)
+
+Tier 3 results are reported in a SEPARATE table, not mixed with
+Tier 1+2 results. They answer: "Can the LLM generalize to a target
+it has literally never seen?"
+
+Output: tier3_results/<target>/
+"""
+```
+
+#### T.5 evaluate_transfer.py
+
+```python
+"""
+Compute the cross-target transfer evaluation metrics.
+
+LOO MATRIX (Tier 1+2):
+  An 8×8 matrix where entry [i,j] represents the prediction accuracy
+  on target j when trained on all targets EXCEPT j. The diagonal is
+  the LOO accuracy; off-diagonal shows which source targets help which
+  held-out targets.
+
+  Actually: row = held-out target, column = metric.
+  Columns: function_F1, branch_F1, coverage_MAE, gap_closure_rate.
+  Plus a "within-target" row showing Phase 2 accuracy for comparison.
+
+FORMAT-SIMILARITY STRATIFICATION (from research doc §5.2 expected finding):
+  Group target pairs by input format similarity:
+    - text↔text: RE2, libxml2, SQLite, PROJ (all text-based)
+    - text↔binary: RE2→libjpeg-turbo, libxml2→libpng, etc.
+    - binary↔binary: libjpeg-turbo, lcms, libpng, HarfBuzz
+  Report transfer accuracy separately for same-format and cross-format
+  pairs. Expected: same-format transfer > cross-format transfer.
+
+TIER 3 RESULTS:
+  Separate table with Tier 3 target prediction accuracy and (if available)
+  gap closure rates. These are the strictest test of generalization.
+
+Output:
+  transfer_evaluation.json:
+    - loo_matrix: dict[target, dict[metric, float]]
+    - within_target_baseline: dict[target, dict[metric, float]]
+    - format_stratification: {same_format_mean_f1, cross_format_mean_f1, delta}
+    - tier3_results: dict[target, dict[metric, float]]
+  analysis/notebooks/09_transfer_evaluation.ipynb
+"""
+```
+
+### Phase Transfer Verification
+
+- [ ] LOO prompts generated for all 8 Tier 1+2 targets
+- [ ] **No held-out target's tests appear in its own LOO prompt** (verified programmatically)
+- [ ] **Tier 3 targets never appear in any training/few-shot context** (verified programmatically)
+- [ ] Transfer prediction results exist for all (target, model) combinations
+- [ ] LOO matrix is complete (8 targets × 4 metrics)
+- [ ] Format-similarity stratification computed (text↔text vs text↔binary vs binary↔binary)
+- [ ] Tier 3 evaluation completed for at least libpng and zlib
+- [ ] Transfer accuracy compared against within-target Phase 2 baseline
+- [ ] `python -m pytest transfer/tests/` passes
 
 ---
 
@@ -1214,6 +1776,62 @@ Test split MUST match the held-out tests used in Phase 2 for fair comparison.
 """
 ```
 
+#### 4.1b LoRA Configuration Files (NEW audit — fills placeholder gap)
+
+The LoRA configs referenced at `finetuning/configs/` must contain these hyperparameters (from research doc §5.2):
+
+```yaml
+# configs/lora_8b.yaml — Llama 3.1 8B (Config E / Config G with CoT)
+model_name: meta-llama/Llama-3.1-8B-Instruct
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: ["q_proj", "v_proj"]
+training:
+  epochs: 3
+  learning_rate: 2e-4
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  bf16: true
+  max_seq_length: 4096
+data:
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  stratify_by: target  # Ensure each split has tests from all targets
+```
+
+```yaml
+# configs/lora_70b.yaml — Llama 3.1 70B (Config F)
+model_name: meta-llama/Llama-3.1-70B-Instruct
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: ["q_proj", "v_proj"]
+training:
+  epochs: 3
+  learning_rate: 2e-4
+  batch_size: 1
+  gradient_accumulation_steps: 16
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  bf16: true
+  max_seq_length: 4096
+quantization:
+  load_in_4bit: true   # QLoRA for 70B to fit on consumer GPUs
+  bnb_4bit_compute_dtype: bfloat16
+  bnb_4bit_quant_type: nf4
+data:
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  stratify_by: target
+```
+
 #### 4.2 add_cot_traces.py
 
 ```python
@@ -1242,7 +1860,7 @@ The test code is UNMODIFIED — we are only adding annotations about it.
 """
 Final comparison across ALL configurations:
 
-Config A: GPT-4o zero-shot
+Config A: GPT-4o zero-shot (0-shot)
 Config B: GPT-4o 5-shot (real upstream tests)
 Config C: GPT-4o 10-shot (real upstream tests)
 Config D: Claude Sonnet 5-shot (real upstream tests)
@@ -1251,6 +1869,11 @@ Config F: Llama 3.1 70B fine-tuned on upstream test data (LoRA)
 Config G: Llama 3.1 8B fine-tuned with CoT traces (LoRA)
 Config H: GPT-4o source-only (Experiment 2, no tests)  # [NEW v3.1]
 Config I: Claude Sonnet source-only (Experiment 2, no tests)  # [NEW v3.1]
+
+NOTE on config list vs research doc (NEW audit):
+  The research doc §5.2 Phase 4 lists configs A-F only. This plan extends
+  to A-I (adding G=CoT, H/I=source-only). The research doc should be
+  synced to match, or a version note added. The plan (v3.1) is authoritative.
 
 For each config, report:
   - Coverage prediction accuracy (Phase 2 / Exp 2 metrics)
@@ -1281,13 +1904,15 @@ This is the paper's key result table.
 
 - [ ] Training data provenance audit: 100% of examples have upstream provenance
 - [ ] No test_code in training data was written by this project
+- [ ] LoRA configs match hyperparameters in configs/lora_8b.yaml and configs/lora_70b.yaml (NEW audit)
 - [ ] LoRA adapters load and produce valid outputs
+- [ ] **Fine-tuned model produces valid JSON predictions on 5 random eval examples (end-to-end test)** (NEW audit)
 - [ ] Fine-tuned models evaluated on same held-out set as Phase 2
 - [ ] Comparison table includes all 9 configurations (A-I, including Exp 2) (updated v3.1)
 - [ ] **Exp 1 vs Exp 2 head-to-head sub-table exists** (NEW v3.1)
 - [ ] **Comparison table includes contamination risk column** (NEW v3)
 - [ ] **Results reported both with and without HIGH contamination pairs** (NEW v3)
-- [ ] `python -m pytest phase4_finetuning/tests/` passes
+- [ ] `python -m pytest finetuning/tests/` passes (including test_finetuned_output.py)
 
 ---
 
@@ -1352,11 +1977,29 @@ Output: source_context/<target>/ containing:
 Token budget management:
   - For large targets (SQLite: ~230K lines), include only the files
     most relevant to the harness entry point
-  - Use call-graph analysis from the harness to prioritize which source
-    files to include (same static analysis as Phase 1's called_functions)
-  - Stay within model context limits: ~120K tokens for GPT-4o,
-    ~190K for Claude Sonnet
-  - Log the exact source files included and total token count
+  - File prioritization algorithm (NEW audit — explicit call-graph ordering):
+    1. Start from the harness entry point (LLVMFuzzerTestOneInput)
+    2. Use tree-sitter to extract all call_expression nodes from the harness
+    3. For each called function, find the source file containing its definition
+       (using tree-sitter function_definition node matching)
+    4. Assign each source file a priority = 1.0 / (min_call_depth + 1)
+       where min_call_depth is the shortest call path from the harness
+       (depth 0 = directly called from harness, depth 1 = called by a
+       function called from harness, etc.)
+    5. Sort files by priority descending, break ties by file size ascending
+       (smaller files first — more files = more branches covered)
+    6. Greedily include files until the token budget is exhausted
+    7. Token counting: use tiktoken (cl100k_base) for GPT-4o,
+       approximate (chars/3.5) for Claude and Llama
+  - Token budget per model: ~100K tokens for GPT-4o (leaving 20K for
+    prompt template + output), ~160K for Claude Sonnet, ~100K for Llama 70B
+  - Log the exact source files included, their priorities, and total token count
+  - The "approximately matched" token budget constraint with Experiment 1
+    is enforced as follows: compute total_input_tokens for Experiment 1's
+    synthesis prompts per target. Experiment 2's prompts must use
+    total_input_tokens ±20%. If the source code for a target doesn't
+    fill the budget, pad with additional header files and comments.
+    If it exceeds, truncate lower-priority files. Log the delta.
 """
 ```
 
@@ -1524,13 +2167,19 @@ CRITICAL CONSTRAINT: Generate the SAME NUMBER of inputs as Experiment 1
 for each target. This ensures fair comparison — the LLM gets the same
 token budget and same number of generation calls, just different context.
 
-Token budget matching:
+Token budget matching (NEW audit — made explicit):
   - Count the total input tokens used in Experiment 1's synthesis prompts
-    for each target
-  - The source-only prompts should use approximately the same total
-    input tokens (source code fills the space that unit tests + coverage
-    data occupied in Experiment 1)
-  - Log both token counts for comparison
+    for each target (from run_prediction.py logs)
+  - The source-only prompts MUST use total tokens within ±20% of
+    Experiment 1's total for the same target. This is the fairness
+    constraint from TV7.
+  - If source code fills less than 80% of Exp 1's budget:
+    include additional source files (lower priority from the call-graph
+    ordering in extract_source_context.py) until the budget is met
+  - If source code exceeds 120% of Exp 1's budget:
+    truncate lower-priority files until within budget
+  - Log both token counts and the delta percentage per target
+  - Flag any target with >20% divergence in experiment_comparison.json
 
 Output per target:
   seeds/<target>/source_only/<model>/
@@ -1704,11 +2353,11 @@ The LLM must *discover* that `compile.cc:847` is interesting on its own. It has 
 - [ ] Token budget approximately matched between Exp 1 and Exp 2 prompts
 - [ ] Source-only prediction compared against Phase 1 ground truth
 - [ ] Fuzzing campaigns completed: 2 configs × 20 trials × 8 targets = 320 campaigns
-- [ ] Mann-Whitney U computed for all Exp 1 vs Exp 2 pairwise comparisons
+- [ ] Mann-Whitney U computed for all Exp 1 vs Exp 2 pairwise comparisons, applied to final edge count at 23h (FuzzBench convention: edges-at-campaign-end is the primary metric)
 - [ ] compare_experiments.py ran; experiment_comparison.json exists
 - [ ] Coverage-over-time curves show Exp 1 vs Exp 2 overlaid per target
 - [ ] **Outcome A/B/C classification documented per target** with statistical evidence
-- [ ] `python -m pytest experiment2_source_only/tests/` passes
+- [ ] `python -m pytest synthesis/tests/` passes
 
 ---
 
@@ -1861,14 +2510,22 @@ pytest-timeout>=2.0
 ## Execution Order
 
 ```
+Phase 0 — Version Pinning (NEW audit — do this FIRST)
+  0.1   Fill in ALL <FILL> placeholders in pinned_versions.yaml
+        (upstream commit SHAs, FuzzBench commit SHA, fuzzer-test-suite commit SHA)
+  0.2   Verify each commit hash by cloning and checking git log
+  0.3   Verify dictionary paths exist in FuzzBench/OSS-Fuzz repos
+
 Phase 1 — Dataset Construction (2-3 weeks)
-  1.1   Write target YAML configs (verified upstream test locations)
-  1.2   Implement fetch_target.sh (clone upstream repos)
+  1.1   Write target YAML configs (read upstream.commit from pinned_versions.yaml)
+  1.2   Implement fetch_target.sh (clone upstream repos at pinned commits)
   1.3   Implement framework-specific extractors (6 extractors)
   1.4   Implement extract_tests.py orchestrator WITH provenance
+        + input_data extraction + called_functions extraction
   1.5   Implement build_instrumented.sh
   1.6   Implement run_test_coverage.py (llvm-cov integration)
-  1.7   Implement compute_gaps.py
+  1.7   Implement compute_gaps.py (with condition_description generation
+        and total_upstream_tests/union_coverage_pct naming)
   1.8   Run build_dataset.py for all targets
   1.9   Run provenance audit: verify 100% of tests trace to upstream
   1.10  [NEW] Run contamination_probe.py for all (target, model) pairs
@@ -1877,11 +2534,16 @@ Phase 1 — Dataset Construction (2-3 weeks)
 Phase 2 — LLM Coverage Prediction (1-2 weeks)
   2.1   Write prompt templates (with upstream provenance references)
   2.2   Implement llm_client.py (shared utility with cost + wall-clock logging)
-  2.3   Implement build_prompt.py (with provenance validation)
+  2.3   Implement build_prompt.py (with provenance validation + context_size parameter)
   2.4   Implement run_prediction.py (temperature=0.0)
-  2.5   Run predictions: 3 models × 8 targets × 4 few-shot configs = 96 runs
-  2.5b  [NEW] Run prompt_sensitivity.py: 3 variants × 4 Tier 1 targets = 12 runs
-  2.6   Implement evaluate_prediction.py (with contamination-level breakdown)
+  2.5   Run predictions: 3 models × 8 targets × 5 few-shot configs = 120 runs
+        (NOTE: 5 few-shot configs: 0, 1, 3, 5, 10 — matching research doc §5.2.
+         The "4 few-shot configs" in v3 was incorrect; 0-shot is a distinct config,
+         not a Phase 4 Config A alias.)
+  2.5b  [NEW] Run context-size ablation: 3 context sizes × 4 Tier 1 targets
+        × GPT-4o 5-shot = 12 additional runs (RQ3)
+  2.5c  [NEW] Run prompt_sensitivity.py: 3 variants × 4 Tier 1 targets = 12 runs
+  2.6   Implement evaluate_prediction.py (with contamination-level + context-size breakdown)
   2.7   Analyze Phase 2 results; decide if Phase 3 is warranted
 
 Phase 3 — Synthesis & Fuzzing (3-4 weeks, dominated by campaign runtime)
@@ -1889,7 +2551,8 @@ Phase 3 — Synthesis & Fuzzing (3-4 weeks, dominated by campaign runtime)
   3.1b  [NEW] Implement generate_random_inputs.py (format-aware random baseline)
   3.2   Implement validate_inputs.py (+ random seed parse rate check)
   3.3   Generate inputs for all Tier 1+2 targets (LLM + random)
-  3.4   Implement run_fuzzing.py (23h campaigns, 20 trials, 6 configs)
+  3.4   Implement run_fuzzing.py (23h campaigns, 20 trials, 6 configs,
+        with complete libFuzzer flags from pinned_versions.yaml)
   3.5   Run campaigns: 6 configs × 20 trials × 8 targets = 960 campaigns
         (22,080 CPU-hours — can parallelize across machines)
   3.6   [NEW] Implement dedup_crashes.py (stack-hash + coverage-profile)
@@ -1898,22 +2561,33 @@ Phase 3 — Synthesis & Fuzzing (3-4 weeks, dominated by campaign runtime)
   3.9   Implement compare_baselines.py (plots + critical difference diagrams)
   3.10  Generate all figures
 
+Phase Transfer — Cross-Target Transfer (1-2 weeks, parallel with Phase 3 campaigns)
+  T.1   Implement build_loo_prompt.py (LOO few-shot pool construction)
+  T.2   Run transfer prediction: 8 LOO targets × 3 models = 24 runs
+  T.3   Run transfer synthesis for all LOO targets
+  T.4   Run Tier 3 evaluation (libpng, FreeType, zlib)
+  T.5   Implement evaluate_transfer.py (LOO matrix + format stratification)
+  T.6   Verify: pytest + LOO matrix completeness + Tier 3 results
+
 Phase 4 — Fine-Tuning (1-2 weeks, requires GPU)
   4.1   Prepare fine-tuning data (with provenance audit)
+  4.1b  Verify LoRA configs match lora_8b.yaml and lora_70b.yaml
   4.2   Write/generate + manually verify CoT traces
   4.3   Fine-tune models (LoRA)
   4.4   Run fine-tuned models through Phase 2 + 3 evaluation
+  4.4b  Run end-to-end test: fine-tuned model → valid JSON predictions
   4.5   Final comparison across all 9 configurations (with contamination + experiment columns)
 
 Experiment 2 — Source-Code-Only Synthesis (1-2 weeks, parallel with Phase 3/4)
-  E2.1  Implement extract_source_context.py (source + harness, NO tests)
+  E2.1  Implement extract_source_context.py (source + harness, NO tests,
+        with explicit call-graph file prioritization)
   E2.2  Write source-only prompt templates (analysis + synthesis)
   E2.3  Run source-only branch prediction for all Tier 1+2 targets
   E2.4  Compare source-only predictions against Phase 1 ground truth
-  E2.5  Generate source-only seeds (same count + token budget as Exp 1)
+  E2.5  Generate source-only seeds (same count + token budget ±20% as Exp 1)
   E2.6  Run fuzzing campaigns: 2 configs × 20 trials × 8 targets = 320 campaigns
         (7,360 CPU-hours — can parallelize with Phase 3 campaigns)
-  E2.7  Run compare_experiments.py (Exp 1 vs Exp 2 statistical comparison)
+  E2.7  Run compare_experiments.py (Exp 1 vs Exp 2, primary metric = edges at 23h)
   E2.8  Classify outcome per target as A (test-conditioned wins),
         B (no significant difference), or C (source-only wins)
 
@@ -1922,13 +2596,43 @@ Cross-Cutting — Threats to Validity Evidence (ongoing, finalized in writing)
   TV.2  Verify model string + temperature logged for every call
   TV.3  Compile version gap table (pinned commit date vs training cutoff)
   TV.4  Verify 20-trial distributions look reasonable (not bimodal/degenerate)
-  TV.5  Compile prompt sensitivity results
+  TV.5  Compile prompt sensitivity results + Variant A parse failure rate
   TV.6  Compile corpus pollution + failure mode evidence
+  TV.7  Verify Exp 1 vs Exp 2 token budgets within ±20% per target
 
-Total: 8-12 weeks
+Total: 9-14 weeks (adjusted for transfer phase)
 Compute: ~29,440 CPU-hours for fuzzing (22,080 Phase 3 + 7,360 Exp 2)
+         + ~200 CPU-hours for transfer phase Tier 3 mini-campaigns
          + GPU time for fine-tuning
          + ~$100-300 estimated LLM API costs (logged precisely)
+```
+
+### Makefile Dependency Graph (NEW audit)
+
+```makefile
+# Dependency order (each target depends on all listed prerequisites):
+#
+# make pin-versions     → (manual: fill pinned_versions.yaml)
+# make dataset          → pin-versions
+# make contamination    → dataset
+# make predict          → dataset, contamination
+# make context-ablation → dataset                    # [NEW audit] RQ3
+# make sensitivity      → predict
+# make synthesize       → predict
+# make random-baseline  → dataset
+# make transfer         → dataset, predict           # [NEW audit] RQ4
+# make fuzz             → synthesize, random-baseline
+# make dedup            → fuzz
+# make failure-analysis → fuzz
+# make stats            → fuzz, dedup, failure-analysis
+# make finetune         → dataset                    # (can run in parallel with Phase 2/3)
+# make source-only-predict    → dataset
+# make source-only-synthesize → source-only-predict
+# make source-only-fuzz       → source-only-synthesize
+# make compare-experiments    → fuzz, source-only-fuzz
+# make figures          → stats, compare-experiments, transfer
+# make audit            → dataset, contamination     # provenance + contamination audit
+# make all              → figures, audit              # everything
 ```
 
 ---
@@ -1953,10 +2657,14 @@ Compute: ~29,440 CPU-hours for fuzzing (22,080 Phase 3 + 7,360 Exp 2)
 
 9. **Reproducibility.** Pin all versions: upstream commits, LLM model strings (exact, e.g. `gpt-4o-2024-08-06`), random seeds, Python package versions, Docker base images, temperature and top_p values.
 
-10. **Use the Makefile.** Top-level targets: `make dataset`, `make contamination`, `make predict`, `make sensitivity`, `make synthesize`, `make random-baseline`, `make fuzz`, `make dedup`, `make failure-analysis`, `make stats`, `make finetune`, `make source-only-predict`, `make source-only-synthesize`, `make source-only-fuzz`, `make compare-experiments`, `make figures`, `make audit` (provenance + contamination audit). Each target depends on prerequisites.
+10. **Use the Makefile.** Top-level targets: `make pin-versions`, `make dataset`, `make contamination`, `make predict`, `make context-ablation`, `make sensitivity`, `make synthesize`, `make random-baseline`, `make transfer`, `make fuzz`, `make dedup`, `make failure-analysis`, `make stats`, `make finetune`, `make source-only-predict`, `make source-only-synthesize`, `make source-only-fuzz`, `make compare-experiments`, `make figures`, `make audit` (provenance + contamination audit). Dependencies are spelled out in the Makefile Dependency Graph above.
 
 11. **Contamination is a first-class concern.** (NEW v3) Never silently ignore contamination. Run probes before evaluation. Tag every result with contamination level. Present both full and low-contamination subsets. Let the reader decide.
 
 12. **Report failure modes honestly.** (NEW v3) If LLM seeds hurt, say so. If the random baseline matches the LLM, say so. Negative results about LLM reasoning limits are publishable and valuable.
 
-13. **Experiment 2 is the key ablation.** (NEW v3.1) The test-conditioned vs source-only comparison is the paper's strongest result regardless of outcome. If test conditioning wins, the unit test pipeline is justified. If source-only matches, the approach is more general than we claimed. Either way, it's the slide the audience remembers. Ensure same token budget, same number of seeds, same models — the ONLY variable is whether the LLM sees test code and coverage data.
+13. **Experiment 2 is the key ablation.** (NEW v3.1) The test-conditioned vs source-only comparison is the paper's strongest result regardless of outcome. If test conditioning wins, the unit test pipeline is justified. If source-only matches, the approach is more general than we claimed. Either way, it's the slide the audience remembers. Ensure same token budget (±20%), same number of seeds, same models — the ONLY variable is whether the LLM sees test code and coverage data.
+
+14. **Cross-target transfer is a first-class result.** (NEW audit) RQ4 asks whether this skill transfers. The LOO matrix and Tier 3 evaluation are required to answer it. The format-similarity stratification (text↔text vs text↔binary) is a contribution in its own right: it tells practitioners which target types benefit from transfer.
+
+15. **pinned_versions.yaml is the single source of truth for versions.** (NEW audit) All commit SHAs, dictionary paths, harness paths, and libFuzzer flags live in one file. Target YAMLs reference it. Scripts read from it. No commit SHA is ever hardcoded anywhere else.
