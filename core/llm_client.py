@@ -35,6 +35,8 @@ _LOOP_CHECK_EVERY_CHARS = 2048
 logger = get_logger("utcf.llm")
 
 DEFAULT_CACHE_DIR = Path(os.environ.get("UTCF_LLM_CACHE", ".cache/llm"))
+ANTHROPIC_KEY_ENV = "UTCF_ANTHROPIC_KEY_PATH"
+DEFAULT_SECRETS_PATH = "secrets/llm_key"
 
 # Cost table is explicit — keep in sync with vendor pricing pages.
 # Values in USD per 1M tokens.
@@ -45,6 +47,7 @@ PRICING_USD_PER_MTOK = {
     "claude-3-5-sonnet-20241022": {"input": 3.00, "output": 15.00},
     "claude-sonnet-4-6": {"input": 3.00, "output": 15.00},
     "claude-opus-4-6": {"input": 15.00, "output": 75.00},
+    "claude-haiku-4-5-20251001": {"input": 1.00, "output": 5.00},
     # LiteLLM proxy models (UF ai.it.ufl.edu). Prices per the proxy dashboard.
     "llama-3.1-8b-instruct": {"input": 0.22, "output": 0.22},
     "llama-3.1-70b-instruct": {"input": 0.40, "output": 0.40},
@@ -264,6 +267,16 @@ class LLMClient:
             self.api_key = api_key or _load_key(secrets_path)
             self.base_url = base_url or litellm_url
         else:
+            anthropic_override = os.environ.get(ANTHROPIC_KEY_ENV)
+            using_default_secrets = Path(secrets_path) == Path(DEFAULT_SECRETS_PATH)
+            if api_key is None and anthropic_override and using_default_secrets:
+                candidate = _try_load_key(anthropic_override)
+                if candidate and detect_provider(candidate) == "anthropic":
+                    self.api_key = candidate
+                    self.provider = provider or "anthropic"
+                    self.base_url = base_url
+                    self._client = None
+                    return
             self.api_key = api_key or _load_key(secrets_path)
             self.provider = provider or detect_provider(self.api_key)
             self.base_url = base_url
@@ -280,7 +293,7 @@ class LLMClient:
             self._client = OpenAI(api_key=self.api_key, base_url=self.base_url) if self.base_url else OpenAI(api_key=self.api_key)
         elif self.provider == "anthropic":
             from anthropic import Anthropic
-            self._client = Anthropic(api_key=self.api_key)
+            self._client = Anthropic(api_key=self.api_key, max_retries=0)
         else:
             raise ValueError(f"Unknown provider: {self.provider}")
         return self._client
@@ -296,7 +309,7 @@ class LLMClient:
         top_p: float = 1.0,
         max_tokens: int = 2048,
         use_cache: bool = True,
-        max_retries: int = 5,
+        max_retries: int = 10,
         abort_on_loop: bool = True,
         cache_salt: str | None = None,
     ) -> Response:
@@ -352,11 +365,12 @@ class LLMClient:
                     system_blocks = [m["content"] for m in messages if m["role"] == "system"]
                     user_blocks = [m for m in messages if m["role"] != "system"]
                     system_prompt = "\n\n".join(system_blocks) if system_blocks else None
+                    # Anthropic rejects (temperature, top_p) together; prefer
+                    # temperature and drop top_p (server-side default 1.0).
                     resp = client.messages.create(
                         model=model,
                         max_tokens=max_tokens,
                         temperature=temperature,
-                        top_p=top_p,
                         system=system_prompt,
                         messages=user_blocks,
                     )
