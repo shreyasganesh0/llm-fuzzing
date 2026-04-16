@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<g1>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Named captures and nested repetitions should stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Unicode classes should also stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Large counted repetitions should also trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Character classes should also stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Named captures and nested repetitions should stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Unicode classes should also stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"a{1000,}b{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Large counted repetitions should also trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Character classes should also stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Named captures and nested repetitions should stress the parser/compiler and trigger the uncovered branch in the bitstate code.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Greek}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bit",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 0,
+    "output_tokens": 1026,
+    "cost_usd": 0.00022572,
+    "latency_ms": 7370.143197000289,
+    "prompt_hash": "42665f695c5247682d140d57798e957109f8e558e60d0e84ff5998a42f974b8f",
+    "timestamp": "2026-04-16T01:30:20.756232+00:00",
+    "generation_wall_clock_s": 7.370143907999591,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=1",
+    "cached": true
+  }
+}

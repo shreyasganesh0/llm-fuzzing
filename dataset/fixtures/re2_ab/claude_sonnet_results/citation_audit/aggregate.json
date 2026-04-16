@@ -1,0 +1,56 @@
+{
+  "exp1_full": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 91,
+    "citation_hit": 0,
+    "citation_miss": 91,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  },
+  "exp2_source": {
+    "seeds": 30,
+    "unique_cited_files": 6,
+    "citation_count_total": 58,
+    "citation_hit": 50,
+    "citation_miss": 8,
+    "hit_rate": 0.8620689655172413,
+    "hit_files": [
+      "re2/compile.cc",
+      "re2/re2.cc",
+      "re2/regexp.cc"
+    ],
+    "miss_files": [
+      "re2/charclass.cc",
+      "re2/perl_groups.cc",
+      "re2/unicode_groups.cc"
+    ]
+  },
+  "exp2_plus_gaps": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 88,
+    "citation_hit": 0,
+    "citation_miss": 88,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  },
+  "exp1_gaps_only": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 100,
+    "citation_hit": 0,
+    "citation_miss": 100,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  }
+}

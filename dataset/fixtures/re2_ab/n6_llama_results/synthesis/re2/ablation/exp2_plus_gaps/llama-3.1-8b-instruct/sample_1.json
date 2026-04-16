@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "40a3d06b8bb4dcf5",
+      "content_b64": "+0AoP1A8eD5hKikqKD9QPHg+YSop",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Stress the parser/compiler with nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c72597f1f9f5cbb2",
+      "content_b64": "+fFbXmEtekEtWjAtOV0q",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Check coverage of character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e18d655ae91c8329",
+      "content_b64": "wIJhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Test large counted repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "11b05f153d018444",
+      "content_b64": "IqtccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Verify support for Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6b047b64a94006e1",
+      "content_b64": "zzNhKD9QPHg+YispKmM=",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Check handling of named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1253f14bbc48b5b4",
+      "content_b64": "giVhKGJ8YykqZA==",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Test alternations within repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0951f91c76cddc13",
+      "content_b64": "s/1hKlxDKmI=",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Check support for byte-range characters",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2006e199c37dba61",
+      "content_b64": "M9BcQ3sxMDAwLH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Verify large byte-range repetition support",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a35a4e1998d02e07",
+      "content_b64": "P/ZhKD89Yilj",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Test lookaheads (rejected)",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c1c63710836e8d0b",
+      "content_b64": "DBVhXGJcQyo=",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Check word boundaries and byte-range characters",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a*)*(?P<x>a*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Stress the parser/compiler with nested repetitions\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Check coverage of character classes\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Test large counted repetitions\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Verify support for Unicode classes\"\n    },\n    {\n      \"regex\": \"a(?P<x>b+)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Check handling of named captures\"\n    },\n    {\n      \"regex\": \"a(b|c)*d\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Test alternations within repetitions\"\n    },\n    {\n      \"regex\": \"a*\\\\C*b\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Check support for byte-range characters\"\n    },\n    {\n      \"regex\": \"\\\\C{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Verify large byte-range repetition support\"\n    },\n    {\n      \"regex\": \"a(?=b)c\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Test lookaheads (rejected)\"\n    },\n    {\n      \"regex\": \"a\\\\b\\\\C*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Check word boundaries and byte-range characters\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 26927,
+    "output_tokens": 542,
+    "cost_usd": 0.0060431799999999996,
+    "latency_ms": 4364.096771000732,
+    "prompt_hash": "99aa0fd1205d6269595a1606f9275895e58dfadd2b578e0d8ce276c8bc7b7843",
+    "timestamp": "2026-04-16T01:33:40.071221+00:00",
+    "generation_wall_clock_s": 4.364098352999463,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=1",
+    "cached": false
+  }
+}

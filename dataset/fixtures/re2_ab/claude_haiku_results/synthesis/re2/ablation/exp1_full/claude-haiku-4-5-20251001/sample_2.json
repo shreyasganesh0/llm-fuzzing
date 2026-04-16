@@ -1,0 +1,182 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "77534f938fb92787",
+      "content_b64": "O5AoYXxiKSpj",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Alternation (kInstAlt) with repetition exercises the switch(arg) cases in the Alt handling, testing both arg==0 and arg==1 paths.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5e7c210785d33d04",
+      "content_b64": "Bf4oP1A8bmFtZT5hKykoP1A8bmFtZTI+Yiop",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Named captures (kInstCapture) with arg==0 path, exercises capture register logic and stack operations during matching.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0494ee3f918c4276",
+      "content_b64": "riRhezEwMDB9YnsxMDAwfWN7MTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large repetitions create many Push operations that exhaust the job stack, forcing GrowStack() to be called and testing njob_ >= maxjob_ condition.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d1237c6c4120847d",
+      "content_b64": "9u5bYS16XStbMC05XSpbXmFlaW91XT8=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Character ranges and byte matching (kInstByteRange) with optional quantifier tests the if(p < end) branch in byte range matching.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "04f7b862b270cfe1",
+      "content_b64": "URIoKGF8Yil8KGN8ZCkpKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Nested alternations with repetition stress multiple Alt instruction handling and test the default case in switch(arg) for bad arguments.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "553e68b6d0237c9a",
+      "content_b64": "2HhhKmIqYypkKmUq",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Multiple sequential repetitions exercise the main loop (while(njob_ > 0)) and CheckAndLoop label execution with ShouldVisit checks.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7f7ad0dcf89b0844",
+      "content_b64": "MtgoYSkoYikoYykoZCkoZSkoZikoZykoaCk=",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Multiple captures (kInstCapture with arg==0) test the capture path and Push operations in sequence.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "64b7ca5980f62a66",
+      "content_b64": "0adhP2I/Yz9kP2U/Zj9nP2g/aT9qPw==",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:172"
+      ],
+      "reasoning": "Many optional quantifiers create complex branching that exercises TrySearch loop and opcode switching logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "943ddd842ce3e52d",
+      "content_b64": "GlhbWzphbHBoYTpdXStbWzpkaWdpdDpdXSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:226"
+      ],
+      "reasoning": "POSIX character classes with repetition test byte range matching and character classification in the bitstate engine.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c623563974c6a8ae",
+      "content_b64": "Z1AoYSspfChiKyl8KGMrKXwoZCspfChlKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Multiple top-level alternations test the Alt opcode handling with different arg values and exercise the CheckAndLoop path.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a|b)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Alternation (kInstAlt) with repetition exercises the switch(arg) cases in the Alt handling, testing both arg==0 and arg==1 paths.\"\n    },\n    {\n      \"regex\": \"(?P<name>a+)(?P<name2>b*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Named captures (kInstCapture) with arg==0 path, exercises capture register logic and stack operations during matching.\"\n    },\n    {\n      \"regex\": \"a{1000}b{1000}c{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large repetitions create many Push operations that exhaust the job stack, forcing GrowStack() to be called and testing njob_ >= maxjob_ condition.\"\n    },\n    {\n      \"regex\": \"[a-z]+[0-9]*[^aeiou]?\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Character ranges and byte matching (kInstByteRange) with optional quantifier tests the if(p < end) branch in byte range matching.\"\n    },\n    {\n      \"regex\": \"((a|b)|(c|d))*\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Nested alternations with repetition stress multiple Alt instruction handling and test the default case in switch(arg) for bad arguments.\"\n    },\n    {\n      \"regex\": \"a*b*c*d*e*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Multiple sequential repetitions exercise the main loop (while(njob_ > 0)) and CheckAndLoop label execution with ShouldVisit checks.\"\n    },\n    {\n      \"regex\": \"(a)(b)(c)(d)(e)(f)(g)(h)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Multiple captures (kInstCapture with arg==0) test the capture path and Push operations in sequence.\"\n    },\n    {\n      \"regex\": \"a?b?c?d?e?f?g?h?i?j?\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:172\"],\n      \"reasoning\": \"Many optional quantifiers create complex branching that exercises TrySearch loop and opcode switching logic.\"\n    },\n    {\n      \"regex\": \"[[:alpha:]]+[[:digit:]]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:226\"],\n      \"reasoning\": \"POSIX character classes with repetition test byte range matching and character classification in the bitstate engine.\"\n    },\n    {\n      \"regex\": \"(a+)|(b+)|(c+)|(d+)|(e+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Multiple top-level alternations test the Alt opcode handling with different arg values and exercise the CheckAndLoop path.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6759,
+    "output_tokens": 974,
+    "cost_usd": 0.011629,
+    "latency_ms": 60562.04225100009,
+    "prompt_hash": "64ac6491767afcbe6602a0836073ba8d8ab4ea25b4f0d563224826bfdb762f0f",
+    "timestamp": "2026-04-16T01:55:19.863300+00:00",
+    "generation_wall_clock_s": 60.56204287200035,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=2",
+    "cached": false
+  }
+}

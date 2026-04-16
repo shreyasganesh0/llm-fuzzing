@@ -1,0 +1,179 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "77534f938fb92787",
+      "content_b64": "O5AoYXxiKSpj",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Alternation (kInstAlt) with repetition forces the arg==0 and arg==1 cases in the switch statement at line 185-186, exercising the alternation branching logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "998fdbf90d1f89b9",
+      "content_b64": "NQNhezEsNX1i",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216"
+      ],
+      "reasoning": "Counted repetition with byte range matching exercises the kInstByteRange case and the p < end check at line 214-216 during matching.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3ca25f18b215c8b1",
+      "content_b64": "YEkoP1A8bmFtZT5hKyli",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named capture group exercises kInstCapture case and the arg==0 branch at line 226, requiring proper stack pushing and capture register management.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3ce42f601cc1ef1c",
+      "content_b64": "7zwoYSopKmI=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Nested repetitions create complex NFA structures that force heavy stack usage, potentially triggering GrowStack() and the njob_ >= maxjob_ condition.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "93d458565aff2b0e",
+      "content_b64": "trNbXmEtel0r",
+      "target_gaps": [
+        "re2/bitstate.cc:218",
+        "re2/bitstate.cc:220"
+      ],
+      "reasoning": "Negated character class with repetition exercises byte range matching and the if(ip->Matches(c)) branch.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "133c7928c2d16609",
+      "content_b64": "b5JhKD86YnxjKSpk",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Non-capturing group with alternation and repetition exercises the kInstAlt opcode handling and arg switch cases.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "91db6fcdff12a535",
+      "content_b64": "jpYoYSkoYikoYyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Multiple sequential captures exercise the capture register path and Push operations for each capture group.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3dbc0bf70be67ea2",
+      "content_b64": "HmlhKmIqYyo=",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:163"
+      ],
+      "reasoning": "Multiple consecutive repetitions exercise the main loop in TrySearch and the CheckAndLoop label logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "161c7da82c85ac83",
+      "content_b64": "y+ooYXxifGN8ZCkqZQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "Multi-way alternation exercises kInstAltMatch and the greedy/non-greedy branching at lines 200-202.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "aadd319d2e583dcf",
+      "content_b64": "wsFhezEwLDIwfWI=",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Large counted repetition range forces extensive stack operations and exercises the Push function's stack management.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a|b)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Alternation (kInstAlt) with repetition forces the arg==0 and arg==1 cases in the switch statement at line 185-186, exercising the alternation branching logic.\"\n    },\n    {\n      \"regex\": \"a{1,5}b\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\"],\n      \"reasoning\": \"Counted repetition with byte range matching exercises the kInstByteRange case and the p < end check at line 214-216 during matching.\"\n    },\n    {\n      \"regex\": \"(?P<name>a+)b\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named capture group exercises kInstCapture case and the arg==0 branch at line 226, requiring proper stack pushing and capture register management.\"\n    },\n    {\n      \"regex\": \"(a*)*b\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Nested repetitions create complex NFA structures that force heavy stack usage, potentially triggering GrowStack() and the njob_ >= maxjob_ condition.\"\n    },\n    {\n      \"regex\": \"[^a-z]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:218\", \"re2/bitstate.cc:220\"],\n      \"reasoning\": \"Negated character class with repetition exercises byte range matching and the if(ip->Matches(c)) branch.\"\n    },\n    {\n      \"regex\": \"a(?:b|c)*d\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Non-capturing group with alternation and repetition exercises the kInstAlt opcode handling and arg switch cases.\"\n    },\n    {\n      \"regex\": \"(a)(b)(c)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Multiple sequential captures exercise the capture register path and Push operations for each capture group.\"\n    },\n    {\n      \"regex\": \"a*b*c*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:163\"],\n      \"reasoning\": \"Multiple consecutive repetitions exercise the main loop in TrySearch and the CheckAndLoop label logic.\"\n    },\n    {\n      \"regex\": \"(a|b|c|d)*e\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\"],\n      \"reasoning\": \"Multi-way alternation exercises kInstAltMatch and the greedy/non-greedy branching at lines 200-202.\"\n    },\n    {\n      \"regex\": \"a{10,20}b\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Large counted repetition range forces extensive stack operations and exercises the Push function's stack management.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6141,
+    "output_tokens": 872,
+    "cost_usd": 0.010501,
+    "latency_ms": 58925.067156000296,
+    "prompt_hash": "6a7353c55b6109c40402a18b5f10400a38e889f2463482b208b7f51cd09c3de9",
+    "timestamp": "2026-04-16T02:01:43.118860+00:00",
+    "generation_wall_clock_s": 58.925067658000444,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=2",
+    "cached": false
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "3a3f7527541a5413",
+      "content_b64": "tGMoP1A8eD5hKykoPz1iKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:123"
+      ],
+      "reasoning": "Named captures with lookaheads",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cc5717c2133a0218",
+      "content_b64": "wuhbXmEtekEtWjAtOV0q",
+      "target_gaps": [
+        "re2/bitstate.cc:129"
+      ],
+      "reasoning": "Large character class",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c274b310127a9610",
+      "content_b64": "yWEoYSopezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:135"
+      ],
+      "reasoning": "Deep recursion",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "73001adf26ad0814",
+      "content_b64": "2e1ccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:141"
+      ],
+      "reasoning": "Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e106ffa1e9aca55c",
+      "content_b64": "+hkoYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c179b2997f8f6ec1",
+      "content_b64": "uLQoP1A8eD5hKykoP1A8eT5iKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:153"
+      ],
+      "reasoning": "Named captures with captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "83f0fe3ffaddfb2e",
+      "content_b64": "dPtbXmEtekEtWjAtOV0qXHB7R3JlZWt9Kw==",
+      "target_gaps": [
+        "re2/bitstate.cc:159"
+      ],
+      "reasoning": "Character class with Unicode class",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "fa77d3ef83f21413",
+      "content_b64": "Q34oYSopezEwMDAsfSg/PWIp",
+      "target_gaps": [
+        "re2/bitstate.cc:165"
+      ],
+      "reasoning": "Deep recursion with lookahead",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "50fcb9bae44e1737",
+      "content_b64": "oARccHtHcmVla30rW15hLXpBLVowLTldKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:171"
+      ],
+      "reasoning": "Unicode class with character class",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cc7997005a3c3842",
+      "content_b64": "IL4oYSopKlxwe0dyZWVrfSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:177"
+      ],
+      "reasoning": "Nested repetitions with Unicode class",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)(?=b)\",\n      \"target_gaps\": [\"re2/bitstate.cc:123\"],\n      \"reasoning\": \"Named captures with lookaheads\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:129\"],\n      \"reasoning\": \"Large character class\"\n    },\n    {\n      \"regex\": \"(a*){1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:135\"],\n      \"reasoning\": \"Deep recursion\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:141\"],\n      \"reasoning\": \"Unicode classes\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Nested repetitions\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:153\"],\n      \"reasoning\": \"Named captures with captures\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]*\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:159\"],\n      \"reasoning\": \"Character class with Unicode class\"\n    },\n    {\n      \"regex\": \"(a*){1000,}(?=b)\",\n      \"target_gaps\": [\"re2/bitstate.cc:165\"],\n      \"reasoning\": \"Deep recursion with lookahead\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:171\"],\n      \"reasoning\": \"Unicode class with character class\"\n    },\n    {\n      \"regex\": \"(a*)*\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Nested repetitions with Unicode class\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 26927,
+    "output_tokens": 455,
+    "cost_usd": 0.00602404,
+    "latency_ms": 4624.113114000465,
+    "prompt_hash": "7f63f4b8d6aeb061adb69f00011c0183192e5d6cfe06c9f4160ba5f54026eb6c",
+    "timestamp": "2026-04-16T01:33:44.697576+00:00",
+    "generation_wall_clock_s": 4.624113715000021,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=2",
+    "cached": false
+  }
+}

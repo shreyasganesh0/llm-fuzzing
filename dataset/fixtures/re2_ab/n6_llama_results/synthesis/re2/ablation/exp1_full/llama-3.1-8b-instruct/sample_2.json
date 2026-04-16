@@ -1,0 +1,206 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "3b894010418b126e",
+      "content_b64": "hP8oP1A8ZzE+YSspKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a nested repetition, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d31e5fd5d36fc481",
+      "content_b64": "j5dccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a Unicode class, which should also hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c274b310127a9610",
+      "content_b64": "yWEoYSopezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a large counted repetition, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9b5badc549deddc4",
+      "content_b64": "4w4oP1A8ZzE+YSspKD9QPGcyPmIrKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with named captures, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "92547fb6699cb3b9",
+      "content_b64": "XnsoPzphfGIpKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a non-capturing group, which should also hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "627955da56a5f712",
+      "content_b64": "8TxbXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a character class, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "dd426aa268ae9140",
+      "content_b64": "LtwoPzw9YWJjKWRlZg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a positive lookbehind assertion, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2b322db81c64974e",
+      "content_b64": "BQAoPyEoYWJjKSlkZWY=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a negative lookbehind assertion, which should also hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0b0b09d13e07d0fd",
+      "content_b64": "xkMoPzphfGIpezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with a large counted repetition inside a non-capturing group, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5f9acb93d2915aed",
+      "content_b64": "ccUoP1A8ZzE+YSspKD9QPGcyPmIrKXsxMDAwLH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern exercises the parser/compiler with named captures and a large counted repetition, which should hit several uncovered branches.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<g1>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a nested repetition, which should hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a Unicode class, which should also hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(a*){1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a large counted repetition, which should hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with named captures, which should hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a non-capturing group, which should also hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a character class, which should hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?<=abc)def\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a positive lookbehind assertion, which should hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?!(abc))def\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a negative lookbehind assertion, which should also hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?:a|b){1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with a large counted repetition inside a non-capturing group, which should hit several uncovered branches.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+){1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern exercises the parser/compiler with named captures and a large counted repetition, which should hit several uncovered branches.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5689,
+    "output_tokens": 964,
+    "cost_usd": 0.0014636599999999999,
+    "latency_ms": 4214.421026999844,
+    "prompt_hash": "78bec458450d7e56b4d07ab01cdcad69050d1e2a2246c4dce258b323ca167984",
+    "timestamp": "2026-04-16T01:30:24.972088+00:00",
+    "generation_wall_clock_s": 4.214421728000161,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=2",
+    "cached": true
+  }
+}

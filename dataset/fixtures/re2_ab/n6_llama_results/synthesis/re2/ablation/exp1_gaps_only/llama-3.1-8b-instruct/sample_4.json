@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 4,
+  "inputs": [
+    {
+      "input_id": "7b7c0e35164e25c4",
+      "content_b64": "QTJceHsxMDAwfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Tests Unicode code point, which could trigger stack growth and trigger uncovered branches in Push and GrowStack",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "76df0902f5a1a58e",
+      "content_b64": "xEwoYSopKihhKikq",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Tests nested repetitions, which could trigger stack growth and trigger uncovered branches in Push and GrowStack",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "fd77dfeb8ff7a5da",
+      "content_b64": "+nBccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Tests Unicode class, which could trigger stack growth and trigger uncovered branches in Push and GrowStack",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4871b5ad4c2b2fee",
+      "content_b64": "OBJhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Tests large counted repetition, which could trigger stack growth and trigger uncovered branches in Push and GrowStack",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f2234156760ab3d8",
+      "content_b64": "PK9bXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Tests character class, which could trigger stack growth and trigger uncovered branches in Push and GrowStack",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f738fda022c52954",
+      "content_b64": "PkQoPz1hYmMp",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Tests lookahead, which could trigger uncovered branches in TrySearch and CheckAndLoop",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d6446cf73cbf62a1",
+      "content_b64": "gyEoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:172"
+      ],
+      "reasoning": "Tests named capture, which could trigger uncovered branches in TrySearch and CheckAndLoop",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3547582ac3287feb",
+      "content_b64": "xfEoYSopKmEq",
+      "target_gaps": [
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Tests repetition and capture, which could trigger uncovered branches in TrySearch and CheckAndLoop",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "35bec46d0dc579de",
+      "content_b64": "Cs1ccHtHcmVla30qKGEqKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:200"
+      ],
+      "reasoning": "Tests Unicode class and repetition, which could trigger uncovered branches in TrySearch and CheckAndLoop",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d8da778246daf640",
+      "content_b64": "eLtbXmEtekEtWjAtOV0q",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:214"
+      ],
+      "reasoning": "Tests character class and repetition, which could trigger uncovered branches in TrySearch and CheckAndLoop",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\x{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Tests Unicode code point, which could trigger stack growth and trigger uncovered branches in Push and GrowStack\"\n    },\n    {\n      \"regex\": \"(a*)*(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Tests nested repetitions, which could trigger stack growth and trigger uncovered branches in Push and GrowStack\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Tests Unicode class, which could trigger stack growth and trigger uncovered branches in Push and GrowStack\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Tests large counted repetition, which could trigger stack growth and trigger uncovered branches in Push and GrowStack\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Tests character class, which could trigger stack growth and trigger uncovered branches in Push and GrowStack\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Tests lookahead, which could trigger uncovered branches in TrySearch and CheckAndLoop\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\", \"re2/bitstate.cc:172\"],\n      \"reasoning\": \"Tests named capture, which could trigger uncovered branches in TrySearch and CheckAndLoop\"\n    },\n    {\n      \"regex\": \"(a*)*a*\",\n      \"target_gaps\": [\"re2/bitstate.cc:172\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Tests repetition and capture, which could trigger uncovered branches in TrySearch and CheckAndLoop\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}*(a*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:200\"],\n      \"reasoning\": \"Tests Unicode class and repetition, which could trigger uncovered branches in TrySearch and CheckAndLoop\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:214\"],\n      \"reasoning\": \"Tests character class and repetition, which could trigger uncovered branches in TrySearch and CheckAndLoop\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 651,
+    "cost_usd": 0.00128832,
+    "latency_ms": 3688.4395229999427,
+    "prompt_hash": "1a6087f57372c4db2f75f4f74aba4e65f0b3ddc1757c13d0fa0271dbce18d1a3",
+    "timestamp": "2026-04-16T01:34:22.836437+00:00",
+    "generation_wall_clock_s": 3.6884403040003235,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=4",
+    "cached": false
+  }
+}

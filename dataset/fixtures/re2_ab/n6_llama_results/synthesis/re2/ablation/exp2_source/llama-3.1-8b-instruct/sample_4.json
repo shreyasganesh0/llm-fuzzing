@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp2",
+  "sample_index": 4,
+  "inputs": [
+    {
+      "input_id": "b2beb52ffbba9d50",
+      "content_b64": "R1tccHtHcmVla31hKw==",
+      "target_gaps": [
+        "re2/set.cc:214",
+        "re2/regexp.h:179"
+      ],
+      "reasoning": "Tests the Unicode class feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f268b02afeb4bfa5",
+      "content_b64": "fjgoYSopKg==",
+      "target_gaps": [
+        "re2/regexp.h:163",
+        "re2/regexp.h:176"
+      ],
+      "reasoning": "Tests the nested repetition feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "bc1e969c5b45073b",
+      "content_b64": "mHBhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/regexp.h:210",
+        "re2/regexp.h:219"
+      ],
+      "reasoning": "Tests the large counted repetition feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "d63489e5fdb3b228",
+      "content_b64": "MzJhLipiLipj",
+      "target_gaps": [
+        "re2/set.cc:113",
+        "re2/set.cc:121"
+      ],
+      "reasoning": "Tests the concatenation of multiple regex patterns in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "22ccef1f469e2869",
+      "content_b64": "TRFhK3xiKw==",
+      "target_gaps": [
+        "re2/regexp.h:149",
+        "re2/regexp.h:158"
+      ],
+      "reasoning": "Tests the alternation feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f0a141abfd5c84a0",
+      "content_b64": "WdJhKmI=",
+      "target_gaps": [
+        "re2/regexp.h:191",
+        "re2/regexp.h:200"
+      ],
+      "reasoning": "Tests the repetition feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "3c880e75f739ff5b",
+      "content_b64": "oahhP2I=",
+      "target_gaps": [
+        "re2/regexp.h:196",
+        "re2/regexp.h:205"
+      ],
+      "reasoning": "Tests the optional repetition feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "684424a009ffb260",
+      "content_b64": "U3JhezAsMX0=",
+      "target_gaps": [
+        "re2/regexp.h:213",
+        "re2/regexp.h:222"
+      ],
+      "reasoning": "Tests the zero-or-one repetition feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "8a120966cf640b56",
+      "content_b64": "B1ZbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/regexp.h:184",
+        "re2/regexp.h:193"
+      ],
+      "reasoning": "Tests the character class feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "45d7c7f91089b461",
+      "content_b64": "kU0oP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/regexp.h:127",
+        "re2/regexp.h:136"
+      ],
+      "reasoning": "Tests the named capture feature in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}a+\",\n      \"target_gaps\": [\"re2/set.cc:214\", \"re2/regexp.h:179\"],\n      \"reasoning\": \"Tests the Unicode class feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/regexp.h:163\", \"re2/regexp.h:176\"],\n      \"reasoning\": \"Tests the nested repetition feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/regexp.h:210\", \"re2/regexp.h:219\"],\n      \"reasoning\": \"Tests the large counted repetition feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a.*b.*c\",\n      \"target_gaps\": [\"re2/set.cc:113\", \"re2/set.cc:121\"],\n      \"reasoning\": \"Tests the concatenation of multiple regex patterns in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a+|b+\",\n      \"target_gaps\": [\"re2/regexp.h:149\", \"re2/regexp.h:158\"],\n      \"reasoning\": \"Tests the alternation feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a*b\",\n      \"target_gaps\": [\"re2/regexp.h:191\", \"re2/regexp.h:200\"],\n      \"reasoning\": \"Tests the repetition feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a?b\",\n      \"target_gaps\": [\"re2/regexp.h:196\", \"re2/regexp.h:205\"],\n      \"reasoning\": \"Tests the optional repetition feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{0,1}\",\n      \"target_gaps\": [\"re2/regexp.h:213\", \"re2/regexp.h:222\"],\n      \"reasoning\": \"Tests the zero-or-one repetition feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/regexp.h:184\", \"re2/regexp.h:193\"],\n      \"reasoning\": \"Tests the character class feature in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/regexp.h:127\", \"re2/regexp.h:136\"],\n      \"reasoning\": \"Tests the named capture feature in the parser/compiler.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 22712,
+    "output_tokens": 559,
+    "cost_usd": 0.00511962,
+    "latency_ms": 4195.220040000095,
+    "prompt_hash": "d0aaa3e7eef3f0009ba1f9434941a79c02cda3e7f897f3d5e883616fc3c22694",
+    "timestamp": "2026-04-16T01:33:27.104072+00:00",
+    "generation_wall_clock_s": 4.195221353000306,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=4",
+    "cached": false
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 4,
+  "inputs": [
+    {
+      "input_id": "e6c4e032b1b66645",
+      "content_b64": "vTooP1A8eD5hKikqKD9QPHg+YSop",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Nested repetitions and named captures to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "860b4c8cd30fc6ee",
+      "content_b64": "mD1ccHtHcmVla30rXHB7R3JlZWt9Kw==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Unicode classes to exercise PARSER and COMPILER with non-ASCII input",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9cce2e1e8f83dfdf",
+      "content_b64": "ANtbXmEtekEtWjAtOV17MTAwMCx9",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Large character class to exercise PARSER and COMPILER with long patterns",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3c24c33eb080eddb",
+      "content_b64": "Q7soP1A8eD5hKykoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named captures with repeated groups to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "2d4d8fec9296b758",
+      "content_b64": "tINccHtHcmVla30rW15hLXpBLVowLTld",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Combination of Unicode classes and character classes to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d35cc4f4d9297848",
+      "content_b64": "Tn4oP1A8eD5hKikqKD9QPHg+Yiop",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Nested repetitions with different capture groups to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "29cd6832a3577779",
+      "content_b64": "TvRbXmEtekEtWjAtOV17MSx9W15hLXpBLVowLTldezEsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Multiple character classes with different lengths to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e582fb23c70aa501",
+      "content_b64": "pGBccHtHcmVla30rKD9QPHg+YSsp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Unicode classes with named captures to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e1c7c10a3cffcce8",
+      "content_b64": "WnpbXmEtekEtWjAtOV17MSx9YXsxMDAwLH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Combination of character classes and large counted reps to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c86db4c425a312b6",
+      "content_b64": "arYoP1A8eD5hKykoP1A8eD5iKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named captures with repeated groups to exercise PARSER and COMPILER",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a*)*(?P<x>a*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Nested repetitions and named captures to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Unicode classes to exercise PARSER and COMPILER with non-ASCII input\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Large character class to exercise PARSER and COMPILER with long patterns\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures with repeated groups to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Combination of Unicode classes and character classes to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"(?P<x>a*)*(?P<x>b*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Nested repetitions with different capture groups to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1,}[^a-zA-Z0-9]{1,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Multiple character classes with different lengths to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Unicode classes with named captures to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1,}a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Combination of character classes and large counted reps to exercise PARSER and COMPILER\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<x>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures with repeated groups to exercise PARSER and COMPILER\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5689,
+    "output_tokens": 678,
+    "cost_usd": 0.00140074,
+    "latency_ms": 4911.8755459994645,
+    "prompt_hash": "820dd95077ca73fb585dd89195b8daf773543220cb428a3b372e89b944156dbf",
+    "timestamp": "2026-04-16T01:30:33.746060+00:00",
+    "generation_wall_clock_s": 4.911876227999528,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=4",
+    "cached": true
+  }
+}

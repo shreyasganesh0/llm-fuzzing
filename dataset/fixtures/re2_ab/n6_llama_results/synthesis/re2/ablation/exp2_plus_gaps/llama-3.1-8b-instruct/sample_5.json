@@ -1,0 +1,166 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 5,
+  "inputs": [
+    {
+      "input_id": "f450ab1f591a824d",
+      "content_b64": "YelceHsxMGZmZmZ9",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Tests Unicode character range",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5e2797e202245124",
+      "content_b64": "OhYoP1A8eD5hKykq",
+      "target_gaps": [
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Tests nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a5aec6c6d112d0c5",
+      "content_b64": "1nBbXmEtekEtWjAtOVx4MDAtXHh7MTBmZmZmfV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:214"
+      ],
+      "reasoning": "Tests character class with negated Unicode range",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e42fbfbcca2a274c",
+      "content_b64": "bGNccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Tests Unicode property class",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "107b76b5756157db",
+      "content_b64": "1gAoYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Tests repetition with zero quantifier",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f18a32c95d5e5ee1",
+      "content_b64": "701hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "Tests large counted repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4505962eee295139",
+      "content_b64": "BlQoP1A8eD5hKykoP1A8eT5iKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Tests named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "fb21b540595416f8",
+      "content_b64": "OZRbXlx4MDAtXHh7MTBmZmZmfV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "Tests character class with negated Unicode range",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "df5dd6638750832a",
+      "content_b64": "bcZcQyo=",
+      "target_gaps": [
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Tests any byte",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "359b9541e9bdc975",
+      "content_b64": "zv8oP1A8eD5hKykqXEMq",
+      "target_gaps": [
+        "re2/bitstate.cc:177"
+      ],
+      "reasoning": "Tests nested repetitions with any byte",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\x{10ffff}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Tests Unicode character range\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Tests nested repetitions\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9\\\\x00-\\\\x{10ffff}]\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\"],\n      \"reasoning\": \"Tests character class with negated Unicode range\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Tests Unicode property class\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Tests repetition with zero quantifier\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Tests large counted repetition\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Tests named captures\"\n    },\n    {\n      \"regex\": \"[^\\\\x00-\\\\x{10ffff}]\",\n      \"target_gaps\": [\"re2/bitstate.cc:202\"],\n      \"reasoning\": \"Tests character class with negated Unicode range\"\n    },\n    {\n      \"regex\": \"\\\\C*\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Tests any byte\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)*\\\\C*\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Tests nested repetitions with any byte\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 26927,
+    "output_tokens": 453,
+    "cost_usd": 0.0060236,
+    "latency_ms": 4691.905280000356,
+    "prompt_hash": "f963ff3569f60d06fb0b5e2299cbd0d5c3c0d24792e79d098afc1a54f2f36ac5",
+    "timestamp": "2026-04-16T01:33:59.683439+00:00",
+    "generation_wall_clock_s": 4.691905881000821,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=5",
+    "cached": false
+  }
+}

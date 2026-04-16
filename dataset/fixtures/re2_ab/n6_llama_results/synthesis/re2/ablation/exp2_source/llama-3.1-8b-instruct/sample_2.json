@@ -1,0 +1,186 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp2",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "7c8b3eaef64472d7",
+      "content_b64": "QChccHtHcmVla30rKD89XHB7R3JlZWt9Kyk=",
+      "target_gaps": [
+        "re2/set.cc:175",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests Unicode classes with lookaheads",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "352b3f250d5ed346",
+      "content_b64": "v8ooYSopKig/PWEqKQ==",
+      "target_gaps": [
+        "re2/set.cc:178",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests nested repetitions with lookaheads",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "377c2c88b0cd677f",
+      "content_b64": "H9IoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/set.cc:180",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "b7d4a725d4cbb485",
+      "content_b64": "2G1bXmEtekEtWjAtOV17MTAwMCx9",
+      "target_gaps": [
+        "re2/set.cc:181",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests large character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "8c315153e36c8c84",
+      "content_b64": "5CphezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/set.cc:183",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests large counted repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f46cbb4fb38c9ccc",
+      "content_b64": "b1EoPz1hYmMp",
+      "target_gaps": [
+        "re2/set.cc:184",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests lookaheads",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "fe1f05d7d23443e4",
+      "content_b64": "1RlcYlxwe0dyZWVrfStcYg==",
+      "target_gaps": [
+        "re2/set.cc:185",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests word boundaries with Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "fbe09c1989546fd7",
+      "content_b64": "9idcYlteYS16QS1aMC05XXsxMDAwLH1cYg==",
+      "target_gaps": [
+        "re2/set.cc:186",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests word boundaries with large character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "40303ab1b8e8e10d",
+      "content_b64": "43FcYlxwe0dyZWVrfStcYig/PVxwe0dyZWVrfSsp",
+      "target_gaps": [
+        "re2/set.cc:187",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests word boundaries with Unicode classes and lookaheads",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "44015f3723064606",
+      "content_b64": "fxEoPzw9YWJjKWE=",
+      "target_gaps": [
+        "re2/set.cc:188",
+        "re2/set.cc:212",
+        "re2/set.cc:274"
+      ],
+      "reasoning": "This regex tests lookbehinds",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}+(?=\\\\p{Greek}+)\",\n      \"target_gaps\": [\"re2/set.cc:175\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests Unicode classes with lookaheads\"\n    },\n    {\n      \"regex\": \"(a*)*(?=a*)\",\n      \"target_gaps\": [\"re2/set.cc:178\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests nested repetitions with lookaheads\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/set.cc:180\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests named captures\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/set.cc:181\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests large character classes\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/set.cc:183\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests large counted repetitions\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/set.cc:184\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests lookaheads\"\n    },\n    {\n      \"regex\": \"\\\\b\\\\p{Greek}+\\\\b\",\n      \"target_gaps\": [\"re2/set.cc:185\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests word boundaries with Unicode classes\"\n    },\n    {\n      \"regex\": \"\\\\b[^a-zA-Z0-9]{1000,}\\\\b\",\n      \"target_gaps\": [\"re2/set.cc:186\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests word boundaries with large character classes\"\n    },\n    {\n      \"regex\": \"\\\\b\\\\p{Greek}+\\\\b(?=\\\\p{Greek}+)\",\n      \"target_gaps\": [\"re2/set.cc:187\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests word boundaries with Unicode classes and lookaheads\"\n    },\n    {\n      \"regex\": \"(?<=abc)a\",\n      \"target_gaps\": [\"re2/set.cc:188\", \"re2/set.cc:212\", \"re2/set.cc:274\"],\n      \"reasoning\": \"This regex tests lookbehinds\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 22712,
+    "output_tokens": 642,
+    "cost_usd": 0.00513788,
+    "latency_ms": 5437.505796000551,
+    "prompt_hash": "df5e586948149499ed659a7dea055201a669f90d6b70f3df95aae80fb0afa6cd",
+    "timestamp": "2026-04-16T01:33:17.440309+00:00",
+    "generation_wall_clock_s": 5.437506657000085,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=2",
+    "cached": false
+  }
+}

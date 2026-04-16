@@ -1,0 +1,26 @@
+{
+  "exp1_full": {
+    "seeds": 30,
+    "ok": 29,
+    "err": 1,
+    "ok_rate": 0.9666666666666667
+  },
+  "exp2_source": {
+    "seeds": 30,
+    "ok": 30,
+    "err": 0,
+    "ok_rate": 1.0
+  },
+  "exp2_plus_gaps": {
+    "seeds": 30,
+    "ok": 30,
+    "err": 0,
+    "ok_rate": 1.0
+  },
+  "exp1_gaps_only": {
+    "seeds": 30,
+    "ok": 30,
+    "err": 0,
+    "ok_rate": 1.0
+  }
+}

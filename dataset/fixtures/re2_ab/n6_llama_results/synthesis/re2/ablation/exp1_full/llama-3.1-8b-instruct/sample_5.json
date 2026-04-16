@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 5,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures with multiple groups to test BitState::GrowStack() and BitState::Push()\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetition to test BitState::TrySearch() and BitState::Push()\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Character class with negation to test BitState::Push() and BitState::GrowStack()\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Nested repetition with named captures to test BitState::Push() and BitState::GrowStack()\"\n    },\n    {\n      \"regex\": \"\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\"],\n      \"reasoning\": \"Unicode class to test BitState::Push() and BitState::GrowStack()\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Nested repetition to test BitState::TrySearch() and BitState::Push()\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)(?P<g1>c+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Multiple named captures with the same name to test BitState::GrowStack() and BitState::Push()\"\n    },\n    {\n      \"regex\": \"[a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Character class to test BitState::Push() and BitState::GrowStack()\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Repeated group with named captures to test BitState::Push() and BitState::GrowStack()\"\n    },\n    {\n      \"regex\": \"a{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Large counted repetition to test BitState::TrySearch() and BitState::Push()\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5689,
+    "output_tokens": 600,
+    "cost_usd": 0.00138358,
+    "latency_ms": 4739.903459000743,
+    "prompt_hash": "63664ea42365a2186ad4f7d2a7463be3f1d3509792cf072a7d30e381ac4580b7",
+    "timestamp": "2026-04-16T01:30:38.487205+00:00",
+    "generation_wall_clock_s": 4.739904029999707,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=5",
+    "cached": true
+  }
+}

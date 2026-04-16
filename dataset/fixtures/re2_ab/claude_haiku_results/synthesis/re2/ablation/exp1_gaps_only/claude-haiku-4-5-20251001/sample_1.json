@@ -1,0 +1,179 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "903b34cbfd488447",
+      "content_b64": "jpUoYXxiKSpj",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Alternation (kInstAlt) with repetition forces the switch(arg) cases in kInstAlt handling, exercising the arg==0 and arg==1 branches.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bb0e613fa6e2df21",
+      "content_b64": "dqcoKGErKSspK2I=",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163"
+      ],
+      "reasoning": "Nested repetitions create complex NFA structures that exercise the TrySearch loop and CheckAndLoop label path through the state machine.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0e29a9b712a4a249",
+      "content_b64": "j6xbYS16QS1aMC05XSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Character class with byte range matching exercises kInstByteRange case and the if(p < end) condition for reading input characters.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6893588d08eea866",
+      "content_b64": "H5QoP1A8bmFtZT5hKyli",
+      "target_gaps": [
+        "re2/bitstate.cc:226"
+      ],
+      "reasoning": "Named capture group exercises kInstCapture case with arg==0 branch and cap() register handling.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "85117874fe37242e",
+      "content_b64": "WYAoYSkoYikoYykoZCkoZSkoZik=",
+      "target_gaps": [
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Multiple sequential captures create many Push operations, potentially exercising stack growth and njob_ counter increments.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "231898afc88c4eef",
+      "content_b64": "Q6BhezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Large counted repetition with wide range creates many instruction states, stressing the job stack and potentially triggering GrowStack when njob_ >= maxjob_.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "63ec81e037f9942b",
+      "content_b64": "77EoYXxifGN8ZHxlfGZ8Z3xoKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "Multiple alternations exercise kInstAltMatch case and the greedy() branch decision logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "460f17fd699955cd",
+      "content_b64": "kWdhKmIqYypkKmU=",
+      "target_gaps": [
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "Multiple optional segments with the ShouldVisit check in the CheckAndLoop label, exercising state visit tracking.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6a7b3392870546f1",
+      "content_b64": "LBhbXlx4MDAtXHgxZl0=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216"
+      ],
+      "reasoning": "Negated character class with byte range matching exercises the Matches() condition and character reading at boundary.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "df41ec78801a8b3a",
+      "content_b64": "mjIoYStiKykrYw==",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Nested groups with repetition and alternation creates complex state transitions exercising the main TrySearch while loop.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a|b)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Alternation (kInstAlt) with repetition forces the switch(arg) cases in kInstAlt handling, exercising the arg==0 and arg==1 branches.\"\n    },\n    {\n      \"regex\": \"((a+)+)+b\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\"],\n      \"reasoning\": \"Nested repetitions create complex NFA structures that exercise the TrySearch loop and CheckAndLoop label path through the state machine.\"\n    },\n    {\n      \"regex\": \"[a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Character class with byte range matching exercises kInstByteRange case and the if(p < end) condition for reading input characters.\"\n    },\n    {\n      \"regex\": \"(?P<name>a+)b\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\"],\n      \"reasoning\": \"Named capture group exercises kInstCapture case with arg==0 branch and cap() register handling.\"\n    },\n    {\n      \"regex\": \"(a)(b)(c)(d)(e)(f)\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Multiple sequential captures create many Push operations, potentially exercising stack growth and njob_ counter increments.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Large counted repetition with wide range creates many instruction states, stressing the job stack and potentially triggering GrowStack when njob_ >= maxjob_.\"\n    },\n    {\n      \"regex\": \"(a|b|c|d|e|f|g|h)\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\"],\n      \"reasoning\": \"Multiple alternations exercise kInstAltMatch case and the greedy() branch decision logic.\"\n    },\n    {\n      \"regex\": \"a*b*c*d*e\",\n      \"target_gaps\": [\"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Multiple optional segments with the ShouldVisit check in the CheckAndLoop label, exercising state visit tracking.\"\n    },\n    {\n      \"regex\": \"[^\\\\x00-\\\\x1f]\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\"],\n      \"reasoning\": \"Negated character class with byte range matching exercises the Matches() condition and character reading at boundary.\"\n    },\n    {\n      \"regex\": \"(a+b+)+c\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Nested groups with repetition and alternation creates complex state transitions exercising the main TrySearch while loop.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6141,
+    "output_tokens": 878,
+    "cost_usd": 0.010531,
+    "latency_ms": 59179.95845299993,
+    "prompt_hash": "46a4d89986eb20d70bcf2e20ce1ca482fc7abbcaf9fa1d094013d49a3db79cc2",
+    "timestamp": "2026-04-16T02:00:44.192539+00:00",
+    "generation_wall_clock_s": 59.179959084000075,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=1",
+    "cached": false
+  }
+}

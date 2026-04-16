@@ -1,0 +1,175 @@
+{
+  "target": "re2",
+  "model": "claude-sonnet-4-6",
+  "experiment": "exp2",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "feb6be080ac81fc0",
+      "content_b64": "ojwoP1A8bmFtZT5bYS16QS1aX11cdyop",
+      "target_gaps": [
+        "re2/re2.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Named capture group with word character class exercises named group parsing and \\w class compilation",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "c79317f56a69697c",
+      "content_b64": "iOYoYSopKmI=",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Nested repetition triggers special handling for potentially ambiguous repetition in compiler",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "c22819578ecd4f8d",
+      "content_b64": "NrFccHtHcmVla30r",
+      "target_gaps": [
+        "re2/unicode_groups.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Unicode script property class exercises Unicode category parsing and compilation",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "7df2bfdeb433a732",
+      "content_b64": "iapbXlx4MDAtXHg3Rl0r",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Negated character class with hex escape ranges exercises non-ASCII range handling",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "68b35d7a99b93cc2",
+      "content_b64": "cW1hezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Large counted repetition exercises the repeat unrolling logic in the compiler",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "2561586ba2cf7a8a",
+      "content_b64": "T68oPzphYmN8ZGVmfGdoaSl7Myw1fQ==",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Non-capturing group with alternation and counted repetition stresses alternation+repeat compilation",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "764af9f559f3864f",
+      "content_b64": "RDYoP2k6SGVsbG8pKD8taTpXb3JsZCk=",
+      "target_gaps": [
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Inline flag toggling within non-capturing groups exercises flag parsing and scoping",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "6af81c2d2436a89d",
+      "content_b64": "dUlccHtMdX17Mix9XHB7TGx9Kw==",
+      "target_gaps": [
+        "re2/unicode_groups.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Multiple Unicode category properties (uppercase/lowercase letters) with repetition",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "14bd0705521554e4",
+      "content_b64": "1N0oKGErKShiKil8KGM/KWQpKw==",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Deeply nested alternation with multiple capture groups exercises subgroup numbering",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "22ff6eb7ebf484b3",
+      "content_b64": "+CdbXHB7TH1ccHtOfV8tXSs=",
+      "target_gaps": [
+        "re2/unicode_groups.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Character class containing Unicode property escapes mixed with literals exercises class merging",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<name>[a-zA-Z_]\\\\w*)\",\n      \"target_gaps\": [\"re2/re2.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Named capture group with word character class exercises named group parsing and \\\\w class compilation\"\n    },\n    {\n      \"regex\": \"(a*)*b\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Nested repetition triggers special handling for potentially ambiguous repetition in compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/unicode_groups.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Unicode script property class exercises Unicode category parsing and compilation\"\n    },\n    {\n      \"regex\": \"[^\\\\x00-\\\\x7F]+\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Negated character class with hex escape ranges exercises non-ASCII range handling\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Large counted repetition exercises the repeat unrolling logic in the compiler\"\n    },\n    {\n      \"regex\": \"(?:abc|def|ghi){3,5}\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Non-capturing group with alternation and counted repetition stresses alternation+repeat compilation\"\n    },\n    {\n      \"regex\": \"(?i:Hello)(?-i:World)\",\n      \"target_gaps\": [\"re2/regexp.cc\"],\n      \"reasoning\": \"Inline flag toggling within non-capturing groups exercises flag parsing and scoping\"\n    },\n    {\n      \"regex\": \"\\\\p{Lu}{2,}\\\\p{Ll}+\",\n      \"target_gaps\": [\"re2/unicode_groups.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Multiple Unicode category properties (uppercase/lowercase letters) with repetition\"\n    },\n    {\n      \"regex\": \"((a+)(b*)|(c?)d)+\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Deeply nested alternation with multiple capture groups exercises subgroup numbering\"\n    },\n    {\n      \"regex\": \"[\\\\p{L}\\\\p{N}_-]+\",\n      \"target_gaps\": [\"re2/unicode_groups.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Character class containing Unicode property escapes mixed with literals exercises class merging\"\n    }\n  ]\n}",
+  "log": {
+    "model": "claude-sonnet-4-6",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 15183,
+    "output_tokens": 694,
+    "cost_usd": 0.055959,
+    "latency_ms": 57416.615529999945,
+    "prompt_hash": "f8161ee0d121b6df1bec9766319db0ffaaefe754e21694099ca55b34da26675e",
+    "timestamp": "2026-04-16T01:47:10.723734+00:00",
+    "generation_wall_clock_s": 57.41661618099988,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=1",
+    "cached": true
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "2bbd7be824b3a71a",
+      "content_b64": "pb8oP1A8eD5hKikq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Nested repetitions stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3bc93b206ace2998",
+      "content_b64": "C2BbXmEtekEtWjAtOV17MTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large character class and repetition stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7fdb414c4cfcf9b6",
+      "content_b64": "3yQoP1A8eD5hKykoP1A8eT5hKikq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Named captures and nested repetitions stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b36a4b0d16615417",
+      "content_b64": "CVtccHtHcmVla317MTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Unicode classes and large repetition stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "eef10f9601f48f50",
+      "content_b64": "y3coYXxiKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Nested repetitions stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f4033a96f64ff656",
+      "content_b64": "jaBbXmEtekEtWjAtOV17MSwxMDAwfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large character class and repetition stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8b353f3dd3cedde3",
+      "content_b64": "xQQoP1A8eD5hKykoP1A8eT5hKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Named captures and nested repetitions stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d0dc058c3c0f11a8",
+      "content_b64": "X89ccHtHcmVla317MSwxMDAwfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Unicode classes and large repetition stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "45b3fac91d0082f6",
+      "content_b64": "bNEoYXxiKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Nested repetitions stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "abf378f4fb965d8f",
+      "content_b64": "C7ZbXmEtekEtWjAtOV17MTAwMCx9",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large character class and repetition stress the parser/compiler",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Nested repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large character class and repetition stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Named captures and nested repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Unicode classes and large repetition stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"(a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Nested repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large character class and repetition stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>a)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Named captures and nested repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}{1,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Unicode classes and large repetition stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"(a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Nested repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large character class and repetition stress the parser/compiler\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 586,
+    "cost_usd": 0.00127402,
+    "latency_ms": 4251.224392999575,
+    "prompt_hash": "3626fc3cdf633476666ef4b0cb9c1a3465aed3615a3eeff1ac577b86696cdbfb",
+    "timestamp": "2026-04-16T01:34:12.531316+00:00",
+    "generation_wall_clock_s": 4.2512253940003575,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=2",
+    "cached": false
+  }
+}

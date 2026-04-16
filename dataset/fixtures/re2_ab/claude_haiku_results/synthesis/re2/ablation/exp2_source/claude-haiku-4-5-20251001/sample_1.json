@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp2",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "5afd9541e494721d",
+      "content_b64": "d5UoP1A8bmFtZT5hKyk=",
+      "target_gaps": [
+        "re2/regexp.cc:parse",
+        "re2/parser.cc:ParseGroup"
+      ],
+      "reasoning": "Named capture groups exercise the parser's handling of (?P<...>) syntax, which is a distinct code path from regular groups.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "c8ec97159a134601",
+      "content_b64": "JLkoYSopKg==",
+      "target_gaps": [
+        "re2/parser.cc:ParseRepeat",
+        "re2/regexp.cc:Simplify"
+      ],
+      "reasoning": "Nested quantifiers test the parser's repetition handling and the compiler's simplification logic for degenerate cases.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "ff953e09bf3462cd",
+      "content_b64": "ZrRbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/parser.cc:ParseCharClass",
+        "re2/regexp.cc:CharClass"
+      ],
+      "reasoning": "Negated character classes with ranges exercise the character class parsing and negation logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "06fb15facca18a68",
+      "content_b64": "7jZhezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/parser.cc:ParseRepeat",
+        "re2/regexp.cc:Repeat"
+      ],
+      "reasoning": "Bounded repetition with large counts tests the parser's handling of {m,n} syntax and potential overflow checks.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "504c3110c1166b89",
+      "content_b64": "hzUoPzphfGJ8Y3xkfGUp",
+      "target_gaps": [
+        "re2/parser.cc:ParseGroup",
+        "re2/regexp.cc:Alternate"
+      ],
+      "reasoning": "Non-capturing group with multiple alternations exercises the alternation and grouping logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "8a0d76adf6809fc6",
+      "content_b64": "kFtccHtMfSs=",
+      "target_gaps": [
+        "re2/parser.cc:ParseEscape",
+        "re2/regexp.cc:CharClass"
+      ],
+      "reasoning": "Unicode property escape sequences test the parser's handling of \\p{...} syntax and unicode class compilation.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "0441af9ffb62daa2",
+      "content_b64": "8sMoP2kpYWJj",
+      "target_gaps": [
+        "re2/parser.cc:ParseGroup",
+        "re2/regexp.cc:FoldCase"
+      ],
+      "reasoning": "Case-insensitive flag in inline modifier syntax exercises the parser's flag handling within groups.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "987b23f637b61c0b",
+      "content_b64": "vg5bXHdcZFxzXSs=",
+      "target_gaps": [
+        "re2/parser.cc:ParseCharClass",
+        "re2/parser.cc:ParseEscape"
+      ],
+      "reasoning": "Character class with multiple escape sequences (\\w, \\d, \\s) tests escape sequence handling within brackets.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "cb439dd9513cc2a1",
+      "content_b64": "XiVhKD86YnxjKSpk",
+      "target_gaps": [
+        "re2/parser.cc:ParseConcat",
+        "re2/regexp.cc:Concat"
+      ],
+      "reasoning": "Concatenation with alternation and repetition tests the interaction of multiple parser levels.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "fc3834470e5acb3c",
+      "content_b64": "iNBbYS16XSpbQS1aXXsxLDN9",
+      "target_gaps": [
+        "re2/parser.cc:ParseConcat",
+        "re2/parser.cc:ParseRepeat"
+      ],
+      "reasoning": "Sequence of character classes with different repetition patterns tests concatenation and quantifier interaction.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<name>a+)\",\n      \"target_gaps\": [\"re2/regexp.cc:parse\", \"re2/parser.cc:ParseGroup\"],\n      \"reasoning\": \"Named capture groups exercise the parser's handling of (?P<...>) syntax, which is a distinct code path from regular groups.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/parser.cc:ParseRepeat\", \"re2/regexp.cc:Simplify\"],\n      \"reasoning\": \"Nested quantifiers test the parser's repetition handling and the compiler's simplification logic for degenerate cases.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/parser.cc:ParseCharClass\", \"re2/regexp.cc:CharClass\"],\n      \"reasoning\": \"Negated character classes with ranges exercise the character class parsing and negation logic.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/parser.cc:ParseRepeat\", \"re2/regexp.cc:Repeat\"],\n      \"reasoning\": \"Bounded repetition with large counts tests the parser's handling of {m,n} syntax and potential overflow checks.\"\n    },\n    {\n      \"regex\": \"(?:a|b|c|d|e)\",\n      \"target_gaps\": [\"re2/parser.cc:ParseGroup\", \"re2/regexp.cc:Alternate\"],\n      \"reasoning\": \"Non-capturing group with multiple alternations exercises the alternation and grouping logic.\"\n    },\n    {\n      \"regex\": \"\\\\p{L}+\",\n      \"target_gaps\": [\"re2/parser.cc:ParseEscape\", \"re2/regexp.cc:CharClass\"],\n      \"reasoning\": \"Unicode property escape sequences test the parser's handling of \\\\p{...} syntax and unicode class compilation.\"\n    },\n    {\n      \"regex\": \"(?i)abc\",\n      \"target_gaps\": [\"re2/parser.cc:ParseGroup\", \"re2/regexp.cc:FoldCase\"],\n      \"reasoning\": \"Case-insensitive flag in inline modifier syntax exercises the parser's flag handling within groups.\"\n    },\n    {\n      \"regex\": \"[\\\\w\\\\d\\\\s]+\",\n      \"target_gaps\": [\"re2/parser.cc:ParseCharClass\", \"re2/parser.cc:ParseEscape\"],\n      \"reasoning\": \"Character class with multiple escape sequences (\\\\w, \\\\d, \\\\s) tests escape sequence handling within brackets.\"\n    },\n    {\n      \"regex\": \"a(?:b|c)*d\",\n      \"target_gaps\": [\"re2/parser.cc:ParseConcat\", \"re2/regexp.cc:Concat\"],\n      \"reasoning\": \"Concatenation with alternation and repetition tests the interaction of multiple parser levels.\"\n    },\n    {\n      \"regex\": \"[a-z]*[A-Z]{1,3}\",\n      \"target_gaps\": [\"re2/parser.cc:ParseConcat\", \"re2/parser.cc:ParseRepeat\"],\n      \"reasoning\": \"Sequence of character classes with different repetition patterns tests concatenation and quantifier interaction.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 15183,
+    "output_tokens": 797,
+    "cost_usd": 0.019168,
+    "latency_ms": 60116.34700800005,
+    "prompt_hash": "65434808afb8ee51ee27bd9388a9c32b461353bf5469c33be5bf96154c069761",
+    "timestamp": "2026-04-16T01:56:26.503174+00:00",
+    "generation_wall_clock_s": 60.11634969399984,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=1",
+    "cached": false
+  }
+}

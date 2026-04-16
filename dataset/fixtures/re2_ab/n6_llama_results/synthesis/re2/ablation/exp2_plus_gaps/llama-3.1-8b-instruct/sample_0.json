@@ -1,0 +1,170 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "988387286baccb5b",
+      "content_b64": "zaIoPzphKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "This pattern exercises the repetition logic in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "eb533f3417077372",
+      "content_b64": "OYphezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern tests the handling of large counted repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7e3cc95305f7a505",
+      "content_b64": "ANJhfGE=",
+      "target_gaps": [
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "This pattern exercises the alternation logic in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "692db34bc73999a8",
+      "content_b64": "J6FhezAsMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "This pattern tests the handling of zero-length counted repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "74833d36f6a24339",
+      "content_b64": "IvJhezEsMX0=",
+      "target_gaps": [
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "This pattern tests the handling of single-length counted repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "34417b3f09e77e6d",
+      "content_b64": "PvZhfGI=",
+      "target_gaps": [
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "This pattern exercises the alternation logic in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "150ab51cfab1a11c",
+      "content_b64": "yhNhezEsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "This pattern tests the handling of minimum-length counted repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f8853b974101fef4",
+      "content_b64": "kGIoPzphfGIpKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "This pattern exercises the repetition logic in the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0f9fa5fcd0120c1d",
+      "content_b64": "k6JhezIsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "This pattern tests the handling of minimum-length counted repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "338567468304663b",
+      "content_b64": "V9dhezEwMDAsMTAwMX0=",
+      "target_gaps": [
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "This pattern tests the handling of large counted repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?:a)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"This pattern exercises the repetition logic in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern tests the handling of large counted repetitions.\"\n    },\n    {\n      \"regex\": \"a|a\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\"],\n      \"reasoning\": \"This pattern exercises the alternation logic in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{0,0}\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\"],\n      \"reasoning\": \"This pattern tests the handling of zero-length counted repetitions.\"\n    },\n    {\n      \"regex\": \"a{1,1}\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\"],\n      \"reasoning\": \"This pattern tests the handling of single-length counted repetitions.\"\n    },\n    {\n      \"regex\": \"a|b\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\"],\n      \"reasoning\": \"This pattern exercises the alternation logic in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{1,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\"],\n      \"reasoning\": \"This pattern tests the handling of minimum-length counted repetitions.\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"This pattern exercises the repetition logic in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{2,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\"],\n      \"reasoning\": \"This pattern tests the handling of minimum-length counted repetitions.\"\n    },\n    {\n      \"regex\": \"a{1000,1001}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\"],\n      \"reasoning\": \"This pattern tests the handling of large counted repetitions.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 26927,
+    "output_tokens": 511,
+    "cost_usd": 0.006036359999999999,
+    "latency_ms": 3354.0402660000836,
+    "prompt_hash": "99191b8852e69f2da8bcfbc833072bfd3fdea377ceaa115442972974e1edc1a8",
+    "timestamp": "2026-04-16T01:33:35.704763+00:00",
+    "generation_wall_clock_s": 3.3540409970000837,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=0",
+    "cached": false
+  }
+}

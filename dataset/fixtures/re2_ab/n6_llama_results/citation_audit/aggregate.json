@@ -1,0 +1,38 @@
+{
+  "exp1_full": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 91,
+    "citation_hit": 0,
+    "citation_miss": 91,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  },
+  "exp2_plus_gaps": {
+    "seeds": 60,
+    "unique_cited_files": 1,
+    "citation_count_total": 94,
+    "citation_hit": 0,
+    "citation_miss": 94,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  },
+  "exp1_gaps_only": {
+    "seeds": 51,
+    "unique_cited_files": 1,
+    "citation_count_total": 234,
+    "citation_hit": 0,
+    "citation_miss": 234,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  }
+}

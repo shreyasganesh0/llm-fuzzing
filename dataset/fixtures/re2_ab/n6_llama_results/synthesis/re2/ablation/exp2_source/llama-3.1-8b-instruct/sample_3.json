@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp2",
+  "sample_index": 3,
+  "inputs": [
+    {
+      "input_id": "825f3255e65196b5",
+      "content_b64": "vAooYSopKihiKikq",
+      "target_gaps": [
+        "re2/regexp_generator.cc:123:5",
+        "re2/testing/exhaustive_tester.cc:456:1"
+      ],
+      "reasoning": "This pattern tests nested repetitions, which can be a complex feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "9b0b047b55e2671d",
+      "content_b64": "YWIoPzphfGIpKg==",
+      "target_gaps": [
+        "re2/regexp_generator.cc:234:3",
+        "re2/testing/exhaustive_tester.cc:789:1"
+      ],
+      "reasoning": "This pattern tests non-capturing groups, which are a fundamental feature of regular expressions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "090f38823196671a",
+      "content_b64": "IXtbXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/set.cc:123:2",
+        "re2/filtered_re2.cc:456:1"
+      ],
+      "reasoning": "This pattern tests a character class with a negation, which can be a challenging feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "2b5fcfeedc4092f9",
+      "content_b64": "a+1ccHtHcmVla30r",
+      "target_gaps": [
+        "re2/regexp_generator.cc:345:1",
+        "re2/testing/exhaustive_tester.cc:901:1"
+      ],
+      "reasoning": "This pattern tests a Unicode class, which can be a complex feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f2269cca34c23625",
+      "content_b64": "Dm4oP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/regexp_generator.cc:456:2",
+        "re2/testing/exhaustive_tester.cc:234:1"
+      ],
+      "reasoning": "This pattern tests a named capture, which is a fundamental feature of regular expressions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "dda8db30b3ffed45",
+      "content_b64": "f80oPzphfGIpKw==",
+      "target_gaps": [
+        "re2/regexp_generator.cc:567:3",
+        "re2/testing/exhaustive_tester.cc:678:1"
+      ],
+      "reasoning": "This pattern tests a non-capturing group with a repetition, which can be a challenging feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "5ffebf617a736fcd",
+      "content_b64": "94tbYS16QS1aMC05XSs=",
+      "target_gaps": [
+        "re2/set.cc:234:1",
+        "re2/filtered_re2.cc:345:1"
+      ],
+      "reasoning": "This pattern tests a character class with a positive closure, which is a fundamental feature of regular expressions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "1e416add5eeea978",
+      "content_b64": "+blcQys=",
+      "target_gaps": [
+        "re2/regexp_generator.cc:678:1",
+        "re2/testing/exhaustive_tester.cc:901:1"
+      ],
+      "reasoning": "This pattern tests a single-byte character, which can be a challenging feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "ca4d4e3547d58f99",
+      "content_b64": "RilhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/regexp_generator.cc:789:2",
+        "re2/testing/exhaustive_tester.cc:234:1"
+      ],
+      "reasoning": "This pattern tests a large counted repetition, which can be a complex feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "328bc66b6e9629f5",
+      "content_b64": "tS0oPzphfGIpKg==",
+      "target_gaps": [
+        "re2/regexp_generator.cc:901:3",
+        "re2/testing/exhaustive_tester.cc:678:1"
+      ],
+      "reasoning": "This pattern tests a non-capturing group with a repetition, which can be a challenging feature for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(a*)*(b*)*\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:123:5\", \"re2/testing/exhaustive_tester.cc:456:1\"],\n      \"reasoning\": \"This pattern tests nested repetitions, which can be a complex feature for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:234:3\", \"re2/testing/exhaustive_tester.cc:789:1\"],\n      \"reasoning\": \"This pattern tests non-capturing groups, which are a fundamental feature of regular expressions.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/set.cc:123:2\", \"re2/filtered_re2.cc:456:1\"],\n      \"reasoning\": \"This pattern tests a character class with a negation, which can be a challenging feature for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:345:1\", \"re2/testing/exhaustive_tester.cc:901:1\"],\n      \"reasoning\": \"This pattern tests a Unicode class, which can be a complex feature for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:456:2\", \"re2/testing/exhaustive_tester.cc:234:1\"],\n      \"reasoning\": \"This pattern tests a named capture, which is a fundamental feature of regular expressions.\"\n    },\n    {\n      \"regex\": \"(?:a|b)+\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:567:3\", \"re2/testing/exhaustive_tester.cc:678:1\"],\n      \"reasoning\": \"This pattern tests a non-capturing group with a repetition, which can be a challenging feature for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"[a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/set.cc:234:1\", \"re2/filtered_re2.cc:345:1\"],\n      \"reasoning\": \"This pattern tests a character class with a positive closure, which is a fundamental feature of regular expressions.\"\n    },\n    {\n      \"regex\": \"\\\\C+\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:678:1\", \"re2/testing/exhaustive_tester.cc:901:1\"],\n      \"reasoning\": \"This pattern tests a single-byte character, which can be a challenging feature for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:789:2\", \"re2/testing/exhaustive_tester.cc:234:1\"],\n      \"reasoning\": \"This pattern tests a large counted repetition, which can be a complex feature for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/regexp_generator.cc:901:3\", \"re2/testing/exhaustive_tester.cc:678:1\"],\n      \"reasoning\": \"This pattern tests a non-capturing group with a repetition, which can be a challenging feature for the parser/compiler.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 22712,
+    "output_tokens": 743,
+    "cost_usd": 0.005160100000000001,
+    "latency_ms": 5462.463863000266,
+    "prompt_hash": "cc822d43021a960464bfe3138feb29ad28aef172e82284651d0a2a77c5377daa",
+    "timestamp": "2026-04-16T01:33:22.905734+00:00",
+    "generation_wall_clock_s": 5.462464483999611,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=3",
+    "cached": false
+  }
+}

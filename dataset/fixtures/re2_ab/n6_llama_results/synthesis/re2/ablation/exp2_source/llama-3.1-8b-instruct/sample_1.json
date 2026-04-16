@@ -1,0 +1,166 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp2",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "794914d3dcb81327",
+      "content_b64": "1btccHtHcmVla30r",
+      "target_gaps": [
+        "re2/set.cc:123"
+      ],
+      "reasoning": "Unicode classes are a specific feature in the parser/compiler that should be exercised.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "4e8c3c7c20cf4b84",
+      "content_b64": "vGgoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/regexp.h:456"
+      ],
+      "reasoning": "Named captures are a complex feature that should be tested to ensure proper parsing and compilation.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "4720c54a0dfccfa8",
+      "content_b64": "gJ5bXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/regexp.h:789"
+      ],
+      "reasoning": "Character classes with negated sets should be tested to ensure the parser/compiler handles them correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "b5d35ec64effc30d",
+      "content_b64": "cE5hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/regexp.h:1011"
+      ],
+      "reasoning": "Large counted repetitions are a specific case that should be tested to ensure the parser/compiler handles them correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "279bb5ced09eeb50",
+      "content_b64": "x2goYSopKg==",
+      "target_gaps": [
+        "re2/regexp.h:1213"
+      ],
+      "reasoning": "Nested repetitions are a complex feature that should be tested to ensure proper parsing and compilation.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "7fe59343fbd666f4",
+      "content_b64": "AkFcQyo=",
+      "target_gaps": [
+        "re2/regexp.h:1315"
+      ],
+      "reasoning": "Byte-level matching should be tested to ensure the parser/compiler handles it correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "27458760ec1f163b",
+      "content_b64": "YjdhKz8=",
+      "target_gaps": [
+        "re2/regexp.h:1417"
+      ],
+      "reasoning": "Optional repetition should be tested to ensure the parser/compiler handles it correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "fbdb5fe019e15c43",
+      "content_b64": "T4phfGI=",
+      "target_gaps": [
+        "re2/regexp.h:1519"
+      ],
+      "reasoning": "Alternation should be tested to ensure the parser/compiler handles it correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "15dc30aa6d51e8da",
+      "content_b64": "ebYoPzphKykr",
+      "target_gaps": [
+        "re2/regexp.h:1621"
+      ],
+      "reasoning": "Grouping and repetition should be tested to ensure the parser/compiler handles them correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "8dab8579692e23e4",
+      "content_b64": "+alcd1xX",
+      "target_gaps": [
+        "re2/regexp.h:1723"
+      ],
+      "reasoning": "Word and non-word matching should be tested to ensure the parser/compiler handles them correctly.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/set.cc:123\"],\n      \"reasoning\": \"Unicode classes are a specific feature in the parser/compiler that should be exercised.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/regexp.h:456\"],\n      \"reasoning\": \"Named captures are a complex feature that should be tested to ensure proper parsing and compilation.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/regexp.h:789\"],\n      \"reasoning\": \"Character classes with negated sets should be tested to ensure the parser/compiler handles them correctly.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/regexp.h:1011\"],\n      \"reasoning\": \"Large counted repetitions are a specific case that should be tested to ensure the parser/compiler handles them correctly.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/regexp.h:1213\"],\n      \"reasoning\": \"Nested repetitions are a complex feature that should be tested to ensure proper parsing and compilation.\"\n    },\n    {\n      \"regex\": \"\\\\C*\",\n      \"target_gaps\": [\"re2/regexp.h:1315\"],\n      \"reasoning\": \"Byte-level matching should be tested to ensure the parser/compiler handles it correctly.\"\n    },\n    {\n      \"regex\": \"a+?\",\n      \"target_gaps\": [\"re2/regexp.h:1417\"],\n      \"reasoning\": \"Optional repetition should be tested to ensure the parser/compiler handles it correctly.\"\n    },\n    {\n      \"regex\": \"a|b\",\n      \"target_gaps\": [\"re2/regexp.h:1519\"],\n      \"reasoning\": \"Alternation should be tested to ensure the parser/compiler handles it correctly.\"\n    },\n    {\n      \"regex\": \"(?:a+)+\",\n      \"target_gaps\": [\"re2/regexp.h:1621\"],\n      \"reasoning\": \"Grouping and repetition should be tested to ensure the parser/compiler handles them correctly.\"\n    },\n    {\n      \"regex\": \"\\\\w\\\\W\",\n      \"target_gaps\": [\"re2/regexp.h:1723\"],\n      \"reasoning\": \"Word and non-word matching should be tested to ensure the parser/compiler handles them correctly.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 22712,
+    "output_tokens": 530,
+    "cost_usd": 0.005113240000000001,
+    "latency_ms": 4387.713201999759,
+    "prompt_hash": "0475df0b970337f960722d522cc325df4dbd0f17c533c21968b7bea979eaeaf6",
+    "timestamp": "2026-04-16T01:33:11.999991+00:00",
+    "generation_wall_clock_s": 4.387714243000119,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=1",
+    "cached": false
+  }
+}

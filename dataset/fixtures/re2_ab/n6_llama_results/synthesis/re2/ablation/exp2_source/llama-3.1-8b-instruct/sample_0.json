@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp2",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "33f90a79d724baaa",
+      "content_b64": "XJVcdXsxMGZmZmZ9Kw==",
+      "target_gaps": [
+        "re2/testing/exhaustive_tester.cc:49",
+        "re2/testing/exhaustive_tester.cc:50"
+      ],
+      "reasoning": "Tests Unicode character encoding limits",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "fcf61b3019c96e92",
+      "content_b64": "eyUoYSopKihhKikq",
+      "target_gaps": [
+        "re2/regexp.cc:125",
+        "re2/regexp.cc:130"
+      ],
+      "reasoning": "Stresses repetition nesting",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "6ce72e021391e975",
+      "content_b64": "yWEoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/regexp.cc:159",
+        "re2/regexp.cc:161"
+      ],
+      "reasoning": "Tests named captures",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "81ae30ae6ad51ffb",
+      "content_b64": "DqpccHtHcmVla30r",
+      "target_gaps": [
+        "re2/regexp.cc:256",
+        "re2/regexp.cc:257"
+      ],
+      "reasoning": "Tests Unicode character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "7ed2141221b9fde1",
+      "content_b64": "bxZbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/regexp.cc:324",
+        "re2/regexp.cc:327"
+      ],
+      "reasoning": "Tests character class negation",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "1e87e70867767166",
+      "content_b64": "TEwoPzw9YWJjKWRlZg==",
+      "target_gaps": [
+        "re2/regexp.cc:353",
+        "re2/regexp.cc:354"
+      ],
+      "reasoning": "Tests lookbehind assertion",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "3916b33d32aed1b3",
+      "content_b64": "46JhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/regexp.cc:408",
+        "re2/regexp.cc:409"
+      ],
+      "reasoning": "Tests large counted repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f8853b974101fef4",
+      "content_b64": "kGIoPzphfGIpKg==",
+      "target_gaps": [
+        "re2/regexp.cc:448",
+        "re2/regexp.cc:449"
+      ],
+      "reasoning": "Tests repeated alternation",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "61b42675ffd4bd6d",
+      "content_b64": "WFtcZHswLH0=",
+      "target_gaps": [
+        "re2/regexp.cc:494",
+        "re2/regexp.cc:495"
+      ],
+      "reasoning": "Tests counted repetition with zero minimum",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "87943df16fe5471e",
+      "content_b64": "AJhhezEsMn0=",
+      "target_gaps": [
+        "re2/regexp.cc:545",
+        "re2/regexp.cc:546"
+      ],
+      "reasoning": "Tests counted repetition with min and max",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\u{10ffff}+\",\n      \"target_gaps\": [\"re2/testing/exhaustive_tester.cc:49\", \"re2/testing/exhaustive_tester.cc:50\"],\n      \"reasoning\": \"Tests Unicode character encoding limits\"\n    },\n    {\n      \"regex\": \"(a*)*(a*)*\",\n      \"target_gaps\": [\"re2/regexp.cc:125\", \"re2/regexp.cc:130\"],\n      \"reasoning\": \"Stresses repetition nesting\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/regexp.cc:159\", \"re2/regexp.cc:161\"],\n      \"reasoning\": \"Tests named captures\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/regexp.cc:256\", \"re2/regexp.cc:257\"],\n      \"reasoning\": \"Tests Unicode character classes\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/regexp.cc:324\", \"re2/regexp.cc:327\"],\n      \"reasoning\": \"Tests character class negation\"\n    },\n    {\n      \"regex\": \"(?<=abc)def\",\n      \"target_gaps\": [\"re2/regexp.cc:353\", \"re2/regexp.cc:354\"],\n      \"reasoning\": \"Tests lookbehind assertion\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/regexp.cc:408\", \"re2/regexp.cc:409\"],\n      \"reasoning\": \"Tests large counted repetition\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/regexp.cc:448\", \"re2/regexp.cc:449\"],\n      \"reasoning\": \"Tests repeated alternation\"\n    },\n    {\n      \"regex\": \"\\\\d{0,}\",\n      \"target_gaps\": [\"re2/regexp.cc:494\", \"re2/regexp.cc:495\"],\n      \"reasoning\": \"Tests counted repetition with zero minimum\"\n    },\n    {\n      \"regex\": \"a{1,2}\",\n      \"target_gaps\": [\"re2/regexp.cc:545\", \"re2/regexp.cc:546\"],\n      \"reasoning\": \"Tests counted repetition with min and max\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 22712,
+    "output_tokens": 529,
+    "cost_usd": 0.00511302,
+    "latency_ms": 3269.352142000571,
+    "prompt_hash": "ec9ba681d6a5f45c2ef5daac95429253666b4fe39278de1be7616856f12ac20b",
+    "timestamp": "2026-04-16T01:33:07.610189+00:00",
+    "generation_wall_clock_s": 3.2693527640003595,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=0",
+    "cached": false
+  }
+}

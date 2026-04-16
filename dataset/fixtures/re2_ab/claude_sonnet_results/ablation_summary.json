@@ -1,0 +1,26 @@
+[
+  {
+    "cell": "exp1_full",
+    "seeds": 30,
+    "edges": 1183,
+    "lines": 2408
+  },
+  {
+    "cell": "exp2_source",
+    "seeds": 30,
+    "edges": 1161,
+    "lines": 2326
+  },
+  {
+    "cell": "exp2_plus_gaps",
+    "seeds": 30,
+    "edges": 1050,
+    "lines": 2153
+  },
+  {
+    "cell": "exp1_gaps_only",
+    "seeds": 30,
+    "edges": 1095,
+    "lines": 2223
+  }
+]

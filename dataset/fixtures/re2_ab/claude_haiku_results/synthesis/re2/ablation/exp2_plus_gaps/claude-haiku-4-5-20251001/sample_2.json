@@ -1,0 +1,182 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "636c199fa2ef15e2",
+      "content_b64": "GmEoYSopKmI=",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Nested repetitions trigger kInstAlt opcode handling in the switch statement, exercising the arg==0 and arg==1 cases in the alternation logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8eb623194e790d2f",
+      "content_b64": "J4VhfGJ8Y3xkfGV8ZnxnfGg=",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Multiple alternations create a complex NFA that exercises the kInstAlt case and the CheckAndLoop path with different arg values.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9bd57957dbc6bb0f",
+      "content_b64": "5GhbYS16XXsxMDB9",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Large counted repetition creates many instructions, forcing the job stack to grow and triggering GrowStack() and Push() operations with njob_ >= maxjob_.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "31d0510a850e8715",
+      "content_b64": "hrJhK2IqYz9kezIsNX0=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Mixed repetition operators with byte range matching exercises kInstByteRange opcode and the (p < end) condition for character consumption.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a175e02dab5a56f3",
+      "content_b64": "QMwoYSkoYikoYykoZCkoZSkoZik=",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:231"
+      ],
+      "reasoning": "Multiple capturing groups exercise kInstCapture with arg==0 and arg==1 cases, testing capture register saving and restoration.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7e3e0c5bf545180c",
+      "content_b64": "ehcoPzphKykrYg==",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Non-capturing group with nested quantifiers exercises TrySearch loop and CheckAndLoop goto path, testing the while(njob_ > 0) condition.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "005610dec7266f51",
+      "content_b64": "2o9bXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:220"
+      ],
+      "reasoning": "Negated character class exercises byte range matching with complex character set logic in kInstByteRange.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8889a64f81d71709",
+      "content_b64": "bXxhezEsMTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Very large upper bound on counted repetition forces significant job stack growth, testing the reallocation and push logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "19ac63f558d8bd61",
+      "content_b64": "dPcoYXxiKSooY3xkKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:191",
+        "re2/bitstate.cc:200"
+      ],
+      "reasoning": "Alternation within quantifiers exercises kInstAlt with greedy/non-greedy matching and kInstAltMatch opcode handling.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8a326d809cb3fc25",
+      "content_b64": "DHdhKmIqYypkKmUqZipnKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172"
+      ],
+      "reasoning": "Multiple sequential quantifiers create complex NFA requiring extensive job stack manipulation and ShouldVisit checks in the main loop.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a*)*b\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Nested repetitions trigger kInstAlt opcode handling in the switch statement, exercising the arg==0 and arg==1 cases in the alternation logic.\"\n    },\n    {\n      \"regex\": \"a|b|c|d|e|f|g|h\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Multiple alternations create a complex NFA that exercises the kInstAlt case and the CheckAndLoop path with different arg values.\"\n    },\n    {\n      \"regex\": \"[a-z]{100}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Large counted repetition creates many instructions, forcing the job stack to grow and triggering GrowStack() and Push() operations with njob_ >= maxjob_.\"\n    },\n    {\n      \"regex\": \"a+b*c?d{2,5}\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Mixed repetition operators with byte range matching exercises kInstByteRange opcode and the (p < end) condition for character consumption.\"\n    },\n    {\n      \"regex\": \"(a)(b)(c)(d)(e)(f)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:231\"],\n      \"reasoning\": \"Multiple capturing groups exercise kInstCapture with arg==0 and arg==1 cases, testing capture register saving and restoration.\"\n    },\n    {\n      \"regex\": \"(?:a+)+b\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Non-capturing group with nested quantifiers exercises TrySearch loop and CheckAndLoop goto path, testing the while(njob_ > 0) condition.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:220\"],\n      \"reasoning\": \"Negated character class exercises byte range matching with complex character set logic in kInstByteRange.\"\n    },\n    {\n      \"regex\": \"a{1,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Very large upper bound on counted repetition forces significant job stack growth, testing the reallocation and push logic.\"\n    },\n    {\n      \"regex\": \"(a|b)*(c|d)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:191\", \"re2/bitstate.cc:200\"],\n      \"reasoning\": \"Alternation within quantifiers exercises kInstAlt with greedy/non-greedy matching and kInstAltMatch opcode handling.\"\n    },\n    {\n      \"regex\": \"a*b*c*d*e*f*g*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\"],\n      \"reasoning\": \"Multiple sequential quantifiers create complex NFA requiring extensive job stack manipulation and ShouldVisit checks in the main loop.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 20164,
+    "output_tokens": 947,
+    "cost_usd": 0.024899,
+    "latency_ms": 59601.0630210003,
+    "prompt_hash": "96ab057e2f9b0be49b889d4a22947fbed7113acd05d0662cd052738386ad22c8",
+    "timestamp": "2026-04-16T01:59:35.894864+00:00",
+    "generation_wall_clock_s": 59.60106361199996,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=2",
+    "cached": false
+  }
+}

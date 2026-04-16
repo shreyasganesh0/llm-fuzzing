@@ -1,0 +1,178 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "44ba4b0e77343fc7",
+      "content_b64": "Q3ooYXxiKSpj",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Alternation with repetition exercises the kInstAlt opcode and switch(arg) cases in the BitState engine, hitting the alt-matching logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5098e494c4de41e6",
+      "content_b64": "3akoP1A8bmFtZT5hKykoP1A8bmFtZT5iKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:226"
+      ],
+      "reasoning": "Named captures with kInstCapture opcode and arg==0 case, testing capture register logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "178909ff92c212e8",
+      "content_b64": "KT0oYSspKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Nested repetition creates complex NFA requiring multiple job stack pushes and the while(njob_ > 0) loop in TrySearch.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "50f86bf695b21737",
+      "content_b64": "Up5hezEwMDAsMjAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large counted repetition with range forces many Push operations, potentially triggering GrowStack when njob_ >= maxjob_.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "667933df9a4058f2",
+      "content_b64": "GghbYS16XSpbQS1aXSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Character classes with repetition exercise kInstByteRange opcode and the p < end boundary check.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "371226f9ef2a3354",
+      "content_b64": "KxIoYXxifGN8ZHxlKSpm",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "Multiple alternation branches test kInstAltMatch and greedy vs non-greedy matching logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "55cafbeb5f2f76fc",
+      "content_b64": "JLZhKmIqYypkKmUq",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:163"
+      ],
+      "reasoning": "Sequence of repetitions creates many sequential instructions, exercising the main TrySearch loop and CheckAndLoop label.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "edcf697fef749d5f",
+      "content_b64": "z4koKGErKSspKw==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Deeply nested repetitions stress the job stack with many Push calls, testing GrowStack and job array management.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "244687836b057135",
+      "content_b64": "aD8oYXxiKSooY3xkKSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Combined alternation and repetition with different quantifiers exercises multiple alt-matching code paths and arg switching.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f2d4256f5c99b096",
+      "content_b64": "ONtbXlx3XHNdKw==",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:226"
+      ],
+      "reasoning": "Negated character class with perl classes exercises ByteRange matching and boundary conditions in the state machine.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a|b)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Alternation with repetition exercises the kInstAlt opcode and switch(arg) cases in the BitState engine, hitting the alt-matching logic.\"\n    },\n    {\n      \"regex\": \"(?P<name>a+)(?P<name>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\"],\n      \"reasoning\": \"Named captures with kInstCapture opcode and arg==0 case, testing capture register logic.\"\n    },\n    {\n      \"regex\": \"(a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Nested repetition creates complex NFA requiring multiple job stack pushes and the while(njob_ > 0) loop in TrySearch.\"\n    },\n    {\n      \"regex\": \"a{1000,2000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetition with range forces many Push operations, potentially triggering GrowStack when njob_ >= maxjob_.\"\n    },\n    {\n      \"regex\": \"[a-z]*[A-Z]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Character classes with repetition exercise kInstByteRange opcode and the p < end boundary check.\"\n    },\n    {\n      \"regex\": \"(a|b|c|d|e)*f\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\"],\n      \"reasoning\": \"Multiple alternation branches test kInstAltMatch and greedy vs non-greedy matching logic.\"\n    },\n    {\n      \"regex\": \"a*b*c*d*e*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:163\"],\n      \"reasoning\": \"Sequence of repetitions creates many sequential instructions, exercising the main TrySearch loop and CheckAndLoop label.\"\n    },\n    {\n      \"regex\": \"((a+)+)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Deeply nested repetitions stress the job stack with many Push calls, testing GrowStack and job array management.\"\n    },\n    {\n      \"regex\": \"(a|b)*(c|d)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Combined alternation and repetition with different quantifiers exercises multiple alt-matching code paths and arg switching.\"\n    },\n    {\n      \"regex\": \"[^\\\\w\\\\s]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:226\"],\n      \"reasoning\": \"Negated character class with perl classes exercises ByteRange matching and boundary conditions in the state machine.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6759,
+    "output_tokens": 848,
+    "cost_usd": 0.010999,
+    "latency_ms": 7476.29993999999,
+    "prompt_hash": "2f8625e15c1f266603ff8b0a7751b1bf2510d47152501d56bb37435677b458fa",
+    "timestamp": "2026-04-16T01:53:19.109822+00:00",
+    "generation_wall_clock_s": 7.476300661000096,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=0",
+    "cached": false
+  }
+}

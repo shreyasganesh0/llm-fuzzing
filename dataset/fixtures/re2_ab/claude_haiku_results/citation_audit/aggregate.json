@@ -1,0 +1,80 @@
+{
+  "exp1_full": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 73,
+    "citation_hit": 0,
+    "citation_miss": 73,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  },
+  "exp2_source": {
+    "seeds": 30,
+    "unique_cited_files": 31,
+    "citation_count_total": 61,
+    "citation_hit": 0,
+    "citation_miss": 61,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/compiler.cc:compile",
+      "re2/compiler.cc:compilecharclass",
+      "re2/compiler.cc:compiledot",
+      "re2/parser.cc:ParseAlternate",
+      "re2/parser.cc:ParseCharClass",
+      "re2/parser.cc:ParseConcat",
+      "re2/parser.cc:ParseEscape",
+      "re2/parser.cc:ParseGroup",
+      "re2/parser.cc:ParseLiteral",
+      "re2/parser.cc:ParseRepeat",
+      "re2/parser.cc:ParseRepetition",
+      "re2/parser.cc:parseanchor",
+      "re2/parser.cc:parsecharclass",
+      "re2/parser.cc:parseescapes",
+      "re2/parser.cc:parsegroup",
+      "re2/parser.cc:parserepeat",
+      "re2/regexp.cc:Alternate",
+      "re2/regexp.cc:Anchor",
+      "re2/regexp.cc:CharClass",
+      "re2/regexp.cc:Concat",
+      "re2/regexp.cc:FoldCase",
+      "re2/regexp.cc:Parse",
+      "re2/regexp.cc:Repeat",
+      "re2/regexp.cc:Simplify",
+      "re2/regexp.cc:buildcharclass",
+      "re2/regexp.cc:parse",
+      "re2/regexp.cc:parsealternate",
+      "re2/regexp.cc:parsecounted",
+      "re2/regexp.cc:parseescapes",
+      "re2/regexp.cc:parsewordbound",
+      "re2/regexp.cc:simplify"
+    ]
+  },
+  "exp2_plus_gaps": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 72,
+    "citation_hit": 0,
+    "citation_miss": 72,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  },
+  "exp1_gaps_only": {
+    "seeds": 30,
+    "unique_cited_files": 1,
+    "citation_count_total": 79,
+    "citation_hit": 0,
+    "citation_miss": 79,
+    "hit_rate": 0.0,
+    "hit_files": [],
+    "miss_files": [
+      "re2/bitstate.cc"
+    ]
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp2",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "199f996f0c6a451c",
+      "content_b64": "YCooP1A8bmFtZT5hKyk=",
+      "target_gaps": [
+        "re2/regexp.cc:Parse",
+        "re2/parser.cc:ParseGroup"
+      ],
+      "reasoning": "Named capture groups exercise the parser's group handling and named capture logic, which is a key regex feature.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "bd187954ddfab81d",
+      "content_b64": "WiooYSopKg==",
+      "target_gaps": [
+        "re2/parser.cc:ParseRepetition",
+        "re2/regexp.cc:Simplify"
+      ],
+      "reasoning": "Nested quantifiers stress the parser's repetition handling and the simplifier's detection of problematic nesting patterns.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f87081728ecd9cae",
+      "content_b64": "wAxbXmEtekEtWjAtOVxzXQ==",
+      "target_gaps": [
+        "re2/parser.cc:ParseCharClass",
+        "re2/regexp.cc:CharClass"
+      ],
+      "reasoning": "Negated character classes with ranges and escape sequences exercise character class parsing and compilation.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "d9e8e07f0d2225ae",
+      "content_b64": "aJthezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/parser.cc:ParseRepetition",
+        "re2/regexp.cc:Concat"
+      ],
+      "reasoning": "Counted repetitions with large bounds test the parser's handling of explicit repetition counts and range expansion.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "635b418e485fb6ac",
+      "content_b64": "IAVccHtMfSs=",
+      "target_gaps": [
+        "re2/parser.cc:ParseEscape",
+        "re2/regexp.cc:CharClass"
+      ],
+      "reasoning": "Unicode property escapes exercise the parser's escape sequence handling and Unicode character class support.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "4b932bc9c462a9dd",
+      "content_b64": "ePAoPzphfGJ8Yykq",
+      "target_gaps": [
+        "re2/parser.cc:ParseGroup",
+        "re2/regexp.cc:Alternate"
+      ],
+      "reasoning": "Non-capturing groups with alternation stress the parser's group type detection and alternation compilation.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "da17a4e67d8422c8",
+      "content_b64": "qrFcUS4qKz9cRQ==",
+      "target_gaps": [
+        "re2/parser.cc:ParseEscape",
+        "re2/parser.cc:ParseLiteral"
+      ],
+      "reasoning": "Literal quote escapes test the parser's escape handling for literal mode, which bypasses regex metacharacters.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "10a0cd1f490188ba",
+      "content_b64": "QzJhKD86Yig/OmN8ZCkpKmU=",
+      "target_gaps": [
+        "re2/parser.cc:ParseGroup",
+        "re2/regexp.cc:Concat",
+        "re2/regexp.cc:Alternate"
+      ],
+      "reasoning": "Deeply nested groups and alternation within quantifiers exercise the parser's recursion and precedence handling.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "995f2d97808a2035",
+      "content_b64": "IVtbWzphbHBoYTpdWzpkaWdpdDpdXSo=",
+      "target_gaps": [
+        "re2/parser.cc:ParseCharClass",
+        "re2/regexp.cc:CharClass"
+      ],
+      "reasoning": "POSIX character classes in brackets test the parser's special class recognition and merging logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "97210c205c1ffffe",
+      "content_b64": "HLpeYSR8XmIk",
+      "target_gaps": [
+        "re2/parser.cc:ParseAlternate",
+        "re2/regexp.cc:Anchor"
+      ],
+      "reasoning": "Alternation with anchors tests the parser's anchor handling and alternation precedence in complex expressions.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<name>a+)\",\n      \"target_gaps\": [\"re2/regexp.cc:Parse\", \"re2/parser.cc:ParseGroup\"],\n      \"reasoning\": \"Named capture groups exercise the parser's group handling and named capture logic, which is a key regex feature.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/parser.cc:ParseRepetition\", \"re2/regexp.cc:Simplify\"],\n      \"reasoning\": \"Nested quantifiers stress the parser's repetition handling and the simplifier's detection of problematic nesting patterns.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9\\\\s]\",\n      \"target_gaps\": [\"re2/parser.cc:ParseCharClass\", \"re2/regexp.cc:CharClass\"],\n      \"reasoning\": \"Negated character classes with ranges and escape sequences exercise character class parsing and compilation.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/parser.cc:ParseRepetition\", \"re2/regexp.cc:Concat\"],\n      \"reasoning\": \"Counted repetitions with large bounds test the parser's handling of explicit repetition counts and range expansion.\"\n    },\n    {\n      \"regex\": \"\\\\p{L}+\",\n      \"target_gaps\": [\"re2/parser.cc:ParseEscape\", \"re2/regexp.cc:CharClass\"],\n      \"reasoning\": \"Unicode property escapes exercise the parser's escape sequence handling and Unicode character class support.\"\n    },\n    {\n      \"regex\": \"(?:a|b|c)*\",\n      \"target_gaps\": [\"re2/parser.cc:ParseGroup\", \"re2/regexp.cc:Alternate\"],\n      \"reasoning\": \"Non-capturing groups with alternation stress the parser's group type detection and alternation compilation.\"\n    },\n    {\n      \"regex\": \"\\\\Q.*+?\\\\E\",\n      \"target_gaps\": [\"re2/parser.cc:ParseEscape\", \"re2/parser.cc:ParseLiteral\"],\n      \"reasoning\": \"Literal quote escapes test the parser's escape handling for literal mode, which bypasses regex metacharacters.\"\n    },\n    {\n      \"regex\": \"a(?:b(?:c|d))*e\",\n      \"target_gaps\": [\"re2/parser.cc:ParseGroup\", \"re2/regexp.cc:Concat\", \"re2/regexp.cc:Alternate\"],\n      \"reasoning\": \"Deeply nested groups and alternation within quantifiers exercise the parser's recursion and precedence handling.\"\n    },\n    {\n      \"regex\": \"[[:alpha:][:digit:]]*\",\n      \"target_gaps\": [\"re2/parser.cc:ParseCharClass\", \"re2/regexp.cc:CharClass\"],\n      \"reasoning\": \"POSIX character classes in brackets test the parser's special class recognition and merging logic.\"\n    },\n    {\n      \"regex\": \"^a$|^b$\",\n      \"target_gaps\": [\"re2/parser.cc:ParseAlternate\", \"re2/regexp.cc:Anchor\"],\n      \"reasoning\": \"Alternation with anchors tests the parser's anchor handling and alternation precedence in complex expressions.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 15183,
+    "output_tokens": 803,
+    "cost_usd": 0.019198,
+    "latency_ms": 6292.598686000019,
+    "prompt_hash": "53ccd8f1b31e6b062b7ec40914aa29c3e7b0bb43f6676ef53130baa8bcbe417d",
+    "timestamp": "2026-04-16T01:55:26.385674+00:00",
+    "generation_wall_clock_s": 6.292599397000231,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=0",
+    "cached": false
+  }
+}

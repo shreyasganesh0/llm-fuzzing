@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp2",
+  "sample_index": 5,
+  "inputs": [
+    {
+      "input_id": "c0b1f7684eefd962",
+      "content_b64": "hCJccHtHcmVla31ccHtHcmVla30=",
+      "target_gaps": [
+        "re2/testing/regexp_generator.cc:142",
+        "re2/tostring.cc:162"
+      ],
+      "reasoning": "This regex tests the Unicode class syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "e042789a33fa9fb7",
+      "content_b64": "iYthKg==",
+      "target_gaps": [
+        "re2/regexp.h:126",
+        "re2/walker-inl.h:176"
+      ],
+      "reasoning": "This regex tests the repetition syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "b267f8124ff23712",
+      "content_b64": "cPcoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/regexp.h:144",
+        "re2/walker-inl.h:194"
+      ],
+      "reasoning": "This regex tests the named capture syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "ed3e71621d70a258",
+      "content_b64": "kq5cQypcQw==",
+      "target_gaps": [
+        "re2/regexp.h:122",
+        "re2/walker-inl.h:184"
+      ],
+      "reasoning": "This regex tests the any byte syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "c2c17055b14b2a55",
+      "content_b64": "cblbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/regexp.h:123",
+        "re2/walker-inl.h:186"
+      ],
+      "reasoning": "This regex tests the character class syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "f18a32c95d5e5ee1",
+      "content_b64": "701hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/regexp.h:128",
+        "re2/walker-inl.h:188"
+      ],
+      "reasoning": "This regex tests the large counted repetition syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "b0df2b206989d824",
+      "content_b64": "WjJhKj8=",
+      "target_gaps": [
+        "re2/regexp.h:127",
+        "re2/walker-inl.h:190"
+      ],
+      "reasoning": "This regex tests the non-greedy repetition syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "19b109e15bf03ce3",
+      "content_b64": "NrAoYSopKg==",
+      "target_gaps": [
+        "re2/regexp.h:130",
+        "re2/walker-inl.h:192"
+      ],
+      "reasoning": "This regex tests the nested repetition syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "a22c9e3b57b26b21",
+      "content_b64": "VllhfGI=",
+      "target_gaps": [
+        "re2/regexp.h:125",
+        "re2/walker-inl.h:178"
+      ],
+      "reasoning": "This regex tests the alternation syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "58ba2e4a03d5d966",
+      "content_b64": "schcYlxi",
+      "target_gaps": [
+        "re2/regexp.h:121",
+        "re2/walker-inl.h:180"
+      ],
+      "reasoning": "This regex tests the word boundary syntax.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 5,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}\\\\p{Greek}\",\n      \"target_gaps\": [\"re2/testing/regexp_generator.cc:142\", \"re2/tostring.cc:162\"],\n      \"reasoning\": \"This regex tests the Unicode class syntax.\"\n    },\n    {\n      \"regex\": \"a*\",\n      \"target_gaps\": [\"re2/regexp.h:126\", \"re2/walker-inl.h:176\"],\n      \"reasoning\": \"This regex tests the repetition syntax.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/regexp.h:144\", \"re2/walker-inl.h:194\"],\n      \"reasoning\": \"This regex tests the named capture syntax.\"\n    },\n    {\n      \"regex\": \"\\\\C*\\\\C\",\n      \"target_gaps\": [\"re2/regexp.h:122\", \"re2/walker-inl.h:184\"],\n      \"reasoning\": \"This regex tests the any byte syntax.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/regexp.h:123\", \"re2/walker-inl.h:186\"],\n      \"reasoning\": \"This regex tests the character class syntax.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/regexp.h:128\", \"re2/walker-inl.h:188\"],\n      \"reasoning\": \"This regex tests the large counted repetition syntax.\"\n    },\n    {\n      \"regex\": \"a*?\",\n      \"target_gaps\": [\"re2/regexp.h:127\", \"re2/walker-inl.h:190\"],\n      \"reasoning\": \"This regex tests the non-greedy repetition syntax.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/regexp.h:130\", \"re2/walker-inl.h:192\"],\n      \"reasoning\": \"This regex tests the nested repetition syntax.\"\n    },\n    {\n      \"regex\": \"a|b\",\n      \"target_gaps\": [\"re2/regexp.h:125\", \"re2/walker-inl.h:178\"],\n      \"reasoning\": \"This regex tests the alternation syntax.\"\n    },\n    {\n      \"regex\": \"\\\\b\\\\b\",\n      \"target_gaps\": [\"re2/regexp.h:121\", \"re2/walker-inl.h:180\"],\n      \"reasoning\": \"This regex tests the word boundary syntax.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 22712,
+    "output_tokens": 555,
+    "cost_usd": 0.005118740000000001,
+    "latency_ms": 4954.8860219993,
+    "prompt_hash": "eae4f18675e7ee59041c4eeeee17f411d22e4720dff81b86e23840162670608f",
+    "timestamp": "2026-04-16T01:33:32.061722+00:00",
+    "generation_wall_clock_s": 4.954886643000464,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=5",
+    "cached": false
+  }
+}

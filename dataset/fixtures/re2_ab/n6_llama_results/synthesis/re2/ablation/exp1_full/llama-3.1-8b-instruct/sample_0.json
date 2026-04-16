@@ -1,0 +1,177 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "484c8bb76dabb8c5",
+      "content_b64": "Y3MoP1A8eD5hKykq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures with repetition to exercise stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "1782423c7c3e7871",
+      "content_b64": "X1pccHtHcmVla317MTAwMCx9",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large counted repetition with Unicode class to exercise parser limits",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cb7891b074a158a5",
+      "content_b64": "bKsoP1A8eD5hKylbXmEtekEtWjAtOV0q",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named capture with character class to exercise character class parsing",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "fd40298b75576948",
+      "content_b64": "pLooP1A8eD5hKykq",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures with repetition to exercise stack growth and character class parsing",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d438319dc96f576b",
+      "content_b64": "t29ccHtHcmVla30rW15hLXpBLVowLTldKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Unicode class with character class to exercise parser limits and character class parsing",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7803b7bb421db928",
+      "content_b64": "wsooP1A8eD5hKylbXmEtekEtWjAtOV0qYSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named capture with character class and repetition to exercise character class parsing and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "22f178fd9c392894",
+      "content_b64": "HtpccHtHcmVla317MTAwMCx9W15hLXpBLVowLTldKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large counted repetition with Unicode class and character class to exercise parser limits and character class parsing",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cb4e32fdb673c554",
+      "content_b64": "gKMoP1A8eD5hKykqW15hLXpBLVowLTldKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures with repetition and character class to exercise stack growth and character class parsing",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d0ec2e7b0a2011fa",
+      "content_b64": "ad9ccHtHcmVla30rW15hLXpBLVowLTldKmEr",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Unicode class with character class and repetition to exercise parser limits and character class parsing",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "563b043fdccd788f",
+      "content_b64": "wbIoP1A8eD5hKylbXmEtekEtWjAtOV0qYStbXmEtekEtWjAtOV0q",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named capture with character class and repetition to exercise character class parsing and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures with repetition to exercise stack growth\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetition with Unicode class to exercise parser limits\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named capture with character class to exercise character class parsing\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures with repetition to exercise stack growth and character class parsing\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Unicode class with character class to exercise parser limits and character class parsing\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)[^a-zA-Z0-9]*a+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named capture with character class and repetition to exercise character class parsing and stack growth\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}{1000,}[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetition with Unicode class and character class to exercise parser limits and character class parsing\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)*[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures with repetition and character class to exercise stack growth and character class parsing\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+[^a-zA-Z0-9]*a+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Unicode class with character class and repetition to exercise parser limits and character class parsing\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)[^a-zA-Z0-9]*a+[^a-zA-Z0-9]*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named capture with character class and repetition to exercise character class parsing and stack growth\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5689,
+    "output_tokens": 691,
+    "cost_usd": 0.0014035999999999999,
+    "latency_ms": 3617.5153639997006,
+    "prompt_hash": "7c42d01a526cc47b0f94a1c1aef164f3ea5330bea97642bd77ea73c06bd8857c",
+    "timestamp": "2026-04-16T01:30:13.384764+00:00",
+    "generation_wall_clock_s": 3.617516025000441,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=0",
+    "cached": true
+  }
+}

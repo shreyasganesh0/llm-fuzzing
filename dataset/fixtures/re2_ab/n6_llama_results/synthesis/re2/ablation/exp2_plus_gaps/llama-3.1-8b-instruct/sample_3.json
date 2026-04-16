@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 3,
+  "inputs": [
+    {
+      "input_id": "ade4640ae95ded19",
+      "content_b64": "RS0oP1A8eD5hKykoP1A8eT5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named captures with multiple subgroups",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "36d648c2250155f6",
+      "content_b64": "aIwoYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Nested repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "dea58bd9a5e7b998",
+      "content_b64": "iIdccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122"
+      ],
+      "reasoning": "Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bac554d53566e765",
+      "content_b64": "TiJhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Large counted repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "211da60519612c14",
+      "content_b64": "VPwoPzphKykq",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Nested repetitions with capturing group",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f2136b59ae05b3b8",
+      "content_b64": "boQoPzphKyk/",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Optional capturing group",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5c011deb4dfb42fb",
+      "content_b64": "YmpbXmEtekEtWjAtOV0r",
+      "target_gaps": [
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:172"
+      ],
+      "reasoning": "Character class with negation",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a5071a38e0e102dd",
+      "content_b64": "wXYoPzphKykqYSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Nested repetitions with non-capturing group",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b4d280ae312b52c3",
+      "content_b64": "FokoPzphKyk/YSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:200"
+      ],
+      "reasoning": "Optional non-capturing group",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "705f821193b5ccdc",
+      "content_b64": "rSRhezAsMTAwMH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:214"
+      ],
+      "reasoning": "Counted repetition with non-greedy quantifier",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures with multiple subgroups\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Nested repetitions\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\"],\n      \"reasoning\": \"Unicode classes\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Large counted repetition\"\n    },\n    {\n      \"regex\": \"(?:a+)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Nested repetitions with capturing group\"\n    },\n    {\n      \"regex\": \"(?:a+)?\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Optional capturing group\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\", \"re2/bitstate.cc:172\"],\n      \"reasoning\": \"Character class with negation\"\n    },\n    {\n      \"regex\": \"(?:a+)*a+\",\n      \"target_gaps\": [\"re2/bitstate.cc:172\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Nested repetitions with non-capturing group\"\n    },\n    {\n      \"regex\": \"(?:a+)?a+\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:200\"],\n      \"reasoning\": \"Optional non-capturing group\"\n    },\n    {\n      \"regex\": \"a{0,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:214\"],\n      \"reasoning\": \"Counted repetition with non-greedy quantifier\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 26927,
+    "output_tokens": 529,
+    "cost_usd": 0.00604032,
+    "latency_ms": 5348.708004999935,
+    "prompt_hash": "e804c8691ae84c22c12c3d9ca4fcd0c43af479bc14b5cc58598ba8e63a8be862",
+    "timestamp": "2026-04-16T01:33:50.047849+00:00",
+    "generation_wall_clock_s": 5.348708526000337,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=3",
+    "cached": false
+  }
+}

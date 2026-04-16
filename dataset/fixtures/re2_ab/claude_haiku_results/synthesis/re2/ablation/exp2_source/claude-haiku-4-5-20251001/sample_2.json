@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp2",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "84dc7f320319ba4e",
+      "content_b64": "XKUoP1A8bmFtZT5hKyk=",
+      "target_gaps": [
+        "re2/regexp.cc:parse",
+        "re2/parser.cc:parsegroup"
+      ],
+      "reasoning": "Named capture groups exercise the parser's named group handling and the compiler's capture group tracking. This exercises special syntax parsing in the group context.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "cc0f59e951021fbd",
+      "content_b64": "kTAoYSopKg==",
+      "target_gaps": [
+        "re2/parser.cc:parserepeat",
+        "re2/compiler.cc:compile"
+      ],
+      "reasoning": "Nested repetitions stress the parser's repetition handling and compiler's optimization/simplification logic. This is a classic case that needs careful handling to avoid catastrophic backtracking.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "a5e1c7736d376bad",
+      "content_b64": "g6BbXmEtekEtWjAtOV9d",
+      "target_gaps": [
+        "re2/parser.cc:parsecharclass",
+        "re2/regexp.cc:buildcharclass"
+      ],
+      "reasoning": "Negated character classes with ranges exercise the character class parser and the builder's range inversion logic. The underscore and ranges test boundary conditions.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "b65aeacd84150a8d",
+      "content_b64": "z6RhezEsM31iezUsfWN7Mn0=",
+      "target_gaps": [
+        "re2/parser.cc:parserepeat",
+        "re2/regexp.cc:parsecounted"
+      ],
+      "reasoning": "Counted repetitions with various bounds (exact, range, open-ended) exercise the counted repetition parser and compiler's handling of min/max constraints.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "0553261750622964",
+      "content_b64": "GEUoPzphfGJ8Y3xkfGUp",
+      "target_gaps": [
+        "re2/parser.cc:parsegroup",
+        "re2/regexp.cc:parsealternate"
+      ],
+      "reasoning": "Non-capturing groups with alternation test the parser's alternation handling and the compiler's optimization of alternation nodes.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "96802aff45b54bbb",
+      "content_b64": "yGtbXHdcZFxzXSs=",
+      "target_gaps": [
+        "re2/parser.cc:parsecharclass",
+        "re2/regexp.cc:parseescapes"
+      ],
+      "reasoning": "Character class escapes (\\w, \\d, \\s) with repetition exercise escape sequence parsing and character class construction with standard classes.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "8eb953547f9925cc",
+      "content_b64": "bt9eYS4qYiQ=",
+      "target_gaps": [
+        "re2/parser.cc:parseanchor",
+        "re2/compiler.cc:compiledot"
+      ],
+      "reasoning": "Anchors (^ and $) combined with dot-star pattern exercise anchor parsing and the compiler's handling of anchored patterns and wildcards.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "03137127781c21a1",
+      "content_b64": "Bn0oYShiKGMpKSk=",
+      "target_gaps": [
+        "re2/parser.cc:parsegroup",
+        "re2/regexp.cc:simplify"
+      ],
+      "reasoning": "Deeply nested capturing groups test the parser's recursion handling and the compiler's simplification of nested concatenations.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "3150f3f02c78ccf4",
+      "content_b64": "azBbYS16XSpbQS1aXSs=",
+      "target_gaps": [
+        "re2/parser.cc:parsecharclass",
+        "re2/compiler.cc:compilecharclass"
+      ],
+      "reasoning": "Multiple character classes with different ranges and repetitions exercise the parser's sequential class handling and the compiler's character class compilation.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "d0b32ad793ce872f",
+      "content_b64": "pkhcYlx3K1xi",
+      "target_gaps": [
+        "re2/parser.cc:parseescapes",
+        "re2/regexp.cc:parsewordbound"
+      ],
+      "reasoning": "Word boundaries (\\b) combined with word character class (\\w) exercise boundary condition parsing and the compiler's special handling of word boundaries.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<name>a+)\",\n      \"target_gaps\": [\"re2/regexp.cc:parse\", \"re2/parser.cc:parsegroup\"],\n      \"reasoning\": \"Named capture groups exercise the parser's named group handling and the compiler's capture group tracking. This exercises special syntax parsing in the group context.\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/parser.cc:parserepeat\", \"re2/compiler.cc:compile\"],\n      \"reasoning\": \"Nested repetitions stress the parser's repetition handling and compiler's optimization/simplification logic. This is a classic case that needs careful handling to avoid catastrophic backtracking.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9_]\",\n      \"target_gaps\": [\"re2/parser.cc:parsecharclass\", \"re2/regexp.cc:buildcharclass\"],\n      \"reasoning\": \"Negated character classes with ranges exercise the character class parser and the builder's range inversion logic. The underscore and ranges test boundary conditions.\"\n    },\n    {\n      \"regex\": \"a{1,3}b{5,}c{2}\",\n      \"target_gaps\": [\"re2/parser.cc:parserepeat\", \"re2/regexp.cc:parsecounted\"],\n      \"reasoning\": \"Counted repetitions with various bounds (exact, range, open-ended) exercise the counted repetition parser and compiler's handling of min/max constraints.\"\n    },\n    {\n      \"regex\": \"(?:a|b|c|d|e)\",\n      \"target_gaps\": [\"re2/parser.cc:parsegroup\", \"re2/regexp.cc:parsealternate\"],\n      \"reasoning\": \"Non-capturing groups with alternation test the parser's alternation handling and the compiler's optimization of alternation nodes.\"\n    },\n    {\n      \"regex\": \"[\\\\w\\\\d\\\\s]+\",\n      \"target_gaps\": [\"re2/parser.cc:parsecharclass\", \"re2/regexp.cc:parseescapes\"],\n      \"reasoning\": \"Character class escapes (\\\\w, \\\\d, \\\\s) with repetition exercise escape sequence parsing and character class construction with standard classes.\"\n    },\n    {\n      \"regex\": \"^a.*b$\",\n      \"target_gaps\": [\"re2/parser.cc:parseanchor\", \"re2/compiler.cc:compiledot\"],\n      \"reasoning\": \"Anchors (^ and $) combined with dot-star pattern exercise anchor parsing and the compiler's handling of anchored patterns and wildcards.\"\n    },\n    {\n      \"regex\": \"(a(b(c)))\",\n      \"target_gaps\": [\"re2/parser.cc:parsegroup\", \"re2/regexp.cc:simplify\"],\n      \"reasoning\": \"Deeply nested capturing groups test the parser's recursion handling and the compiler's simplification of nested concatenations.\"\n    },\n    {\n      \"regex\": \"[a-z]*[A-Z]+\",\n      \"target_gaps\": [\"re2/parser.cc:parsecharclass\", \"re2/compiler.cc:compilecharclass\"],\n      \"reasoning\": \"Multiple character classes with different ranges and repetitions exercise the parser's sequential class handling and the compiler's character class compilation.\"\n    },\n    {\n      \"regex\": \"\\\\b\\\\w+\\\\b\",\n      \"target_gaps\": [\"re2/parser.cc:parseescapes\", \"re2/regexp.cc:parsewordbound\"],\n      \"reasoning\": \"Word boundaries (\\\\b) combined with word character class (\\\\w) exercise boundary condition parsing and the compiler's special handling of word boundaries.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 15183,
+    "output_tokens": 885,
+    "cost_usd": 0.019608,
+    "latency_ms": 60790.87239399996,
+    "prompt_hash": "ad429746d0000d029377f165fe2ca0fcb6eaa8efd75c5df37051f848ce7e22b5",
+    "timestamp": "2026-04-16T01:57:27.295698+00:00",
+    "generation_wall_clock_s": 60.79087296600028,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=2",
+    "cached": false
+  }
+}

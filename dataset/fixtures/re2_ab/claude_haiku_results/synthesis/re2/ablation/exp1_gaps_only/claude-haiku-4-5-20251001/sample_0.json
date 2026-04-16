@@ -1,0 +1,189 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "a8567eab7c3b4d72",
+      "content_b64": "H5woYSspKmI=",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Nested repetitions with alternation trigger complex stack manipulation in BitState::TrySearch. The outer loop iteration and inner repetition cause multiple Push operations and CheckAndLoop jumps.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "adfc13d33155664a",
+      "content_b64": "0NJhfGJ8Y3xkfGV8ZnxnfGh8aXxq",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Multiple alternations (kInstAlt) with arg switching between 0 and 1 exercise the switch(arg) cases and the CheckAndLoop goto mechanism extensively.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4fed825706c255ac",
+      "content_b64": "bpEoP1A8eD5hKSg/UDx5PmIp",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Named captures (kInstCapture) with arg==0 trigger capture register save/restore logic and the cap_ array access path.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d9e8e07f0d2225ae",
+      "content_b64": "aJthezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Large counted repetitions compile into byte range matching with complex iteration, exercising the kInstByteRange case and the p++ advancement logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3ed2f2b0ec8cfe82",
+      "content_b64": "zn0oYSpiKikqYw==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Deeply nested repetitions with multiple quantifiers cause extensive Push operations that may trigger GrowStack when njob_ >= maxjob_, exercising stack growth.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "94203e236f86f8ba",
+      "content_b64": "q7xbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Negated character class with ranges exercises byte range matching (kInstByteRange) with the Matches check on various character values.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "ae61a913b50c9170",
+      "content_b64": "YaJhKj9i",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "Non-greedy quantifier creates kInstAltMatch with greedy(prog_) returning false, exercising the non-greedy branch and the second Push path.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "ce5dc0ba7a8f053f",
+      "content_b64": "mphhKz9iKj9j",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202",
+        "re2/bitstate.cc:214"
+      ],
+      "reasoning": "Multiple non-greedy quantifiers combined with byte ranges test the interaction of kInstAltMatch and kInstByteRange opcodes.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7d39750d61dce181",
+      "content_b64": "EwwoKGF8YikqKWM=",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:177"
+      ],
+      "reasoning": "Nested alternation within repetition exercises the while(njob_ > 0) loop extensively and the interaction between kInstAlt and repetition operators.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7381383084103641",
+      "content_b64": "jv1hKD9QPGc+YiopYw==",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216"
+      ],
+      "reasoning": "Capture group with quantifier exercises kInstCapture with arg==0 path followed by byte range matching, testing the cap_ register logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a+)*b\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Nested repetitions with alternation trigger complex stack manipulation in BitState::TrySearch. The outer loop iteration and inner repetition cause multiple Push operations and CheckAndLoop jumps.\"\n    },\n    {\n      \"regex\": \"a|b|c|d|e|f|g|h|i|j\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Multiple alternations (kInstAlt) with arg switching between 0 and 1 exercise the switch(arg) cases and the CheckAndLoop goto mechanism extensively.\"\n    },\n    {\n      \"regex\": \"(?P<x>a)(?P<y>b)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:214\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Named captures (kInstCapture) with arg==0 trigger capture register save/restore logic and the cap_ array access path.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Large counted repetitions compile into byte range matching with complex iteration, exercising the kInstByteRange case and the p++ advancement logic.\"\n    },\n    {\n      \"regex\": \"(a*b*)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Deeply nested repetitions with multiple quantifiers cause extensive Push operations that may trigger GrowStack when njob_ >= maxjob_, exercising stack growth.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Negated character class with ranges exercises byte range matching (kInstByteRange) with the Matches check on various character values.\"\n    },\n    {\n      \"regex\": \"a*?b\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\"],\n      \"reasoning\": \"Non-greedy quantifier creates kInstAltMatch with greedy(prog_) returning false, exercising the non-greedy branch and the second Push path.\"\n    },\n    {\n      \"regex\": \"a+?b*?c\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\", \"re2/bitstate.cc:214\"],\n      \"reasoning\": \"Multiple non-greedy quantifiers combined with byte ranges test the interaction of kInstAltMatch and kInstByteRange opcodes.\"\n    },\n    {\n      \"regex\": \"((a|b)*)c\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Nested alternation within repetition exercises the while(njob_ > 0) loop extensively and the interaction between kInstAlt and repetition operators.\"\n    },\n    {\n      \"regex\": \"a(?P<g>b*)c\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\"],\n      \"reasoning\": \"Capture group with quantifier exercises kInstCapture with arg==0 path followed by byte range matching, testing the cap_ register logic.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6141,
+    "output_tokens": 1050,
+    "cost_usd": 0.011391,
+    "latency_ms": 8880.608518000372,
+    "prompt_hash": "c855a98142bd072db22123f2716d0f619f9384d1dbec6efc0f97b962b7806721",
+    "timestamp": "2026-04-16T01:59:45.011476+00:00",
+    "generation_wall_clock_s": 8.880609590999484,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=0",
+    "cached": false
+  }
+}

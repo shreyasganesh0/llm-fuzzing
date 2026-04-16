@@ -1,0 +1,175 @@
+{
+  "target": "re2",
+  "model": "claude-sonnet-4-6",
+  "experiment": "exp2",
+  "sample_index": 2,
+  "inputs": [
+    {
+      "input_id": "01add532249a121a",
+      "content_b64": "dBkoP1A8bmFtZT5bYS16QS1aX11cdyop",
+      "target_gaps": [
+        "re2/re2.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Named capture group with word character class stresses the named capture parsing and \\w class expansion in the compiler.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "08c83fa336a5f3fc",
+      "content_b64": "n/koYSopKmIr",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Nested repetitions trigger special handling in the compiler for potentially ambiguous/exponential structures.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "2113a3d3a78bd4b8",
+      "content_b64": "C8VccHtHcmVla30r",
+      "target_gaps": [
+        "re2/unicode_groups.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Unicode named property class exercises the Unicode group lookup and compilation paths.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "009b872c27be9aeb",
+      "content_b64": "jN5bXlx4MDAtXHg3Rl0r",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Negated character class with hex escape ranges covering non-ASCII stresses the character class complement logic.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "de76915eb83a1112",
+      "content_b64": "h4lhezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Large counted repetition exercises the repeat-expansion code path in the compiler.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "96aaf6b0bbc5cf48",
+      "content_b64": "j7coPzpmb298YmFyfGJheil7Myx9",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Non-capturing group with alternation and open-ended repetition stresses alternation and repetition compilation.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "c318e5f7e45bdd3c",
+      "content_b64": "B7soP2kpKD8taTpBKSg/aTpiKWM=",
+      "target_gaps": [
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Mixed inline flag toggling (case-insensitive on/off within subexpressions) exercises flag-scoping in the parser.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "b05e1f821742b591",
+      "content_b64": "AgpcYlx3K1xi",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Word boundary assertions combined with \\w class test the boundary and character-class compilation paths.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "20687585547d0fe5",
+      "content_b64": "GcgoKGErKShiKikpKGM/KQ==",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Deeply nested capturing groups stress the group numbering and subexpression tracking in the parser/compiler.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "cc56d08eb4d45592",
+      "content_b64": "1PlbXHB7TH1ccHtOfV8tXSs=",
+      "target_gaps": [
+        "re2/unicode_groups.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Character class mixing multiple Unicode properties (Letter, Number) with literal chars exercises Unicode class union logic.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 2,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<name>[a-zA-Z_]\\\\w*)\",\n      \"target_gaps\": [\"re2/re2.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Named capture group with word character class stresses the named capture parsing and \\\\w class expansion in the compiler.\"\n    },\n    {\n      \"regex\": \"(a*)*b+\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Nested repetitions trigger special handling in the compiler for potentially ambiguous/exponential structures.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/unicode_groups.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Unicode named property class exercises the Unicode group lookup and compilation paths.\"\n    },\n    {\n      \"regex\": \"[^\\\\x00-\\\\x7F]+\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Negated character class with hex escape ranges covering non-ASCII stresses the character class complement logic.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Large counted repetition exercises the repeat-expansion code path in the compiler.\"\n    },\n    {\n      \"regex\": \"(?:foo|bar|baz){3,}\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Non-capturing group with alternation and open-ended repetition stresses alternation and repetition compilation.\"\n    },\n    {\n      \"regex\": \"(?i)(?-i:A)(?i:b)c\",\n      \"target_gaps\": [\"re2/regexp.cc\"],\n      \"reasoning\": \"Mixed inline flag toggling (case-insensitive on/off within subexpressions) exercises flag-scoping in the parser.\"\n    },\n    {\n      \"regex\": \"\\\\b\\\\w+\\\\b\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Word boundary assertions combined with \\\\w class test the boundary and character-class compilation paths.\"\n    },\n    {\n      \"regex\": \"((a+)(b*))(c?)\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Deeply nested capturing groups stress the group numbering and subexpression tracking in the parser/compiler.\"\n    },\n    {\n      \"regex\": \"[\\\\p{L}\\\\p{N}_-]+\",\n      \"target_gaps\": [\"re2/unicode_groups.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Character class mixing multiple Unicode properties (Letter, Number) with literal chars exercises Unicode class union logic.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "claude-sonnet-4-6",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 15183,
+    "output_tokens": 733,
+    "cost_usd": 0.056544,
+    "latency_ms": 64238.24166799932,
+    "prompt_hash": "7bc8bb32371206075f86d9d0b256e6e13a5b38b7e7158b856995e8429b3f2be8",
+    "timestamp": "2026-04-16T01:48:14.963796+00:00",
+    "generation_wall_clock_s": 64.2382420899994,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=2",
+    "cached": true
+  }
+}

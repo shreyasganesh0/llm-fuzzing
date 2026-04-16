@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "349b32741f1dbd96",
+      "content_b64": "VI5ccHtHcmVla30rXHB7R3JlZWt9Kw==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Large Unicode class sequences should stress the parser/compiler, especially in combination with other features like repetitions.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "30b822f219635020",
+      "content_b64": "NZ0oYSopKlwxKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Nested repetitions with capture groups can be challenging for the parser/compiler to handle.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "57f427c2e3cfc486",
+      "content_b64": "AaQoPz1hYmMp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Lookarounds, which are rejected by RE2, can test the parser/compiler's error handling.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b5d35ec64effc30d",
+      "content_b64": "cE5hezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Large counted repetitions can push the limits of the parser/compiler's ability to handle large numbers.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9f09ce8c5d7442e9",
+      "content_b64": "DstbXmEtekEtWjAtOV17MSx9",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Character classes with a large number of characters can be challenging for the parser/compiler to handle.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "524207f7b953b4ee",
+      "content_b64": "OVgoP1A8eD5hKykoP1A9eCk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Named captures and backreferences can be tricky for the parser/compiler to handle.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "df395601f0f3d1d0",
+      "content_b64": "6RdccHtHcmVla30rXHB7R3JlZWt9K1xwe0dyZWVrfSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Multiple Unicode classes in a row can stress the parser/compiler's handling of complex Unicode sequences.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c509e8df3a7a7c86",
+      "content_b64": "36soYSopKig/UDx4PmErKSg/UD14KQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Combining nested repetitions with named captures and backreferences can be challenging for the parser/compiler.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5350fe4b55248a51",
+      "content_b64": "EmgoPz1hYmMpXHB7R3JlZWt9Kw==",
+      "target_gaps": [
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Combining a lookaround with a Unicode class can test the parser/compiler's error handling.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "661722273609528f",
+      "content_b64": "q29hezEwMDAsfSg/UDx4PmErKSg/UD14KQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Combining large counted repetitions with named captures and backreferences can push the limits of the parser/compiler's ability to handle large numbers and complex patterns.",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Large Unicode class sequences should stress the parser/compiler, especially in combination with other features like repetitions.\"\n    },\n    {\n      \"regex\": \"(a*)*\\\\1*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Nested repetitions with capture groups can be challenging for the parser/compiler to handle.\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Lookarounds, which are rejected by RE2, can test the parser/compiler's error handling.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Large counted repetitions can push the limits of the parser/compiler's ability to handle large numbers.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Character classes with a large number of characters can be challenging for the parser/compiler to handle.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P=x)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures and backreferences can be tricky for the parser/compiler to handle.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\\\\p{Greek}+\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Multiple Unicode classes in a row can stress the parser/compiler's handling of complex Unicode sequences.\"\n    },\n    {\n      \"regex\": \"(a*)*(?P<x>a+)(?P=x)\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Combining nested repetitions with named captures and backreferences can be challenging for the parser/compiler.\"\n    },\n    {\n      \"regex\": \"(?=abc)\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Combining a lookaround with a Unicode class can test the parser/compiler's error handling.\"\n    },\n    {\n      \"regex\": \"a{1000,}(?P<x>a+)(?P=x)\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Combining large counted repetitions with named captures and backreferences can push the limits of the parser/compiler's ability to handle large numbers and complex patterns.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 695,
+    "cost_usd": 0.001298,
+    "latency_ms": 4532.380734999606,
+    "prompt_hash": "333aba17deeb880ed773a809d25068bf8f2842b923a33719580f3c3e2b74a018",
+    "timestamp": "2026-04-16T01:34:08.278787+00:00",
+    "generation_wall_clock_s": 4.53238164800041,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=1",
+    "cached": false
+  }
+}

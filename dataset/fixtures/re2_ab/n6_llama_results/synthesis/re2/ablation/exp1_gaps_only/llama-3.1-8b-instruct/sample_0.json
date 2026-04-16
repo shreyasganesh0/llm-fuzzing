@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 0,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Nested repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Unicode classes stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Large counted reps stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Character classes stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"a(?=bc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Lookarounds stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"a*b?\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Optional repetitions stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"[a-z]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Character classes stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"a{0,1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Large counted reps stress the parser/compiler\"\n    },\n    {\n      \"regex\": \"a(?i)[a-z]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Caseless matching stresses the parser/compiler\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 801,
+    "cost_usd": 0.00132132,
+    "latency_ms": 3817.093346000547,
+    "prompt_hash": "78941e300ef6da13e80b41d1542b6ce079c9a15dde1a6f740a75eb02b8d88b37",
+    "timestamp": "2026-04-16T01:34:03.745117+00:00",
+    "generation_wall_clock_s": 3.8170943180002723,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=0",
+    "cached": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 3,
+  "inputs": [],
+  "parse_status": "parse_failure",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<g1>a+)(?P<g2>b+)(?P<g1>c+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Named captures with repeated group names should test the edge case of growing the stack.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"A large character class should stress the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"((a*))*((a*))\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Nested repetitions should test the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"A Unicode class should stress the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"A lookaround should test the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"A large counted repetition should stress the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"(?P<g1>a+)|(?P<g2>b+)|(?P<g1>c+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Alternations with named captures should test the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"A character class should stress the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"(a*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"A repetition should test the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    },\n    {\n      \"regex\": \"(a*)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"A repeated repetition should test the parser's ability to handle complex patterns and potentially trigger the stack growth mechanism.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5689,
+    "output_tokens": 698,
+    "cost_usd": 0.0014051399999999998,
+    "latency_ms": 3859.7939969995423,
+    "prompt_hash": "08586f3733f52fad90d8a5c5dba390e6f1062f847a183f277d7fd39fb8c146d5",
+    "timestamp": "2026-04-16T01:30:28.833116+00:00",
+    "generation_wall_clock_s": 3.859794607999902,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=3",
+    "cached": true
+  }
+}

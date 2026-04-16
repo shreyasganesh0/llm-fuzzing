@@ -1,0 +1,220 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 3,
+  "inputs": [
+    {
+      "input_id": "936bca2a8c89b105",
+      "content_b64": "eo4oYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172",
+        "re2/bitstate.cc:173"
+      ],
+      "reasoning": "Nested repetitions to test stack growth and looping",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0e90c7fb855aa695",
+      "content_b64": "4SZhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Large counted repetition to test stack growth and looping",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "dea58bd9a5e7b998",
+      "content_b64": "iIdccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Unicode class to test Unicode support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "a232764136b9fbf0",
+      "content_b64": "lgJbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Character class to test character class support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f2269cca34c23625",
+      "content_b64": "Dm4oP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Named capture to test named capture support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4c755f0e5b10ceef",
+      "content_b64": "Wj0oYXxiKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Alternation to test alternation support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "42df5f135abd5eca",
+      "content_b64": "e2JhezAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Zero-length repetition to test zero-length repetition support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f5cbc64f7bf38655",
+      "content_b64": "Wz8oPzphfGIpKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Non-capturing group to test non-capturing group support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e51e77e537a8eb06",
+      "content_b64": "T99hKD89Yik=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Lookahead to test lookahead support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7e1171772b47a505",
+      "content_b64": "NY9hKD88PWIp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Lookbehind to test lookbehind support and stack growth",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 3,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\", \"re2/bitstate.cc:173\"],\n      \"reasoning\": \"Nested repetitions to test stack growth and looping\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Large counted repetition to test stack growth and looping\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Unicode class to test Unicode support and stack growth\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Character class to test character class support and stack growth\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Named capture to test named capture support and stack growth\"\n    },\n    {\n      \"regex\": \"(a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Alternation to test alternation support and stack growth\"\n    },\n    {\n      \"regex\": \"a{0,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Zero-length repetition to test zero-length repetition support and stack growth\"\n    },\n    {\n      \"regex\": \"(?:a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Non-capturing group to test non-capturing group support and stack growth\"\n    },\n    {\n      \"regex\": \"a(?=b)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Lookahead to test lookahead support and stack growth\"\n    },\n    {\n      \"regex\": \"a(?<=b)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Lookbehind to test lookbehind support and stack growth\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 5205,
+    "output_tokens": 968,
+    "cost_usd": 0.00135806,
+    "latency_ms": 6613.382255000033,
+    "prompt_hash": "923fd60ac5415a90e387e552b42dc641a1ecef0b84d4a4f37943cea963a4ae5f",
+    "timestamp": "2026-04-16T01:34:19.146338+00:00",
+    "generation_wall_clock_s": 6.613383257999885,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_gaps_only,sample=3",
+    "cached": false
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "claude-sonnet-4-6",
+  "experiment": "exp2",
+  "sample_index": 0,
+  "inputs": [
+    {
+      "input_id": "ac08d25a69e07842",
+      "content_b64": "KNkoP1A8bmFtZT5bYS16QS1aX11bYS16QS1aMC05X10qKQ==",
+      "target_gaps": [
+        "re2/re2.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Named capture group exercises the parser's named group handling path, plus character class ranges.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "da6e46665f27d23d",
+      "content_b64": "qrsoYSopKmIr",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Nested repetitions stress the compiler's handling of repeated subexpressions and potential loop detection.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "bad25e23182f6dd0",
+      "content_b64": "RCZccHtHcmVla30r",
+      "target_gaps": [
+        "re2/unicode_groups.cc",
+        "re2/regexp.cc"
+      ],
+      "reasoning": "Unicode property class exercises the Unicode category lookup and character class compilation paths.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "d9e8e07f0d2225ae",
+      "content_b64": "aJthezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Large counted repetition exercises the repeat-expansion code in the compiler.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "16fcea4f4a94b5db",
+      "content_b64": "gEVbXlx4MDAtXHg3Rl0r",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/charclass.cc"
+      ],
+      "reasoning": "Negated character class with hex escapes covering non-ASCII range exercises character class complement logic.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "eb9e1fc45eb48a60",
+      "content_b64": "yj4oP2k6KD86YWJ8Y2QpezMsNX0p",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Non-capturing group with case-insensitive flag combined with alternation and counted repetition.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "84568bb55f9c204d",
+      "content_b64": "zqhcYlx3K1xzKj1ccypcZCtcYg==",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/perl_groups.cc"
+      ],
+      "reasoning": "Perl character classes (\\b, \\w, \\s, \\d) exercise the perl_groups lookup and word boundary handling.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "13dcde34cc99278e",
+      "content_b64": "0/coPzooPzpbYS16XSt8WzAtOV0rKSg/OlsuXy1dKD86W2Etel0rfFswLTldKykpKik=",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Deeply nested non-capturing groups with alternation stress the recursive parser and alternation compiler.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "759744641f5a871e",
+      "content_b64": "GFFeKD86aHR0cHM/fGZ0cCk6Ly9bXlxzLyQuPyNdLlteXHNdKiQ=",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Anchored pattern with alternation and negated character classes, exercises anchor and class compilation.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    },
+    {
+      "input_id": "3968a20382bf6842",
+      "content_b64": "GzcoXGR7MSwzfVwuKXszfVxkezEsM30=",
+      "target_gaps": [
+        "re2/regexp.cc",
+        "re2/compile.cc"
+      ],
+      "reasoning": "Counted repetition of a capturing group exercises group repeat expansion and the concat/repeat compiler paths.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 0,
+      "target": "re2",
+      "experiment": "exp2"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<name>[a-zA-Z_][a-zA-Z0-9_]*)\",\n      \"target_gaps\": [\"re2/re2.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Named capture group exercises the parser's named group handling path, plus character class ranges.\"\n    },\n    {\n      \"regex\": \"(a*)*b+\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Nested repetitions stress the compiler's handling of repeated subexpressions and potential loop detection.\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/unicode_groups.cc\", \"re2/regexp.cc\"],\n      \"reasoning\": \"Unicode property class exercises the Unicode category lookup and character class compilation paths.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Large counted repetition exercises the repeat-expansion code in the compiler.\"\n    },\n    {\n      \"regex\": \"[^\\\\x00-\\\\x7F]+\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/charclass.cc\"],\n      \"reasoning\": \"Negated character class with hex escapes covering non-ASCII range exercises character class complement logic.\"\n    },\n    {\n      \"regex\": \"(?i:(?:ab|cd){3,5})\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Non-capturing group with case-insensitive flag combined with alternation and counted repetition.\"\n    },\n    {\n      \"regex\": \"\\\\b\\\\w+\\\\s*=\\\\s*\\\\d+\\\\b\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/perl_groups.cc\"],\n      \"reasoning\": \"Perl character classes (\\\\b, \\\\w, \\\\s, \\\\d) exercise the perl_groups lookup and word boundary handling.\"\n    },\n    {\n      \"regex\": \"(?:(?:[a-z]+|[0-9]+)(?:[._-](?:[a-z]+|[0-9]+))*)\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Deeply nested non-capturing groups with alternation stress the recursive parser and alternation compiler.\"\n    },\n    {\n      \"regex\": \"^(?:https?|ftp)://[^\\\\s/$.?#].[^\\\\s]*$\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Anchored pattern with alternation and negated character classes, exercises anchor and class compilation.\"\n    },\n    {\n      \"regex\": \"(\\\\d{1,3}\\\\.){3}\\\\d{1,3}\",\n      \"target_gaps\": [\"re2/regexp.cc\", \"re2/compile.cc\"],\n      \"reasoning\": \"Counted repetition of a capturing group exercises group repeat expansion and the concat/repeat compiler paths.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "claude-sonnet-4-6",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 15183,
+    "output_tokens": 793,
+    "cost_usd": 0.057444,
+    "latency_ms": 14004.375620000246,
+    "prompt_hash": "9809a140965d205096ce9ded4b78c2e0a690cd744565289c625d7e00c26a36a5",
+    "timestamp": "2026-04-16T01:46:13.305734+00:00",
+    "generation_wall_clock_s": 14.004376210999908,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_source,sample=0",
+    "cached": true
+  }
+}

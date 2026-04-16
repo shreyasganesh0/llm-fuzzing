@@ -1,0 +1,176 @@
+{
+  "target": "re2",
+  "model": "llama-3.1-8b-instruct",
+  "experiment": "exp1",
+  "sample_index": 4,
+  "inputs": [
+    {
+      "input_id": "16c5574d6fa5a1ab",
+      "content_b64": "fTYoP1A8eD5hKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Stress named captures and repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f268b02afeb4bfa5",
+      "content_b64": "fjgoYSopKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Test nested repetition",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "fd77dfeb8ff7a5da",
+      "content_b64": "+nBccHtHcmVla30r",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Evaluate Unicode classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5a70fb3a1b7f8b00",
+      "content_b64": "JxsoPz1hYmMp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Test lookarounds",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "acc0533da1cb90ae",
+      "content_b64": "RNFhezEwMDAsfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Stress large counted repetitions",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "24ec71cac9188ab5",
+      "content_b64": "2QxbXmEtekEtWjAtOV0=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Test character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "7fada430d2fefb49",
+      "content_b64": "FegoYXxiKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Test repetition with alternation",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e52149cd1cf7a26c",
+      "content_b64": "iO8oYXxifGMpKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Test repetition with multiple alternations",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "4c58ef2c96c2e31d",
+      "content_b64": "+bIoYXxiKSph",
+      "target_gaps": [
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Test repetition with alternation and capture",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "cd12eb320ca9cfd9",
+      "content_b64": "HmVbYS16QS1aMC05XXsxMDAwLH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Stress large character classes",
+      "source": "llm",
+      "model": "llama-3.1-8b-instruct",
+      "temperature": 0.7,
+      "sample_index": 4,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "{\n  \"regexes\": [\n    {\n      \"regex\": \"(?P<x>a+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Stress named captures and repetition\"\n    },\n    {\n      \"regex\": \"(a*)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Test nested repetition\"\n    },\n    {\n      \"regex\": \"\\\\p{Greek}+\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Evaluate Unicode classes\"\n    },\n    {\n      \"regex\": \"(?=abc)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Test lookarounds\"\n    },\n    {\n      \"regex\": \"a{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Stress large counted repetitions\"\n    },\n    {\n      \"regex\": \"[^a-zA-Z0-9]\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Test character classes\"\n    },\n    {\n      \"regex\": \"(a|b)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Test repetition with alternation\"\n    },\n    {\n      \"regex\": \"(a|b|c)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Test repetition with multiple alternations\"\n    },\n    {\n      \"regex\": \"(a|b)*a\",\n      \"target_gaps\": [\"re2/bitstate.cc:122\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Test repetition with alternation and capture\"\n    },\n    {\n      \"regex\": \"[a-zA-Z0-9]{1000,}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Stress large character classes\"\n    }\n  ]\n}",
+  "log": {
+    "model": "llama-3.1-8b-instruct",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 26927,
+    "output_tokens": 520,
+    "cost_usd": 0.006038339999999999,
+    "latency_ms": 4934.7834930003955,
+    "prompt_hash": "9e93af1eff12e2925e8adbdb7e076c4066b6cc9f0bb8366c5a9ddc5974114012",
+    "timestamp": "2026-04-16T01:33:54.984824+00:00",
+    "generation_wall_clock_s": 4.934785055999782,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=4",
+    "cached": false
+  }
+}

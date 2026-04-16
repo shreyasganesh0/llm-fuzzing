@@ -1,0 +1,181 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "903b34cbfd488447",
+      "content_b64": "jpUoYXxiKSpj",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Alternation (kInstAlt) with repetition forces the state machine to push/pop jobs and exercise the alt case handling with arg==0 and arg==1 branches.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "417d8f602a0663ed",
+      "content_b64": "paooP1A8eD5hKykoP1A8eT5iKyk=",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures (kInstCapture) with arg==0 branch exercises capture register handling and the Push path with ShouldVisit checks.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "91d8ce98f3a3c804",
+      "content_b64": "XwooYSopKmI=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Nested repetitions create complex NFA structures that require stack growth (GrowStack) when njob_ >= maxjob_, and extensive job stack manipulation.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "8c7cf5862aaaafc8",
+      "content_b64": "7NtbYS16XSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Character range (kInstByteRange) with repetition exercises the byte matching path and the p < end boundary check for character consumption.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "68b35d7a99b93cc2",
+      "content_b64": "cW1hezEwMCwyMDB9",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Large counted repetition creates a long chain of instructions, forcing multiple Push operations and job stack management.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "6b37fcdb6c7ee32f",
+      "content_b64": "tgIoYXxiKSooY3xkKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Multiple alternations with repetitions exercise the kInstAlt switch cases (arg==0, arg==1) and the DFATAL path for bad arg values.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "72e4cdd85365aece",
+      "content_b64": "RFVhP2I/Yz9kP2U/",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Multiple optional groups create branching paths through the NFA requiring extensive job queue management and ShouldVisit checks.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "ce3a9acdab404ec3",
+      "content_b64": "pzIoYSt8YispKmM=",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "kInstAltMatch opcode with greedy/non-greedy branching exercises the greedy() check and both match branches.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0042717b98fffa3f",
+      "content_b64": "iGxbXmFiY10r",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Negated character class with repetition exercises byte range matching with inverted logic and character consumption.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "c3c904ddea638e58",
+      "content_b64": "FaAoYXxifGN8ZHxlKSpm",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:177"
+      ],
+      "reasoning": "Many-way alternation with repetition creates deep branching that stresses job stack growth and the main TrySearch loop.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a|b)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Alternation (kInstAlt) with repetition forces the state machine to push/pop jobs and exercise the alt case handling with arg==0 and arg==1 branches.\"\n    },\n    {\n      \"regex\": \"(?P<x>a+)(?P<y>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures (kInstCapture) with arg==0 branch exercises capture register handling and the Push path with ShouldVisit checks.\"\n    },\n    {\n      \"regex\": \"(a*)*b\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Nested repetitions create complex NFA structures that require stack growth (GrowStack) when njob_ >= maxjob_, and extensive job stack manipulation.\"\n    },\n    {\n      \"regex\": \"[a-z]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Character range (kInstByteRange) with repetition exercises the byte matching path and the p < end boundary check for character consumption.\"\n    },\n    {\n      \"regex\": \"a{100,200}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Large counted repetition creates a long chain of instructions, forcing multiple Push operations and job stack management.\"\n    },\n    {\n      \"regex\": \"(a|b)*(c|d)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Multiple alternations with repetitions exercise the kInstAlt switch cases (arg==0, arg==1) and the DFATAL path for bad arg values.\"\n    },\n    {\n      \"regex\": \"a?b?c?d?e?\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Multiple optional groups create branching paths through the NFA requiring extensive job queue management and ShouldVisit checks.\"\n    },\n    {\n      \"regex\": \"(a+|b+)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\"],\n      \"reasoning\": \"kInstAltMatch opcode with greedy/non-greedy branching exercises the greedy() check and both match branches.\"\n    },\n    {\n      \"regex\": \"[^abc]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Negated character class with repetition exercises byte range matching with inverted logic and character consumption.\"\n    },\n    {\n      \"regex\": \"(a|b|c|d|e)*f\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:177\"],\n      \"reasoning\": \"Many-way alternation with repetition creates deep branching that stresses job stack growth and the main TrySearch loop.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6759,
+    "output_tokens": 913,
+    "cost_usd": 0.011324,
+    "latency_ms": 60189.443885999935,
+    "prompt_hash": "a8e4add976973deaf665770d398a76b005c37d713b877eac0413cc1e2720e525",
+    "timestamp": "2026-04-16T01:54:19.300228+00:00",
+    "generation_wall_clock_s": 60.189444607999576,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=1",
+    "cached": false
+  }
+}

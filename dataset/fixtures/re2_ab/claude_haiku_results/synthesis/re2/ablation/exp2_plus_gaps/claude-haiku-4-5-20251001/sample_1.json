@@ -1,0 +1,180 @@
+{
+  "target": "re2",
+  "model": "claude-haiku-4-5-20251001",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "255ff97a2b630aff",
+      "content_b64": "InQoYSspK2I=",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Nested repetitions create complex NFA states that exercise the BitState stack and kInstAlt opcode handling in the main TrySearch loop.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9f0f0be846cd6b6e",
+      "content_b64": "j9FhezEwMDB9YnsxMDAwfQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121"
+      ],
+      "reasoning": "Large counted repetitions generate many instructions, forcing stack growth and triggering the GrowStack() path when njob_ >= maxjob_.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0e29a9b712a4a249",
+      "content_b64": "j6xbYS16QS1aMC05XSs=",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Character class with ByteRange instructions tests the kInstByteRange case and the condition (p < end) to read characters.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "fed49c75c6e1358c",
+      "content_b64": "nk4oP1A8bmFtZT5hKykoP1A8bmFtZTI+Yisp",
+      "target_gaps": [
+        "re2/bitstate.cc:226",
+        "re2/bitstate.cc:131"
+      ],
+      "reasoning": "Named captures exercise kInstCapture opcode with arg==0 case, testing capture register logic and the Push mechanism.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "312c19335fa9e4eb",
+      "content_b64": "1dooYXxifGN8ZHxlKWY=",
+      "target_gaps": [
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186"
+      ],
+      "reasoning": "Multiple alternations with kInstAlt require the arg==0 and arg==1 switch cases to properly handle branching and re-pushing.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "692aace14c9730eb",
+      "content_b64": "QGFhKmIqYypkKg==",
+      "target_gaps": [
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:161"
+      ],
+      "reasoning": "Sequence of optional elements creates a state machine that exercises the main loop condition (njob_ > 0) and CheckAndLoop logic.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "f53dcee77191e8c4",
+      "content_b64": "WKphezEwLDIwfWI=",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202"
+      ],
+      "reasoning": "Counted range repetitions generate kInstAltMatch instructions, testing the greedy() branch and non-greedy path selection.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "3af90a4d5c2c8767",
+      "content_b64": "hNpbXmFiY10r",
+      "target_gaps": [
+        "re2/bitstate.cc:214",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Negated character class tests ByteRange matching logic with inverted sense, exercising the Matches() check with various character values.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "787faa50bb6d2aa8",
+      "content_b64": "sO8oYSt8YispKmM=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Nested alternation and repetition forces stack growth and exercises the kInstAlt arg switch with fallthrough to error case.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "d36f975e3771e600",
+      "content_b64": "T81cdytcZCo=",
+      "target_gaps": [
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163"
+      ],
+      "reasoning": "Character class shortcuts with the if(0) CheckAndLoop label test the optimization path and ShouldVisit checking in the main loop.",
+      "source": "llm",
+      "model": "claude-haiku-4-5-20251001",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "```json\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a+)+b\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Nested repetitions create complex NFA states that exercise the BitState stack and kInstAlt opcode handling in the main TrySearch loop.\"\n    },\n    {\n      \"regex\": \"a{1000}b{1000}\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\"],\n      \"reasoning\": \"Large counted repetitions generate many instructions, forcing stack growth and triggering the GrowStack() path when njob_ >= maxjob_.\"\n    },\n    {\n      \"regex\": \"[a-zA-Z0-9]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Character class with ByteRange instructions tests the kInstByteRange case and the condition (p < end) to read characters.\"\n    },\n    {\n      \"regex\": \"(?P<name>a+)(?P<name2>b+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:226\", \"re2/bitstate.cc:131\"],\n      \"reasoning\": \"Named captures exercise kInstCapture opcode with arg==0 case, testing capture register logic and the Push mechanism.\"\n    },\n    {\n      \"regex\": \"(a|b|c|d|e)f\",\n      \"target_gaps\": [\"re2/bitstate.cc:177\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\"],\n      \"reasoning\": \"Multiple alternations with kInstAlt require the arg==0 and arg==1 switch cases to properly handle branching and re-pushing.\"\n    },\n    {\n      \"regex\": \"a*b*c*d*\",\n      \"target_gaps\": [\"re2/bitstate.cc:147\", \"re2/bitstate.cc:161\"],\n      \"reasoning\": \"Sequence of optional elements creates a state machine that exercises the main loop condition (njob_ > 0) and CheckAndLoop logic.\"\n    },\n    {\n      \"regex\": \"a{10,20}b\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\"],\n      \"reasoning\": \"Counted range repetitions generate kInstAltMatch instructions, testing the greedy() branch and non-greedy path selection.\"\n    },\n    {\n      \"regex\": \"[^abc]+\",\n      \"target_gaps\": [\"re2/bitstate.cc:214\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Negated character class tests ByteRange matching logic with inverted sense, exercising the Matches() check with various character values.\"\n    },\n    {\n      \"regex\": \"(a+|b+)*c\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:185\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Nested alternation and repetition forces stack growth and exercises the kInstAlt arg switch with fallthrough to error case.\"\n    },\n    {\n      \"regex\": \"\\\\w+\\\\d*\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\"],\n      \"reasoning\": \"Character class shortcuts with the if(0) CheckAndLoop label test the optimization path and ShouldVisit checking in the main loop.\"\n    }\n  ]\n}\n```",
+  "log": {
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 20164,
+    "output_tokens": 910,
+    "cost_usd": 0.024714,
+    "latency_ms": 59883.507257999554,
+    "prompt_hash": "747fea1732240a253ef0b67cf2dc83ea6ecb7e39af834ef108afa1ba4be221f3",
+    "timestamp": "2026-04-16T01:58:36.289964+00:00",
+    "generation_wall_clock_s": 59.88350811100008,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp2_plus_gaps,sample=1",
+    "cached": false
+  }
+}

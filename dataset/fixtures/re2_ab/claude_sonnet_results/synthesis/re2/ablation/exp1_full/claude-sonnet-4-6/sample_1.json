@@ -1,0 +1,187 @@
+{
+  "target": "re2",
+  "model": "claude-sonnet-4-6",
+  "experiment": "exp1",
+  "sample_index": 1,
+  "inputs": [
+    {
+      "input_id": "706b2ac4a7bab2c8",
+      "content_b64": "KtwoYXxifGN8ZHxlfGZ8Z3xofGl8anxrfGx8bXxufG98cCkq",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:126",
+        "re2/bitstate.cc:147"
+      ],
+      "reasoning": "Many alternations inside a Kleene star forces many kInstAlt jobs onto the BitState stack, potentially triggering GrowStack and exercising the main TrySearch loop extensively.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "9f5bdf42028a42bb",
+      "content_b64": "W2UoYSopKGIqKShjKikoZCopKGUqKShmKikoZyopKGgqKQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:226"
+      ],
+      "reasoning": "Multiple capture groups with star repetitions create kInstCapture and kInstAltMatch instructions, exercising the capture and byte-range handling in BitState.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "be47621b4740f322",
+      "content_b64": "YEIoP1A8YT54KXwoP1A8Yj54KXwoP1A8Yz54KXwoP1A8ZD54KXwoP1A8ZT54KQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:185",
+        "re2/bitstate.cc:186",
+        "re2/bitstate.cc:191"
+      ],
+      "reasoning": "Named captures with alternation exercises kInstAlt switch(arg) cases and kInstCapture paths in BitState.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "0d4e494be0770c19",
+      "content_b64": "03coYSt8Yit8Yyt8ZCt8ZSt8Zit8Zyt8aCt8aSt8aisp",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:122",
+        "re2/bitstate.cc:163"
+      ],
+      "reasoning": "Deep alternation with plus repetitions creates many Alt instructions, pushing njob_ toward maxjob_ to trigger GrowStack.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b791576d21fbe108",
+      "content_b64": "qpMoKGF8YikqYyhkfGUpKmYoZ3xoKSopKw==",
+      "target_gaps": [
+        "re2/bitstate.cc:161",
+        "re2/bitstate.cc:163",
+        "re2/bitstate.cc:172"
+      ],
+      "reasoning": "Nested groups with alternations and repetitions exercise CheckAndLoop path and ShouldVisit checks in BitState.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "bd3453682bf0a2ec",
+      "content_b64": "Z7RhKmIqYypkKmUqZipnKmgqaSpqKmsqbCo=",
+      "target_gaps": [
+        "re2/bitstate.cc:200",
+        "re2/bitstate.cc:202",
+        "re2/bitstate.cc:214"
+      ],
+      "reasoning": "Chain of star repetitions generates kInstAltMatch instructions; greedy matching exercises the greedy branch of kInstAltMatch.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "324d20bdafd544b3",
+      "content_b64": "/rgoYXxhYnxhYmN8YWJjZHxhYmNkZXxhYmNkZWYp",
+      "target_gaps": [
+        "re2/bitstate.cc:173",
+        "re2/bitstate.cc:177",
+        "re2/bitstate.cc:218"
+      ],
+      "reasoning": "Alternation with progressively longer strings exercises kInstByteRange p<end check and ShouldVisit in the BitState engine.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "e12a6d6a02095a26",
+      "content_b64": "cSsoKCgoYXxiKXwoY3xkKSl8KChlfGYpfChnfGgpKSkpezEsOH0=",
+      "target_gaps": [
+        "re2/bitstate.cc:131",
+        "re2/bitstate.cc:147",
+        "re2/bitstate.cc:185"
+      ],
+      "reasoning": "Deeply nested alternations with counted repetition creates many Alt nodes, stressing the job stack and GrowStack path.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "5877443f903dc864",
+      "content_b64": "e4UoYT8oYj8oYz8oZD8oZT8oZj8pPyk/KT8pPyk/KQ==",
+      "target_gaps": [
+        "re2/bitstate.cc:216",
+        "re2/bitstate.cc:218",
+        "re2/bitstate.cc:226"
+      ],
+      "reasoning": "Nested optional groups create kInstCapture and kInstByteRange sequences, exercising p<end checks and capture register saving.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    },
+    {
+      "input_id": "b9cb3e96270f1840",
+      "content_b64": "VFIoW2Etel18W0EtWl18WzAtOV18W15hLXpBLVowLTldKSo=",
+      "target_gaps": [
+        "re2/bitstate.cc:112",
+        "re2/bitstate.cc:121",
+        "re2/bitstate.cc:126"
+      ],
+      "reasoning": "Alternation of character classes inside Kleene star generates many Alt and ByteRange instructions, pushing many jobs and potentially triggering GrowStack.",
+      "source": "llm",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.7,
+      "sample_index": 1,
+      "target": "re2",
+      "experiment": "exp1"
+    }
+  ],
+  "parse_status": "ok",
+  "raw_response": "Looking at the gaps, they're all in `re2/bitstate.cc` - the BitState backtracking engine. This engine is used for patterns with captures when the NFA/DFA approaches aren't suitable. The key gaps involve:\n\n1. The `TrySearch` main loop (gap 6-10) - needs patterns that create jobs on the stack\n2. `kInstAlt` handling (gaps 12-14) - needs alternation\n3. `kInstAltMatch` handling (gaps 15-16) - needs greedy/non-greedy alt-match\n4. `kInstByteRange` handling (gaps 17-20) - needs character matching\n5. `GrowStack` (gaps 1-5) - needs many jobs to overflow initial stack\n\nThe BitState engine is triggered when the pattern has captures and the string is short enough. The harness uses the regex itself as the input string for `FullMatch`, so the pattern needs to match itself or at least exercise the engine.\n\nKey insight: BitState is used for backtracking with captures. Patterns with many alternations and captures will create many jobs. The `GrowStack` path requires `njob_ >= maxjob_` - the initial maxjob_ is typically 16 or 32, so we need patterns that push many jobs.\n\nFor `kInstAltMatch`, this is generated when one branch of an alt leads directly to a match - like `a*` compiled form.\n\nLet me design patterns that stress these paths:\n\n{\n  \"regexes\": [\n    {\n      \"regex\": \"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p)*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\", \"re2/bitstate.cc:147\"],\n      \"reasoning\": \"Many alternations inside a Kleene star forces many kInstAlt jobs onto the BitState stack, potentially triggering GrowStack and exercising the main TrySearch loop extensively.\"\n    },\n    {\n      \"regex\": \"(a*)(b*)(c*)(d*)(e*)(f*)(g*)(h*)\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:216\", \"re2/bitstate.cc:226\"],\n      \"reasoning\": \"Multiple capture groups with star repetitions create kInstCapture and kInstAltMatch instructions, exercising the capture and byte-range handling in BitState.\"\n    },\n    {\n      \"regex\": \"(?P<a>x)|(?P<b>x)|(?P<c>x)|(?P<d>x)|(?P<e>x)\",\n      \"target_gaps\": [\"re2/bitstate.cc:185\", \"re2/bitstate.cc:186\", \"re2/bitstate.cc:191\"],\n      \"reasoning\": \"Named captures with alternation exercises kInstAlt switch(arg) cases and kInstCapture paths in BitState.\"\n    },\n    {\n      \"regex\": \"(a+|b+|c+|d+|e+|f+|g+|h+|i+|j+)\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:122\", \"re2/bitstate.cc:163\"],\n      \"reasoning\": \"Deep alternation with plus repetitions creates many Alt instructions, pushing njob_ toward maxjob_ to trigger GrowStack.\"\n    },\n    {\n      \"regex\": \"((a|b)*c(d|e)*f(g|h)*)+\",\n      \"target_gaps\": [\"re2/bitstate.cc:161\", \"re2/bitstate.cc:163\", \"re2/bitstate.cc:172\"],\n      \"reasoning\": \"Nested groups with alternations and repetitions exercise CheckAndLoop path and ShouldVisit checks in BitState.\"\n    },\n    {\n      \"regex\": \"a*b*c*d*e*f*g*h*i*j*k*l*\",\n      \"target_gaps\": [\"re2/bitstate.cc:200\", \"re2/bitstate.cc:202\", \"re2/bitstate.cc:214\"],\n      \"reasoning\": \"Chain of star repetitions generates kInstAltMatch instructions; greedy matching exercises the greedy branch of kInstAltMatch.\"\n    },\n    {\n      \"regex\": \"(a|ab|abc|abcd|abcde|abcdef)\",\n      \"target_gaps\": [\"re2/bitstate.cc:173\", \"re2/bitstate.cc:177\", \"re2/bitstate.cc:218\"],\n      \"reasoning\": \"Alternation with progressively longer strings exercises kInstByteRange p<end check and ShouldVisit in the BitState engine.\"\n    },\n    {\n      \"regex\": \"((((a|b)|(c|d))|((e|f)|(g|h)))){1,8}\",\n      \"target_gaps\": [\"re2/bitstate.cc:131\", \"re2/bitstate.cc:147\", \"re2/bitstate.cc:185\"],\n      \"reasoning\": \"Deeply nested alternations with counted repetition creates many Alt nodes, stressing the job stack and GrowStack path.\"\n    },\n    {\n      \"regex\": \"(a?(b?(c?(d?(e?(f?)?)?)?)?)?)\",\n      \"target_gaps\": [\"re2/bitstate.cc:216\", \"re2/bitstate.cc:218\", \"re2/bitstate.cc:226\"],\n      \"reasoning\": \"Nested optional groups create kInstCapture and kInstByteRange sequences, exercising p<end checks and capture register saving.\"\n    },\n    {\n      \"regex\": \"([a-z]|[A-Z]|[0-9]|[^a-zA-Z0-9])*\",\n      \"target_gaps\": [\"re2/bitstate.cc:112\", \"re2/bitstate.cc:121\", \"re2/bitstate.cc:126\"],\n      \"reasoning\": \"Alternation of character classes inside Kleene star generates many Alt and ByteRange instructions, pushing many jobs and potentially triggering GrowStack.\"\n    }\n  ]\n}",
+  "log": {
+    "model": "claude-sonnet-4-6",
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "input_tokens": 6759,
+    "output_tokens": 1498,
+    "cost_usd": 0.042747,
+    "latency_ms": 25471.203038000567,
+    "prompt_hash": "d5145897a53a52cfaa91c431cf90fe84954b97e42329f82e963311e8e11d2b54",
+    "timestamp": "2026-04-16T01:29:58.049965+00:00",
+    "generation_wall_clock_s": 25.471203858999615,
+    "target": "re2",
+    "phase": "ablation",
+    "experiment_tag": "cell=exp1_full,sample=1",
+    "cached": true
+  }
+}
