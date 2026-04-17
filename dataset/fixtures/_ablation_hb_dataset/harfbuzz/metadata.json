@@ -1,0 +1,9 @@
+{
+  "target": "harfbuzz",
+  "tier": 1,
+  "fuzzbench_benchmark": "harfbuzz-1.3.2",
+  "upstream_repo": "https://github.com/behdad/harfbuzz.git",
+  "upstream_commit": "f73a87d9a8c76a181794b74b527ea268048f78e3",
+  "harness_source": "upstream",
+  "harness_file": "test/fuzzing/hb-fuzzer.cc"
+}

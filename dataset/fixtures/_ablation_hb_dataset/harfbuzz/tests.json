@@ -1,0 +1,38 @@
+[
+  {
+    "test_name": "test_blob_empty",
+    "test_code": "static void test_blob_empty (void) {\n  hb_blob_t *blob;\n  const char *data;\n  char *data_writable;\n  unsigned int len;\n  blob = hb_blob_get_empty ();\n  g_assert (blob == hb_blob_get_empty ());\n  len = hb_blob_get_length (blob);\n  g_assert_cmpint (len, ==, 0);\n  data = hb_blob_get_data (blob, NULL);\n  g_assert (data == NULL);\n}",
+    "test_file": "test/api/test-blob.c",
+    "upstream_repo": "https://github.com/behdad/harfbuzz.git",
+    "upstream_commit": "f73a87d9a8c76a181794b74b527ea268048f78e3",
+    "upstream_file": "test/api/test-blob.c",
+    "upstream_line": 55,
+    "framework": "glib",
+    "input_data": null,
+    "called_functions": ["hb_blob_get_empty", "hb_blob_get_length", "hb_blob_get_data"]
+  },
+  {
+    "test_name": "test_buffer_allocation",
+    "test_code": "static void test_buffer_allocation (fixture_t *fixture, gconstpointer user_data) {\n  hb_buffer_t *b = fixture->buffer;\n  g_assert_cmpint (hb_buffer_get_length (b), ==, 0);\n  hb_buffer_add_utf8 (b, \"a\", 1, 0, 1);\n  g_assert_cmpint (hb_buffer_get_length (b), ==, 1);\n}",
+    "test_file": "test/api/test-buffer.c",
+    "upstream_repo": "https://github.com/behdad/harfbuzz.git",
+    "upstream_commit": "f73a87d9a8c76a181794b74b527ea268048f78e3",
+    "upstream_file": "test/api/test-buffer.c",
+    "upstream_line": 100,
+    "framework": "glib",
+    "input_data": null,
+    "called_functions": ["hb_buffer_get_length", "hb_buffer_add_utf8"]
+  },
+  {
+    "test_name": "test_font_create",
+    "test_code": "static void test_font_create (void) {\n  hb_face_t *face = hb_face_create (hb_blob_get_empty (), 0);\n  hb_font_t *font = hb_font_create (face);\n  g_assert (font);\n  hb_font_destroy (font);\n  hb_face_destroy (face);\n}",
+    "test_file": "test/api/test-font.c",
+    "upstream_repo": "https://github.com/behdad/harfbuzz.git",
+    "upstream_commit": "f73a87d9a8c76a181794b74b527ea268048f78e3",
+    "upstream_file": "test/api/test-font.c",
+    "upstream_line": 50,
+    "framework": "glib",
+    "input_data": null,
+    "called_functions": ["hb_face_create", "hb_font_create", "hb_font_destroy", "hb_face_destroy"]
+  }
+]

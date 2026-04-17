@@ -1,0 +1,89 @@
+{
+  "total_upstream_tests": 2042,
+  "union_coverage_pct": 0.0,
+  "gap_branches": [
+    {
+      "file": "re2/parse.cc",
+      "line": 455,
+      "code_context": "// A valid argument for the operator must already be on the stack.\n// The char c is the name of the operator, for use in error messages.\nbool Regexp::ParseState::PushRepeatOp(RegexpOp op, const StringPiece& s,\n                                      bool nongreedy) {\n  if (stacktop_ == NULL || IsMarker(stacktop_->op())) {\n    status_->set_code(kRegexpRepeatArgument);\n    status_->set_error_arg(s);\n    return false;\n  }\n  Regexp::ParseFlags fl = flags_;\n  if (nongreedy)\n    fl = fl ^ NonGreedy;\n  Regexp* re = new Regexp(op, fl);\n  re->AllocSub(1);\n  re->down_ = stacktop_->down_;\n  re->sub()[0] = FinishRegexp(stacktop_);\n  re->simple_ = re->ComputeSimple();\n  stacktop_ = re;\n  return true;\n}\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (stacktop_ == NULL || IsMarker(stacktop_->op())) {",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 543,
+      "code_context": "  // the result below the vertical bar or push a new\n  // vertical bar on the stack.\n  Regexp* r1;\n  Regexp* r2;\n  if ((r1 = stacktop_) != NULL &&\n      (r2 = stacktop_->down_) != NULL &&\n      r2->op() == kVerticalBar) {\n    // If above and below vertical bar are literal or char class,\n    // can merge into a single char class.\n    Regexp* r3;\n    if ((r1->op() == kRegexpLiteral ||\n         r1->op() == kRegexpCharClass ||\n         r1->op() == kRegexpAnyChar) &&\n        (r3 = r2->down_) != NULL) {\n      Rune rune;\n      switch (r3->op()) {\n        case kRegexpLiteral:  // convert to char class\n          rune = r3->rune_;\n          r3->op_ = kRegexpCharClass;\n          r3->cc_ = NULL;\n          r3->ccb_ = new CharClassBuilder;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if ((r1 = stacktop_) != NULL &&",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 613,
+      "code_context": "  }\n\n  // Pop off r1, r2.  Will Decref or reuse below.\n  stacktop_ = r2->down_;\n\n  // Restore flags from when paren opened.\n  Regexp* re = r2;\n  flags_ = re->parse_flags();\n\n  // Rewrite LeftParen as capture if needed.\n  if (re->cap_ > 0) {\n    re->op_ = kRegexpCapture;\n    // re->cap_ is already set\n    re->AllocSub(1);\n    re->sub()[0] = FinishRegexp(r1);\n    re->simple_ = re->ComputeSimple();\n  } else {\n    re->Decref();\n    re = r1;\n  }\n  return PushRegexp(re);",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Rewrite LeftParen as capture if needed.",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 643,
+      "code_context": "    return NULL;\n  }\n  stacktop_ = NULL;\n  return FinishRegexp(re);\n}\n\n// Returns the leading regexp that re starts with.\n// The returned Regexp* points into a piece of re,\n// so it must not be used after the caller calls re->Decref().\nRegexp* Regexp::LeadingRegexp(Regexp* re) {\n  if (re->op() == kRegexpEmptyMatch)\n    return NULL;\n  if (re->op() == kRegexpConcat && re->nsub() >= 2) {\n    Regexp** sub = re->sub();\n    if (sub[0]->op() == kRegexpEmptyMatch)\n      return NULL;\n    return sub[0];\n  }\n  return re;\n}\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (re->op() == kRegexpEmptyMatch)",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 940,
+      "code_context": "  start = 0;\n  out = 0;\n  for (int i = 0; i <= n; i++) {\n    // Invariant: what was in sub[0:start] has been Decref'ed\n    // and that space has been reused for sub[0:out] (out <= start).\n    //\n    // Invariant: sub[start:i] consists of regexps that are either\n    // literal runes or character classes.\n\n    if (i < n &&\n        (sub[i]->op() == kRegexpLiteral ||\n         sub[i]->op() == kRegexpCharClass))\n      continue;\n\n    // sub[i] is not a char or char class;\n    // emit char class for sub[start:i]...\n    if (i == start) {\n      // Nothing to do.\n    } else if (i == start+1) {\n      sub[out++] = sub[start];\n    } else {",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (i < n &&",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 946,
+      "code_context": "    // Invariant: sub[start:i] consists of regexps that are either\n    // literal runes or character classes.\n\n    if (i < n &&\n        (sub[i]->op() == kRegexpLiteral ||\n         sub[i]->op() == kRegexpCharClass))\n      continue;\n\n    // sub[i] is not a char or char class;\n    // emit char class for sub[start:i]...\n    if (i == start) {\n      // Nothing to do.\n    } else if (i == start+1) {\n      sub[out++] = sub[start];\n    } else {\n      // Make new char class.\n      CharClassBuilder ccb;\n      for (int j = start; j < i; j++) {\n        Regexp* re = sub[j];\n        if (re->op() == kRegexpCharClass) {\n          CharClass* cc = re->cc();",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (i < n &&",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1823,
+      "code_context": "  //   (?'name'expr)    another .NET alteration, adopted by Perl 5.10\n  //\n  // Perl 5.10 gave in and implemented the Python version too,\n  // but they claim that the last two are the preferred forms.\n  // PCRE and languages based on it (specifically, PHP and Ruby)\n  // support all three as well.  EcmaScript 4 uses only the Python form.\n  //\n  // In both the open source world (via Code Search) and the\n  // Google source tree, (?P<expr>name) is the dominant form,\n  // so that's the one we implement.  One is enough.\n  if (t.size() > 2 && t[0] == 'P' && t[1] == '<') {\n    // Pull out name.\n    size_t end = t.find('>', 2);\n    if (end == t.npos) {\n      if (!IsValidUTF8(*s, status_))\n        return false;\n      status_->set_code(kRegexpBadNamedCapture);\n      status_->set_error_arg(*s);\n      return false;\n    }\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // PCRE and languages based on it (specifically, PHP and Ruby)",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2003,
+      "code_context": "          return NULL;\n        if (!ps.PushLiteral(r))\n          return NULL;\n        break;\n      }\n\n      case '(':\n        // \"(?\" introduces Perl escape.\n        if ((ps.flags() & PerlX) && (t.size() >= 2 && t[1] == '?')) {\n          // Flag changes and non-capturing groups.\n          if (!ps.ParsePerlFlags(&t))\n            return NULL;\n          break;\n        }\n        if (ps.flags() & NeverCapture) {\n          if (!ps.DoLeftParenNoCapture())\n            return NULL;\n        } else {\n          if (!ps.DoLeftParen(NULL))\n            return NULL;\n        }",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushLiteral(r))",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 212,
+      "code_context": "  if (sub->op() == kRegexpQuest && sub->parse_flags() == flags)\n    return sub;\n  Regexp* re = new Regexp(kRegexpQuest, flags);\n  re->AllocSub(1);\n  re->sub()[0] = sub;\n  return re;\n}\n\nRegexp* Regexp::ConcatOrAlternate(RegexpOp op, Regexp** sub, int nsub,\n                                  ParseFlags flags, bool can_factor) {\n  if (nsub == 1)\n    return sub[0];\n\n  if (nsub == 0) {\n    if (op == kRegexpAlternate)\n      return new Regexp(kRegexpNoMatch, flags);\n    else\n      return new Regexp(kRegexpEmptyMatch, flags);\n  }\n\n  Regexp** subcopy = NULL;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (sub->op() == kRegexpQuest && sub->parse_flags() == flags)",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 390,
+      "code_context": "             memcmp(acc->begin(), bcc->begin(),\n                    (acc->end() - acc->begin()) * sizeof acc->begin()[0]) == 0;\n    }\n  }\n\n  LOG(DFATAL) << \"Unexpected op in Regexp::Equal: \" << a->op();\n  return 0;\n}\n\nbool Regexp::Equal(Regexp* a, Regexp* b) {\n  if (a == NULL || b == NULL)\n    return a == b;\n\n  if (!TopEqual(a, b))\n    return false;\n\n  // Fast path:\n  // return without allocating vector if there are no subregexps.\n  switch (a->op()) {\n    case kRegexpAlternate:\n    case kRegexpConcat:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (a == NULL || b == NULL)",
+      "uncovered_side": "true",
+      "reachability_score": null
+    }
+  ],
+  "gap_functions": [],
+  "per_test_unique_coverage": {},
+  "coverage_overlap_matrix": {}
+}

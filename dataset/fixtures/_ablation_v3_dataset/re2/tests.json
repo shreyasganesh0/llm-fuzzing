@@ -1,0 +1,62 @@
+[
+  {
+    "test_name": "RE2.MatchNumberPeculiarity",
+    "test_code": "TEST(RE2, MatchNumberPeculiarity) {\n  RE2 r(\"(foo)|(bar)|(baz)\");\n  string word1, word2, word3;\n  CHECK(RE2::PartialMatch(\"foo\", r, &word1, &word2, &word3));\n  CHECK_EQ(word1, \"foo\");\n  CHECK(RE2::PartialMatch(\"bar\", r, &word1, &word2, &word3));\n  CHECK_EQ(word2, \"bar\");\n  CHECK(!RE2::PartialMatch(\"f\", r, &word1, &word2, &word3));\n  string a;\n  CHECK(RE2::FullMatch(\"hello\", \"(foo)|hello\", &a));\n  CHECK_EQ(a, \"\");\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 316,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": ["RE2::PartialMatch", "RE2::FullMatch", "CHECK", "CHECK_EQ"]
+  },
+  {
+    "test_name": "RE2.Match",
+    "test_code": "TEST(RE2, Match) {\n  RE2 re(\"((\\\\w+):([0-9]+))\");\n  string all, host;\n  int port;\n  CHECK(RE2::PartialMatch(\"a chrisr:9000 here\", re, &all, &host, &port));\n  CHECK_EQ(all, \"chrisr:9000\");\n  CHECK_EQ(host, \"chrisr\");\n  CHECK_EQ(port, 9000);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 343,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": ["RE2::PartialMatch", "CHECK", "CHECK_EQ"]
+  },
+  {
+    "test_name": "ProgramSize.BigProgram",
+    "test_code": "TEST(ProgramSize, BigProgram) {\n  RE2 re_simple(\"simple regexp\");\n  RE2 re_medium(\"medium.*regexp\");\n  RE2 re_complex(\"hard.{1,128}regexp\");\n  CHECK_GT(re_simple.ProgramSize(), 0);\n  CHECK_GT(re_medium.ProgramSize(), re_simple.ProgramSize());\n  CHECK_GT(re_complex.ProgramSize(), re_medium.ProgramSize());\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 462,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": ["RE2", "RE2::ProgramSize", "CHECK_GT"]
+  },
+  {
+    "test_name": "EmptyCharset.Fuzz",
+    "test_code": "TEST(EmptyCharset, Fuzz) {\n  static const char *empties[] = {\n    \"[^\\\\S\\\\s]\",\n    \"[^\\\\S[:space:]]\",\n    \"[^\\\\D\\\\d]\",\n    \"[^\\\\D[:digit:]]\"\n  };\n  for (int i = 0; i < arraysize(empties); i++)\n    CHECK(!RE2(empties[i]).Match(\"abc\", 0, 3, RE2::UNANCHORED, NULL, 0));\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 475,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": ["RE2", "RE2::Match", "CHECK"]
+  },
+  {
+    "test_name": "Capture.NamedGroups",
+    "test_code": "TEST(Capture, NamedGroups) {\n  RE2 re(\"(?P<A>expr(?P<B>expr)(?P<C>expr))((expr)(?P<D>expr))\");\n  CHECK_EQ(re.NumberOfCapturingGroups(), 6);\n  const map<string, int>& m = re.NamedCapturingGroups();\n  CHECK_EQ(m.size(), 4);\n  CHECK_EQ(m.find(\"A\")->second, 1);\n  CHECK_EQ(m.find(\"B\")->second, 2);\n  CHECK_EQ(m.find(\"C\")->second, 3);\n  CHECK_EQ(m.find(\"D\")->second, 6);\n}",
+    "test_file": "re2/testing/re2_test.cc",
+    "upstream_repo": "https://github.com/google/re2.git",
+    "upstream_commit": "499ef7eff7455ce9c9fae86111d4a77b6ac335de",
+    "upstream_file": "re2/testing/re2_test.cc",
+    "upstream_line": 502,
+    "framework": "googletest",
+    "input_data": null,
+    "called_functions": ["RE2", "RE2::NumberOfCapturingGroups", "RE2::NamedCapturingGroups", "CHECK_EQ"]
+  }
+]

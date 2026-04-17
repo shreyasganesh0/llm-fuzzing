@@ -79,6 +79,17 @@ case "${HARNESS_SOURCE}" in
     echo "==> fetch harness ${RAW_URL}"
     curl -fsSL "${RAW_URL}" -o "${HARNESS_DIR}/$(basename "${HARNESS_FILE}")"
     ;;
+  upstream)
+    # Harness lives inside the upstream repo itself (e.g. harfbuzz).
+    SRC="${UPSTREAM_DIR}/${HARNESS_FILE}"
+    if [ -f "${SRC}" ]; then
+      cp "${SRC}" "${HARNESS_DIR}/$(basename "${HARNESS_FILE}")"
+      echo "==> copied harness from upstream: ${HARNESS_FILE}"
+    else
+      echo "harness not found in upstream: ${SRC}" >&2
+      exit 3
+    fi
+    ;;
   *)
     echo "unknown harness_source: ${HARNESS_SOURCE}" >&2
     exit 3

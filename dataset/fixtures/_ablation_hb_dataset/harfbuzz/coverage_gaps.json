@@ -1,0 +1,249 @@
+{
+  "total_upstream_tests": 376,
+  "union_coverage_pct": 0.0,
+  "gap_branches": [
+    {
+      "file": "src/hb-blob.cc",
+      "line": 73,
+      "code_context": "_hb_blob_destroy_user_data (hb_blob_t *blob)\n{\n  if (blob->destroy) {\n    blob->destroy (blob->user_data);\n    blob->user_data = NULL;",
+      "condition_description": "src/hb-blob.cc:73 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 158,
+      "code_context": "  hb_blob_t *blob;\n\n  if (!length || offset >= parent->length)\n    return hb_blob_get_empty ();\n",
+      "condition_description": "src/hb-blob.cc:158 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 87,
+      "code_context": "    t.set (tag);\n    unsigned int count = numTables;\n    for (unsigned int i = 0; i < count; i++)\n    {\n      if (t == tables[i].tag)",
+      "condition_description": "src/hb-open-file-private.hh:87 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 232,
+      "code_context": "     * non-TTC, but the index is more than zero. */\n    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn u.fontFace;",
+      "condition_description": "src/hb-open-file-private.hh:232 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 233,
+      "code_context": "    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn u.fontFace;\n    case TTCTag:\treturn u.ttcHeader.get_face (i);",
+      "condition_description": "src/hb-open-file-private.hh:233 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 246,
+      "code_context": "    switch (u.tag) {\n    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn_trace (u.fontFace.sanitize (c));",
+      "condition_description": "src/hb-open-file-private.hh:246 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 247,
+      "code_context": "    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn_trace (u.fontFace.sanitize (c));\n    case TTCTag:\treturn_trace (u.ttcHeader.sanitize (c));",
+      "condition_description": "src/hb-open-file-private.hh:247 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 242,
+      "code_context": "  {\n    const char *p = (const char *) base;\n    bool ok = this->start <= p && p <= this->end && (unsigned int) (this->end - p) >= len;\n\n    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,",
+      "condition_description": "src/hb-open-type-private.hh:242 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 336,
+      "code_context": "\n    sane = t->sanitize (c);\n    if (sane) {\n      if (c->edit_count) {\n\tDEBUG_MSG_FUNC (SANITIZE, c->start, \"passed first round with %d edits; going for second round\", c->edit_count);",
+      "condition_description": "src/hb-open-type-private.hh:336 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 337,
+      "code_context": "    sane = t->sanitize (c);\n    if (sane) {\n      if (c->edit_count) {\n\tDEBUG_MSG_FUNC (SANITIZE, c->start, \"passed first round with %d edits; going for second round\", c->edit_count);\n",
+      "condition_description": "src/hb-open-type-private.hh:337 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 366,
+      "code_context": "\n    DEBUG_MSG_FUNC (SANITIZE, c->start, sane ? \"PASSED\" : \"FAILED\");\n    if (sane)\n      return blob;\n    else {",
+      "condition_description": "src/hb-open-type-private.hh:366 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 930,
+      "code_context": "  {\n    unsigned int count = len;\n    for (unsigned int i = 0; i < count; i++)\n      if (!this->array[i].cmp (x))\n        return i;",
+      "condition_description": "src/hb-open-type-private.hh:930 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 1044,
+      "code_context": "    /* Hand-coded bsearch here since this is in the hot inner loop. */\n    int min = 0, max = (int) this->len - 1;\n    while (min <= max)\n    {\n      int mid = (min + max) / 2;",
+      "condition_description": "src/hb-open-type-private.hh:1044 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 510,
+      "code_context": "     * unsorted subtable list. */\n    int result = encodingRecord./*bsearch*/lsearch (key);\n    if (result == -1 || !encodingRecord[result].subtable)\n      return NULL;\n",
+      "condition_description": "src/hb-ot-cmap-table.hh:510 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-head-table.hh",
+      "line": 52,
+      "code_context": "    unsigned int upem = unitsPerEm;\n    /* If no valid head table found, assume 1000, which matches typical Type1 usage. */\n    return 16 <= upem && upem <= 16384 ? upem : 1000;\n  }\n",
+      "condition_description": "src/hb-ot-head-table.hh:52 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 1122,
+      "code_context": "    case 1: return u.format1.get_class(glyph_id);\n    case 2: return u.format2.get_class(glyph_id);\n    default:return 0;\n    }\n  }",
+      "condition_description": "src/hb-ot-layout-common-private.hh:1122 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout-gsub-table.hh",
+      "line": 1302,
+      "code_context": "       * GDEF rely on this.  Another notable character that\n       * this applies to is COMBINING GRAPHEME JOINER. */\n      props = (_hb_glyph_info_get_general_category (&info[i]) !=\n\t       HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK ||\n\t       _hb_glyph_info_is_default_ignorable (&info[i])) ?",
+      "condition_description": "src/hb-ot-layout-gsub-table.hh:1302 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 319,
+      "code_context": "\t      const hb_glyph_info_t    &info) const\n    {\n      if (!c->check_glyph_property (&info, lookup_props))\n\treturn SKIP_YES;\n",
+      "condition_description": "src/hb-ot-layout-gsubgpos-private.hh:319 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout-private.hh",
+      "line": 334,
+      "code_context": "_hb_glyph_info_get_modified_combining_class (const hb_glyph_info_t *info)\n{\n  return _hb_glyph_info_is_unicode_mark (info) ? info->unicode_props()>>8 : 0;\n}\n",
+      "condition_description": "src/hb-ot-layout-private.hh:334 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 158,
+      "code_context": "  }\n\n  for (unsigned int i = 0; i < layout->gsub_lookup_count; i++)\n    layout->gsub_accels[i].init (layout->gsub->get_lookup (i));\n  for (unsigned int i = 0; i < layout->gpos_lookup_count; i++)",
+      "condition_description": "src/hb-ot-layout.cc:158 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 169,
+      "code_context": "_hb_ot_layout_destroy (hb_ot_layout_t *layout)\n{\n  for (unsigned int i = 0; i < layout->gsub_lookup_count; i++)\n    layout->gsub_accels[i].fini ();\n  for (unsigned int i = 0; i < layout->gpos_lookup_count; i++)",
+      "condition_description": "src/hb-ot-layout.cc:169 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 171,
+      "code_context": "  for (unsigned int i = 0; i < layout->gsub_lookup_count; i++)\n    layout->gsub_accels[i].fini ();\n  for (unsigned int i = 0; i < layout->gpos_lookup_count; i++)\n    layout->gpos_accels[i].fini ();\n",
+      "condition_description": "src/hb-ot-layout.cc:171 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 1166,
+      "code_context": "    }\n\n    if (stage->pause_func)\n    {\n      buffer->clear_output ();",
+      "condition_description": "src/hb-ot-layout.cc:1166 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 164,
+      "code_context": "    unsigned int j = 0;\n    for (unsigned int i = 1; i < feature_infos.len; i++)\n      if (feature_infos[i].tag != feature_infos[j].tag)\n\tfeature_infos[++j] = feature_infos[i];\n      else {",
+      "condition_description": "src/hb-ot-map.cc:164 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 199,
+      "code_context": "      bits_needed = MIN(8u, _hb_bit_storage (info->max_value));\n\n    if (!info->max_value || next_bit + bits_needed > 8 * sizeof (hb_mask_t))\n      continue; /* Feature disabled, or not enough bits. */\n",
+      "condition_description": "src/hb-ot-map.cc:199 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 277,
+      "code_context": "\n      for (unsigned i = 0; i < m.features.len; i++)\n        if (m.features[i].stage[table_index] == stage)\n\t  m.add_lookups (face, table_index,\n\t\t\t m.features[i].index[table_index],",
+      "condition_description": "src/hb-ot-map.cc:277 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 164,
+      "code_context": "  switch ((hb_tag_t) planner->props.script)\n  {\n    default:\n      return &_hb_ot_complex_shaper_default;\n",
+      "condition_description": "src/hb-ot-shape-complex-private.hh:164 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 239,
+      "code_context": "    case HB_SCRIPT_ORIYA:\n    case HB_SCRIPT_TAMIL:\n    case HB_SCRIPT_TELUGU:\n\n    /* Unicode-3.0 additions */",
+      "condition_description": "src/hb-ot-shape-complex-private.hh:239 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 309,
+      "code_context": "    case HB_SCRIPT_CHAM:\n    case HB_SCRIPT_KAYAH_LI:\n    case HB_SCRIPT_LEPCHA:\n    case HB_SCRIPT_REJANG:\n    case HB_SCRIPT_SAURASHTRA:",
+      "condition_description": "src/hb-ot-shape-complex-private.hh:309 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 172,
+      "code_context": "  hb_glyph_info_t *info = buffer->info;\n  for (unsigned int i = 0; i < count; i++)\n    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {\n      unsigned int combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);\n      combining_class = recategorize_combining_class (info[i].codepoint, combining_class);",
+      "condition_description": "src/hb-ot-shape-fallback.cc:172 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "reachability_score": null
+    }
+  ],
+  "gap_functions": [],
+  "per_test_unique_coverage": {},
+  "coverage_overlap_matrix": {}
+}

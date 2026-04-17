@@ -1,10 +1,9 @@
-# stub — fill in for future session (fill upstream commit in pinned_versions.yaml first)
 name: harfbuzz
 tier: 1
 fuzzbench_benchmark: harfbuzz-1.3.2
 
 upstream:
-  repo: https://github.com/harfbuzz/harfbuzz.git
+  repo: !from_pinned harfbuzz.upstream_repo
   commit: !from_pinned harfbuzz.upstream_commit
 
 tests:
