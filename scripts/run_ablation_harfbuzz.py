@@ -74,10 +74,15 @@ RANDOM_SEEDS_DIR = SYNTHESIS_RESULTS_ROOT / "seeds" / TARGET / "random"
 CLAUDE_KEY_PATH = REPO_ROOT / "secrets/claude_key"
 LITELLM_URL = "https://api.ai.it.ufl.edu"
 
-# How many seeds to request per synthesis call
-# 3 inputs keeps binary font blobs well under the 4096 max-output-token limit.
+# How many seeds to request per synthesis call.
+# Most models: 3 inputs per call.
+# llama-3.1-70b-instruct: UF endpoint hard-caps responses at 2048 chars; requesting 3 blobs
+# causes the JSON to be truncated. Use 1 input per call for that model.
 INPUTS_PER_CALL = 3
+INPUTS_PER_CALL_SMALL = 1   # for models with tight output limits
 SAMPLES_PER_CALL = 1
+
+SMALL_OUTPUT_MODELS = {"llama-3.1-70b-instruct"}
 
 
 def _env_for_model(model: str) -> dict[str, str]:
@@ -192,7 +197,7 @@ def _run_synthesis_batch(
         "--dataset-root", str(PREPPED_DATASET_ROOT),
         "--results-root", str(SYNTHESIS_RESULTS_ROOT),
         "--samples", str(SAMPLES_PER_CALL),
-        "--num-inputs", str(INPUTS_PER_CALL),
+        "--num-inputs", str(INPUTS_PER_CALL_SMALL if model in SMALL_OUTPUT_MODELS else INPUTS_PER_CALL),
         "--max-gaps", "30",
         "--source-token-budget", str(SOURCE_TOKEN_BUDGET_ALL_MODELS),
         "--input-format", "binary",
