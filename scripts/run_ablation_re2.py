@@ -267,6 +267,7 @@ def phase_random(*, skip_existing: bool = False) -> None:
         "--count", str(TARGET_SEEDS),
         "--seed", "42",
         "--results-root", str(SYNTHESIS_RESULTS_ROOT),
+        "--input-format", "regex",
     ]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
