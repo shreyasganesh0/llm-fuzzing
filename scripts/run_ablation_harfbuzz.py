@@ -56,6 +56,8 @@ MODELS = [
     "claude-sonnet-4-6",
     "claude-haiku-4-5-20251001",
     "llama-3.1-8b-instruct",
+    "llama-3.1-70b-instruct",
+    "codestral-22b",
 ]
 
 # Existing harfbuzz data (tests + metadata)
