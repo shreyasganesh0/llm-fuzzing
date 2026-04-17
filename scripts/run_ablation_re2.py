@@ -277,38 +277,41 @@ def phase_random(*, skip_existing: bool = False) -> None:
 
 # ─── Phase 4: M1 (total edges) ────────────────────────────────────────────────
 
-def _run_m1_one(seeds_dir: Path, out_dir: Path) -> dict:
-    out_dir.mkdir(parents=True, exist_ok=True)
+def _run_m1_one(seeds_dir: Path, label: str, out_path: Path) -> dict:
     cmd = [
-        PY, "-m", "analysis.scripts.measure_coverage",
-        "--seeds-dir", str(seeds_dir),
-        "--out-dir", str(out_dir),
+        PY, "-m", "synthesis.scripts.measure_coverage",
         "--binary", str(RE2_COVERAGE_BINARY),
-        "--source-roots", str(REPO_ROOT / "dataset/targets/src/re2/upstream"),
+        "--seeds-dir", str(seeds_dir),
+        "--source-roots", str(REPO_ROOT / "phase1_dataset/targets/src/re2/upstream"),
     ]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
-        raise RuntimeError(f"M1 failed for {seeds_dir}: {r.stderr[-2000:]}")
-    return json.loads((out_dir / "summary.json").read_text())
+        raise RuntimeError(f"M1 failed for {label}: {r.stderr[-2000:]}")
+    metrics = json.loads(r.stdout)
+    metrics["seeds_dir"] = str(seeds_dir)
+    metrics["label"] = label
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(metrics, indent=2))
+    return metrics
 
 
 def phase_m1(*, skip_existing: bool = False) -> None:
     for variant in VARIANTS:
         for model in MODELS:
             seeds_dir = cell_seeds_dir(variant, model)
-            out_dir = cell_m1_dir(variant, model)
+            out_path = cell_m1_dir(variant, model) / "summary.json"
             if not seeds_dir.is_dir() or _count_seeds(seeds_dir) == 0:
                 logger.warning("M1 skip: no seeds", extra={"variant": variant, "model": model})
                 continue
-            if skip_existing and (out_dir / "summary.json").is_file():
+            if skip_existing and out_path.is_file():
                 continue
             logger.info("M1 start", extra={"variant": variant, "model": model})
-            _run_m1_one(seeds_dir, out_dir)
+            _run_m1_one(seeds_dir, f"{variant}/{model}", out_path)
 
     if _count_seeds(RANDOM_SEEDS_DIR) > 0:
-        out_dir = RESULTS_ROOT / "m1" / "random"
-        if not (skip_existing and (out_dir / "summary.json").is_file()):
-            _run_m1_one(RANDOM_SEEDS_DIR, out_dir)
+        out_path = RESULTS_ROOT / "m1" / "random" / "summary.json"
+        if not (skip_existing and out_path.is_file()):
+            _run_m1_one(RANDOM_SEEDS_DIR, "random", out_path)
 
 
 # ─── Phase 5: M2 (hard-branch hit rate) ───────────────────────────────────────

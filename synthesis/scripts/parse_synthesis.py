@@ -149,7 +149,10 @@ def parse_synthesis_response(
     sample_index: int,
     experiment: Literal["exp1", "exp2"] = "exp1",
 ) -> tuple[list[GeneratedInput], Literal["ok", "parse_failure"]]:
-    if is_degenerate_loop(text):
+    # Strip base64 payloads before loop detection — long runs of A's (null
+    # bytes) in binary font data trigger false positives on signal (a).
+    text_for_loop_check = re.sub(r"[A-Za-z0-9+/=]{60,}", "<B64>", text)
+    if is_degenerate_loop(text_for_loop_check):
         return [], "parse_failure"
     data = _extract_json(text)
     if data is None:
@@ -211,7 +214,7 @@ def _truncate_utf8(text: str, max_bytes: int) -> bytes:
 
 def _flag_bytes(target: str, sample_index: int, idx: int, regex: str) -> bytes:
     """Deterministic 2-flag-byte prefix; same (target, sample, idx, regex) → same bytes."""
-    seed_material = f"{target}|{sample_index}|{idx}|{regex}".encode()
+    seed_material = f"{target}|{sample_index}|{idx}|{regex}".encode("utf-8", errors="replace")
     digest = hashlib.sha256(seed_material).digest()
     return digest[:2]
 
