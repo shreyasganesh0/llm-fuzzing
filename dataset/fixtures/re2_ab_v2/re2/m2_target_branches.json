@@ -1,0 +1,184 @@
+{
+  "rng_seed": 42,
+  "target_count": 15,
+  "shown_count": 10,
+  "n_all_candidates": 2042,
+  "n_asymmetric_candidates": 184,
+  "n_hard_candidates": 15,
+  "shown": [
+    {
+      "file": "re2/parse.cc",
+      "line": 455,
+      "code_context": "// A valid argument for the operator must already be on the stack.\n// The char c is the name of the operator, for use in error messages.\nbool Regexp::ParseState::PushRepeatOp(RegexpOp op, const StringPiece& s,\n                                      bool nongreedy) {\n  if (stacktop_ == NULL || IsMarker(stacktop_->op())) {\n    status_->set_code(kRegexpRepeatArgument);\n    status_->set_error_arg(s);\n    return false;\n  }\n  Regexp::ParseFlags fl = flags_;\n  if (nongreedy)\n    fl = fl ^ NonGreedy;\n  Regexp* re = new Regexp(op, fl);\n  re->AllocSub(1);\n  re->down_ = stacktop_->down_;\n  re->sub()[0] = FinishRegexp(stacktop_);\n  re->simple_ = re->ComputeSimple();\n  stacktop_ = re;\n  return true;\n}\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (stacktop_ == NULL || IsMarker(stacktop_->op())) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_28.bin",
+        "structured_30.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 543,
+      "code_context": "  // the result below the vertical bar or push a new\n  // vertical bar on the stack.\n  Regexp* r1;\n  Regexp* r2;\n  if ((r1 = stacktop_) != NULL &&\n      (r2 = stacktop_->down_) != NULL &&\n      r2->op() == kVerticalBar) {\n    // If above and below vertical bar are literal or char class,\n    // can merge into a single char class.\n    Regexp* r3;\n    if ((r1->op() == kRegexpLiteral ||\n         r1->op() == kRegexpCharClass ||\n         r1->op() == kRegexpAnyChar) &&\n        (r3 = r2->down_) != NULL) {\n      Rune rune;\n      switch (r3->op()) {\n        case kRegexpLiteral:  // convert to char class\n          rune = r3->rune_;\n          r3->op_ = kRegexpCharClass;\n          r3->cc_ = NULL;\n          r3->ccb_ = new CharClassBuilder;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if ((r1 = stacktop_) != NULL &&",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_15.bin",
+        "structured_16.bin",
+        "structured_32.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 613,
+      "code_context": "  }\n\n  // Pop off r1, r2.  Will Decref or reuse below.\n  stacktop_ = r2->down_;\n\n  // Restore flags from when paren opened.\n  Regexp* re = r2;\n  flags_ = re->parse_flags();\n\n  // Rewrite LeftParen as capture if needed.\n  if (re->cap_ > 0) {\n    re->op_ = kRegexpCapture;\n    // re->cap_ is already set\n    re->AllocSub(1);\n    re->sub()[0] = FinishRegexp(r1);\n    re->simple_ = re->ComputeSimple();\n  } else {\n    re->Decref();\n    re = r1;\n  }\n  return PushRegexp(re);",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Rewrite LeftParen as capture if needed.",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "structured_15.bin",
+        "structured_32.bin",
+        "structured_38.bin",
+        "structured_43.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 643,
+      "code_context": "    return NULL;\n  }\n  stacktop_ = NULL;\n  return FinishRegexp(re);\n}\n\n// Returns the leading regexp that re starts with.\n// The returned Regexp* points into a piece of re,\n// so it must not be used after the caller calls re->Decref().\nRegexp* Regexp::LeadingRegexp(Regexp* re) {\n  if (re->op() == kRegexpEmptyMatch)\n    return NULL;\n  if (re->op() == kRegexpConcat && re->nsub() >= 2) {\n    Regexp** sub = re->sub();\n    if (sub[0]->op() == kRegexpEmptyMatch)\n      return NULL;\n    return sub[0];\n  }\n  return re;\n}\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (re->op() == kRegexpEmptyMatch)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_31.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 940,
+      "code_context": "  start = 0;\n  out = 0;\n  for (int i = 0; i <= n; i++) {\n    // Invariant: what was in sub[0:start] has been Decref'ed\n    // and that space has been reused for sub[0:out] (out <= start).\n    //\n    // Invariant: sub[start:i] consists of regexps that are either\n    // literal runes or character classes.\n\n    if (i < n &&\n        (sub[i]->op() == kRegexpLiteral ||\n         sub[i]->op() == kRegexpCharClass))\n      continue;\n\n    // sub[i] is not a char or char class;\n    // emit char class for sub[start:i]...\n    if (i == start) {\n      // Nothing to do.\n    } else if (i == start+1) {\n      sub[out++] = sub[start];\n    } else {",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (i < n &&",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_31.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 946,
+      "code_context": "    // Invariant: sub[start:i] consists of regexps that are either\n    // literal runes or character classes.\n\n    if (i < n &&\n        (sub[i]->op() == kRegexpLiteral ||\n         sub[i]->op() == kRegexpCharClass))\n      continue;\n\n    // sub[i] is not a char or char class;\n    // emit char class for sub[start:i]...\n    if (i == start) {\n      // Nothing to do.\n    } else if (i == start+1) {\n      sub[out++] = sub[start];\n    } else {\n      // Make new char class.\n      CharClassBuilder ccb;\n      for (int j = start; j < i; j++) {\n        Regexp* re = sub[j];\n        if (re->op() == kRegexpCharClass) {\n          CharClass* cc = re->cc();",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (i < n &&",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "structured_31.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1823,
+      "code_context": "  //   (?'name'expr)    another .NET alteration, adopted by Perl 5.10\n  //\n  // Perl 5.10 gave in and implemented the Python version too,\n  // but they claim that the last two are the preferred forms.\n  // PCRE and languages based on it (specifically, PHP and Ruby)\n  // support all three as well.  EcmaScript 4 uses only the Python form.\n  //\n  // In both the open source world (via Code Search) and the\n  // Google source tree, (?P<expr>name) is the dominant form,\n  // so that's the one we implement.  One is enough.\n  if (t.size() > 2 && t[0] == 'P' && t[1] == '<') {\n    // Pull out name.\n    size_t end = t.find('>', 2);\n    if (end == t.npos) {\n      if (!IsValidUTF8(*s, status_))\n        return false;\n      status_->set_code(kRegexpBadNamedCapture);\n      status_->set_error_arg(*s);\n      return false;\n    }\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // PCRE and languages based on it (specifically, PHP and Ruby)",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "structured_13.bin",
+        "structured_14.bin",
+        "structured_15.bin",
+        "structured_21.bin",
+        "structured_22.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2003,
+      "code_context": "          return NULL;\n        if (!ps.PushLiteral(r))\n          return NULL;\n        break;\n      }\n\n      case '(':\n        // \"(?\" introduces Perl escape.\n        if ((ps.flags() & PerlX) && (t.size() >= 2 && t[1] == '?')) {\n          // Flag changes and non-capturing groups.\n          if (!ps.ParsePerlFlags(&t))\n            return NULL;\n          break;\n        }\n        if (ps.flags() & NeverCapture) {\n          if (!ps.DoLeftParenNoCapture())\n            return NULL;\n        } else {\n          if (!ps.DoLeftParen(NULL))\n            return NULL;\n        }",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushLiteral(r))",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_21.bin",
+        "structured_22.bin",
+        "structured_23.bin",
+        "structured_41.bin",
+        "structured_42.bin"
+      ]
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 212,
+      "code_context": "  if (sub->op() == kRegexpQuest && sub->parse_flags() == flags)\n    return sub;\n  Regexp* re = new Regexp(kRegexpQuest, flags);\n  re->AllocSub(1);\n  re->sub()[0] = sub;\n  return re;\n}\n\nRegexp* Regexp::ConcatOrAlternate(RegexpOp op, Regexp** sub, int nsub,\n                                  ParseFlags flags, bool can_factor) {\n  if (nsub == 1)\n    return sub[0];\n\n  if (nsub == 0) {\n    if (op == kRegexpAlternate)\n      return new Regexp(kRegexpNoMatch, flags);\n    else\n      return new Regexp(kRegexpEmptyMatch, flags);\n  }\n\n  Regexp** subcopy = NULL;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (sub->op() == kRegexpQuest && sub->parse_flags() == flags)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_19.bin"
+      ]
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 390,
+      "code_context": "             memcmp(acc->begin(), bcc->begin(),\n                    (acc->end() - acc->begin()) * sizeof acc->begin()[0]) == 0;\n    }\n  }\n\n  LOG(DFATAL) << \"Unexpected op in Regexp::Equal: \" << a->op();\n  return 0;\n}\n\nbool Regexp::Equal(Regexp* a, Regexp* b) {\n  if (a == NULL || b == NULL)\n    return a == b;\n\n  if (!TopEqual(a, b))\n    return false;\n\n  // Fast path:\n  // return without allocating vector if there are no subregexps.\n  switch (a->op()) {\n    case kRegexpAlternate:\n    case kRegexpConcat:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (a == NULL || b == NULL)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_31.bin"
+      ]
+    }
+  ],
+  "held_back": [
+    {
+      "file": "re2/simplify.cc",
+      "line": 48,
+      "code_context": "}\n\n// Assuming the simple_ flags on the children are accurate,\n// is this Regexp* simple?\nbool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_38.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 52,
+      "code_context": "bool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.\n      subs = sub();",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_17.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 79,
+      "code_context": "      if (ccb_ != NULL)\n        return !ccb_->empty() && !ccb_->full();\n      return !cc_->empty() && !cc_->full();\n    case kRegexpCapture:\n      subs = sub();\n      return subs[0]->simple_;\n    case kRegexpStar:\n    case kRegexpPlus:\n    case kRegexpQuest:\n      subs = sub();\n      if (!subs[0]->simple_)\n        return false;\n      switch (subs[0]->op_) {\n        case kRegexpStar:\n        case kRegexpPlus:\n        case kRegexpQuest:\n        case kRegexpEmptyMatch:\n        case kRegexpNoMatch:\n          return false;\n        default:\n          break;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (ccb_ != NULL)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_12.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 92,
+      "code_context": "        case kRegexpStar:\n        case kRegexpPlus:\n        case kRegexpQuest:\n        case kRegexpEmptyMatch:\n        case kRegexpNoMatch:\n          return false;\n        default:\n          break;\n      }\n      return true;\n    case kRegexpRepeat:\n      return false;\n  }\n  LOG(DFATAL) << \"Case not handled in ComputeSimple: \" << op_;\n  return false;\n}\n\n// Walker subclass used by Simplify.\n// The simplify walk is purely post-recursive: given the simplified children,\n// PostVisit creates the simplified result.\n// The child_args are simplified Regexp*s.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Walker subclass used by Simplify.",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_04.bin",
+        "structured_05.bin",
+        "structured_06.bin",
+        "structured_09.bin",
+        "structured_24.bin"
+      ]
+    },
+    {
+      "file": "re2/walker-inl.h",
+      "line": 180,
+      "code_context": "    Regexp* re = s->re;\n    switch (s->n) {\n      case -1: {\n        if (--max_visits_ < 0) {\n          stopped_early_ = true;\n          t = ShortVisit(re, s->parent_arg);\n          break;\n        }\n        bool stop = false;\n        s->pre_arg = PreVisit(re, s->parent_arg, &stop);\n        if (stop) {\n          t = s->pre_arg;\n          break;\n        }\n        s->n = 0;\n        s->child_args = NULL;\n        if (re->nsub_ == 1)\n          s->child_args = &s->child_arg;\n        else if (re->nsub_ > 1)\n          s->child_args = new T[re->nsub_];\n        // Fall through.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (s->n) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "structured_04.bin",
+        "structured_05.bin",
+        "structured_06.bin",
+        "structured_09.bin",
+        "structured_24.bin"
+      ]
+    }
+  ]
+}

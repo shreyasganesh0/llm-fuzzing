@@ -98,6 +98,34 @@ PREDICTION_MAX_TOKENS = 4096
 SOURCE_CONTEXT_MAX_FILES = 40
 
 
+# ─── 4×2 ablation (variant × coverage-metric, RE2 only) ──────────────────
+from pathlib import Path as _Path  # noqa: E402
+
+_REPO_ROOT = _Path(__file__).resolve().parents[1]
+
+M2_TARGETS_PATH = _REPO_ROOT / "dataset/fixtures/re2_ab/re2/m2_target_branches.json"
+UPSTREAM_UNION_PROFILE_PATH = _REPO_ROOT / "dataset/fixtures/re2_ab/re2/upstream_union_profile.json"
+M2_SMOKE_LOG_PATH = _REPO_ROOT / "dataset/fixtures/re2_ab/re2/m2_smoke_log.json"
+
+# RE2 ablation v2 fixture paths (hard-branch filter: rand_hits==0, same as harfbuzz)
+RE2_V2_FIXTURES_DIR = _REPO_ROOT / "dataset/fixtures/re2_ab_v2/re2"
+RE2_V2_M2_TARGETS_PATH = RE2_V2_FIXTURES_DIR / "m2_target_branches.json"
+RE2_V2_UPSTREAM_UNION_PROFILE_PATH = RE2_V2_FIXTURES_DIR / "upstream_union_profile.json"
+RE2_V2_M2_SMOKE_LOG_PATH = RE2_V2_FIXTURES_DIR / "m2_smoke_log.json"
+
+# Harfbuzz ablation fixture paths
+HB_FIXTURES_DIR = _REPO_ROOT / "dataset/fixtures/harfbuzz_ab/harfbuzz"
+HB_M2_TARGETS_PATH = HB_FIXTURES_DIR / "m2_target_branches.json"
+HB_UPSTREAM_UNION_PROFILE_PATH = HB_FIXTURES_DIR / "upstream_union_profile.json"
+HB_M2_SMOKE_LOG_PATH = HB_FIXTURES_DIR / "m2_smoke_log.json"
+
+M2_TARGET_COUNT = 50
+M2_SHOWN_COUNT = 30
+M2_RNG_SEED = 42
+BOOTSTRAP_ITERS = 10_000
+SOURCE_TOKEN_BUDGET_ALL_MODELS = 8_000
+
+
 # ─── Transfer (Phase Transfer / LOO + Tier 3) ────────────────────────────
 TIER12_TARGETS = ("re2", "libxml2", "sqlite3", "libjpeg-turbo", "lcms", "harfbuzz", "proj", "ffmpeg")
 TIER3_TARGETS = ("libpng", "freetype", "zlib")

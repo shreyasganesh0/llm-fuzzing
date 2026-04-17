@@ -1,0 +1,1478 @@
+{
+  "n_rand_smoke": 100,
+  "n_structured_smoke": 54,
+  "candidates": [
+    {
+      "file": "re2/parse.cc",
+      "line": 171,
+      "uncovered_side": "true",
+      "rand_hits": 47,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 180,
+      "uncovered_side": "true",
+      "rand_hits": 29,
+      "struct_hits": 3,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 193,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 197,
+      "uncovered_side": "true",
+      "rand_hits": 12,
+      "struct_hits": 19,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 217,
+      "uncovered_side": "true",
+      "rand_hits": 43,
+      "struct_hits": 43,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 370,
+      "uncovered_side": "true",
+      "rand_hits": 40,
+      "struct_hits": 29,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 385,
+      "uncovered_side": "true",
+      "rand_hits": 51,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 389,
+      "uncovered_side": "true",
+      "rand_hits": 83,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 449,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 455,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 537,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 543,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 3,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 544,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 545,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 597,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 598,
+      "uncovered_side": "true",
+      "rand_hits": 9,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 599,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 613,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 4,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 643,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 647,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 694,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 699,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 815,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 836,
+      "uncovered_side": "false",
+      "rand_hits": 1,
+      "struct_hits": 3,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 838,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 840,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 855,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 906,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 940,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 941,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 946,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 982,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1004,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1021,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1042,
+      "uncovered_side": "true",
+      "rand_hits": 2,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1079,
+      "uncovered_side": "false",
+      "rand_hits": 92,
+      "struct_hits": 6,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1800,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1823,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 16,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1826,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1837,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1839,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1845,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1967,
+      "uncovered_side": "true",
+      "rand_hits": 47,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1974,
+      "uncovered_side": "true",
+      "rand_hits": 56,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1992,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1994,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2003,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 9,
+      "is_hard": true
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2007,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2011,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2018,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2024,
+      "uncovered_side": "true",
+      "rand_hits": 9,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2029,
+      "uncovered_side": "true",
+      "rand_hits": 9,
+      "struct_hits": 2,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2035,
+      "uncovered_side": "true",
+      "rand_hits": 5,
+      "struct_hits": 2,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2041,
+      "uncovered_side": "true",
+      "rand_hits": 7,
+      "struct_hits": 2,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2047,
+      "uncovered_side": "true",
+      "rand_hits": 9,
+      "struct_hits": 7,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2063,
+      "uncovered_side": "true",
+      "rand_hits": 7,
+      "struct_hits": 2,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2070,
+      "uncovered_side": "false",
+      "rand_hits": 8,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2075,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2086,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2092,
+      "uncovered_side": "true",
+      "rand_hits": 7,
+      "struct_hits": 8,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2123,
+      "uncovered_side": "true",
+      "rand_hits": 7,
+      "struct_hits": 14,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1189,
+      "uncovered_side": "false",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1208,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1777,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1782,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 33,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 42,
+      "uncovered_side": "true",
+      "rand_hits": 92,
+      "struct_hits": 6,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 45,
+      "uncovered_side": "true",
+      "rand_hits": 50,
+      "struct_hits": 43,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 72,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 135,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 137,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 141,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 212,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 215,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 229,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 390,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 393,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 325,
+      "uncovered_side": "true",
+      "rand_hits": 2,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 328,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 329,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 330,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 331,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 332,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 333,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 334,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 335,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 336,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 337,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 340,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 345,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 349,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 355,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 356,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 359,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 360,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 361,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 364,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 369,
+      "uncovered_side": "false",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 370,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 372,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 375,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/regexp.h",
+      "line": 491,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 44,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 45,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 46,
+      "uncovered_side": "true",
+      "rand_hits": 2,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 48,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 49,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 50,
+      "uncovered_side": "true",
+      "rand_hits": 3,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 51,
+      "uncovered_side": "true",
+      "rand_hits": 6,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 52,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 53,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 54,
+      "uncovered_side": "true",
+      "rand_hits": 2,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 55,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 56,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 57,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 64,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 1,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 67,
+      "uncovered_side": "true",
+      "rand_hits": 16,
+      "struct_hits": 18,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 77,
+      "uncovered_side": "true",
+      "rand_hits": 6,
+      "struct_hits": 2,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 79,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 82,
+      "uncovered_side": "true",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 83,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 84,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 85,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 86,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 88,
+      "uncovered_side": "false",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 92,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 8,
+      "is_hard": true
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 52,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 65,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 66,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 67,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 69,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 70,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 71,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 72,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 73,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 74,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 75,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 76,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 77,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 78,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 83,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 84,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 89,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 95,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 105,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 106,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 107,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 108,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 142,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 143,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 149,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 160,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 168,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 172,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 183,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 191,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 199,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 207,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 220,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 224,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 228,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 232,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 236,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 240,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 247,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 251,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 255,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 276,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 280,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 289,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 124,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 332,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 335,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 297,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/tostring.cc",
+      "line": 298,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/walker-inl.h",
+      "line": 159,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/walker-inl.h",
+      "line": 173,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "re2/walker-inl.h",
+      "line": 180,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 8,
+      "is_hard": true
+    },
+    {
+      "file": "re2/walker-inl.h",
+      "line": 219,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "util/rune.cc",
+      "line": 59,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "util/rune.cc",
+      "line": 192,
+      "uncovered_side": "false",
+      "rand_hits": 1,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "util/rune.cc",
+      "line": 194,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "util/stringpiece.cc",
+      "line": 57,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "util/stringpiece.cc",
+      "line": 61,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "struct_hits": 0,
+      "is_hard": false
+    }
+  ]
+}
