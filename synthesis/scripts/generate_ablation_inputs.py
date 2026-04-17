@@ -1,13 +1,15 @@
 """Ablation synthesis driver: run one (include_gaps, include_tests, include_source) cell.
 
-Renders `synthesis/prompts/ablation_synthesis_regex.j2` with any subset of
-{tests, gaps, source_files} enabled, runs `samples` LLM calls, parses
-regex responses and writes seeds to
-  `<results-root>/seeds/<target>/ablation/<cell>/<model>/seed_*.bin`.
+Supports two input formats:
+  regex  — RE2 target: renders ablation_synthesis_regex.j2, parses with parse_regex_response
+  binary — harfbuzz and other binary targets: renders ablation_synthesis_binary.j2,
+           parses with parse_synthesis_response (base64 content_b64)
 
-Used by Experiment B (the 7-cell prompt ablation) to decompose exp1's
-in-distribution advantage over exp2 into contributions from each of
-{tests, gaps, source}.
+Auto-detects format from target name (re2 → regex, everything else → binary).
+Override with --input-format {regex,binary}.
+
+Seeds are written to:
+  <results-root>/seeds/<target>/ablation/<cell>/<model>/seed_*.bin
 """
 from __future__ import annotations
 
@@ -43,7 +45,7 @@ from synthesis.scripts.build_synthesis_prompt import (
     _read_harness,
 )
 from synthesis.scripts.extract_source_context import extract_source_context
-from synthesis.scripts.parse_synthesis import parse_regex_response
+from synthesis.scripts.parse_synthesis import parse_regex_response, parse_synthesis_response
 
 logger = get_logger("utcf.ablation.synthesis")
 
@@ -64,6 +66,13 @@ def _file_dicts(ctx) -> list[dict]:
     ]
 
 
+def _resolve_input_format(target: str, input_format: str | None) -> str:
+    """Return 'regex' or 'binary'. Auto-detect from target name if input_format is None."""
+    if input_format is not None:
+        return input_format
+    return "regex" if target == "re2" else "binary"
+
+
 def build_ablation_prompt(
     target: str,
     *,
@@ -76,7 +85,9 @@ def build_ablation_prompt(
     source_token_budget: int | None,
     num_inputs: int,
     max_gaps: int,
+    input_format: str | None = None,
 ) -> str:
+    fmt = _resolve_input_format(target, input_format)
     system_prompt = SYSTEM_PROMPT_PATH.read_text()
     metadata = _load_metadata(dataset_root, target)
     harness_path = metadata.get("harness_file", "")
@@ -111,7 +122,9 @@ def build_ablation_prompt(
         if not harness_code:
             harness_code = ctx.harness_code
 
-    template = _JINJA_ENV.get_template("ablation_synthesis_regex.j2")
+    template_name = ("ablation_synthesis_regex.j2" if fmt == "regex"
+                     else "ablation_synthesis_binary.j2")
+    template = _JINJA_ENV.get_template(template_name)
     return template.render(
         system_prompt=system_prompt,
         target_name=target,
@@ -146,7 +159,10 @@ def run_ablation(
     source_token_budget: int | None,
     max_tokens: int,
     max_gaps: int,
+    input_format: str | None = None,
+    run_id: int = 0,
 ) -> list[SynthesisRecord]:
+    fmt = _resolve_input_format(target, input_format)
     rendered = build_ablation_prompt(
         target,
         dataset_root=dataset_root,
@@ -158,6 +174,7 @@ def run_ablation(
         source_token_budget=source_token_budget,
         num_inputs=num_inputs,
         max_gaps=max_gaps,
+        input_format=fmt,
     )
 
     safe_model = model.replace("/", "_")
@@ -180,9 +197,10 @@ def run_ablation(
             temperature=SYNTHESIS_TEMPERATURE,
             top_p=SYNTHESIS_TOP_P,
             max_tokens=max_tokens,
-            cache_salt=f"sample={k},ablation={cell}",
+            cache_salt=f"model={model},sample={k},ablation={cell},run={run_id}",
         )
-        inputs, status = parse_regex_response(
+        parse_fn = parse_regex_response if fmt == "regex" else parse_synthesis_response
+        inputs, status = parse_fn(
             resp.content,
             target=target,
             model=model,
@@ -260,6 +278,14 @@ def main() -> int:
     parser.add_argument("--source-max-files", type=int, default=SOURCE_CONTEXT_MAX_FILES)
     parser.add_argument("--source-token-budget", type=int, default=None)
     parser.add_argument("--max-tokens", type=int, default=SYNTHESIS_MAX_TOKENS)
+    parser.add_argument(
+        "--input-format", choices=("regex", "binary"), default=None,
+        help="override input format (default: auto-detect from target name)",
+    )
+    parser.add_argument(
+        "--run-id", type=int, default=0,
+        help="unique run identifier added to cache_salt to prevent cache collisions across retries",
+    )
     args = parser.parse_args()
 
     recs = run_ablation(
@@ -277,6 +303,8 @@ def main() -> int:
         source_token_budget=args.source_token_budget,
         max_tokens=args.max_tokens,
         max_gaps=args.max_gaps,
+        input_format=args.input_format,
+        run_id=args.run_id,
     )
     ok = sum(1 for r in recs if r.parse_status == "ok")
     total = sum(len(r.inputs) for r in recs)

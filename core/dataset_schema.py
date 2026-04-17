@@ -96,6 +96,7 @@ class GapBranch(BaseModel):
     line: int = Field(ge=1)
     code_context: str
     condition_description: str
+    uncovered_side: str | None = None   # "true" or "false" — the specific branch side to hit
     reachability_score: float | None = None
 
 
@@ -315,7 +316,7 @@ class InputValidation(BaseModel):
 
 
 class CampaignConfig(BaseModel):
-    """libFuzzer campaign configuration (plan §Phase 3)."""
+    """Fuzzing campaign configuration (libFuzzer or AFL++)."""
 
     model_config = FrozenConfig
 
@@ -325,6 +326,7 @@ class CampaignConfig(BaseModel):
         "source_only_llm_seeds", "source_only_combined",
     ]
     target: str
+    fuzzer_engine: Literal["libfuzzer", "aflpp"] = "libfuzzer"
     trials: int = Field(ge=1, default=20)
     duration_s: int = Field(ge=1, default=82_800)  # 23 hours
     rss_limit_mb: int = 2048
@@ -332,7 +334,8 @@ class CampaignConfig(BaseModel):
     max_len: int = 4096
     dictionary: str | None = None
     seed_corpus_dir: str | None = None
-    libfuzzer_binary: str
+    libfuzzer_binary: str = ""
+    afl_binary: str = ""
     snapshot_interval_s: int = 900  # 15 minutes
 
 

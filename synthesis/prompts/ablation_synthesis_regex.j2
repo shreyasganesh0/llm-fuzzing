@@ -27,12 +27,13 @@ From {{ example.upstream_file }}:{{ example.upstream_line }}:
 {% if include_gaps and coverage_gaps %}
 === UNCOVERED BRANCHES ===
 The upstream test suite ({{ total_upstream_tests }} tests) achieves
-{{ union_coverage_pct }}% branch coverage. These branches are NOT
-reached by any existing test — your regex patterns should try to hit
-them:
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took. Your regex must trigger the
+**specific uncovered side** listed for each gap.
 
 {% for gap in coverage_gaps[:max_gaps] %}
 Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
 Code:
 ```{{ source_language }}
 {{ gap.code_context }}
@@ -47,10 +48,23 @@ Hint: {{ gap.condition_description }}
 {{ file.content }}
 
 {% endfor %}{% endif %}
-=== YOUR TASK ===
+=== YOUR TASK ==={% if include_gaps and coverage_gaps %}
+Your PRIMARY GOAL is to produce regexes that take the **previously-uncovered
+side** of the {{ coverage_gaps[:max_gaps]|length }} branches listed under
+"UNCOVERED BRANCHES" above. Each branch shows exactly which side (TRUE or
+FALSE) was never executed by upstream tests — that is the side you must hit.
+
+Distribute your {{ num_inputs }} regexes across as many distinct targets as
+possible. For each regex, think step by step:
+  1. Which gap branch am I targeting?
+  2. What regex syntax would cause the parser/compiler to reach that branch?
+  3. What input would force the specific TRUE or FALSE side listed?
+
+Produce {{ num_inputs }} DISTINCT regex patterns. Keep each pattern
+1-60 characters (the harness rejects anything totaling > 64 bytes).{% else %}
 Produce {{ num_inputs }} DISTINCT regex patterns likely to maximize
 coverage of the {{ target_name }} parser/compiler. Keep each pattern
-1-60 characters (the harness rejects anything totaling > 64 bytes).
+1-60 characters (the harness rejects anything totaling > 64 bytes).{% endif %}
 
 Examples of the kind of patterns that stress the parser/compiler:
   - Named captures:         (?P<x>a+)
@@ -75,7 +89,7 @@ Schema:
     {
       "regex": "<raw pattern text, 1-60 chars>",
       "target_gaps": ["<file>:<line>", "..."],
-      "reasoning": "<why this regex is interesting for coverage>"
+      "reasoning": "<step-by-step: which gap, which side, why this pattern reaches it>"
     }
   ]
 }

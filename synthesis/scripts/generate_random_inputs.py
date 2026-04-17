@@ -98,10 +98,22 @@ def _random_bytes(rng: random.Random, max_len: int) -> bytes:
     return bytes(rng.getrandbits(8) for _ in range(n))
 
 
+def _generate_harfbuzz_random(rng: random.Random, max_len: int) -> bytes:
+    """Random binary blob for harfbuzz (uniform bytes, no font structure).
+
+    Length drawn uniformly from [4, min(max_len, 4096)] to match realistic
+    fuzzer input sizes while keeping most seeds small for fast replay.
+    """
+    upper = min(max_len, 4096)
+    n = rng.randint(4, max(4, upper))
+    return bytes(rng.getrandbits(8) for _ in range(n))
+
+
 GENERATORS = {
     "re2": _generate_regex_pair,
     "libxml2": _generate_xml,
     "sqlite3": _generate_sql,
+    "harfbuzz": _generate_harfbuzz_random,
 }
 
 REGEX_HARNESS_GENERATORS = {
