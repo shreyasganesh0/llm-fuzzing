@@ -236,7 +236,8 @@ def phase_synthesis(*, skip_existing: bool = False, attempt_offset: int = 0) -> 
 
             seeds_dir.mkdir(parents=True, exist_ok=True)
             attempt = 0
-            while _count_seeds(seeds_dir) < TARGET_SEEDS:
+            MAX_ATTEMPTS = 300  # hard cap; cells that can't reach TARGET_SEEDS are skipped
+            while _count_seeds(seeds_dir) < TARGET_SEEDS and attempt < MAX_ATTEMPTS:
                 attempt += 1
                 current = _count_seeds(seeds_dir)
                 logger.info("synthesis batch", extra={
@@ -255,6 +256,14 @@ def phase_synthesis(*, skip_existing: bool = False, attempt_offset: int = 0) -> 
                             f"Synthesis for {variant}/{model} failed after 100 attempts "
                             f"(only {_count_seeds(seeds_dir)} seeds)"
                         ) from e
+
+            final_count = _count_seeds(seeds_dir)
+            if final_count < TARGET_SEEDS:
+                logger.warning("synthesis capped: cell skipped (too many parse failures)",
+                               extra={"variant": variant, "model": model,
+                                      "n_seeds": final_count, "n_attempts": attempt,
+                                      "max_attempts": MAX_ATTEMPTS})
+                continue  # don't subsample or assert; leave partial seeds for inspection
 
             # Subsample to exactly TARGET_SEEDS
             _subsample_seeds(seeds_dir, TARGET_SEEDS)
