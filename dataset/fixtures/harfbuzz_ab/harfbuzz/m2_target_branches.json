@@ -1,0 +1,579 @@
+{
+  "rng_seed": 42,
+  "target_count": 50,
+  "shown_count": 30,
+  "n_all_candidates": 376,
+  "n_hard_candidates": 58,
+  "shown": [
+    {
+      "file": "src/hb-blob.cc",
+      "line": 73,
+      "code_context": "_hb_blob_destroy_user_data (hb_blob_t *blob)\n{\n  if (blob->destroy) {\n    blob->destroy (blob->user_data);\n    blob->user_data = NULL;",
+      "condition_description": "src/hb-blob.cc:73 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_09.bin",
+        "ttf_12.bin",
+        "ttf_13.bin",
+        "ttf_14.bin"
+      ]
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 158,
+      "code_context": "  hb_blob_t *blob;\n\n  if (!length || offset >= parent->length)\n    return hb_blob_get_empty ();\n",
+      "condition_description": "src/hb-blob.cc:158 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_09.bin",
+        "ttf_12.bin",
+        "ttf_13.bin",
+        "ttf_14.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 87,
+      "code_context": "    t.set (tag);\n    unsigned int count = numTables;\n    for (unsigned int i = 0; i < count; i++)\n    {\n      if (t == tables[i].tag)",
+      "condition_description": "src/hb-open-file-private.hh:87 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_07.bin",
+        "ttf_08.bin",
+        "ttf_09.bin",
+        "ttf_10.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 232,
+      "code_context": "     * non-TTC, but the index is more than zero. */\n    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn u.fontFace;",
+      "condition_description": "src/hb-open-file-private.hh:232 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_03.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 233,
+      "code_context": "    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn u.fontFace;\n    case TTCTag:\treturn u.ttcHeader.get_face (i);",
+      "condition_description": "src/hb-open-file-private.hh:233 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_04.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 246,
+      "code_context": "    switch (u.tag) {\n    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn_trace (u.fontFace.sanitize (c));",
+      "condition_description": "src/hb-open-file-private.hh:246 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_03.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 247,
+      "code_context": "    case CFFTag:\t/* All the non-collection tags */\n    case TrueTag:\n    case Typ1Tag:\n    case TrueTypeTag:\treturn_trace (u.fontFace.sanitize (c));\n    case TTCTag:\treturn_trace (u.ttcHeader.sanitize (c));",
+      "condition_description": "src/hb-open-file-private.hh:247 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_04.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 242,
+      "code_context": "  {\n    const char *p = (const char *) base;\n    bool ok = this->start <= p && p <= this->end && (unsigned int) (this->end - p) >= len;\n\n    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,",
+      "condition_description": "src/hb-open-type-private.hh:242 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_05.bin",
+        "ttf_09.bin",
+        "ttf_16.bin",
+        "ttf_17.bin",
+        "ttf_18.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 336,
+      "code_context": "\n    sane = t->sanitize (c);\n    if (sane) {\n      if (c->edit_count) {\n\tDEBUG_MSG_FUNC (SANITIZE, c->start, \"passed first round with %d edits; going for second round\", c->edit_count);",
+      "condition_description": "src/hb-open-type-private.hh:336 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_05.bin",
+        "ttf_09.bin",
+        "ttf_16.bin",
+        "ttf_17.bin",
+        "ttf_18.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 337,
+      "code_context": "    sane = t->sanitize (c);\n    if (sane) {\n      if (c->edit_count) {\n\tDEBUG_MSG_FUNC (SANITIZE, c->start, \"passed first round with %d edits; going for second round\", c->edit_count);\n",
+      "condition_description": "src/hb-open-type-private.hh:337 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_16.bin",
+        "ttf_17.bin",
+        "ttf_18.bin",
+        "ttf_19.bin",
+        "ttf_20.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 366,
+      "code_context": "\n    DEBUG_MSG_FUNC (SANITIZE, c->start, sane ? \"PASSED\" : \"FAILED\");\n    if (sane)\n      return blob;\n    else {",
+      "condition_description": "src/hb-open-type-private.hh:366 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_05.bin",
+        "ttf_09.bin",
+        "ttf_40.bin",
+        "ttf_61.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 930,
+      "code_context": "  {\n    unsigned int count = len;\n    for (unsigned int i = 0; i < count; i++)\n      if (!this->array[i].cmp (x))\n        return i;",
+      "condition_description": "src/hb-open-type-private.hh:930 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_37.bin",
+        "ttf_38.bin",
+        "ttf_39.bin"
+      ]
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 1044,
+      "code_context": "    /* Hand-coded bsearch here since this is in the hot inner loop. */\n    int min = 0, max = (int) this->len - 1;\n    while (min <= max)\n    {\n      int mid = (min + max) / 2;",
+      "condition_description": "src/hb-open-type-private.hh:1044 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_15.bin",
+        "ttf_16.bin",
+        "ttf_17.bin",
+        "ttf_18.bin",
+        "ttf_19.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 510,
+      "code_context": "     * unsorted subtable list. */\n    int result = encodingRecord./*bsearch*/lsearch (key);\n    if (result == -1 || !encodingRecord[result].subtable)\n      return NULL;\n",
+      "condition_description": "src/hb-ot-cmap-table.hh:510 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_37.bin",
+        "ttf_38.bin",
+        "ttf_39.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-head-table.hh",
+      "line": 52,
+      "code_context": "    unsigned int upem = unitsPerEm;\n    /* If no valid head table found, assume 1000, which matches typical Type1 usage. */\n    return 16 <= upem && upem <= 16384 ? upem : 1000;\n  }\n",
+      "condition_description": "src/hb-ot-head-table.hh:52 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_40.bin",
+        "ttf_43.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 1122,
+      "code_context": "    case 1: return u.format1.get_class(glyph_id);\n    case 2: return u.format2.get_class(glyph_id);\n    default:return 0;\n    }\n  }",
+      "condition_description": "src/hb-ot-layout-common-private.hh:1122 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_15.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout-gsub-table.hh",
+      "line": 1302,
+      "code_context": "       * GDEF rely on this.  Another notable character that\n       * this applies to is COMBINING GRAPHEME JOINER. */\n      props = (_hb_glyph_info_get_general_category (&info[i]) !=\n\t       HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK ||\n\t       _hb_glyph_info_is_default_ignorable (&info[i])) ?",
+      "condition_description": "src/hb-ot-layout-gsub-table.hh:1302 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 319,
+      "code_context": "\t      const hb_glyph_info_t    &info) const\n    {\n      if (!c->check_glyph_property (&info, lookup_props))\n\treturn SKIP_YES;\n",
+      "condition_description": "src/hb-ot-layout-gsubgpos-private.hh:319 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout-private.hh",
+      "line": 334,
+      "code_context": "_hb_glyph_info_get_modified_combining_class (const hb_glyph_info_t *info)\n{\n  return _hb_glyph_info_is_unicode_mark (info) ? info->unicode_props()>>8 : 0;\n}\n",
+      "condition_description": "src/hb-ot-layout-private.hh:334 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 158,
+      "code_context": "  }\n\n  for (unsigned int i = 0; i < layout->gsub_lookup_count; i++)\n    layout->gsub_accels[i].init (layout->gsub->get_lookup (i));\n  for (unsigned int i = 0; i < layout->gpos_lookup_count; i++)",
+      "condition_description": "src/hb-ot-layout.cc:158 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_32.bin",
+        "ttf_33.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 169,
+      "code_context": "_hb_ot_layout_destroy (hb_ot_layout_t *layout)\n{\n  for (unsigned int i = 0; i < layout->gsub_lookup_count; i++)\n    layout->gsub_accels[i].fini ();\n  for (unsigned int i = 0; i < layout->gpos_lookup_count; i++)",
+      "condition_description": "src/hb-ot-layout.cc:169 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_32.bin",
+        "ttf_33.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 171,
+      "code_context": "  for (unsigned int i = 0; i < layout->gsub_lookup_count; i++)\n    layout->gsub_accels[i].fini ();\n  for (unsigned int i = 0; i < layout->gpos_lookup_count; i++)\n    layout->gpos_accels[i].fini ();\n",
+      "condition_description": "src/hb-ot-layout.cc:171 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_36.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 1166,
+      "code_context": "    }\n\n    if (stage->pause_func)\n    {\n      buffer->clear_output ();",
+      "condition_description": "src/hb-ot-layout.cc:1166 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 164,
+      "code_context": "    unsigned int j = 0;\n    for (unsigned int i = 1; i < feature_infos.len; i++)\n      if (feature_infos[i].tag != feature_infos[j].tag)\n\tfeature_infos[++j] = feature_infos[i];\n      else {",
+      "condition_description": "src/hb-ot-map.cc:164 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 199,
+      "code_context": "      bits_needed = MIN(8u, _hb_bit_storage (info->max_value));\n\n    if (!info->max_value || next_bit + bits_needed > 8 * sizeof (hb_mask_t))\n      continue; /* Feature disabled, or not enough bits. */\n",
+      "condition_description": "src/hb-ot-map.cc:199 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 277,
+      "code_context": "\n      for (unsigned i = 0; i < m.features.len; i++)\n        if (m.features[i].stage[table_index] == stage)\n\t  m.add_lookups (face, table_index,\n\t\t\t m.features[i].index[table_index],",
+      "condition_description": "src/hb-ot-map.cc:277 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 164,
+      "code_context": "  switch ((hb_tag_t) planner->props.script)\n  {\n    default:\n      return &_hb_ot_complex_shaper_default;\n",
+      "condition_description": "src/hb-ot-shape-complex-private.hh:164 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 239,
+      "code_context": "    case HB_SCRIPT_ORIYA:\n    case HB_SCRIPT_TAMIL:\n    case HB_SCRIPT_TELUGU:\n\n    /* Unicode-3.0 additions */",
+      "condition_description": "src/hb-ot-shape-complex-private.hh:239 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 309,
+      "code_context": "    case HB_SCRIPT_CHAM:\n    case HB_SCRIPT_KAYAH_LI:\n    case HB_SCRIPT_LEPCHA:\n    case HB_SCRIPT_REJANG:\n    case HB_SCRIPT_SAURASHTRA:",
+      "condition_description": "src/hb-ot-shape-complex-private.hh:309 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 172,
+      "code_context": "  hb_glyph_info_t *info = buffer->info;\n  for (unsigned int i = 0; i < count; i++)\n    if (_hb_glyph_info_get_general_category (&info[i]) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK) {\n      unsigned int combining_class = _hb_glyph_info_get_modified_combining_class (&info[i]);\n      combining_class = recategorize_combining_class (info[i].codepoint, combining_class);",
+      "condition_description": "src/hb-ot-shape-fallback.cc:172 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    }
+  ],
+  "held_back": [
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 126,
+      "code_context": "  hb_font_t * const font = c->font;\n\n  if (!c->decompose (c, ab, &a, &b) ||\n      (b && !font->get_nominal_glyph (b, &b_glyph)))\n    return 0;",
+      "condition_description": "src/hb-ot-shape-normalize.cc:126 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_37.bin",
+        "ttf_40.bin",
+        "ttf_43.bin",
+        "ttf_44.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 181,
+      "code_context": "  }\n\n  if (!shortest && c->font->get_nominal_glyph (u, &glyph))\n  {\n    next_char (buffer, glyph);",
+      "condition_description": "src/hb-ot-shape-normalize.cc:181 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 302,
+      "code_context": "    font,\n    buffer->unicode,\n    plan->shaper->decompose ? plan->shaper->decompose : decompose_unicode,\n    plan->shaper->compose   ? plan->shaper->compose   : compose_unicode\n  };",
+      "condition_description": "src/hb-ot-shape-normalize.cc:302 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 303,
+      "code_context": "    buffer->unicode,\n    plan->shaper->decompose ? plan->shaper->decompose : decompose_unicode,\n    plan->shaper->compose   ? plan->shaper->compose   : compose_unicode\n  };\n",
+      "condition_description": "src/hb-ot-shape-normalize.cc:303 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 309,
+      "code_context": "  bool might_short_circuit = always_short_circuit ||\n\t\t\t     (mode != HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED &&\n\t\t\t      mode != HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT);\n  unsigned int count;\n",
+      "condition_description": "src/hb-ot-shape-normalize.cc:309 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 92,
+      "code_context": "  map->add_feature (HB_TAG ('d','n','o','m'), 1, F_NONE);\n\n  if (planner->shaper->collect_features)\n    planner->shaper->collect_features (planner);\n",
+      "condition_description": "src/hb-ot-shape.cc:92 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 112,
+      "code_context": "  }\n\n  if (planner->shaper->override_features)\n    planner->shaper->override_features (planner);\n",
+      "condition_description": "src/hb-ot-shape.cc:112 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 180,
+      "code_context": "  planner.compile (*plan);\n\n  if (plan->shaper->data_create) {\n    plan->data = plan->shaper->data_create (plan);\n    if (unlikely (!plan->data))",
+      "condition_description": "src/hb-ot-shape.cc:180 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 192,
+      "code_context": "_hb_ot_shaper_shape_plan_data_destroy (hb_ot_shaper_shape_plan_data_t *plan)\n{\n  if (plan->shaper->data_destroy)\n    plan->shaper->data_destroy (const_cast<void *> (plan->data));\n",
+      "condition_description": "src/hb-ot-shape.cc:192 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 542,
+      "code_context": "\n  /* This is unfortunate to go here, but necessary... */\n  if (!hb_ot_layout_has_positioning (c->face))\n    _hb_ot_shape_fallback_position_recategorize_marks (c->plan, c->font, buffer);\n",
+      "condition_description": "src/hb-ot-shape.cc:542 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_34.bin",
+        "ttf_35.bin",
+        "ttf_36.bin",
+        "ttf_42.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 658,
+      "code_context": "  switch (c->plan->shaper->zero_width_marks)\n  {\n    case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:\n      zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);\n      break;",
+      "condition_description": "src/hb-ot-shape.cc:658 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_06.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 663,
+      "code_context": "\n    default:\n    case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:\n    case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:\n      break;",
+      "condition_description": "src/hb-ot-shape.cc:663 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 664,
+      "code_context": "    default:\n    case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:\n    case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:\n      break;\n  }",
+      "condition_description": "src/hb-ot-shape.cc:664 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 668,
+      "code_context": "  }\n\n  if (has_positioning)\n  {\n    hb_glyph_info_t *info = c->buffer->info;",
+      "condition_description": "src/hb-ot-shape.cc:668 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_34.bin",
+        "ttf_35.bin",
+        "ttf_36.bin",
+        "ttf_42.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 696,
+      "code_context": "  switch (c->plan->shaper->zero_width_marks)\n  {\n    case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:\n      zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);\n      break;",
+      "condition_description": "src/hb-ot-shape.cc:696 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 723,
+      "code_context": "  hb_bool_t fallback = !hb_ot_position_complex (c);\n\n  if (fallback && c->plan->shaper->fallback_position)\n    _hb_ot_shape_fallback_position (c->plan, c->font, c->buffer);\n",
+      "condition_description": "src/hb-ot-shape.cc:723 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_06.bin",
+        "ttf_34.bin",
+        "ttf_35.bin",
+        "ttf_36.bin",
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 731,
+      "code_context": "  /* Visual fallback goes here. */\n\n  if (fallback)\n    _hb_ot_shape_fallback_kern (c->plan, c->font, c->buffer);\n",
+      "condition_description": "src/hb-ot-shape.cc:731 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_34.bin",
+        "ttf_35.bin",
+        "ttf_36.bin",
+        "ttf_42.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 85,
+      "code_context": "hb_ot_new_tag_from_script (hb_script_t script)\n{\n  switch ((hb_tag_t) script) {\n    case HB_SCRIPT_BENGALI:\t\treturn HB_TAG('b','n','g','2');\n    case HB_SCRIPT_DEVANAGARI:\t\treturn HB_TAG('d','e','v','2');",
+      "condition_description": "src/hb-ot-tag.cc:85 \u2014 take the FALSE branch",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 94,
+      "code_context": "    case HB_SCRIPT_ORIYA:\t\treturn HB_TAG('o','r','y','2');\n    case HB_SCRIPT_TAMIL:\t\treturn HB_TAG('t','m','l','2');\n    case HB_SCRIPT_TELUGU:\t\treturn HB_TAG('t','e','l','2');\n    case HB_SCRIPT_MYANMAR:\t\treturn HB_TAG('m','y','m','2');\n  }",
+      "condition_description": "src/hb-ot-tag.cc:94 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_38.bin"
+      ]
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 374,
+      "code_context": "\t\t       const hb_shape_plan_proposal_t *proposal)\n{\n  return hb_segment_properties_equal (&shape_plan->props, &proposal->props) &&\n\t hb_shape_plan_user_features_match (shape_plan, proposal) &&\n\t ((shape_plan->default_shaper_list && proposal->shaper_list == NULL) ||",
+      "condition_description": "src/hb-shape-plan.cc:374 \u2014 take the TRUE branch",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "ttf_43.bin",
+        "ttf_44.bin"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,618 @@
+{
+  "rng_seed": 42,
+  "target_count": 50,
+  "shown_count": 30,
+  "n_all_candidates": 2042,
+  "n_asymmetric_candidates": 184,
+  "n_smoke_reachable": 50,
+  "shown": [
+    {
+      "file": "re2/parse.cc",
+      "line": 171,
+      "code_context": "\n// Pseudo-operators - only on parse stack.\nconst RegexpOp kLeftParen = static_cast<RegexpOp>(kMaxRegexpOp+1);\nconst RegexpOp kVerticalBar = static_cast<RegexpOp>(kMaxRegexpOp+2);\n\nRegexp::ParseState::ParseState(ParseFlags flags,\n                               const StringPiece& whole_regexp,\n                               RegexpStatus* status)\n  : flags_(flags), whole_regexp_(whole_regexp),\n    status_(status), stacktop_(NULL), ncap_(0) {\n  if (flags_ & Latin1)\n    rune_max_ = 0xFF;\n  else\n    rune_max_ = Runemax;\n}\n\n// Cleans up by freeing all the regexps on the stack.\nRegexp::ParseState::~ParseState() {\n  Regexp* next;\n  for (Regexp* re = stacktop_; re != NULL; re = next) {\n    next = re->down_;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (flags_ & Latin1)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_56811fa6c82b6323.bin",
+        "random_9941850b3026df8a.bin",
+        "random_969df3a1ff503683.bin",
+        "random_31e2ea21a215f2d9.bin",
+        "random_2f534287297d5576.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 180,
+      "code_context": "    status_(status), stacktop_(NULL), ncap_(0) {\n  if (flags_ & Latin1)\n    rune_max_ = 0xFF;\n  else\n    rune_max_ = Runemax;\n}\n\n// Cleans up by freeing all the regexps on the stack.\nRegexp::ParseState::~ParseState() {\n  Regexp* next;\n  for (Regexp* re = stacktop_; re != NULL; re = next) {\n    next = re->down_;\n    re->down_ = NULL;\n    if (re->op() == kLeftParen)\n      delete re->name_;\n    re->Decref();\n  }\n}\n\n// Finishes the regexp if necessary, preparing it for use in\n// a more complex expression.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (flags_ & Latin1)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_56811fa6c82b6323.bin",
+        "random_9c74ad7dda67e2d8.bin",
+        "random_823b94f972cafbaf.bin",
+        "random_3a77e8e2a3b23644.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 197,
+      "code_context": "}\n\n// Finishes the regexp if necessary, preparing it for use in\n// a more complex expression.\n// If it is a CharClassBuilder, converts into a CharClass.\nRegexp* Regexp::ParseState::FinishRegexp(Regexp* re) {\n  if (re == NULL)\n    return NULL;\n  re->down_ = NULL;\n\n  if (re->op_ == kRegexpCharClass && re->ccb_ != NULL) {\n    CharClassBuilder* ccb = re->ccb_;\n    re->ccb_ = NULL;\n    re->cc_ = ccb->GetCharClass();\n    delete ccb;\n  }\n\n  return re;\n}\n\n// Pushes the given regular expression onto the stack.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Finishes the regexp if necessary, preparing it for use in",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_192819523e200930.bin",
+        "random_ed559e3f1b861aff.bin",
+        "random_54704f02a6c7ea76.bin",
+        "random_1d192c20e7f6ab9e.bin",
+        "random_8308c395120b328a.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 217,
+      "code_context": "// Pushes the given regular expression onto the stack.\n// Could check for too much memory used here.\nbool Regexp::ParseState::PushRegexp(Regexp* re) {\n  MaybeConcatString(-1, NoParseFlags);\n\n  // Special case: a character class of one character is just\n  // a literal.  This is a common idiom for escaping\n  // single characters (e.g., [.] instead of \\.), and some\n  // analysis does better with fewer character classes.\n  // Similarly, [Aa] can be rewritten as a literal A with ASCII case folding.\n  if (re->op_ == kRegexpCharClass) {\n    if (re->ccb_->size() == 1) {\n      Rune r = re->ccb_->begin()->lo;\n      re->Decref();\n      re = new Regexp(kRegexpLiteral, flags_);\n      re->rune_ = r;\n    } else if (re->ccb_->size() == 2) {\n      Rune r = re->ccb_->begin()->lo;\n      if ('A' <= r && r <= 'Z' && re->ccb_->Contains(r + 'a' - 'A')) {\n        re->Decref();\n        re = new Regexp(kRegexpLiteral, flags_ | FoldCase);",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (re->op_ == kRegexpCharClass) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_56811fa6c82b6323.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_969df3a1ff503683.bin",
+        "random_d2e98a10796d4ecd.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 370,
+      "code_context": "    AddFoldedRange(cc, lo1, hi1, depth+1);\n\n    // Pick up where this fold left off.\n    lo = f->hi + 1;\n  }\n}\n\n// Pushes the literal rune r onto the stack.\nbool Regexp::ParseState::PushLiteral(Rune r) {\n  // Do case folding if needed.\n  if ((flags_ & FoldCase) && CycleFoldRune(r) != r) {\n    Regexp* re = new Regexp(kRegexpCharClass, flags_ & ~FoldCase);\n    re->ccb_ = new CharClassBuilder;\n    Rune r1 = r;\n    do {\n      if (!(flags_ & NeverNL) || r != '\\n') {\n        re->ccb_->AddRange(r, r);\n      }\n      r = CycleFoldRune(r);\n    } while (r != r1);\n    re->ccb_->RemoveAbove(rune_max_);",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Do case folding if needed.",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_56811fa6c82b6323.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_969df3a1ff503683.bin",
+        "random_d2e98a10796d4ecd.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 385,
+      "code_context": "      if (!(flags_ & NeverNL) || r != '\\n') {\n        re->ccb_->AddRange(r, r);\n      }\n      r = CycleFoldRune(r);\n    } while (r != r1);\n    re->ccb_->RemoveAbove(rune_max_);\n    return PushRegexp(re);\n  }\n\n  // Exclude newline if applicable.\n  if ((flags_ & NeverNL) && r == '\\n')\n    return PushRegexp(new Regexp(kRegexpNoMatch, flags_));\n\n  // No fancy stuff worked.  Ordinary literal.\n  if (MaybeConcatString(r, flags_))\n    return true;\n\n  Regexp* re = new Regexp(kRegexpLiteral, flags_);\n  re->rune_ = r;\n  return PushRegexp(re);\n}",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!(flags_ & NeverNL) || r != '\\n') {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_4d53f85d76fc8344.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_9941850b3026df8a.bin",
+        "random_31e2ea21a215f2d9.bin",
+        "random_d2e98a10796d4ecd.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 389,
+      "code_context": "    } while (r != r1);\n    re->ccb_->RemoveAbove(rune_max_);\n    return PushRegexp(re);\n  }\n\n  // Exclude newline if applicable.\n  if ((flags_ & NeverNL) && r == '\\n')\n    return PushRegexp(new Regexp(kRegexpNoMatch, flags_));\n\n  // No fancy stuff worked.  Ordinary literal.\n  if (MaybeConcatString(r, flags_))\n    return true;\n\n  Regexp* re = new Regexp(kRegexpLiteral, flags_);\n  re->rune_ = r;\n  return PushRegexp(re);\n}\n\n// Pushes a ^ onto the stack.\nbool Regexp::ParseState::PushCarat() {\n  if (flags_ & OneLine) {",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: } while (r != r1);",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_4d53f85d76fc8344.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_9941850b3026df8a.bin",
+        "random_969df3a1ff503683.bin",
+        "random_31e2ea21a215f2d9.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 449,
+      "code_context": "bool Regexp::ParseState::PushSimpleOp(RegexpOp op) {\n  Regexp* re = new Regexp(op, flags_);\n  return PushRegexp(re);\n}\n\n// Pushes a repeat operator regexp onto the stack.\n// A valid argument for the operator must already be on the stack.\n// The char c is the name of the operator, for use in error messages.\nbool Regexp::ParseState::PushRepeatOp(RegexpOp op, const StringPiece& s,\n                                      bool nongreedy) {\n  if (stacktop_ == NULL || IsMarker(stacktop_->op())) {\n    status_->set_code(kRegexpRepeatArgument);\n    status_->set_error_arg(s);\n    return false;\n  }\n  Regexp::ParseFlags fl = flags_;\n  if (nongreedy)\n    fl = fl ^ NonGreedy;\n  Regexp* re = new Regexp(op, fl);\n  re->AllocSub(1);\n  re->down_ = stacktop_->down_;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (stacktop_ == NULL || IsMarker(stacktop_->op())) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_f64a33f7bce0ca03.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 543,
+      "code_context": "  // the result below the vertical bar or push a new\n  // vertical bar on the stack.\n  Regexp* r1;\n  Regexp* r2;\n  if ((r1 = stacktop_) != NULL &&\n      (r2 = stacktop_->down_) != NULL &&\n      r2->op() == kVerticalBar) {\n    // If above and below vertical bar are literal or char class,\n    // can merge into a single char class.\n    Regexp* r3;\n    if ((r1->op() == kRegexpLiteral ||\n         r1->op() == kRegexpCharClass ||\n         r1->op() == kRegexpAnyChar) &&\n        (r3 = r2->down_) != NULL) {\n      Rune rune;\n      switch (r3->op()) {\n        case kRegexpLiteral:  // convert to char class\n          rune = r3->rune_;\n          r3->op_ = kRegexpCharClass;\n          r3->cc_ = NULL;\n          r3->ccb_ = new CharClassBuilder;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if ((r1 = stacktop_) != NULL &&",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_15.bin",
+        "handcrafted_16.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 598,
+      "code_context": "bool Regexp::ParseState::DoRightParen() {\n  // Finish the current concatenation and alternation.\n  DoAlternation();\n\n  // The stack should be: LeftParen regexp\n  // Remove the LeftParen, leaving the regexp,\n  // parenthesized.\n  Regexp* r1;\n  Regexp* r2;\n  if ((r1 = stacktop_) == NULL ||\n      (r2 = r1->down_) == NULL ||\n      r2->op() != kLeftParen) {\n    status_->set_code(kRegexpMissingParen);\n    status_->set_error_arg(whole_regexp_);\n    return false;\n  }\n\n  // Pop off r1, r2.  Will Decref or reuse below.\n  stacktop_ = r2->down_;\n\n  // Restore flags from when paren opened.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if ((r1 = stacktop_) == NULL ||",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_56811fa6c82b6323.bin",
+        "random_9c74ad7dda67e2d8.bin",
+        "random_482078f9674aba0b.bin",
+        "random_cc45f053d57eb012.bin",
+        "random_afd8778a189bf880.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 613,
+      "code_context": "  }\n\n  // Pop off r1, r2.  Will Decref or reuse below.\n  stacktop_ = r2->down_;\n\n  // Restore flags from when paren opened.\n  Regexp* re = r2;\n  flags_ = re->parse_flags();\n\n  // Rewrite LeftParen as capture if needed.\n  if (re->cap_ > 0) {\n    re->op_ = kRegexpCapture;\n    // re->cap_ is already set\n    re->AllocSub(1);\n    re->sub()[0] = FinishRegexp(r1);\n    re->simple_ = re->ComputeSimple();\n  } else {\n    re->Decref();\n    re = r1;\n  }\n  return PushRegexp(re);",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Rewrite LeftParen as capture if needed.",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "handcrafted_15.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 699,
+      "code_context": "  while (re->op() == kRegexpConcat && re->nsub() > 0)\n    re = re->sub()[0];\n\n  *flags = static_cast<Regexp::ParseFlags>(re->parse_flags_ & Regexp::FoldCase);\n\n  if (re->op() == kRegexpLiteral) {\n    *nrune = 1;\n    return &re->rune_;\n  }\n\n  if (re->op() == kRegexpLiteralString) {\n    *nrune = re->nrunes_;\n    return re->runes_;\n  }\n\n  *nrune = 0;\n  return NULL;\n}\n\n// Removes the first n leading runes from the beginning of re.\n// Edits re in place.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: while (re->op() == kRegexpConcat && re->nsub() > 0)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_cc45f053d57eb012.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 836,
+      "code_context": "    // and that space has been reused for sub[0:out] (out <= start).\n    //\n    // Invariant: sub[start:i] consists of regexps that all begin\n    // with the string rune[0:nrune].\n\n    Rune* rune_i = NULL;\n    int nrune_i = 0;\n    Regexp::ParseFlags runeflags_i = Regexp::NoParseFlags;\n    if (i < n) {\n      rune_i = LeadingString(sub[i], &nrune_i, &runeflags_i);\n      if (runeflags_i == runeflags) {\n        int same = 0;\n        while (same < nrune && same < nrune_i && rune[same] == rune_i[same])\n          same++;\n        if (same > 0) {\n          // Matches at least one rune in current range.  Keep going around.\n          nrune = same;\n          continue;\n        }\n      }\n    }",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (i < n) {",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "random_cc45f053d57eb012.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 838,
+      "code_context": "    // Invariant: sub[start:i] consists of regexps that all begin\n    // with the string rune[0:nrune].\n\n    Rune* rune_i = NULL;\n    int nrune_i = 0;\n    Regexp::ParseFlags runeflags_i = Regexp::NoParseFlags;\n    if (i < n) {\n      rune_i = LeadingString(sub[i], &nrune_i, &runeflags_i);\n      if (runeflags_i == runeflags) {\n        int same = 0;\n        while (same < nrune && same < nrune_i && rune[same] == rune_i[same])\n          same++;\n        if (same > 0) {\n          // Matches at least one rune in current range.  Keep going around.\n          nrune = same;\n          continue;\n        }\n      }\n    }\n\n    // Found end of a run with common leading literal string:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (i < n) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_cc45f053d57eb012.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1042,
+      "code_context": "  delete[] subs;\n  re->simple_ = re->ComputeSimple();\n  re->down_ = next;\n  stacktop_ = re;\n}\n\n// Finishes the current concatenation,\n// collapsing it into a single regexp on the stack.\nvoid Regexp::ParseState::DoConcatenation() {\n  Regexp* r1 = stacktop_;\n  if (r1 == NULL || IsMarker(r1->op())) {\n    // empty concatenation is special case\n    Regexp* re = new Regexp(kRegexpEmptyMatch, flags_);\n    PushRegexp(re);\n  }\n  DoCollapse(kRegexpConcat);\n}\n\n// Finishes the current alternation,\n// collapsing it to a single regexp on the stack.\nvoid Regexp::ParseState::DoAlternation() {",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (r1 == NULL || IsMarker(r1->op())) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_54704f02a6c7ea76.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1079,
+      "code_context": "// If r >= 0, consider pushing a literal r on the stack.\n// Return whether that happened.\nbool Regexp::ParseState::MaybeConcatString(int r, ParseFlags flags) {\n  Regexp* re1;\n  Regexp* re2;\n  if ((re1 = stacktop_) == NULL || (re2 = re1->down_) == NULL)\n    return false;\n\n  if (re1->op_ != kRegexpLiteral && re1->op_ != kRegexpLiteralString)\n    return false;\n  if (re2->op_ != kRegexpLiteral && re2->op_ != kRegexpLiteralString)\n    return false;\n  if ((re1->parse_flags_ & FoldCase) != (re2->parse_flags_ & FoldCase))\n    return false;\n\n  if (re2->op_ == kRegexpLiteral) {\n    // convert into string\n    Rune rune = re2->rune_;\n    re2->op_ = kRegexpLiteralString;\n    re2->nrunes_ = 0;\n    re2->runes_ = NULL;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if ((re1 = stacktop_) == NULL || (re2 = re1->down_) == NULL)",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_4d53f85d76fc8344.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_9941850b3026df8a.bin",
+        "random_969df3a1ff503683.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1189,
+      "code_context": "  return true;\n}\n\n// Removes the next Rune from the StringPiece and stores it in *r.\n// Returns number of bytes removed from sp.\n// Behaves as though there is a terminating NUL at the end of sp.\n// Argument order is backwards from usual Google style\n// but consistent with chartorune.\nstatic int StringPieceToRune(Rune *r, StringPiece *sp, RegexpStatus* status) {\n  int n;\n  if (fullrune(sp->data(), sp->size())) {\n    n = chartorune(r, sp->data());\n    if (!(n == 1 && *r == Runeerror)) {  // no decoding error\n      sp->remove_prefix(n);\n      return n;\n    }\n  }\n\n  status->set_code(kRegexpBadUTF8);\n  status->set_error_arg(NULL);\n  return -1;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (fullrune(sp->data(), sp->size())) {",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "random_0f8746d76c9162f4.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1823,
+      "code_context": "  //   (?'name'expr)    another .NET alteration, adopted by Perl 5.10\n  //\n  // Perl 5.10 gave in and implemented the Python version too,\n  // but they claim that the last two are the preferred forms.\n  // PCRE and languages based on it (specifically, PHP and Ruby)\n  // support all three as well.  EcmaScript 4 uses only the Python form.\n  //\n  // In both the open source world (via Code Search) and the\n  // Google source tree, (?P<expr>name) is the dominant form,\n  // so that's the one we implement.  One is enough.\n  if (t.size() > 2 && t[0] == 'P' && t[1] == '<') {\n    // Pull out name.\n    size_t end = t.find('>', 2);\n    if (end == t.npos) {\n      if (!IsValidUTF8(*s, status_))\n        return false;\n      status_->set_code(kRegexpBadNamedCapture);\n      status_->set_error_arg(*s);\n      return false;\n    }\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // PCRE and languages based on it (specifically, PHP and Ruby)",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "handcrafted_13.bin",
+        "handcrafted_14.bin",
+        "handcrafted_15.bin",
+        "handcrafted_21.bin",
+        "handcrafted_22.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1967,
+      "code_context": "                      RegexpStatus* status) {\n  // Make status non-NULL (easier on everyone else).\n  RegexpStatus xstatus;\n  if (status == NULL)\n    status = &xstatus;\n\n  ParseState ps(global_flags, s, status);\n  StringPiece t = s;\n\n  // Convert regexp to UTF-8 (easier on the rest of the parser).\n  if (global_flags & Latin1) {\n    string* tmp = new string;\n    ConvertLatin1ToUTF8(t, tmp);\n    status->set_tmp(tmp);\n    t = *tmp;\n  }\n\n  if (global_flags & Literal) {\n    // Special parse loop for literal string.\n    while (t.size() > 0) {\n      Rune r;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (status == NULL)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_56811fa6c82b6323.bin",
+        "random_9941850b3026df8a.bin",
+        "random_969df3a1ff503683.bin",
+        "random_31e2ea21a215f2d9.bin",
+        "random_2f534287297d5576.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 1974,
+      "code_context": "  StringPiece t = s;\n\n  // Convert regexp to UTF-8 (easier on the rest of the parser).\n  if (global_flags & Latin1) {\n    string* tmp = new string;\n    ConvertLatin1ToUTF8(t, tmp);\n    status->set_tmp(tmp);\n    t = *tmp;\n  }\n\n  if (global_flags & Literal) {\n    // Special parse loop for literal string.\n    while (t.size() > 0) {\n      Rune r;\n      if (StringPieceToRune(&r, &t, status) < 0)\n        return NULL;\n      if (!ps.PushLiteral(r))\n        return NULL;\n    }\n    return ps.DoFinish();\n  }",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (global_flags & Latin1) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_4d53f85d76fc8344.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_9941850b3026df8a.bin",
+        "random_969df3a1ff503683.bin",
+        "random_31e2ea21a215f2d9.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2003,
+      "code_context": "          return NULL;\n        if (!ps.PushLiteral(r))\n          return NULL;\n        break;\n      }\n\n      case '(':\n        // \"(?\" introduces Perl escape.\n        if ((ps.flags() & PerlX) && (t.size() >= 2 && t[1] == '?')) {\n          // Flag changes and non-capturing groups.\n          if (!ps.ParsePerlFlags(&t))\n            return NULL;\n          break;\n        }\n        if (ps.flags() & NeverCapture) {\n          if (!ps.DoLeftParenNoCapture())\n            return NULL;\n        } else {\n          if (!ps.DoLeftParen(NULL))\n            return NULL;\n        }",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushLiteral(r))",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_21.bin",
+        "handcrafted_22.bin",
+        "handcrafted_23.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2007,
+      "code_context": "      }\n\n      case '(':\n        // \"(?\" introduces Perl escape.\n        if ((ps.flags() & PerlX) && (t.size() >= 2 && t[1] == '?')) {\n          // Flag changes and non-capturing groups.\n          if (!ps.ParsePerlFlags(&t))\n            return NULL;\n          break;\n        }\n        if (ps.flags() & NeverCapture) {\n          if (!ps.DoLeftParenNoCapture())\n            return NULL;\n        } else {\n          if (!ps.DoLeftParen(NULL))\n            return NULL;\n        }\n        t.remove_prefix(1);  // '('\n        break;\n\n      case '|':",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if ((ps.flags() & PerlX) && (t.size() >= 2 && t[1] == '?')) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_722ba5cfdb03c15c.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2024,
+      "code_context": "        t.remove_prefix(1);  // '('\n        break;\n\n      case '|':\n        if (!ps.DoVerticalBar())\n          return NULL;\n        t.remove_prefix(1);  // '|'\n        break;\n\n      case ')':\n        if (!ps.DoRightParen())\n          return NULL;\n        t.remove_prefix(1);  // ')'\n        break;\n\n      case '^':  // Beginning of line.\n        if (!ps.PushCarat())\n          return NULL;\n        t.remove_prefix(1);  // '^'\n        break;\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.DoVerticalBar())",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_56811fa6c82b6323.bin",
+        "random_9c74ad7dda67e2d8.bin",
+        "random_482078f9674aba0b.bin",
+        "random_cc45f053d57eb012.bin",
+        "random_afd8778a189bf880.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2029,
+      "code_context": "          return NULL;\n        t.remove_prefix(1);  // '|'\n        break;\n\n      case ')':\n        if (!ps.DoRightParen())\n          return NULL;\n        t.remove_prefix(1);  // ')'\n        break;\n\n      case '^':  // Beginning of line.\n        if (!ps.PushCarat())\n          return NULL;\n        t.remove_prefix(1);  // '^'\n        break;\n\n      case '$':  // End of line.\n        if (!ps.PushDollar())\n          return NULL;\n        t.remove_prefix(1);  // '$'\n        break;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.DoRightParen())",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_9c74ad7dda67e2d8.bin",
+        "random_823b94f972cafbaf.bin",
+        "random_43c71c87fa1ebc87.bin",
+        "random_e9477e47ae46514c.bin",
+        "handcrafted_14.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2035,
+      "code_context": "          return NULL;\n        t.remove_prefix(1);  // ')'\n        break;\n\n      case '^':  // Beginning of line.\n        if (!ps.PushCarat())\n          return NULL;\n        t.remove_prefix(1);  // '^'\n        break;\n\n      case '$':  // End of line.\n        if (!ps.PushDollar())\n          return NULL;\n        t.remove_prefix(1);  // '$'\n        break;\n\n      case '.':  // Any character (possibly except newline).\n        if (!ps.PushDot())\n          return NULL;\n        t.remove_prefix(1);  // '.'\n        break;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushCarat())",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_8f6867d41e611970.bin",
+        "handcrafted_14.bin",
+        "handcrafted_19.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2041,
+      "code_context": "          return NULL;\n        t.remove_prefix(1);  // '^'\n        break;\n\n      case '$':  // End of line.\n        if (!ps.PushDollar())\n          return NULL;\n        t.remove_prefix(1);  // '$'\n        break;\n\n      case '.':  // Any character (possibly except newline).\n        if (!ps.PushDot())\n          return NULL;\n        t.remove_prefix(1);  // '.'\n        break;\n\n      case '[': {  // Character class.\n        Regexp* re;\n        if (!ps.ParseCharClass(&t, &re, status))\n          return NULL;\n        if (!ps.PushRegexp(re))",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushDollar())",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_823b94f972cafbaf.bin",
+        "random_54704f02a6c7ea76.bin",
+        "random_e9477e47ae46514c.bin",
+        "random_722ba5cfdb03c15c.bin",
+        "handcrafted_14.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2047,
+      "code_context": "          return NULL;\n        t.remove_prefix(1);  // '$'\n        break;\n\n      case '.':  // Any character (possibly except newline).\n        if (!ps.PushDot())\n          return NULL;\n        t.remove_prefix(1);  // '.'\n        break;\n\n      case '[': {  // Character class.\n        Regexp* re;\n        if (!ps.ParseCharClass(&t, &re, status))\n          return NULL;\n        if (!ps.PushRegexp(re))\n          return NULL;\n        break;\n      }\n\n      case '*': {  // Zero or more.\n        RegexpOp op;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushDot())",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_192819523e200930.bin",
+        "random_3a77e8e2a3b23644.bin",
+        "random_0f8746d76c9162f4.bin",
+        "random_a036190dc0b7794f.bin",
+        "handcrafted_01.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2063,
+      "code_context": "        break;\n      }\n\n      case '*': {  // Zero or more.\n        RegexpOp op;\n        op = kRegexpStar;\n        goto Rep;\n      case '+':  // One or more.\n        op = kRegexpPlus;\n        goto Rep;\n      case '?':  // Zero or one.\n        op = kRegexpQuest;\n        goto Rep;\n      Rep:\n        StringPiece opstr = t;\n        bool nongreedy = false;\n        t.remove_prefix(1);  // '*' or '+' or '?'\n        if (ps.flags() & PerlX) {\n          if (t.size() > 0 && t[0] == '?') {\n            nongreedy = true;\n            t.remove_prefix(1);  // '?'",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (ps.flags() & PerlX) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_722ba5cfdb03c15c.bin",
+        "random_8f6867d41e611970.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2070,
+      "code_context": "      case '+':  // One or more.\n        op = kRegexpPlus;\n        goto Rep;\n      case '?':  // Zero or one.\n        op = kRegexpQuest;\n        goto Rep;\n      Rep:\n        StringPiece opstr = t;\n        bool nongreedy = false;\n        t.remove_prefix(1);  // '*' or '+' or '?'\n        if (ps.flags() & PerlX) {\n          if (t.size() > 0 && t[0] == '?') {\n            nongreedy = true;\n            t.remove_prefix(1);  // '?'\n          }\n          if (lastunary.size() > 0) {\n            // In Perl it is not allowed to stack repetition operators:\n            //   a** is a syntax error, not a double-star.\n            // (and a++ means something else entirely, which we don't support!)\n            status->set_code(kRegexpRepeatOp);\n            status->set_error_arg(StringPiece(lastunary.begin(),",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (ps.flags() & PerlX) {",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "random_722ba5cfdb03c15c.bin",
+        "random_cc45f053d57eb012.bin",
+        "random_8f6867d41e611970.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2086,
+      "code_context": "            // In Perl it is not allowed to stack repetition operators:\n            //   a** is a syntax error, not a double-star.\n            // (and a++ means something else entirely, which we don't support!)\n            status->set_code(kRegexpRepeatOp);\n            status->set_error_arg(StringPiece(lastunary.begin(),\n                                              t.begin() - lastunary.begin()));\n            return NULL;\n          }\n        }\n        opstr.set(opstr.data(), t.data() - opstr.data());\n        if (!ps.PushRepeatOp(op, opstr, nongreedy))\n          return NULL;\n        isunary = opstr;\n        break;\n      }\n\n      case '{': {  // Counted repetition.\n        int lo, hi;\n        StringPiece opstr = t;\n        if (!MaybeParseRepetition(&t, &lo, &hi)) {\n          // Treat like a literal.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushRepeatOp(op, opstr, nongreedy))",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_f64a33f7bce0ca03.bin"
+      ]
+    }
+  ],
+  "held_back": [
+    {
+      "file": "re2/parse.cc",
+      "line": 2092,
+      "code_context": "            return NULL;\n          }\n        }\n        opstr.set(opstr.data(), t.data() - opstr.data());\n        if (!ps.PushRepeatOp(op, opstr, nongreedy))\n          return NULL;\n        isunary = opstr;\n        break;\n      }\n\n      case '{': {  // Counted repetition.\n        int lo, hi;\n        StringPiece opstr = t;\n        if (!MaybeParseRepetition(&t, &lo, &hi)) {\n          // Treat like a literal.\n          if (!ps.PushLiteral('{'))\n            return NULL;\n          t.remove_prefix(1);  // '{'\n          break;\n        }\n        bool nongreedy = false;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushRepeatOp(op, opstr, nongreedy))",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_3a77e8e2a3b23644.bin",
+        "random_e9477e47ae46514c.bin",
+        "handcrafted_04.bin",
+        "handcrafted_05.bin",
+        "handcrafted_06.bin"
+      ]
+    },
+    {
+      "file": "re2/parse.cc",
+      "line": 2123,
+      "code_context": "            return NULL;\n          }\n        }\n        opstr.set(opstr.data(), t.data() - opstr.data());\n        if (!ps.PushRepetition(lo, hi, opstr, nongreedy))\n          return NULL;\n        isunary = opstr;\n        break;\n      }\n\n      case '\\\\': {  // Escaped character or Perl sequence.\n        // \\b and \\B: word boundary or not\n        if ((ps.flags() & Regexp::PerlB) &&\n            t.size() >= 2 && (t[1] == 'b' || t[1] == 'B')) {\n          if (!ps.PushWordBoundary(t[1] == 'b'))\n            return NULL;\n          t.remove_prefix(2);  // '\\\\', 'b'\n          break;\n        }\n\n        if ((ps.flags() & Regexp::PerlX) && t.size() >= 2) {",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!ps.PushRepetition(lo, hi, opstr, nongreedy))",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_823b94f972cafbaf.bin",
+        "random_239134c8d4e3750c.bin",
+        "random_2284492a21ed08df.bin",
+        "handcrafted_07.bin"
+      ]
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 42,
+      "code_context": "Regexp::~Regexp() {\n  if (nsub_ > 0)\n    LOG(DFATAL) << \"Regexp not destroyed.\";\n\n  switch (op_) {\n    default:\n      break;\n    case kRegexpCapture:\n      delete name_;\n      break;\n    case kRegexpLiteralString:\n      delete[] runes_;\n      break;\n    case kRegexpCharClass:\n      if (cc_)\n        cc_->Delete();\n      delete ccb_;\n      break;\n  }\n}\n",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (nsub_ > 0)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_4d53f85d76fc8344.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_9941850b3026df8a.bin",
+        "random_969df3a1ff503683.bin"
+      ]
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 45,
+      "code_context": "\n  switch (op_) {\n    default:\n      break;\n    case kRegexpCapture:\n      delete name_;\n      break;\n    case kRegexpLiteralString:\n      delete[] runes_;\n      break;\n    case kRegexpCharClass:\n      if (cc_)\n        cc_->Delete();\n      delete ccb_;\n      break;\n  }\n}\n\n// If it's possible to destroy this regexp without recurring,\n// do so and return true.  Else return false.\nbool Regexp::QuickDestroy() {",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_da7aa06a8b561982.bin",
+        "random_56811fa6c82b6323.bin",
+        "random_a76574a996cc2fc3.bin",
+        "random_969df3a1ff503683.bin",
+        "random_d2e98a10796d4ecd.bin"
+      ]
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 212,
+      "code_context": "  if (sub->op() == kRegexpQuest && sub->parse_flags() == flags)\n    return sub;\n  Regexp* re = new Regexp(kRegexpQuest, flags);\n  re->AllocSub(1);\n  re->sub()[0] = sub;\n  return re;\n}\n\nRegexp* Regexp::ConcatOrAlternate(RegexpOp op, Regexp** sub, int nsub,\n                                  ParseFlags flags, bool can_factor) {\n  if (nsub == 1)\n    return sub[0];\n\n  if (nsub == 0) {\n    if (op == kRegexpAlternate)\n      return new Regexp(kRegexpNoMatch, flags);\n    else\n      return new Regexp(kRegexpEmptyMatch, flags);\n  }\n\n  Regexp** subcopy = NULL;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (sub->op() == kRegexpQuest && sub->parse_flags() == flags)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_19.bin"
+      ]
+    },
+    {
+      "file": "re2/regexp.cc",
+      "line": 325,
+      "code_context": "void Regexp::Swap(Regexp* that) {\n  // Can use memmove because Regexp is just a struct (no vtable).\n  char tmp[sizeof *this];\n  memmove(tmp, this, sizeof tmp);\n  memmove(this, that, sizeof tmp);\n  memmove(that, tmp, sizeof tmp);\n}\n\n// Tests equality of all top-level structure but not subregexps.\nstatic bool TopEqual(Regexp* a, Regexp* b) {\n  if (a->op() != b->op())\n    return false;\n\n  switch (a->op()) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpWordBoundary:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (a->op() != b->op())",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_cc45f053d57eb012.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 46,
+      "code_context": "  sre->Decref();\n  return true;\n}\n\n// Assuming the simple_ flags on the children are accurate,\n// is this Regexp* simple?\nbool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_54704f02a6c7ea76.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 49,
+      "code_context": "\n// Assuming the simple_ flags on the children are accurate,\n// is this Regexp* simple?\nbool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_43c71c87fa1ebc87.bin",
+        "handcrafted_14.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 50,
+      "code_context": "// Assuming the simple_ flags on the children are accurate,\n// is this Regexp* simple?\nbool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_8f6867d41e611970.bin",
+        "handcrafted_14.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 51,
+      "code_context": "// is this Regexp* simple?\nbool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_9c74ad7dda67e2d8.bin",
+        "random_823b94f972cafbaf.bin",
+        "random_e9477e47ae46514c.bin",
+        "handcrafted_19.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 52,
+      "code_context": "bool Regexp::ComputeSimple() {\n  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.\n      subs = sub();",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_17.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 53,
+      "code_context": "  Regexp** subs;\n  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.\n      subs = sub();\n      for (int i = 0; i < nsub_; i++)",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_18.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 54,
+      "code_context": "  switch (op_) {\n    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.\n      subs = sub();\n      for (int i = 0; i < nsub_; i++)\n        if (!subs[i]->simple_)",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (op_) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_19.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 55,
+      "code_context": "    case kRegexpNoMatch:\n    case kRegexpEmptyMatch:\n    case kRegexpLiteral:\n    case kRegexpLiteralString:\n    case kRegexpBeginLine:\n    case kRegexpEndLine:\n    case kRegexpBeginText:\n    case kRegexpWordBoundary:\n    case kRegexpNoWordBoundary:\n    case kRegexpEndText:\n    case kRegexpAnyChar:\n    case kRegexpAnyByte:\n    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.\n      subs = sub();\n      for (int i = 0; i < nsub_; i++)\n        if (!subs[i]->simple_)\n          return false;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!subs[i]->simple_)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_14.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 67,
+      "code_context": "    case kRegexpHaveMatch:\n      return true;\n    case kRegexpConcat:\n    case kRegexpAlternate:\n      // These are simple as long as the subpieces are simple.\n      subs = sub();\n      for (int i = 0; i < nsub_; i++)\n        if (!subs[i]->simple_)\n          return false;\n      return true;\n    case kRegexpCharClass:\n      // Simple as long as the char class is not empty, not full.\n      if (ccb_ != NULL)\n        return !ccb_->empty() && !ccb_->full();\n      return !cc_->empty() && !cc_->full();\n    case kRegexpCapture:\n      subs = sub();\n      return subs[0]->simple_;\n    case kRegexpStar:\n    case kRegexpPlus:\n    case kRegexpQuest:",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (!subs[i]->simple_)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_192819523e200930.bin",
+        "random_823b94f972cafbaf.bin",
+        "random_ed559e3f1b861aff.bin",
+        "random_54704f02a6c7ea76.bin",
+        "random_1d192c20e7f6ab9e.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 77,
+      "code_context": "    case kRegexpCharClass:\n      // Simple as long as the char class is not empty, not full.\n      if (ccb_ != NULL)\n        return !ccb_->empty() && !ccb_->full();\n      return !cc_->empty() && !cc_->full();\n    case kRegexpCapture:\n      subs = sub();\n      return subs[0]->simple_;\n    case kRegexpStar:\n    case kRegexpPlus:\n    case kRegexpQuest:\n      subs = sub();\n      if (!subs[0]->simple_)\n        return false;\n      switch (subs[0]->op_) {\n        case kRegexpStar:\n        case kRegexpPlus:\n        case kRegexpQuest:\n        case kRegexpEmptyMatch:\n        case kRegexpNoMatch:\n          return false;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (ccb_ != NULL)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "random_722ba5cfdb03c15c.bin",
+        "random_8f6867d41e611970.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 79,
+      "code_context": "      if (ccb_ != NULL)\n        return !ccb_->empty() && !ccb_->full();\n      return !cc_->empty() && !cc_->full();\n    case kRegexpCapture:\n      subs = sub();\n      return subs[0]->simple_;\n    case kRegexpStar:\n    case kRegexpPlus:\n    case kRegexpQuest:\n      subs = sub();\n      if (!subs[0]->simple_)\n        return false;\n      switch (subs[0]->op_) {\n        case kRegexpStar:\n        case kRegexpPlus:\n        case kRegexpQuest:\n        case kRegexpEmptyMatch:\n        case kRegexpNoMatch:\n          return false;\n        default:\n          break;",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (ccb_ != NULL)",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_12.bin"
+      ]
+    },
+    {
+      "file": "re2/simplify.cc",
+      "line": 92,
+      "code_context": "        case kRegexpStar:\n        case kRegexpPlus:\n        case kRegexpQuest:\n        case kRegexpEmptyMatch:\n        case kRegexpNoMatch:\n          return false;\n        default:\n          break;\n      }\n      return true;\n    case kRegexpRepeat:\n      return false;\n  }\n  LOG(DFATAL) << \"Case not handled in ComputeSimple: \" << op_;\n  return false;\n}\n\n// Walker subclass used by Simplify.\n// The simplify walk is purely post-recursive: given the simplified children,\n// PostVisit creates the simplified result.\n// The child_args are simplified Regexp*s.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: // Walker subclass used by Simplify.",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_04.bin",
+        "handcrafted_05.bin",
+        "handcrafted_06.bin",
+        "handcrafted_09.bin",
+        "handcrafted_24.bin"
+      ]
+    },
+    {
+      "file": "re2/walker-inl.h",
+      "line": 180,
+      "code_context": "    Regexp* re = s->re;\n    switch (s->n) {\n      case -1: {\n        if (--max_visits_ < 0) {\n          stopped_early_ = true;\n          t = ShortVisit(re, s->parent_arg);\n          break;\n        }\n        bool stop = false;\n        s->pre_arg = PreVisit(re, s->parent_arg, &stop);\n        if (stop) {\n          t = s->pre_arg;\n          break;\n        }\n        s->n = 0;\n        s->child_args = NULL;\n        if (re->nsub_ == 1)\n          s->child_args = &s->child_arg;\n        else if (re->nsub_ > 1)\n          s->child_args = new T[re->nsub_];\n        // Fall through.",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: switch (s->n) {",
+      "uncovered_side": "true",
+      "smoke_hitters": [
+        "handcrafted_04.bin",
+        "handcrafted_05.bin",
+        "handcrafted_06.bin",
+        "handcrafted_09.bin",
+        "handcrafted_24.bin"
+      ]
+    },
+    {
+      "file": "util/rune.cc",
+      "line": 192,
+      "code_context": "runelen(Rune rune)\n{\n\tchar str[10];\n\n\treturn runetochar(str, &rune);\n}\n\nint\nfullrune(const char *str, int n)\n{\n\tif (n > 0) {\n\t\tint c = *(unsigned char*)str;\n\t\tif (c < Tx)\n\t\t\treturn 1;\n\t\tif (n > 1) {\n\t\t\tif (c < T3)\n\t\t\t\treturn 1;\n\t\t\tif (n > 2) {\n\t\t\t\tif (c < T4 || n > 3)\n\t\t\t\t\treturn 1;\n\t\t\t}",
+      "condition_description": "Requires the following to evaluate toward the uncovered branch: if (n > 0) {",
+      "uncovered_side": "false",
+      "smoke_hitters": [
+        "random_0f8746d76c9162f4.bin"
+      ]
+    }
+  ]
+}

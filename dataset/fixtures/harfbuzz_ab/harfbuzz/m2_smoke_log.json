@@ -1,0 +1,3015 @@
+{
+  "n_candidates": 376,
+  "n_rand_smoke": 100,
+  "n_ttf_smoke": 68,
+  "candidates": [
+    {
+      "file": "src/hb-blob.cc",
+      "line": 106,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 107,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 108,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 120,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 158,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 34,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 347,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-blob.cc",
+      "line": 73,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 34,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-buffer-private.hh",
+      "line": 108,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer-private.hh",
+      "line": 210,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 64,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 66,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 67,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 68,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 154,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 336,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 647,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 660,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 665,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 693,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 768,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 774,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 1373,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 1376,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 1479,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-buffer.cc",
+      "line": 1518,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 299,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 303,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 460,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 463,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 464,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 467,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 468,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 471,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 474,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 477,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 478,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 481,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 484,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 485,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 486,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 487,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 488,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 489,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 490,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 493,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 496,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 497,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 500,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 501,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 502,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 503,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 504,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 505,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 508,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 511,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 256,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 267,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-common.cc",
+      "line": 274,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-face.cc",
+      "line": 87,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-face.cc",
+      "line": 240,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-face.cc",
+      "line": 369,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-face.cc",
+      "line": 136,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font-private.hh",
+      "line": 512,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 413,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 558,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 564,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 567,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 1127,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 1244,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 1408,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 1414,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 1417,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-font.cc",
+      "line": 1472,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 232,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 233,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 235,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 87,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 61,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 95,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 246,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 247,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-file-private.hh",
+      "line": 249,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 336,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 31,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 337,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 27,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 366,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 4,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 242,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 31,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 258,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 24,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 930,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 3,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-open-type-private.hh",
+      "line": 1044,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 17,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 510,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 3,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 425,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 426,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 427,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 428,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 429,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 430,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 431,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 432,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 47,
+      "uncovered_side": "false",
+      "rand_hits": 90,
+      "ttf_hits": 15,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-cmap-table.hh",
+      "line": 48,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 258,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 259,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 260,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 262,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 263,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 264,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 265,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 266,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 269,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 272,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 275,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 279,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 289,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 290,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 291,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 67,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 80,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 531,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 119,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-font.cc",
+      "line": 340,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-head-table.hh",
+      "line": 52,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 3,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 181,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 184,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 211,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 247,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 1120,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 1121,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 1122,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 121,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-common-private.hh",
+      "line": 125,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gdef-table.hh",
+      "line": 401,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gdef-table.hh",
+      "line": 402,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gdef-table.hh",
+      "line": 403,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gdef-table.hh",
+      "line": 404,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gpos-table.hh",
+      "line": 1619,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsub-table.hh",
+      "line": 1292,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsub-table.hh",
+      "line": 1302,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 299,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 300,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 303,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 319,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 390,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 391,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 392,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 537,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-gsubgpos-private.hh",
+      "line": 2257,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-private.hh",
+      "line": 250,
+      "uncovered_side": "true",
+      "rand_hits": 90,
+      "ttf_hits": 15,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout-private.hh",
+      "line": 334,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout-private.hh",
+      "line": 369,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 74,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 76,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 78,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 80,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 82,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 84,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 98,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 100,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 102,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 104,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 106,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 108,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 110,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 112,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 114,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 116,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 119,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 122,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 124,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 126,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 128,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 130,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 158,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 160,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 169,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 171,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 333,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 342,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 349,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 357,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 363,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 364,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 427,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 431,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 434,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 470,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 471,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 529,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 538,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 570,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 272,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 1153,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-layout.cc",
+      "line": 1166,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-map-private.hh",
+      "line": 93,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map-private.hh",
+      "line": 82,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map-private.hh",
+      "line": 83,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 56,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 69,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 156,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 164,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 199,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 207,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 241,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 269,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 277,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 284,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-map.cc",
+      "line": 302,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 164,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 169,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 172,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 173,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 176,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 177,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 180,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 183,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 184,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 199,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 200,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 206,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 212,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 218,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 231,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 232,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 233,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 234,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 235,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 236,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 237,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 238,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 239,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 242,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 253,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 269,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 286,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 287,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 288,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 289,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 292,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 293,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 296,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 297,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 298,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 299,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 302,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 307,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 308,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 309,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 310,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 311,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 312,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 315,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 316,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 317,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 318,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 319,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 320,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 323,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 324,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 328,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 329,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 330,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 333,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 334,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 335,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 336,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 337,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 339,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 340,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 342,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 343,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 346,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 350,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 351,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-complex-private.hh",
+      "line": 352,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 172,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 440,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 466,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 475,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-fallback.cc",
+      "line": 395,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 302,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 303,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 307,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 308,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 309,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 340,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 360,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 361,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 410,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 175,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 181,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 187,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 200,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape-normalize.cc",
+      "line": 126,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 4,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape-private.hh",
+      "line": 94,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 180,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 192,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 73,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 77,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 81,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 82,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 83,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 84,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 92,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 112,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 115,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 764,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 772,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 237,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 266,
+      "uncovered_side": "false",
+      "rand_hits": 90,
+      "ttf_hits": 15,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 295,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 542,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 4,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 403,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 406,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 351,
+      "uncovered_side": "false",
+      "rand_hits": 90,
+      "ttf_hits": 15,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 723,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 6,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 731,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 4,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 615,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 631,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 658,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 662,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 663,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 664,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 668,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 4,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 696,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 700,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 701,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 702,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 594,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 422,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-shape.cc",
+      "line": 440,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 875,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 881,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 898,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 906,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 916,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 921,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 938,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 940,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 46,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 49,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 50,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 52,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 54,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 85,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 86,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 87,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 88,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 89,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 90,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 91,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 92,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 93,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 94,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 1,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 95,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 853,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ot-tag.cc",
+      "line": 856,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-private.hh",
+      "line": 565,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-private.hh",
+      "line": 228,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 131,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 133,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 146,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 427,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 451,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 467,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 477,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 70,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 374,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 2,
+      "is_hard": true
+    },
+    {
+      "file": "src/hb-shape-plan.cc",
+      "line": 384,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shape.cc",
+      "line": 380,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shaper-private.hh",
+      "line": 96,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shaper-private.hh",
+      "line": 104,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-shaper.cc",
+      "line": 61,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ucdn/ucdn.c",
+      "line": 303,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ucdn/ucdn.c",
+      "line": 63,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ucdn/ucdn.c",
+      "line": 139,
+      "uncovered_side": "false",
+      "rand_hits": 90,
+      "ttf_hits": 15,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-ucdn/ucdn.c",
+      "line": 80,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-unicode.cc",
+      "line": 242,
+      "uncovered_side": "false",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    },
+    {
+      "file": "src/hb-utf-private.hh",
+      "line": 49,
+      "uncovered_side": "true",
+      "rand_hits": 0,
+      "ttf_hits": 0,
+      "is_hard": false
+    }
+  ]
+}
