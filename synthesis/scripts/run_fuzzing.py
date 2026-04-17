@@ -63,7 +63,7 @@ CRASH_LINE_RE = re.compile(r"==\d+==\s*ERROR:\s*(\S+)\s*:")
 def load_campaign_config(config_path: Path, target: str, binary: Path) -> CampaignConfig:
     raw = yaml.safe_load(config_path.read_text())
     raw["target"] = target
-    raw["libfuzzer_binary"] = str(binary)
+    raw["libfuzzer_binary"] = str(binary.resolve())
     return CampaignConfig.model_validate(raw)
 
 
@@ -88,6 +88,7 @@ def run_single_trial(
     dry_run: bool = False,
 ) -> TrialResult:
     seed = SEED_BASE + trial_index
+    work_dir = work_dir.resolve()
     work_dir.mkdir(parents=True, exist_ok=True)
 
     if dry_run or not Path(config.libfuzzer_binary).is_file():
@@ -127,6 +128,9 @@ def run_single_trial(
         f"-seed={seed}",
         "-print_pcs=0",
         "-print_final_stats=1",
+        "-ignore_crashes=1",
+        "-ignore_ooms=1",
+        "-ignore_timeouts=1",
     ]
     if config.dictionary:
         args.append(f"-dict={config.dictionary}")
@@ -178,7 +182,7 @@ def run_single_trial(
         final_execs=last.execs,
         wall_clock_s=wall,
         crashes=crashes,
-        status="ok" if proc.returncode == 0 else "error",
+        status="ok" if (proc.returncode == 0 or snapshots) else "error",
     )
 
 
@@ -190,7 +194,7 @@ def run_campaign(
 ) -> CampaignResult:
     trials: list[TrialResult] = []
     for k in range(config.trials):
-        work_dir = work_root / config.name / f"trial_{k:02d}"
+        work_dir = work_root / config.target / config.name / f"trial_{k:02d}"
         trial = run_single_trial(config, k, work_dir, dry_run=dry_run)
         trials.append(trial)
     return CampaignResult(config_name=config.name, target=config.target, trials=trials)
