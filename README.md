@@ -1,83 +1,101 @@
-# UTCF — Unit Test–Conditioned LLM-Guided Fuzzing
+# UTCF — LLM-Guided Fuzzing Seed Synthesis
 
-Research framework that extracts real upstream unit tests from FuzzBench targets, measures
-per-test coverage, prompts LLMs to predict coverage and synthesize gap-filling inputs, and
-evaluates the resulting seeds via libFuzzer campaigns following the FuzzBench gold standard.
+Research framework for LLM-guided fuzzing seed corpus synthesis. Given a coverage-instrumented
+target binary and its upstream test suite, the framework identifies hard-to-reach branches,
+prompts an LLM to synthesize inputs targeting those branches, and evaluates the resulting seeds
+via seed-time coverage metrics (M1: total edges, M2: hard-branch hit rate).
 
-See `docs/research_document_v3.md` for the research design and `docs/claude_code_plan_v3.md`
-for the execution plan. Those are the authoritative specs; this README is a quick-start.
+**Resuming work?** Read `docs/WEEKLY_REVIEW_PROMPT.md` for the current experiment state and
+results, or `docs/EXPERIMENT_HANDOFF.md` for pending tasks and resume commands.
 
-**Resuming work?** Read `docs/STATUS.md` first — it captures what's done vs deferred,
-non-obvious design decisions from prior sessions, and the verify-current-state commands.
+## Current status
+
+Two targets fully run with llama-3.1-8b-instruct (150 seeds/cell, 5-variant ablation):
+
+| Target | Format | Best M1 vs random | Best M2 |
+|---|---|---|---|
+| RE2 (regex engine) | text | +19% (v2_src_tests) | 60% of hard branches (v3_all) |
+| harfbuzz (font shaper) | binary | +2% (v0_none) | 4% of hard branches (v0/v3) |
+
+Claude Sonnet/Haiku harfbuzz cells pending (API credits needed). Results in `docs/LLAMA_ABLATION_RESULTS.md`.
 
 ## Quick start
 
 ```bash
-# 1. Python env
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# 2. LLM keys (already present: secrets/llm_key)
-#    Add secrets/anthropic_key to enable Claude.
-
-# 3. Sanity-check pinned_versions.yaml for the target(s) you plan to run
-make pin-versions
-
-# 4. Run tests (no network, no LLM, no LLVM required)
+# Run tests (no network, no LLM, no LLVM required)
 pytest dataset/tests/ prediction/tests/
 ```
 
-## Running the pipeline for RE2
+## Running the ablation experiments
 
-Requires: LLVM 15+ (`clang`, `llvm-cov`, `llvm-profdata`), git, network access, an LLM key.
+Requires: LLVM 15+ (`clang`, `llvm-cov`, `llvm-profdata`), git, network access.
 
 ```bash
-# Phase 1 — dataset construction
-./dataset/scripts/fetch_target.sh dataset/targets/re2.yaml
+# Step 1 — fetch and build coverage-instrumented target
+./dataset/scripts/fetch_target.sh dataset/targets/re2.yaml        # or harfbuzz.yaml
 ./dataset/scripts/build_instrumented.sh dataset/targets/re2.yaml
-python dataset/scripts/build_dataset.py --target re2
-python dataset/scripts/contamination_probe.py --target re2 --model gpt-4o-2024-08-06
 
-# Phase 2 — LLM coverage prediction
-python prediction/scripts/run_prediction.py \
-  --target re2 --model gpt-4o-2024-08-06 --few-shot 5
-python prediction/scripts/evaluate_prediction.py --target re2
+# Step 2 — freeze hard-branch M2 targets
+python -m analysis.scripts.freeze_target_branches --target re2_v2
+# or: --target harfbuzz
+
+# Step 3 — run the full ablation (prep → synthesis → m1 → m2)
+python scripts/run_ablation_re2.py --phase all           # RE2
+python scripts/run_ablation_harfbuzz.py --phase all      # harfbuzz
+
+# Results land under results/ablation_re2_v2/ and results/ablation_harfbuzz/
 ```
 
-## Status
+**LLM keys:**
+- `secrets/claude_key` — Anthropic API key (Claude Sonnet/Haiku)
+- LiteLLM endpoint at `https://api.ai.it.ufl.edu` — for llama via UF AI cluster (no key file needed, uses env)
 
-All pipeline scripts are implemented and green under `make test` (96 tests).
-Cluster-bound steps (Phase 3 campaigns, Phase 4 training, Experiment 2 campaigns)
-can be exercised with `DRY_RUN=1 make <target>`.
+## 5-variant ablation design
 
-Only **RE2** has real pinned SHAs; other targets have `<FILL>` placeholders
-and `build_instrumented.sh` only implements the RE2 branch. See
-`docs/STATUS.md` for the full what-works / what-is-blocked breakdown.
+| Variant | Source? | Tests? | Gaps? |
+|---|:---:|:---:|:---:|
+| v0_none        | ❌ | ❌ | ❌ |
+| v1_src         | ✅ | ❌ | ❌ |
+| v2_src_tests   | ✅ | ✅ | ❌ |
+| v3_all         | ✅ | ✅ | ✅ |
+| v4_src_gaps    | ✅ | ❌ | ✅ |
 
-## Running the full pipeline (dry-run)
+**Hard-branch filter (M2):** A branch qualifies only if hit by ≥1 structured smoke seed
+AND by 0 random-format seeds. This makes the random baseline score exactly 0%, ensuring
+the metric has a clean floor.
 
-```bash
-DRY_RUN=1 make all
-```
-
-This walks every phase — Phase 1→2 prediction, Phase 3 synthesis / fuzzing /
-dedup / stats, Phase Transfer LOO, Tier 3 held-out, Phase 4 fine-tuning
-skeleton, Experiment 2 source-only, and the Config A-I comparison table —
-without requiring LLM calls, LLVM instrumentation, a GPU, or the 29,440 CPU
-hours of real campaigns.
+**Seed normalisation:** Synthesis retries until exactly 150 seeds; deterministically
+subsampled (RNG seed=42) before measurement to eliminate seed-count as a confound.
 
 ## Repository layout
 
-Matches `docs/claude_code_plan_v3.md` §Repository Structure.
+```
+scripts/              Experiment orchestrators (run_ablation_re2.py, run_ablation_harfbuzz.py)
+synthesis/
+  prompts/            Jinja2 templates (ablation_synthesis_regex.j2, ablation_synthesis_binary.j2)
+  scripts/            Synthesis drivers, coverage measurement, random input generators
+analysis/
+  scripts/            freeze_target_branches.py, measure_gap_coverage.py, ablation_summary.py
+dataset/
+  targets/            Target YAML definitions (re2.yaml, harfbuzz.yaml)
+  fixtures/           Frozen M2 target branches, upstream union profiles, prepped datasets
+  scripts/            fetch_target.sh, build_instrumented.sh
+core/                 Shared config, schema (GeneratedInput, CampaignConfig), logging
+results/              Experiment outputs (gitignored — large binary/JSON files)
+synthesis/results/    Synthesised seed corpora (gitignored)
+docs/
+  WEEKLY_REVIEW_PROMPT.md    Full results summary for weekly review presentation
+  LLAMA_ABLATION_RESULTS.md  Standalone llama results doc (RE2 v2 + harfbuzz)
+  EXPERIMENT_HANDOFF.md      Pending tasks and resume commands
+```
 
 ## Critical constraints
 
 - **Provenance is sacred** — every test object traces back to `upstream_repo:commit:file:line`.
 - **No fabricated tests** — extractors only read upstream code.
-- **FuzzBench methodology** — 20 trials × 23 h, Mann-Whitney U, Vargha-Delaney Â₁₂, Friedman-Nemenyi.
-- **Deterministic LLM params** — temperature=0.0 for prediction, 0.7/0.95/3 samples for synthesis.
-
-## Contribution notes
-
-Only modify upstream extraction to support new frameworks. Never edit upstream test code.
-Every result should be accompanied by contamination risk level and provenance provenance.
+- **Deterministic seeds** — RNG seed=42 for subsampling; sha256-seeded flag bytes for RE2 seeds.
+- **Hard-branch filter** — never relax `rand_hits==0`; doing so invalidates M2 as a metric
+  (see RE2 ablation_v3 post-mortem in `docs/WEEKLY_REVIEW_PROMPT.md` §6).
