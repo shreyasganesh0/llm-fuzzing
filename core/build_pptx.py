@@ -141,6 +141,27 @@ def build() -> None:
         "assert_no_tests guard on the rendered prompt.",
     ], size=17)
 
+    # --- Slide 3b: Data flow — a single synthesis sample ---
+    s = prs.slides.add_slide(blank)
+    _add_title(s, "Data flow — one synthesis sample, end to end",
+               "Same path for exp1, exp2, and every ablation cell; only the prompt body differs.")
+    _add_body(s, [
+        "Jinja template  (input_synthesis_regex.j2  |  source_only_synthesis_regex.j2  |  ablation_synthesis_regex.j2)",
+        "      │   renders {system, harness, [tests?], [gaps?], [source?], task}",
+        "      ▼",
+        "LLM call → llama-3.1-8b-instruct   T=0.7  top_p=0.95  streaming + loop detector",
+        "      │   cache key = (prompt_hash, max_tokens, cache_salt)     → samples don't collide",
+        "      ▼",
+        "Raw JSON:   { \"regexes\": [ { \"regex\": \"(a*)*\", \"target_gaps\": [...], \"reasoning\": \"...\" }, ... ] }",
+        "      │   parse_regex_response()  +  _salvage_objects()  (loop-abort recovery)",
+        "      ▼",
+        "Per entry →   [2 sha256-seeded flag bytes]  +  [UTF-8 regex bytes]      clipped to [3, 64] bytes, deduped",
+        "      ▼",
+        "seed_*.bin  →  seed_replay (coverage-instrumented RE2)  →  .profraw  →  CoverageProfile JSON",
+        "      ▼",
+        "ab_coverage_diff.py   →   per-cell edge/line set-diff + Jaccard + per-file breakdown",
+    ], size=14)
+
     # --- Slide 4: Stabilization recap ---
     s = prs.slides.add_slide(blank)
     _add_title(s, "Recap — the 2026-04-12 stabilization pass",
@@ -239,6 +260,84 @@ def build() -> None:
         "the template + parser pair. Old bytes outputs archived under *_bytes_v1/.",
     ], size=16)
 
+    # --- Slide 8b: Exp1 prompt in practice ---
+    s = prs.slides.add_slide(blank)
+    _add_title(s, "Exp1 prompt in practice — what the LLM sees (abridged)",
+               "Template: synthesis/prompts/input_synthesis_regex.j2")
+    _add_body(s, [
+        "You are generating REGEX PATTERNS to exercise uncovered branches in RE2 ...",
+        "",
+        "=== HARNESS FORMAT ===",
+        "The libFuzzer harness consumes [2 flag bytes][regex string bytes] and invokes RE2::Compile.",
+        "YOUR JOB: produce the REGEX STRING ONLY, plain UTF-8. DO NOT base64-encode.",
+        "",
+        "=== UPSTREAM TESTS (few-shot) ===",
+        "From re2/testing/regexp_test.cc:54:",
+        "    TEST(Regexp, BigRef) { Regexp* re = Regexp::Parse(\"(a|b)*\", ...); ... }",
+        "",
+        "=== UNCOVERED BRANCHES ===",
+        "Gap 1:  re2/bitstate.cc:112",
+        "Code:   if (njob_ >= maxjob_) { LOG(DFATAL) << \"Job stack overflow\"; return false; }",
+        "Hint:   requires the following to evaluate toward the uncovered branch ...",
+        "",
+        "Gap 2:  re2/parse.cc:2417    (Unicode class parser branch)",
+        "Gap 3:  re2/compile.cc:311   (counted-repetition expansion limit)",
+        "... (≤ max_gaps entries, ordered by reachability score) ...",
+        "",
+        "=== YOUR TASK ===   Produce N distinct regex patterns 1-60 chars. Emit one JSON object.",
+    ], size=13)
+
+    # --- Slide 8c: Exp2 prompt in practice ---
+    s = prs.slides.add_slide(blank)
+    _add_title(s, "Exp2 prompt in practice — what the LLM sees (abridged)",
+               "Template: synthesis/prompts/source_only_synthesis_regex.j2  (assert_no_tests guard on)")
+    _add_body(s, [
+        "You are generating REGEX PATTERNS to maximize coverage in RE2 ...",
+        "You have ONLY the source code and the fuzzer harness — no tests, no coverage data.",
+        "",
+        "=== HARNESS FORMAT ===   [identical to exp1]",
+        "",
+        "[LIBRARY SOURCE CODE]",
+        "=== re2/parse.cc ===",
+        "    // ~800 LOC of the regex parser:  OpRegexp ParseEscape(Rune* rp, ...) { ... }",
+        "",
+        "=== re2/regexp.cc ===",
+        "    // ~500 LOC:  Regexp* Regexp::Parse(const StringPiece& s, ParseFlags flags, ...)",
+        "",
+        "=== re2/compile.cc ===     ...",
+        "=== re2/simplify.cc ===    ...",
+        "",
+        "(--source-max-files 4   --source-token-budget 14000; files picked by call-graph priority)",
+        "",
+        "=== YOUR TASK ===   Produce N distinct regex patterns. Prioritize DEPTH over BREADTH.",
+    ], size=13)
+
+    # --- Slide 8d: What the LLM returns + parser output ---
+    s = prs.slides.add_slide(blank)
+    _add_title(s, "What the LLM returns, and what becomes a seed",
+               "Real output from phase3_results/…/exp1/llama-3.1-8b-instruct/sample_0.json")
+    _add_body(s, [
+        "Raw JSON from the model:",
+        "{",
+        "  \"regexes\": [",
+        "    { \"regex\": \"\\\\u{1234}+\",   \"target_gaps\": [\"re2/bitstate.cc:112\"],  \"reasoning\": \"Unicode escape, stack growth\" },",
+        "    { \"regex\": \"(a*)*\",         \"target_gaps\": [\"re2/bitstate.cc:121\"],  \"reasoning\": \"Nested repetitions may overflow stack\" },",
+        "    { \"regex\": \"[^a-zA-Z0-9]+\", \"target_gaps\": [\"re2/bitstate.cc:126\"],  \"reasoning\": \"Large character class\" },",
+        "    { \"regex\": \"(?P<g1>a+)\",    \"target_gaps\": [\"re2/bitstate.cc:131\"],  \"reasoning\": \"Named captures\" },",
+        "    { \"regex\": \"a{1000,}\",      \"target_gaps\": [\"re2/compile.cc:311\"],   \"reasoning\": \"Large counted reps\" }",
+        "  ]",
+        "}",
+        "",
+        "parse_regex_response() then emits one seed file per entry  ([2 flag bytes][UTF-8 regex]):",
+        "  seeds/re2/exp1/.../seed_b6c1…bin :  6D 29  \\u{1234}+          ← 11 bytes",
+        "  seeds/re2/exp1/.../seed_bd18…bin :  5A 2A  (a*)*              ←  7 bytes",
+        "  seeds/re2/exp1/.../seed_12c0…bin :  F4 E2  [^a-zA-Z0-9]+      ← 15 bytes",
+        "  seeds/re2/exp1/.../seed_b3e5…bin :  DC E3  (?P<g1>a+)         ← 12 bytes",
+        "  seeds/re2/exp1/.../seed_1de0…bin :  09 D3  a{1000,}           ← 10 bytes",
+        "",
+        "Flag bytes are sha256(target, sample_idx, regex_idx, regex)[:2] — deterministic, not random.",
+    ], size=12)
+
     # --- Slide 9: Regex-format A/B result ---
     s = prs.slides.add_slide(blank)
     _add_title(s, "Second A/B result — regex-format prompt (2026-04-13)",
@@ -333,42 +432,72 @@ def build() -> None:
     # --- Slide 12c: P0 random baseline ---
     s = prs.slides.add_slide(blank)
     _add_title(s, "P0 — Random baseline establishes the floor",
-               "30 seeds of [2 random flag bytes][random ASCII 1-62], seeded random.Random(42)")
+               "synthesis/scripts/generate_random_inputs.py --count 30 --seed 42 --input-format regex")
+    _add_body(s, [
+        "No LLM. Per seed: [2 random flag bytes][random ASCII, length 1-62] — deterministic under Random(42).",
+        "Sample seeds (hex preview, first byte = flag0, second = flag1, rest = ASCII body):",
+        "   seed_00.bin : 8C 31  4D 62 69 32 42 6F …      \"Mbi2Bo…\"",
+        "   seed_01.bin : 41 7E  32 41 50 77 5A 6B …      \"2APwZk…\"",
+        "   seed_02.bin : F0 19  74 68 6E 62 57 31 …      \"thnbW1…\"",
+    ], top=1.5, height=1.8, size=14)
     _add_table(s, [
         ["cell", "seeds", "edges", "Δ vs random"],
         ["exp1 (gap-targeted)", "20", "1243", "+263  (+27%)"],
         ["exp2 (source-only)",  "30", "1133", "+153  (+16%)"],
         ["random baseline",     "30",  "980",  "—"],
-    ], top=2.0, height=2.2, font_size=18)
+    ], top=3.5, height=2.0, font_size=17)
     _add_body(s, [
-        "Both LLM cells clear the floor meaningfully — the \"+110 edges\" claim",
-        "is not a rounding artefact on top of noise.",
-        "",
-        "But: exp1's +110 lead over exp2 is only ≈42% of exp1's +263 lead over random.",
-        "Most of the above-random signal is reachable by exp2's recipe already.",
-    ], top=4.6, size=17)
+        "Both LLM cells clear the floor meaningfully — the \"+110 edges\" claim is not noise.",
+        "But: exp1's +110 over exp2 is only ≈42% of its +263 over random — most of the",
+        "above-random signal is reachable by exp2's recipe already.",
+    ], top=5.8, size=15)
 
     # --- Slide 12d: Experiment A — held-out source subset ---
     s = prs.slides.add_slide(blank)
     _add_title(s, "Experiment A — held-out source-file subset",
                "Split RE2 into A (parser, seen by exp1 gaps) vs B (execution, held out).")
     _add_body(s, [
-        "Set A (gap list restricted here):   re2/parse.cc, re2/regexp.cc,",
-        "                                     re2/simplify.cc, re2/tostring.cc",
-        "Set B (held out, coverage measured): re2/{compile,prog,dfa,nfa,onepass,",
-        "                                     bitstate,re2}.cc + util/{rune,strutil}.cc",
-    ], top=1.5, size=15, height=1.4)
+        "Set A (gap list restricted here):   re2/parse.cc, re2/regexp.cc, re2/simplify.cc, re2/tostring.cc",
+        "Set B (held out; coverage measured): re2/{compile,prog,dfa,nfa,onepass,bitstate,re2}.cc +",
+        "                                      util/{rune,strutil}.cc",
+        "",
+        "How the exp1_heldout cell is synthesized (prompt-level diff, everything else unchanged):",
+        "  compute_gaps.py  --gap-source-roots re2/parse.cc re2/regexp.cc re2/simplify.cc re2/tostring.cc",
+        "       → coverage_gaps.json contains ONLY gaps inside set A",
+        "       → the \"=== UNCOVERED BRANCHES ===\" block the LLM sees lists set-A files only",
+        "  measure_coverage.py --source-roots <set-B dirs>   → edges counted only on held-out files",
+    ], top=1.4, size=14, height=2.9)
     _add_table(s, [
         ["cell", "seeds", "B-edges", "Δ vs exp2 on B"],
         ["exp1_full",       "20", "599", "+3"],
         ["exp2_source",     "30", "596", "0"],
         ["exp1_heldout",    "30", "581", "−15"],
         ["random baseline", "30", "557", "−39"],
-    ], top=3.2, height=2.1, font_size=17)
+    ], top=4.4, height=2.0, font_size=16)
     _add_body(s, [
-        "+110 in-distribution  →  +3 on held-out files  →  −15 when exp1's gaps",
-        "are restricted to a disjoint file set. exp2's recipe transfers; exp1's does not.",
-    ], top=5.6, size=17)
+        "+110 in-distribution  →  +3 on held-out files  →  −15 when the gap list is restricted",
+        "to a disjoint file set.  exp2's recipe transfers; exp1's does not.",
+    ], top=6.5, size=14)
+
+    # --- Slide 12d2: Experiment B — prompt matrix (what each cell actually shows the model) ---
+    s = prs.slides.add_slide(blank)
+    _add_title(s, "Experiment B — prompt matrix (what each cell actually shows the model)",
+               "Template: synthesis/prompts/ablation_synthesis_regex.j2  (Jinja toggles: include_tests, include_gaps, include_source)")
+    _add_table(s, [
+        ["cell", "system", "harness", "tests", "gaps", "source", "notes"],
+        ["exp1_full",        "✓", "✓", "✓", "✓", "—", "control A (the +110 winner)"],
+        ["exp1_gaps_only",   "✓", "✓", "—", "✓", "—", "strip tests from exp1"],
+        ["exp1_tests_only",  "✓", "✓", "✓", "—", "—", "strip gaps from exp1"],
+        ["exp2_source",      "✓", "✓", "—", "—", "✓", "control B (assert_no_tests on)"],
+        ["exp2_plus_gaps",   "✓", "✓", "—", "✓", "✓", "source + gaps, no tests"],
+        ["exp2_plus_tests",  "✓", "✓", "✓", "—", "✓", "source + tests, no gaps"],
+        ["random",           "—", "—", "—", "—", "—", "no LLM; Random(42) body"],
+    ], top=1.9, height=4.0, font_size=14)
+    _add_body(s, [
+        "Each ✓ is a Jinja block rendered into the same base template;",
+        "the rest of the prompt (task description, output rules, JSON schema) is identical.",
+        "This isolates the causal effect of each context block instead of confounding them.",
+    ], top=6.1, size=14)
 
     # --- Slide 12e: Experiment B — prompt ablation ---
     s = prs.slides.add_slide(blank)
