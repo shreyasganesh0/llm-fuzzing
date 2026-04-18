@@ -21,8 +21,9 @@ Your bytes will be fed DIRECTLY to `hb_blob_create(data, size)`, then
 You do NOT need a fully valid font. Partial tables, truncated headers,
 and deliberately malformed features are all useful if they exercise
 specific code paths. The harness silently ignores crashes.
-**Keep each blob SMALL (≤ 512 bytes)**. Harfbuzz parses headers first,
-so a 50–512 byte sfnt header or table stub is sufficient and preferred.
+**Keep each blob TINY (≤ 64 bytes, HARD LIMIT)**. Harfbuzz parses headers
+first, so a 12–64 byte sfnt stub exercises multiple parse paths. A 64-byte
+blob base64-encodes to exactly 88 characters — stay under that.
 
 **OUTPUT FORMAT**: each `content_b64` must be standard base64 of the RAW
 BYTES you want fed to hb_blob_create. Do NOT base64-encode text. Do NOT
@@ -95,9 +96,9 @@ OUTPUT RULES — read carefully, violations cause parse failure:
 - Do NOT wrap in markdown code fences.
 - `inputs` must contain AT MOST {{ num_inputs }} entries.
 - Every `content_b64` must be valid standard base64 of raw bytes.
-- **SIZE LIMIT**: each `content_b64` must encode AT MOST 512 bytes
-  (≤ 684 base64 characters). Keep fonts small — harfbuzz parses headers
-  first, so even a 50-byte sfnt header exercises multiple code paths.
+- **SIZE LIMIT — CRITICAL**: each `content_b64` must encode AT MOST 64 bytes
+  (≤ 88 base64 characters). Count the base64 characters before finalising.
+  Responses exceeding this are truncated and discarded entirely.
 - Every `content_b64` must be UNIQUE across entries — no two identical blobs.
 - Every `reasoning` must describe a DIFFERENT execution path — keep it
   to 1-2 sentences maximum.
