@@ -123,7 +123,7 @@ M2_TARGET_COUNT = 50
 M2_SHOWN_COUNT = 30
 M2_RNG_SEED = 42
 BOOTSTRAP_ITERS = 10_000
-SOURCE_TOKEN_BUDGET_ALL_MODELS = 8_000
+SOURCE_TOKEN_BUDGET_ALL_MODELS = 2_000  # reduced from 8k — source was 73% of input cost
 
 
 # ─── Transfer (Phase Transfer / LOO + Tier 3) ────────────────────────────

@@ -24,6 +24,8 @@ import random
 import shutil
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -58,8 +60,33 @@ MODELS = [
     "claude-haiku-4-5-20251001",
     "llama-3.1-8b-instruct",
     "llama-3.1-70b-instruct",
+    "llama-3.3-70b-instruct",
     "codestral-22b",
+    "nemotron-3-super-120b-a12b",
 ]
+
+# Sonnet is 15x more expensive than Haiku — only run it on the hardest variant
+SONNET_ONLY_VARIANTS = {"v4_src_gaps"}
+
+# Per-model output token caps — must be large enough for num_inputs responses
+# Haiku/Sonnet with 4 inputs: ~40 tok/input × 4 + JSON overhead ~200 = ~360 min;
+# set 2x headroom to absorb verbose reasoning
+MAX_TOKENS_PER_MODEL = {
+    "claude-sonnet-4-6": 1200,
+    "claude-haiku-4-5-20251001": 1200,
+}
+DEFAULT_MAX_TOKENS = 4096  # for non-Claude models
+
+# 4 inputs per Claude call — enough to amortize fixed prompt cost without
+# risking truncation at the output cap
+INPUTS_PER_CALL_CLAUDE = 4
+INPUTS_PER_CALL = 3  # for non-Claude models
+
+# UF endpoint hard-caps responses at 2048 chars. nemotron produces very verbose
+# 3-step reasoning for gap-targeting variants (v3_all, v4_src_gaps), easily hitting
+# the cap before valid JSON forms. Use 1 input/call for those model+variant combos.
+SMALL_OUTPUT_MODELS_RE2 = {"nemotron-3-super-120b-a12b"}
+INPUTS_PER_CALL_SMALL = 1
 
 ORIG_DATASET_ROOT = REPO_ROOT / "dataset/data"
 RESULTS_ROOT = REPO_ROOT / "results/ablation_re2_v2"
@@ -71,9 +98,23 @@ RANDOM_SEEDS_DIR = SYNTHESIS_RESULTS_ROOT / "seeds" / TARGET / "random"
 
 LITELLM_URL = "https://api.ai.it.ufl.edu"
 
+# Skip all Claude models — run free (UF endpoint) models only
+FREE_ONLY = True
+CLAUDE_MODELS = {"claude-sonnet-4-6", "claude-haiku-4-5-20251001"}
+
 # 3 inputs per call keeps prompt+output well within token budgets for RE2
 INPUTS_PER_CALL = 3
 SAMPLES_PER_CALL = 1
+MAX_ATTEMPTS = 300
+N_WORKERS = 4  # parallel synthesis calls per cell
+
+# Subprocess timeout per call (seconds). UF endpoint latency is 10–55s for legitimate
+# responses; 45s cuts genuinely hung calls without killing valid ones.
+SUBPROCESS_TIMEOUT = 45
+
+# Early-exit: if zero new seeds in the last CONSEC_FAIL_WINDOW completed batches,
+# the model has stalled on this variant — skip rather than burn remaining attempts.
+CONSEC_FAIL_WINDOW = 20
 
 
 def _env_for_model(model: str) -> dict[str, str]:
@@ -188,11 +229,15 @@ def _run_synthesis_batch(
         "--dataset-root", str(PREPPED_DATASET_ROOT),
         "--results-root", str(SYNTHESIS_RESULTS_ROOT),
         "--samples", str(SAMPLES_PER_CALL),
-        "--num-inputs", str(INPUTS_PER_CALL),
+        "--num-inputs", str(
+            INPUTS_PER_CALL_CLAUDE if model.startswith("claude-")
+            else INPUTS_PER_CALL_SMALL if (model in SMALL_OUTPUT_MODELS_RE2 and flags.get("include_gaps"))
+            else INPUTS_PER_CALL
+        ),
         "--max-gaps", str(len(json.loads(RE2_V2_M2_TARGETS_PATH.read_text())["shown"])),
         "--source-token-budget", str(SOURCE_TOKEN_BUDGET_ALL_MODELS),
         "--input-format", "regex",
-        "--max-tokens", "4096",
+        "--max-tokens", str(MAX_TOKENS_PER_MODEL.get(model, DEFAULT_MAX_TOKENS)),
         "--run-id", str(sample_offset),
     ]
     if flags["include_tests"]:
@@ -202,7 +247,10 @@ def _run_synthesis_batch(
     if flags["include_source"]:
         cmd.append("--include-source")
 
-    r = subprocess.run(cmd, capture_output=True, text=True, env=_env_for_model(model))
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, env=_env_for_model(model), timeout=SUBPROCESS_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        raise RuntimeError(f"synthesis timed out for {variant}/{model} (offset={sample_offset})")
     if r.returncode != 0:
         raise RuntimeError(
             f"synthesis failed for {variant}/{model} (offset={sample_offset}):\n"
@@ -213,10 +261,22 @@ def _run_synthesis_batch(
 
 
 def phase_synthesis(*, skip_existing: bool = False, attempt_offset: int = 0) -> None:
-    """Run synthesis cells, retrying until each has exactly TARGET_SEEDS seeds."""
+    """Run synthesis cells with N_WORKERS parallel calls per cell."""
     for variant, flags in VARIANTS.items():
         for model in MODELS:
             seeds_dir = cell_seeds_dir(variant, model)
+
+            # Skip Claude models entirely — running free UF-endpoint models only
+            if FREE_ONLY and model in CLAUDE_MODELS:
+                logger.info("skip synthesis (claude skipped — free-only mode)",
+                            extra={"variant": variant, "model": model})
+                continue
+
+            # Sonnet is 15x more expensive — only run it on v4_src_gaps
+            if not FREE_ONLY and model == "claude-sonnet-4-6" and variant not in SONNET_ONLY_VARIANTS:
+                logger.info("skip synthesis (sonnet reserved for targeted variants)",
+                            extra={"variant": variant, "model": model})
+                continue
 
             if skip_existing and _count_seeds(seeds_dir) >= TARGET_SEEDS:
                 logger.info("skip synthesis (already has enough seeds)",
@@ -226,33 +286,76 @@ def phase_synthesis(*, skip_existing: bool = False, attempt_offset: int = 0) -> 
                 continue
 
             seeds_dir.mkdir(parents=True, exist_ok=True)
-            attempt = 0
-            MAX_ATTEMPTS = 300
-            while _count_seeds(seeds_dir) < TARGET_SEEDS and attempt < MAX_ATTEMPTS:
-                attempt += 1
-                current = _count_seeds(seeds_dir)
+
+            # Sliding-window parallel synthesis: keep N_WORKERS calls in flight.
+            # Each subprocess writes to unique content-hashed filenames so there
+            # are no write races. attempt_counter is only touched by main thread.
+            attempt_counter = 0
+            recent_gains: list[bool] = []  # True if that completion produced ≥1 new seed
+            last_recorded_seeds = _count_seeds(seeds_dir)
+
+            def _submit_next(executor, futures):
+                nonlocal attempt_counter
+                attempt_counter += 1
+                a = attempt_counter
                 logger.info("synthesis batch", extra={
                     "variant": variant, "model": model,
-                    "attempt": attempt, "current_seeds": current,
+                    "attempt": a, "current_seeds": _count_seeds(seeds_dir),
                     "target": TARGET_SEEDS,
                 })
-                try:
-                    _run_synthesis_batch(variant, model, flags, sample_offset=attempt + attempt_offset)
-                except RuntimeError as e:
-                    logger.error("synthesis batch failed", extra={
-                        "variant": variant, "model": model, "error": str(e)[:500]
-                    })
-                    if attempt > 100:
-                        raise RuntimeError(
-                            f"Synthesis for {variant}/{model} failed after 100 attempts "
-                            f"(only {_count_seeds(seeds_dir)} seeds)"
-                        ) from e
+                fut = executor.submit(
+                    _run_synthesis_batch, variant, model, flags,
+                    sample_offset=a + attempt_offset,
+                )
+                futures[fut] = a
+
+            with ThreadPoolExecutor(max_workers=N_WORKERS) as executor:
+                futures: dict = {}
+                for _ in range(min(N_WORKERS, MAX_ATTEMPTS)):
+                    _submit_next(executor, futures)
+
+                while futures:
+                    done_fut = next(as_completed(futures))
+                    done_attempt = futures.pop(done_fut)
+                    try:
+                        done_fut.result()
+                    except RuntimeError as e:
+                        logger.error("synthesis batch failed", extra={
+                            "variant": variant, "model": model,
+                            "attempt": done_attempt, "error": str(e)[:500],
+                        })
+
+                    current = _count_seeds(seeds_dir)
+
+                    # Rolling early-exit: track whether each completion produced seeds
+                    gained = current > last_recorded_seeds
+                    last_recorded_seeds = current
+                    recent_gains.append(gained)
+                    if len(recent_gains) > CONSEC_FAIL_WINDOW:
+                        recent_gains.pop(0)
+                    if (len(recent_gains) == CONSEC_FAIL_WINDOW
+                            and not any(recent_gains)):
+                        logger.warning(
+                            "early exit: no seeds in last %d attempts",
+                            CONSEC_FAIL_WINDOW,
+                            extra={"variant": variant, "model": model,
+                                   "n_seeds": current, "n_attempts": attempt_counter},
+                        )
+                        executor.shutdown(wait=False, cancel_futures=True)
+                        break
+
+                    if current >= TARGET_SEEDS:
+                        executor.shutdown(wait=False, cancel_futures=True)
+                        break
+
+                    if attempt_counter < MAX_ATTEMPTS:
+                        _submit_next(executor, futures)
 
             final_count = _count_seeds(seeds_dir)
             if final_count < TARGET_SEEDS:
                 logger.warning("synthesis capped: cell skipped (too many parse failures)",
                                extra={"variant": variant, "model": model,
-                                      "n_seeds": final_count, "n_attempts": attempt,
+                                      "n_seeds": final_count, "n_attempts": attempt_counter,
                                       "max_attempts": MAX_ATTEMPTS})
                 continue
 
@@ -260,7 +363,7 @@ def phase_synthesis(*, skip_existing: bool = False, attempt_offset: int = 0) -> 
             final_count = _count_seeds(seeds_dir)
             logger.info("synthesis done", extra={
                 "variant": variant, "model": model,
-                "n_seeds": final_count, "n_attempts": attempt,
+                "n_seeds": final_count, "n_attempts": attempt_counter,
             })
             assert final_count == TARGET_SEEDS, f"Expected {TARGET_SEEDS} seeds, got {final_count}"
 
