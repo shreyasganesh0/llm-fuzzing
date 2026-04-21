@@ -1,6 +1,6 @@
 # Analysis
 
-Not yet implemented. See `docs/claude_code_plan_v3.md` §Analysis.
+Not yet implemented. See `docs/plan_v3.md` §Analysis.
 
 Planned:
 - `scripts/vargha_delaney.py` — Â₁₂ effect size (not shipped in scipy)

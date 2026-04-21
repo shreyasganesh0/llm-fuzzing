@@ -1,8 +1,8 @@
 # Project Status — LLM-Guided Fuzzing Seed Corpora
 
-_Living handoff doc. Rewritten whenever state changes. If you're a fresh
-Claude instance: read this first, then `docs/AB_RE2_REPORT.md`; the
-`docs/research_document_v3.md` and `docs/claude_code_plan_v3.md` are the
+_Living handoff doc. Rewritten whenever state changes. If you're picking
+this up cold: read this first, then `docs/AB_RE2_REPORT.md`; the
+`docs/research_document_v3.md` and `docs/plan_v3.md` are the
 authoritative specs._
 
 **Last updated:** 2026-04-13
@@ -119,7 +119,7 @@ Key code entry points:
 |---|---|
 | A/B writeup (full numbers + reproducibility) | `docs/AB_RE2_REPORT.md` |
 | Research design (authoritative) | `docs/research_document_v3.md` |
-| Execution plan (authoritative) | `docs/claude_code_plan_v3.md` |
+| Execution plan (authoritative) | `docs/plan_v3.md` |
 | Review slide deck (16 slides, .pptx) | `docs/slides/llm_fuzzing_review.pptx` |
 | Slide builder script | `core/build_pptx.py` |
 | A/B seeds (current = regex) | `dataset/fixtures/re2_ab/phase3_results/seeds/re2/exp1/llama-3.1-8b-instruct/` and `…/exp2_results/seeds/re2/source_only/llama-3.1-8b-instruct/` |

@@ -134,7 +134,7 @@ docs/
   HANDOFF_PACK.md         (pre-campaign; still useful for environment setup)
   WEEKLY_REVIEW_PROMPT.md (presentation draft; numbers corrected but see §9)
   AB_RE2_REPORT.md        (llama A/B writeup, unchanged)
-  research_document_v3.md, claude_code_plan_v3.md (older, keep for reference)
+  research_document_v3.md, plan_v3.md (older, keep for reference)
 ```
 
 Per-trial work dirs (corpora, AFL output, crash files) were deleted 2026-04-16 to save ~440MB — the JSONs are authoritative for all analysis.

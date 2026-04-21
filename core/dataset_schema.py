@@ -2,7 +2,7 @@
 
 Every schema uses `extra='forbid'` so typos/drift surface as validation errors.
 Schemas intentionally mirror the JSON examples in
-docs/research_document_v3.md §5.1 and docs/claude_code_plan_v3.md §1, §2.
+docs/research_document_v3.md §5.1 and docs/plan_v3.md §1, §2.
 """
 from __future__ import annotations
 

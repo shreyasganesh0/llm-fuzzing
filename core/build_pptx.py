@@ -620,7 +620,7 @@ def build() -> None:
         "docs/AB_RE2_REPORT.md",
         "    Full A/B writeup — headline numbers, bytes-run archive, reproducibility bash.",
         "",
-        "docs/claude_code_plan_v3.md  /  docs/research_document_v3.md",
+        "docs/plan_v3.md  /  docs/research_document_v3.md",
         "    Authoritative execution plan + research design.",
         "",
         "analysis/scripts/ab_coverage_diff.py",

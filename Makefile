@@ -1,5 +1,5 @@
 # UTCF top-level orchestration
-# See docs/claude_code_plan_v3.md §Makefile Dependency Graph for the full map.
+# See docs/plan_v3.md §Makefile Dependency Graph for the full map.
 
 PYTHON ?= python3
 VENV   ?= .venv

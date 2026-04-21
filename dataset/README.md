@@ -33,4 +33,4 @@ at the target root; `contamination_report.json` per (target, model) pair.
 - `coverage_gaps.json` contains `total_upstream_tests` and
   `union_coverage_pct` (plan §1.6 audit naming).
 
-See `docs/claude_code_plan_v3.md` §1 for the full specification.
+See `docs/plan_v3.md` §1 for the full specification.
