@@ -299,15 +299,31 @@ Fixed by encoding with `errors="replace"`.
 
 ## 7. Cost
 
-| bucket | amount |
-|---|---|
-| Llama — RE2 v2 synthesis (UF LiteLLM proxy) | free |
-| Llama — harfbuzz synthesis (UF LiteLLM proxy) | free |
-| Claude Sonnet 4.6 — harfbuzz (2 cells complete) | ~$3 |
-| Claude Haiku 4.5 — harfbuzz (~1.75 cells) | ~$1.50 |
-| **Anthropic API so far** | **~$4.50** |
-| Estimated to complete remaining 8 Claude harfbuzz cells | ~$4–6 |
-| CPU for all M1/M2 replay (RE2 + harfbuzz) | ~30 min total |
+Numbers below are from `analysis/scripts/cost_audit.py`, which sums the
+`cost_usd` field stored in every cached response under `.cache/llm/`.
+Audit run: 2026-04-21 over 14,161 cached responses.
+
+| bucket | calls | amount |
+|---|---:|---:|
+| `claude-sonnet-4-6` (RE2 + harfbuzz, all v0/v1 cells done) | 953 | **$53.40** |
+| `claude-haiku-4-5-20251001` (RE2 full ablation + harfbuzz v0/v1) | 2,441 | **$32.85** |
+| **Anthropic API — actual invoiced spend** | 3,394 | **$86.25** |
+| UF LiteLLM (llama / codestral / nemotron / gpt-oss) — vendor invoice | 10,767 | $0 |
+| UF LiteLLM — accounting-cost (priced at UF dashboard rates) | 10,767 | $13.83 |
+| **Total on-disk (sum of cached `cost_usd`)** | 14,161 | **$100.09** |
+| Estimated to complete remaining 6 Claude harfbuzz cells (v2/v3/v4 × Sonnet+Haiku) | ~600 | **$20–30** |
+| CPU for all M1/M2 replay (RE2 + harfbuzz) | — | ~30 min total |
+
+Prior versions of this table reported "~$4.50 Anthropic spend so far" —
+that number was a hand-estimate and was off by ~19×. Re-derive with
+`python -m analysis.scripts.cost_audit` before every weekly review; do
+not edit the numbers above by hand.
+
+The $20–30 completion estimate comes from
+`python -m analysis.scripts.estimate_cost --model claude-sonnet-4-6
+--n-calls 300` ($16.81) plus the same for Haiku ($4.04), rounded up
+because v3/v4 gap-context prompts run longer than the historical
+average.
 
 ---
 

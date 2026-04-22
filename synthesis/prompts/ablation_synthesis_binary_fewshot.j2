@@ -1,0 +1,133 @@
+{{ system_prompt }}
+
+You are generating binary FONT FILE bytes to exercise code paths in the
+{{ target_name }} font shaping engine. Harfbuzz is a C++ OpenType/TrueType
+shaping library. Hard-to-reach code lives in the FONT TABLE PARSERS (GDEF,
+GSUB, GPOS, cmap, head, hhea, maxp, loca, glyf, CFF) and the SHAPING
+PIPELINE (script/language detection, feature lookup, glyph substitution,
+mark attachment, cluster reordering, Unicode normalization).
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness does this with your bytes:
+
+```cpp
+{{ harness_code }}
+```
+
+Your bytes will be fed DIRECTLY to `hb_blob_create(data, size)`, then
+`hb_face_create(blob, 0)` → `hb_font_create(face)` → `hb_shape(font, buffer, NULL, 0)`.
+
+**YOUR JOB**: produce base64-encoded bytes representing a font blob.
+You do NOT need a fully valid font. Partial tables, truncated headers,
+and deliberately malformed features are all useful if they exercise
+specific code paths. The harness silently ignores crashes.
+**Keep each blob TINY (≤ 64 bytes, HARD LIMIT)**. Harfbuzz parses headers
+first, so a 12–64 byte sfnt stub exercises multiple parse paths. A 64-byte
+blob base64-encodes to exactly 88 characters — stay under that.
+
+**OUTPUT FORMAT**: each `content_b64` must be standard base64 of the RAW
+BYTES you want fed to hb_blob_create. Do NOT base64-encode text. Do NOT
+output hex strings. Output BINARY bytes encoded as base64.
+{% if include_tests and few_shot_examples %}
+
+=== UPSTREAM API CONTEXT ===
+These are real upstream unit tests showing how the harfbuzz API works:
+{% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}
+{% endif %}
+{% if include_source and source_files %}
+
+=== LIBRARY SOURCE CODE ===
+{% for sf in source_files %}
+=== {{ sf.path }} ({{ sf.line_count }} lines) ===
+{{ sf.content }}
+
+{% endfor %}
+{% endif %}
+{% if include_gaps and coverage_gaps %}
+
+=== UNCOVERED BRANCHES ===
+The {{ total_upstream_tests }} upstream tests cover {{ union_coverage_pct }}%
+of harfbuzz branches. Each branch below has ONE side that upstream tests
+NEVER took. Your font bytes must trigger the **specific uncovered side**.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch**
+(the side upstream tests never reached)
+Code:
+```cpp
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}
+{% endif %}
+{% if few_shot_exemplars %}
+
+=== WORKED EXAMPLES FROM PRIOR RUNS ===
+The following are real seeds from prior synthesis runs on this target that
+parsed correctly. Use them as style anchors for your own output. DO NOT copy
+them verbatim — generate a novel seed targeting the gaps above.
+{% for ex in few_shot_exemplars %}
+Example {{ loop.index }}:
+  Origin: {{ ex.origin.variant }}/{{ ex.origin.model }} sample {{ ex.origin.sample_index }}
+  {% if ex.content %}Regex: {{ ex.content }}{% endif %}
+  {% if ex.content_b64 %}Blob (base64, {{ ex.content_b64 | length }} chars): {{ ex.content_b64 }}{% endif %}
+  Reasoning: {{ ex.reasoning }}
+{% endfor %}
+{% endif %}
+
+=== YOUR TASK ===
+{% if include_gaps %}
+TARGETED COVERAGE TASK — for EACH of your {{ num_inputs }} inputs, follow
+this 3-step reasoning in the `reasoning` field before producing bytes:
+
+  1. **Which gap branch am I targeting?** Name the file:line and which side
+     (TRUE or FALSE) you are trying to take.
+  2. **What font table structure triggers that code path?** Describe the
+     sfnt header, table tags, and/or binary field values needed to reach it.
+  3. **What specific bytes force that exact branch side?** Trace the path
+     from hb_blob_create through hb_face_create into the specific parsing
+     function that contains the branch.
+
+Produce {{ num_inputs }} DISTINCT font byte sequences, distributing your
+inputs across as many of the {{ coverage_gaps | length }} gap branches above
+as possible. Name the specific `file:line` target in `target_gaps`.
+
+{% else %}
+Produce {{ num_inputs }} DISTINCT font byte sequences likely to maximize
+total branch coverage of the {{ target_name }} font shaping engine.
+Each input should exercise a DIFFERENT code path (different table type,
+different shaping script, different error condition, etc.).
+{% endif %}
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Start your response DIRECTLY with the opening `{`. No preamble, no explanation.
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `inputs` must contain AT MOST {{ num_inputs }} entries.
+- Every `content_b64` must be valid standard base64 of raw bytes.
+- **SIZE LIMIT — CRITICAL**: each `content_b64` must encode AT MOST 64 bytes
+  (≤ 88 base64 characters). Count the base64 characters before finalising.
+  Responses exceeding this are truncated and discarded entirely.
+- Every `content_b64` must be UNIQUE across entries — no two identical blobs.
+- Every `reasoning` must describe a DIFFERENT execution path — keep it
+  to 1-2 sentences maximum.
+- `target_gaps` entries must be real `path:integer` pairs from the source
+  above. Never emit the literal string `LINE` or a placeholder.
+- If you cannot produce {{ num_inputs }} genuinely distinct inputs, emit
+  fewer. Never pad with duplicates.
+
+Schema:
+{
+  "inputs": [
+    {
+      "content_b64": "<standard base64 of raw font bytes — unique per entry>",
+      "target_gaps": ["src/hb-ot-layout.cc:420", "..."],
+      "reasoning": "<step-by-step: which branch, which table, which bytes>"
+    }
+  ]
+}

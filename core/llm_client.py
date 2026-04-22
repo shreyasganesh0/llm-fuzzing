@@ -26,6 +26,7 @@ import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from core.logging_config import get_logger
 from core.loop_detector import is_degenerate_loop
@@ -131,6 +132,15 @@ class Response:
     timestamp: str
     generation_wall_clock_s: float
     cached: bool = False
+    # Phase 7 — tool-use surface. Both fields default to None so existing
+    # callers that rely only on `.content` see no behavioural change, and
+    # existing cache JSON files (which pre-date these fields) still
+    # rehydrate via ``Response(**cached)`` because the defaults make the
+    # new kwargs optional. The cache payload hash (``_prompt_hash``) does
+    # NOT include these fields, so when ``tools`` / ``tool_choice`` are
+    # not passed the cache key is byte-identical to pre-Phase-7.
+    tool_calls: list[dict] | None = None
+    raw: dict | None = None
 
     def to_log_dict(self) -> dict:
         return asdict(self)
@@ -217,19 +227,36 @@ def _prompt_hash(
     top_p: float,
     max_tokens: int,
     cache_salt: str | None = None,
+    response_format: dict | None = None,
+    guided_json: dict | None = None,
+    tools: list[dict] | None = None,
+    tool_choice: str | dict | None = None,
 ) -> str:
-    payload = json.dumps(
-        {
-            "model": model,
-            "messages": messages,
-            "temperature": temperature,
-            "top_p": top_p,
-            "max_tokens": max_tokens,
-            "cache_salt": cache_salt,
-        },
-        sort_keys=True,
-        ensure_ascii=False,
-    )
+    """Compute the cache key for a completion request.
+
+    Backwards-compatible: when ``response_format``, ``guided_json``,
+    ``tools`` and ``tool_choice`` are all None (the pre-Phase-3 /
+    pre-Phase-7 default), the JSON payload hashed here is byte-identical
+    to the pre-Phase-3 payload. The new keys are only added when non-None
+    so the existing ~14k cache entries stay reachable.
+    """
+    payload_dict: dict[str, Any] = {
+        "model": model,
+        "messages": messages,
+        "temperature": temperature,
+        "top_p": top_p,
+        "max_tokens": max_tokens,
+        "cache_salt": cache_salt,
+    }
+    if response_format is not None:
+        payload_dict["response_format"] = response_format
+    if guided_json is not None:
+        payload_dict["guided_json"] = guided_json
+    if tools is not None:
+        payload_dict["tools"] = tools
+    if tool_choice is not None:
+        payload_dict["tool_choice"] = tool_choice
+    payload = json.dumps(payload_dict, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
@@ -312,6 +339,10 @@ class LLMClient:
         max_retries: int = 10,
         abort_on_loop: bool = True,
         cache_salt: str | None = None,
+        response_format: dict[str, Any] | None = None,
+        guided_json: dict[str, Any] | None = None,
+        tools: list[dict] | None = None,
+        tool_choice: str | dict | None = None,
     ) -> Response:
         """Send messages to the configured provider; return a normalised Response.
 
@@ -323,8 +354,86 @@ class LLMClient:
         each sample must produce an independent generation (e.g. pass
         `cache_salt=f"sample={k}"`). Without this, samples 1..N collide on the
         sample-0 cache entry and silently replay the same output.
+
+        `response_format`: OpenAI-style structured output spec. Either
+        ``{"type": "json_object"}`` or
+        ``{"type": "json_schema", "json_schema": {...}}``. Forwarded verbatim
+        to OpenAI and LiteLLM-proxied providers. Rejected on Anthropic unless
+        the per-model ``ModelDefaults`` opts in (Phase 7 will wire this via
+        tool use; for now the Anthropic path always rejects).
+
+        `guided_json`: vLLM/LiteLLM-native guided-decoding schema dict. Sent
+        under ``extra_body={"guided_json": ...}`` on the LiteLLM path only.
+        Rejected on OpenAI and Anthropic. Mutually exclusive with
+        ``response_format``.
+
+        `tools` / `tool_choice`: OpenAI-style tool-use surface (Phase 7).
+        Forwarded verbatim to OpenAI and LiteLLM-proxied providers so the
+        model can emit tool_calls the caller executes and feeds back.
+        Rejected with ``ValueError`` when the target model's
+        ``ModelDefaults.supports_tool_use`` is False — the same discipline
+        as ``response_format`` on Anthropic. Anthropic path is also
+        gated: this codebase does NOT translate the OpenAI tool dict
+        shape into Anthropic's ``{"name","description","input_schema"}``
+        form because Phase 0's probe could not verify the capability
+        (zero API credits) and we don't want silent capability drift.
+
+        When all four new args (``response_format``, ``guided_json``,
+        ``tools``, ``tool_choice``) are None the cache key is byte-
+        identical to the pre-Phase-3 key, so existing cache entries
+        remain reachable.
         """
-        h = _prompt_hash(model, messages, temperature, top_p, max_tokens, cache_salt)
+        if response_format is not None and guided_json is not None:
+            raise ValueError(
+                "response_format and guided_json are mutually exclusive; pass "
+                "at most one."
+            )
+        if guided_json is not None and self.provider not in ("vllm",):
+            raise ValueError(
+                "guided_json is only supported on the vllm/LiteLLM code path; "
+                f"provider={self.provider!r} does not accept it."
+            )
+        if response_format is not None and self.provider == "anthropic":
+            # Anthropic does not implement OpenAI-style response_format. Phase 7
+            # will emulate structured output via tool use; until the per-model
+            # supports_json_object / supports_json_schema flags are flipped to
+            # True, we refuse silently-dropping the constraint.
+            from core.config import defaults as _model_defaults
+            md = _model_defaults(model)
+            rf_type = response_format.get("type") if isinstance(response_format, dict) else None
+            enabled = (
+                (rf_type == "json_object" and getattr(md, "supports_json_object", False))
+                or (rf_type == "json_schema" and getattr(md, "supports_json_schema", False))
+            )
+            if not enabled:
+                raise ValueError(
+                    f"response_format={response_format!r} is not supported on "
+                    f"Anthropic model {model!r}. Structured output for "
+                    "Anthropic is Phase 7's tool-use path; flip "
+                    "ModelDefaults.supports_json_* to True once that lands."
+                )
+
+        # Phase 7 — tool-use is opt-in per ``ModelDefaults.supports_tool_use``.
+        # Refuse silently-dropping the constraint: if a caller passes a non-
+        # empty ``tools`` list to a model whose flag is False we raise so the
+        # caller learns about the mismatch instead of getting a plain text
+        # completion with the tools ignored.
+        if tools is not None:
+            from core.config import defaults as _model_defaults
+            md = _model_defaults(model)
+            if not getattr(md, "supports_tool_use", False):
+                raise ValueError(
+                    f"tool use not supported on model {model!r}: "
+                    "ModelDefaults.supports_tool_use=False. Flip the flag "
+                    "on the specific model once Phase 0's probe verifies "
+                    "the vendor emits well-formed tool_calls."
+                )
+
+        h = _prompt_hash(
+            model, messages, temperature, top_p, max_tokens, cache_salt,
+            response_format=response_format, guided_json=guided_json,
+            tools=tools, tool_choice=tool_choice,
+        )
         cache_path = self.cache_dir / f"{model.replace('/', '_')}_{h}.json"
 
         if use_cache and cache_path.is_file():
@@ -337,13 +446,31 @@ class LLMClient:
         text: str = ""
         input_tokens = 0
         output_tokens = 0
+        tool_calls_out: list[dict] | None = None
 
         for attempt in range(max_retries):
             try:
                 _throttle_if_needed()
                 if self.provider in ("openai", "vllm"):
                     client = self._get_client()
-                    if abort_on_loop:
+                    # Build extra kwargs for the chat.completions.create call.
+                    # response_format goes in as a named kwarg (OpenAI-style);
+                    # guided_json rides under extra_body (vLLM/LiteLLM-native);
+                    # tools / tool_choice are Phase-7 OpenAI-style tool use.
+                    extra_kwargs: dict[str, Any] = {}
+                    if response_format is not None:
+                        extra_kwargs["response_format"] = response_format
+                    if guided_json is not None:
+                        extra_kwargs["extra_body"] = {"guided_json": guided_json}
+                    if tools is not None:
+                        extra_kwargs["tools"] = tools
+                    if tool_choice is not None:
+                        extra_kwargs["tool_choice"] = tool_choice
+                    # Streaming + tool_calls don't mix cleanly across providers
+                    # (partial tool_call deltas need reassembly and the loop-
+                    # abort detector doesn't read them). Fall back to non-
+                    # streaming when tools are in play.
+                    if abort_on_loop and not extra_kwargs:
                         text, input_tokens, output_tokens = _stream_with_loop_abort(
                             client, model, messages, temperature, top_p, max_tokens
                         )
@@ -354,8 +481,24 @@ class LLMClient:
                             temperature=temperature,
                             top_p=top_p,
                             max_tokens=max_tokens,
+                            **extra_kwargs,
                         )
-                        text = resp.choices[0].message.content or ""
+                        msg = resp.choices[0].message
+                        text = getattr(msg, "content", None) or ""
+                        raw_tool_calls = getattr(msg, "tool_calls", None) or []
+                        if raw_tool_calls:
+                            extracted: list[dict] = []
+                            for tc in raw_tool_calls:
+                                fn = getattr(tc, "function", None)
+                                extracted.append({
+                                    "id": getattr(tc, "id", None),
+                                    "type": getattr(tc, "type", "function"),
+                                    "function": {
+                                        "name": getattr(fn, "name", None) if fn else None,
+                                        "arguments": getattr(fn, "arguments", "") if fn else "",
+                                    },
+                                })
+                            tool_calls_out = extracted
                         usage = getattr(resp, "usage", None)
                         input_tokens = getattr(usage, "prompt_tokens", 0) or 0
                         output_tokens = getattr(usage, "completion_tokens", 0) or 0
@@ -367,6 +510,8 @@ class LLMClient:
                     system_prompt = "\n\n".join(system_blocks) if system_blocks else None
                     # Anthropic rejects (temperature, top_p) together; prefer
                     # temperature and drop top_p (server-side default 1.0).
+                    # response_format/guided_json/tools are already rejected
+                    # above (supports_tool_use=False on every Claude model).
                     resp = client.messages.create(
                         model=model,
                         max_tokens=max_tokens,
@@ -411,6 +556,8 @@ class LLMClient:
             timestamp=datetime.now(timezone.utc).isoformat(),
             generation_wall_clock_s=wall_s,
             cached=False,
+            tool_calls=tool_calls_out,
+            raw=None,
         )
 
         if use_cache:

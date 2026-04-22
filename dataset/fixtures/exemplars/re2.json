@@ -1,0 +1,51 @@
+{
+  "exemplars": [
+    {
+      "content": "((a+)|(b+))*",
+      "content_b64": null,
+      "origin": {
+        "model": "codestral-22b",
+        "sample_index": 0,
+        "seed_path": "synthesis/re2/ablation/v3_all/codestral-22b/sample_0.json",
+        "variant": "v3_all"
+      },
+      "reasoning": "This pattern targets the gap at re2/parse.cc:543. The repetition operator '*' is applied to a group containing two alternative expressions '(a+)' and '(b+)'. This causes the parser to generate a concatenation of these alternatives, which triggers the uncovered branch.",
+      "target_gaps": [
+        "re2/parse.cc:543"
+      ]
+    },
+    {
+      "content": "(?:(a+)|(b+)){0}",
+      "content_b64": null,
+      "origin": {
+        "model": "codestral-22b",
+        "sample_index": 0,
+        "seed_path": "synthesis/re2/ablation/v3_all/codestral-22b/sample_0.json",
+        "variant": "v3_all"
+      },
+      "reasoning": "This pattern targets the gap at re2/parse.cc:946. The non-capturing group '(?:(a+)|(b+))' is repeated exactly zero times '{0}'. This causes the parser to skip the group, which triggers the uncovered branch.",
+      "target_gaps": [
+        "re2/parse.cc:946"
+      ]
+    },
+    {
+      "content": "((a*)?b*){1000,}",
+      "content_b64": null,
+      "origin": {
+        "model": "codestral-22b",
+        "sample_index": 0,
+        "seed_path": "synthesis/re2/ablation/v3_all/codestral-22b/sample_0.json",
+        "variant": "v3_all"
+      },
+      "reasoning": "This pattern targets the gap at re2/parse.cc:1823. The named capture group '(?P<expr>name)' is not used in the pattern, which causes the parser to reject it, triggering the uncovered branch.",
+      "target_gaps": [
+        "re2/parse.cc:1823"
+      ]
+    }
+  ],
+  "harvested_at": "2026-04-22T02:23:30.406969+00:00",
+  "schema_version": 1,
+  "selection_method": "m2_best",
+  "source_commit": "368ed4887da12855de5d273bebad4d2b6bb211b8",
+  "target": "re2"
+}

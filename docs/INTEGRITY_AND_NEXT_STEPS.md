@@ -61,13 +61,13 @@ random (anchor)                   | 0.820     | 41/50     | 100
 
 ## Part 2 — Evidence of no model-specific treatment
 
-**Same binary for every cell:** `run_ablation_experiment.py:59` sets `RE2_COVERAGE_BINARY`
+**Same binary for every cell:** `archive/run_ablation_experiment_v3.py.bak:59` sets `RE2_COVERAGE_BINARY`
 to a single path (`dataset/targets/src/re2/build/coverage/seed_replay`). Line 218 passes
 it identically to every M1 call. Line 259 (M2) does the same. No cell gets a different binary.
 
 **No model-conditional measurement logic:** `measure_gap_coverage.py` and
 `measure_coverage.py` contain zero references to model names, "sonnet", "haiku", or "llama".
-The only model-aware code in `run_ablation_experiment.py` is `_env_for_model()` (lines 66–75),
+The only model-aware code in `archive/run_ablation_experiment_v3.py.bak` is `_env_for_model()` (lines 66–75),
 which routes API credentials — Claude via `UTCF_ANTHROPIC_KEY_PATH`, llama via `UTCF_LITELLM_URL`.
 This routing is symmetric: it only changes *which endpoint receives the synthesis request*,
 not how seeds are measured.

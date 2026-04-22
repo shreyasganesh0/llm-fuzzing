@@ -306,7 +306,7 @@ Then, in order:
 
 - `analysis/scripts/freeze_target_branches.py` — pre-experiment: union baseline, smoke corpus, deterministic 50-target sample.
 - `analysis/scripts/measure_gap_coverage.py` — M2: per-seed isolated replay, union-diff "previously uncovered side" hit matrix, bootstrap CIs.
-- `scripts/run_ablation_experiment.py` — orchestrator with phases `prep | random | synthesis | m1 | m2 | all` and `--skip-existing`. Routes Claude models via `UTCF_ANTHROPIC_KEY_PATH=secrets/claude_key` and llama via `UTCF_LITELLM_URL=https://api.ai.it.ufl.edu`.
+- `scripts/archive/run_ablation_experiment_v3.py.bak` — orchestrator with phases `prep | random | synthesis | m1 | m2 | all` and `--skip-existing`. Routes Claude models via `UTCF_ANTHROPIC_KEY_PATH=secrets/claude_key` and llama via `UTCF_LITELLM_URL=https://api.ai.it.ufl.edu`.
 - `analysis/scripts/ablation_summary.py` — joins M1+M2 on disk, writes `results/ablation_v3/summary.md`.
 
 ### Scripts (modified)
@@ -317,7 +317,7 @@ Then, in order:
 
 ### Replay note (DWARF paths)
 
-The coverage binary `dataset/targets/src/re2/build/coverage/seed_replay` was built with the pre-rearch `phase1_dataset/...` source prefix baked into DWARF. The M1 source-roots filter in `scripts/run_ablation_experiment.py` uses that prefix; `analysis/scripts/freeze_target_branches.py::_normalize_path` strips up to and including `upstream/` so downstream joins with `coverage_gaps.json` paths (`re2/bitstate.cc`) work across stale/current prefixes.
+The coverage binary `dataset/targets/src/re2/build/coverage/seed_replay` was built with the pre-rearch `phase1_dataset/...` source prefix baked into DWARF. The M1 source-roots filter in `scripts/archive/run_ablation_experiment_v3.py.bak` uses that prefix; `analysis/scripts/freeze_target_branches.py::_normalize_path` strips up to and including `upstream/` so downstream joins with `coverage_gaps.json` paths (`re2/bitstate.cc`) work across stale/current prefixes.
 
 ### Headline results (2026-04-16)
 

@@ -5,7 +5,7 @@ this up cold: read this first, then `docs/AB_RE2_REPORT.md`; the
 `docs/research_document_v3.md` and `docs/plan_v3.md` are the
 authoritative specs._
 
-**Last updated:** 2026-04-13
+**Last updated:** 2026-04-21
 
 ---
 
@@ -130,6 +130,28 @@ Key code entry points:
 | RE2 coverage build | `dataset/targets/src/re2/build/coverage/` |
 | LLM cache | `.cache/llm/` |
 | Secrets (git-ignored) | `secrets/llm_key` |
+| Target registry (per-target paths + config) | `core/targets.py` |
+| Variant registry (5 prompt ablation cells) | `core/variants.py` |
+| Shared orchestrator | `scripts/_ablation_base.py` |
+| Metric registry (M1, M2, …) | `analysis/metrics/` |
+| Cost audit (reads `.cache/llm/`) | `analysis/scripts/cost_audit.py` |
+| Pre-experiment cost estimator | `analysis/scripts/estimate_cost.py` |
+| Cost audit output | `results/cost_audit/summary.{md,json,csv}` |
+| Prompt-strategy registry (6 entries) | `core/prompt_strategies.py` |
+| Prompt templates (14 × 6 strategies) | `synthesis/prompts/ablation_synthesis_{regex,binary}*.j2` |
+| Strategy → template dispatch | `synthesis/scripts/generate_ablation_inputs.py::_TEMPLATE_SUFFIX_BY_STRATEGY` |
+| Cross-verification test suite (Phase 9) | `tests/test_phase9_integration.py` |
+
+### Prompt strategies (6, Phase 0–8)
+
+| Name | Calls/seed | supports_tool_use | Templates |
+|---|---|---|---|
+| `default` | 1 | no | `ablation_synthesis_{regex,binary}.j2` |
+| `cot_strict` | 1 | no | `ablation_synthesis_{regex,binary}_cot.j2` |
+| `few_shot` | 1 | no | `ablation_synthesis_{regex,binary}_fewshot.j2` (+ frozen exemplars in `dataset/fixtures/exemplars/`) |
+| `self_critique` | 2 | no | draft reuses base; refine uses `*_refine.j2` |
+| `prompt_chain` | 3 | no | `*_plan.j2` → `*_sketch.j2` → `*_finalize.j2` |
+| `tool_use` | ≤4 | yes (gpt-oss-20b, nemotron-3-super-120b-a12b) | base template + `check_seed` oracle via OpenAI-style tool calls |
 
 ---
 
@@ -174,6 +196,38 @@ Key code entry points:
   reasoning strings).
 - `PredictionResult(extra='ignore')`; other schemas keep `extra='forbid'`
   intentionally.
+
+**Component registries (added 2026-04-21)**
+- Per-target constants (coverage_binary, source_roots, fixtures_dir,
+  results_root, M2 targets path, random-format flag, max_gaps override)
+  live in `core/targets.py::TARGETS`, not scattered across `core/config.py`
+  or per-orchestrator modules. Adding a new target = one `TargetSpec`
+  entry + one `build_instrumented.sh` branch.
+- The 5-variant prompt ablation (`v0_none` … `v4_src_gaps`) is the single
+  source of truth in `core/variants.py::STANDARD_VARIANTS`. Both
+  orchestrators consume the same list.
+- `core.config.ModelDefaults` carries per-model tuning: `provider`,
+  `inputs_per_call`, `synthesis_max_tokens`, `worker_count`,
+  `output_capped_on_binary`. Changing these for a model is a single-line
+  edit; orchestrators never duplicate the values.
+- `scripts/_ablation_base.py::AblationRunner` is the only place that
+  knows how to run a cell. `scripts/run_ablation_{re2,harfbuzz}.py` are
+  ≤60-line wrappers that inject target + model lists.
+- `analysis/metrics/` exports a `METRICS` registry. Adding a metric (M3,
+  …) is one file implementing the `Metric` protocol + one registry
+  entry. CLI `--phase` discovery is automatic.
+- Cost reporting has a single source: `analysis/scripts/cost_audit.py`
+  walks `.cache/llm/` and re-prices via `core.llm_client.PRICING_USD_PER_MTOK`.
+  `analysis/scripts/estimate_cost.py` projects future costs from the
+  same pricing table using historical per-call means. **Do not put dollar
+  estimates in docs without citing the command that produced them.**
+- Prompt strategies are registered in `core.prompt_strategies.STRATEGIES`;
+  the 5-variant × strategy × model matrix is the full ablation surface.
+  Adding a strategy = one registry entry + templates + dispatch in
+  `generate_ablation_inputs.py::_TEMPLATE_SUFFIX_BY_STRATEGY`. Phase 9's
+  integration suite (`tests/test_phase9_integration.py`) guards
+  registry/template/cache-salt/CLI composition — run it after any
+  strategy change.
 
 **A/B / RE2-specific**
 - RE2's `util/test.h` minimal test framework **ignores `--gtest_filter`**
@@ -328,6 +382,28 @@ pair.
 
 ## 11. Changelog of this doc
 
+- **2026-04-21** — Phases 0–9 landed: 6 prompt strategies
+  (`default`, `cot_strict`, `few_shot`, `self_critique`, `prompt_chain`,
+  `tool_use`) in `core/prompt_strategies.py`, constrained-output plumbing
+  (`response_format`/`guided_json`) in `core/llm_client.py`, tool-use
+  dialect gated on `ModelDefaults.supports_tool_use`, CLI matrix flags
+  on `scripts/_ablation_base.py` (`--strategy`, `--variants`,
+  `--num-seeds`, `--list-strategies`, `--dry-run`), cross-verification
+  integration suite at `tests/test_phase9_integration.py` (23 active
+  tests + 1 opt-in cache audit). Cache entry count unchanged at 14,268.
+- **2026-04-21** — cost accounting fix + component-based refactor.
+  (a) New `analysis/scripts/cost_audit.py` + `estimate_cost.py` replace
+  hand-estimated cost prose; `docs/FUTURE_DIRECTIONS.md` §2/§6 and
+  `docs/WEEKLY_REVIEW_PROMPT.md` §7 rewritten against the audit
+  (Anthropic $86.25, LiteLLM $13.83, grand total $100.09). `docs/RESUME.md`
+  deleted (stale). `scripts/run_ablation_experiment.py` archived.
+  (b) New registries: `core/targets.py` (`TargetSpec`),
+  `core/variants.py` (`VariantSpec`), extended `core.config.ModelDefaults`.
+  `scripts/_ablation_base.py` holds the shared `AblationRunner`; both
+  `run_ablation_{re2,harfbuzz}.py` collapsed from ~520 LOC each to
+  ≤60-line wrappers. `analysis/metrics/` adds a `Metric` protocol with
+  `M1EdgesMetric` and `M2HardBranchMetric`. Adding a new target / model /
+  metric is now a data-only edit.
 - **2026-04-13** — generalization experiments landed: P0 random baseline
   (`three_way_summary.md`), Experiment A held-out source subset
   (`heldout_summary.md`), Experiment B prompt ablation

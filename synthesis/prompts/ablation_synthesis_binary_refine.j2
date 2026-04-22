@@ -1,0 +1,103 @@
+{{ system_prompt }}
+
+You are REVISING a previously-generated binary FONT FILE byte sequence
+for {{ target_name }}. Harfbuzz is a C++ OpenType/TrueType shaping
+library; hard-to-reach code lives in FONT TABLE PARSERS (GDEF, GSUB,
+GPOS, cmap, head, hhea, maxp, loca, glyf, CFF) and the SHAPING PIPELINE.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness does this with your bytes:
+
+```cpp
+{{ harness_code }}
+```
+
+Your bytes will be fed DIRECTLY to `hb_blob_create(data, size)`, then
+`hb_face_create(blob, 0)` → `hb_font_create(face)` → `hb_shape(font, buffer, NULL, 0)`.
+**Keep each blob TINY (≤ 64 bytes, HARD LIMIT)**. A 64-byte blob
+base64-encodes to exactly 88 characters — stay under that.
+{% if include_tests and few_shot_examples %}
+
+=== UPSTREAM API CONTEXT ===
+{% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}
+{% endif %}
+{% if include_source and source_files %}
+
+=== LIBRARY SOURCE CODE ===
+{% for sf in source_files %}
+=== {{ sf.path }} ({{ sf.line_count }} lines) ===
+{{ sf.content }}
+
+{% endfor %}
+{% endif %}
+{% if include_gaps and coverage_gaps %}
+
+=== UNCOVERED BRANCHES ===
+The {{ total_upstream_tests }} upstream tests cover {{ union_coverage_pct }}%
+of harfbuzz branches. Each branch below has ONE side that upstream tests
+NEVER took. Your refined font bytes must trigger the **specific uncovered side**.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch**
+(the side upstream tests never reached)
+Code:
+```cpp
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}
+{% endif %}
+
+=== DRAFT UNDER REVIEW ===
+A previous round produced this draft seed. Treat it as a STARTING POINT
+you are allowed to modify freely — keep what works, change what does not.
+
+Draft bytes (base64): {{ draft_content }}
+Draft reasoning:
+{{ draft_reasoning }}
+
+=== CRITIQUE TASK ===
+For your single revised seed, do ALL of the following in the `reasoning`
+field, IN ORDER:
+
+  1. **Critique**: in one sentence, identify ONE concrete weakness of the
+     draft above relative to the uncovered branches listed.
+     (e.g. "draft targets cmap but the gap list only mentions GSUB/GPOS";
+     "draft's sfnt version is invalid, so face creation bails before reaching
+     the target parser"; "draft has ≤ 12 bytes so no table directory exists".)
+  2. **Fix**: state the specific byte-level change that addresses that
+     weakness (e.g. "set offset 0x04 to 0x00010000 (TrueType sfnt)";
+     "add a 16-byte table directory entry with tag 'GSUB'").
+  3. **Targeting**: name the `file:line` gap this revised seed now exercises.
+
+Then produce ONE revised seed in `inputs[0]` — not multiple. The revision
+should fix the identified weakness and make the seed exercise MORE of the
+uncovered branches than the draft did. Never emit fewer than 1 input, never
+more than {{ num_inputs }}.
+
+OUTPUT RULES — violations cause parse failure:
+- Start your response DIRECTLY with the opening `{`. No preamble, no explanation.
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `inputs` must contain AT MOST {{ num_inputs }} entries.
+- Every `content_b64` must be valid standard base64 of raw bytes.
+- **SIZE LIMIT — CRITICAL**: each `content_b64` must encode AT MOST 64 bytes
+  (≤ 88 base64 characters). Responses exceeding this are discarded.
+- The revised `content_b64` may differ from the draft; it does not have to.
+- `target_gaps` entries must be real `path:integer` pairs.
+
+Schema:
+{
+  "inputs": [
+    {
+      "content_b64": "<standard base64 of raw font bytes>",
+      "target_gaps": ["src/hb-ot-layout.cc:420", "..."],
+      "reasoning": "Critique: <weakness>. Fix: <byte change>. Targeting: <file:line>."
+    }
+  ]
+}

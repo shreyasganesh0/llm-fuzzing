@@ -1,0 +1,105 @@
+{{ system_prompt }}
+
+You are generating REGEX PATTERNS to exercise code paths in the
+{{ target_name }} regular-expression library. {{ target_name }} is a C++
+regex engine; the hard-to-reach code lives in the PARSER and COMPILER
+(not the matcher), so novel regex syntax is more valuable than exotic
+input strings.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex. The tooling will prepend random flag
+bytes for you.
+
+**YOUR JOB**: produce the REGEX STRING ONLY, as plain text UTF-8.
+**DO NOT** base64-encode. **DO NOT** escape. **DO NOT** wrap in quotes
+inside the regex field. Just the pattern itself.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took. Your regex must trigger the
+**specific uncovered side** listed for each gap.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
+Code:
+```{{ source_language }}
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+=== YOUR TASK ===
+STRICT CHAIN-OF-THOUGHT TASK — for EACH of your {{ num_inputs }} regexes,
+the `reasoning` field MUST contain these FOUR labeled steps, IN ORDER,
+before the final regex string is fixed:
+
+  Step 1 (Quote): Copy ONE verbatim C++ branch condition from the RE2
+    source snippet(s) shown above. Quote it exactly — no paraphrasing.
+  Step 2 (Locate): Name the RE2 parser or automaton component that hosts
+    that branch (e.g. `Parser::ParsePerlFlags`, `DFA::RunStateOnByte`,
+    `Prog::Compile`, `Regexp::Simplify`).
+  Step 3 (Construct): Describe the specific regex feature or token that
+    drives the branch (e.g. `(?P<name>...)` Perl named-capture syntax,
+    `\p{Greek}` Unicode property, counted repetition `{1000,}`).
+  Step 4 (Regex): Emit the final regex string in the `inputs[0].content`
+    position — i.e. put the pattern in the `regex` field of this entry.
+
+All four step labels — literally `Step 1 (Quote):`, `Step 2 (Locate):`,
+`Step 3 (Construct):`, `Step 4 (Regex):` — MUST appear in the `reasoning`
+string. Responses missing any label will be discarded.
+
+Produce {{ num_inputs }} DISTINCT regex patterns. Keep each pattern
+1-60 characters (the harness rejects anything totaling > 64 bytes).
+{% if include_gaps and coverage_gaps %}Distribute your inputs across as
+many of the {{ coverage_gaps[:max_gaps]|length }} listed gap branches as
+possible; name each target in `target_gaps`.{% endif %}
+
+Examples of the kind of patterns that stress the parser/compiler:
+  - Named captures:         (?P<x>a+)
+  - Nested repetitions:     (a*)*
+  - Unicode classes:        \p{Greek}+
+  - Lookarounds (rejected): (?=abc)
+  - Large counted reps:     a{1000,}
+  - Character classes:      [^a-zA-Z0-9]
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain AT MOST {{ num_inputs }} entries.
+- Every `regex` must be UNIQUE.
+- `regex` is plain text, NOT base64, NOT escaped JSON — just the raw
+  pattern. If your pattern contains `"` or `\`, escape them using
+  standard JSON string-escape rules.
+- Every `reasoning` must contain all four step labels (Step 1 (Quote):,
+  Step 2 (Locate):, Step 3 (Construct):, Step 4 (Regex):).
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["<file>:<line>", "..."],
+      "reasoning": "Step 1 (Quote): <verbatim C++ condition>. Step 2 (Locate): <RE2 component>. Step 3 (Construct): <regex feature>. Step 4 (Regex): <note on emitted pattern>."
+    }
+  ]
+}

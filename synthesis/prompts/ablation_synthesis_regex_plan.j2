@@ -1,0 +1,69 @@
+{{ system_prompt }}
+
+You are PLANNING an attack on the {{ target_name }} regular-expression
+library (C++ regex engine). This is STAGE 1 of a 3-stage pipeline:
+PLAN → SKETCH → FINALIZE. You produce ONLY the plan; you do NOT emit
+a regex yet.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex. The hard-to-reach code lives in the
+PARSER and COMPILER (not the matcher), so novel regex syntax is more
+valuable than exotic input strings.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took. Pick ONE branch from this list
+as your attack target.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
+Code:
+```{{ source_language }}
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+
+=== YOUR TASK (STAGE 1 OF 3: PLAN) ===
+Commit to ONE uncovered branch and describe your attack plan in 2-3
+sentences of plain English. You are NOT producing a regex yet. You ARE:
+
+  1. Picking a SINGLE target gap {% if include_gaps and coverage_gaps %}from the list above (use its exact `file:line` string){% else %}(a concrete `file:line` in the RE2 source){% endif %}.
+  2. Describing, in 2-3 sentences, which regex-syntax feature will reach
+     that branch and which side (TRUE or FALSE) you will force.
+
+Do NOT include a regex pattern yet. Just the plan.
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- The `plan` field is 2-3 sentences of plain English.
+- The `target_gap` field is a single `path:integer` pair.
+- Do NOT include a `regexes` or `inputs` array at this stage.
+
+Schema:
+{
+  "plan": "<2-3 sentence natural-language attack plan, no regex>",
+  "target_gap": "<file:line>"
+}

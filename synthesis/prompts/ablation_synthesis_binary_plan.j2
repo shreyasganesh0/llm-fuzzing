@@ -1,0 +1,78 @@
+{{ system_prompt }}
+
+You are PLANNING an attack on the {{ target_name }} font shaping engine
+(C++ OpenType/TrueType library). This is STAGE 1 of a 3-stage pipeline:
+PLAN → SKETCH → FINALIZE. You produce ONLY the plan; you do NOT emit
+bytes yet.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness does this with the eventual bytes:
+
+```cpp
+{{ harness_code }}
+```
+
+The final bytes will be fed DIRECTLY to `hb_blob_create(data, size)`, then
+`hb_face_create(blob, 0)` → `hb_font_create(face)` → `hb_shape(font, buffer, NULL, 0)`.
+**Hard limit**: the eventual blob will be ≤ 64 bytes.
+{% if include_tests and few_shot_examples %}
+
+=== UPSTREAM API CONTEXT ===
+These are real upstream unit tests showing how the harfbuzz API works:
+{% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}
+{% endif %}
+{% if include_source and source_files %}
+
+=== LIBRARY SOURCE CODE ===
+{% for sf in source_files %}
+=== {{ sf.path }} ({{ sf.line_count }} lines) ===
+{{ sf.content }}
+
+{% endfor %}
+{% endif %}
+{% if include_gaps and coverage_gaps %}
+
+=== UNCOVERED BRANCHES ===
+The {{ total_upstream_tests }} upstream tests cover {{ union_coverage_pct }}%
+of harfbuzz branches. Each branch below has ONE side that upstream tests
+NEVER took. Pick ONE branch from this list as your attack target.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch**
+(the side upstream tests never reached)
+Code:
+```cpp
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}
+{% endif %}
+
+=== YOUR TASK (STAGE 1 OF 3: PLAN) ===
+Commit to ONE uncovered branch and describe your attack plan in 2-3
+sentences of plain English. You are NOT producing bytes yet. You ARE:
+
+  1. Picking a SINGLE target gap {% if include_gaps and coverage_gaps %}from the list above (use its exact `file:line` string){% else %}(a concrete `file:line` in the harfbuzz source){% endif %}.
+  2. Describing, in 2-3 sentences, what font-file structure will reach
+     that branch and which side (TRUE or FALSE) you will force.
+
+Do NOT include byte values, base64 blobs, or code. Just the plan.
+
+OUTPUT RULES — violations cause parse failure:
+- Start your response DIRECTLY with the opening `{`. No preamble.
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- The `plan` field is 2-3 sentences of plain English.
+- The `target_gap` field is a single `path:integer` pair.
+- Do NOT include an `inputs` array at this stage.
+
+Schema:
+{
+  "plan": "<2-3 sentence natural-language attack plan, no bytes>",
+  "target_gap": "<file:line>"
+}

@@ -1,0 +1,93 @@
+{{ system_prompt }}
+
+You are REVISING a previously-generated REGEX PATTERN for {{ target_name }}.
+{{ target_name }} is a C++ regex engine; the hard-to-reach code lives in
+the PARSER and COMPILER (not the matcher), so novel regex syntax is more
+valuable than exotic input strings.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex. **Produce the REGEX STRING ONLY**, as
+plain text UTF-8. Do NOT base64-encode. Do NOT escape. Do NOT wrap in
+quotes. Just the pattern itself.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took. Your revised regex must trigger
+the **specific uncovered side** listed for each gap.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
+Code:
+```{{ source_language }}
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+
+=== DRAFT UNDER REVIEW ===
+A previous round produced this draft regex. Treat it as a STARTING POINT
+you are allowed to modify freely — keep what works, change what does not.
+
+Draft regex: {{ draft_content }}
+Draft reasoning:
+{{ draft_reasoning }}
+
+=== CRITIQUE TASK ===
+For your single revised regex, do ALL of the following in the `reasoning`
+field, IN ORDER:
+
+  1. **Critique**: in one sentence, identify ONE concrete weakness of the
+     draft above relative to the uncovered branches listed.
+     (e.g. "draft targets Unicode classes but the only gap is a named-capture
+     branch"; "draft is rejected by the parser before reaching the target";
+     "draft does not stress the repetition-depth branch").
+  2. **Fix**: state the specific regex-syntax change that addresses that
+     weakness (e.g. "use (?P<x>a+) to force named-capture code path";
+     "add `{1000,}` to trigger the large-counted-rep branch").
+  3. **Targeting**: name the `file:line` gap this revised regex now
+     exercises.
+
+Then produce ONE revised regex in `regexes[0]` — not multiple. Keep it
+1–60 characters. The revision should fix the identified weakness and make
+the regex exercise MORE of the uncovered branches than the draft did.
+Never emit fewer than 1 input, never more than {{ num_inputs }}.
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain AT MOST {{ num_inputs }} entries.
+- `regex` is plain text, NOT base64, NOT escaped JSON — just the raw
+  pattern. If it contains `"` or `\`, escape them using standard JSON
+  string-escape rules.
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["<file>:<line>", "..."],
+      "reasoning": "Critique: <weakness>. Fix: <syntax change>. Targeting: <file:line>."
+    }
+  ]
+}

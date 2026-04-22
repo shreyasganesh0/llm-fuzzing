@@ -29,27 +29,88 @@ class ModelDefaults:
     temperature: float = 0.0
     top_p: float = 1.0
     max_tokens: int = 1600
+    # Ablation-runner tuning (see scripts/_ablation_base.py).
+    provider: str = "litellm"          # anthropic | litellm | openai
+    inputs_per_call: int = 3           # seeds requested per synthesis API call
+    synthesis_max_tokens: int = 4096   # --max-tokens for synthesis calls
+    worker_count: int = 4              # parallel synthesis calls per cell
+    # Models whose UF LiteLLM response tends to hit the 2048-char cap when
+    # asked for multi-blob binary output. Runner drops inputs_per_call to 1
+    # on binary targets (harfbuzz). On text targets (RE2) this flag is only
+    # consulted when the variant adds gap-reasoning that inflates output.
+    output_capped_on_binary: bool = False
+    # Phase 3 — constrained decoding support. Values reflect
+    # results/probes/probe_json_mode.json (2026-04-21). LiteLLM-proxied
+    # open-weights models accept all three flavors (plain, json_object,
+    # json_schema, guided_json). Anthropic keys had zero credits during the
+    # probe, so the flags stay False until Phase 7 wires tool-use emulation.
+    # Downstream: `LLMClient.complete(response_format=...)` raises ValueError
+    # when a caller tries to use structured output on a model whose flag is
+    # False — this is the invariant that keeps constraints from being
+    # silently dropped.
+    supports_json_object: bool = False
+    supports_json_schema: bool = False
+    # Phase 7 — OpenAI-style tool-use support. True only for models the
+    # Phase 0 probe (`results/probes/probe_tool_use.json`) verified as
+    # emitting well-formed tool_calls via the LiteLLM proxy. The UF
+    # LiteLLM proxy rejects llama-3.1/3.3 and codestral with
+    # `--enable-auto-tool-choice` errors (proxy-side vLLM config issue);
+    # Anthropic models had zero credits during the probe so we leave
+    # them False pragmatically — not a capability limit. Downstream:
+    # `LLMClient.complete(tools=...)` raises ValueError when a caller
+    # tries to use tools on a model whose flag is False.
+    supports_tool_use: bool = False
 
 
 MODEL_DEFAULTS: dict[str, ModelDefaults] = {
-    "gpt-4o-2024-08-06": ModelDefaults("gpt-4o-2024-08-06"),
-    "gpt-4o-mini-2024-07-18": ModelDefaults("gpt-4o-mini-2024-07-18"),
-    "o1-2024-12-17": ModelDefaults("o1-2024-12-17", max_tokens=4096),
-    "claude-3-5-sonnet-20241022": ModelDefaults("claude-3-5-sonnet-20241022"),
-    "claude-sonnet-4-6": ModelDefaults("claude-sonnet-4-6"),
-    "claude-opus-4-6": ModelDefaults("claude-opus-4-6"),
+    # OpenAI
+    "gpt-4o-2024-08-06": ModelDefaults("gpt-4o-2024-08-06", provider="openai"),
+    "gpt-4o-mini-2024-07-18": ModelDefaults("gpt-4o-mini-2024-07-18", provider="openai"),
+    "o1-2024-12-17": ModelDefaults("o1-2024-12-17", max_tokens=4096, provider="openai"),
+    # Anthropic
+    "claude-3-5-sonnet-20241022": ModelDefaults(
+        "claude-3-5-sonnet-20241022", provider="anthropic", inputs_per_call=4,
+        synthesis_max_tokens=1200),
+    "claude-sonnet-4-6": ModelDefaults(
+        "claude-sonnet-4-6", provider="anthropic", inputs_per_call=4,
+        synthesis_max_tokens=1200),
+    "claude-haiku-4-5-20251001": ModelDefaults(
+        "claude-haiku-4-5-20251001", provider="anthropic", inputs_per_call=4,
+        synthesis_max_tokens=1200),
+    "claude-opus-4-6": ModelDefaults(
+        "claude-opus-4-6", provider="anthropic", inputs_per_call=4,
+        synthesis_max_tokens=1200),
     # UF LiteLLM proxy — small/verbose models need headroom above the 1600 default.
-    "llama-3.1-8b-instruct": ModelDefaults("llama-3.1-8b-instruct", max_tokens=8192),
-    "llama-3.1-70b-instruct": ModelDefaults("llama-3.1-70b-instruct", max_tokens=4096),
-    "llama-3.3-70b-instruct": ModelDefaults("llama-3.3-70b-instruct", max_tokens=4096),
-    "gpt-oss-20b": ModelDefaults("gpt-oss-20b", max_tokens=4096),
+    # supports_json_object / supports_json_schema = True only for models that
+    # the Phase 0 probe actually verified (results/probes/probe_json_mode.json).
+    "llama-3.1-8b-instruct": ModelDefaults(
+        "llama-3.1-8b-instruct", max_tokens=8192, synthesis_max_tokens=8192,
+        supports_json_object=True, supports_json_schema=True),
+    "llama-3.1-70b-instruct": ModelDefaults(
+        "llama-3.1-70b-instruct", max_tokens=4096, synthesis_max_tokens=4096,
+        output_capped_on_binary=True,
+        supports_json_object=True, supports_json_schema=True),
+    "llama-3.3-70b-instruct": ModelDefaults(
+        "llama-3.3-70b-instruct", max_tokens=4096, synthesis_max_tokens=4096,
+        output_capped_on_binary=True,
+        supports_json_object=True, supports_json_schema=True),
+    "gpt-oss-20b": ModelDefaults(
+        "gpt-oss-20b", max_tokens=4096,
+        supports_json_object=True, supports_json_schema=True,
+        supports_tool_use=True),
     "gpt-oss-120b": ModelDefaults("gpt-oss-120b", max_tokens=4096),
     "mistral-small-3.1": ModelDefaults("mistral-small-3.1", max_tokens=4096),
-    "codestral-22b": ModelDefaults("codestral-22b", max_tokens=4096),
+    "codestral-22b": ModelDefaults(
+        "codestral-22b", max_tokens=4096, synthesis_max_tokens=4096,
+        supports_json_object=True, supports_json_schema=True),
     "gemma-3-27b-it": ModelDefaults("gemma-3-27b-it", max_tokens=4096),
     "granite-3.3-8b-instruct": ModelDefaults("granite-3.3-8b-instruct", max_tokens=4096),
     "nemotron-3-nano-30b-a3b": ModelDefaults("nemotron-3-nano-30b-a3b", max_tokens=4096),
-    "nemotron-3-super-120b-a12b": ModelDefaults("nemotron-3-super-120b-a12b", max_tokens=4096),
+    "nemotron-3-super-120b-a12b": ModelDefaults(
+        "nemotron-3-super-120b-a12b", max_tokens=4096, synthesis_max_tokens=4096,
+        output_capped_on_binary=True,
+        supports_json_object=True, supports_json_schema=True,
+        supports_tool_use=True),
 }
 
 
@@ -107,17 +168,19 @@ M2_TARGETS_PATH = _REPO_ROOT / "dataset/fixtures/re2_ab/re2/m2_target_branches.j
 UPSTREAM_UNION_PROFILE_PATH = _REPO_ROOT / "dataset/fixtures/re2_ab/re2/upstream_union_profile.json"
 M2_SMOKE_LOG_PATH = _REPO_ROOT / "dataset/fixtures/re2_ab/re2/m2_smoke_log.json"
 
-# RE2 ablation v2 fixture paths (hard-branch filter: rand_hits==0, same as harfbuzz)
-RE2_V2_FIXTURES_DIR = _REPO_ROOT / "dataset/fixtures/re2_ab_v2/re2"
-RE2_V2_M2_TARGETS_PATH = RE2_V2_FIXTURES_DIR / "m2_target_branches.json"
-RE2_V2_UPSTREAM_UNION_PROFILE_PATH = RE2_V2_FIXTURES_DIR / "upstream_union_profile.json"
-RE2_V2_M2_SMOKE_LOG_PATH = RE2_V2_FIXTURES_DIR / "m2_smoke_log.json"
+# Per-target fixture paths — re-exports for scripts that pre-date `core.targets`.
+# TargetSpec in `core/targets.py` is the source of truth; edit there, not here.
+from core.targets import TARGETS as _TARGETS  # noqa: E402
 
-# Harfbuzz ablation fixture paths
-HB_FIXTURES_DIR = _REPO_ROOT / "dataset/fixtures/harfbuzz_ab/harfbuzz"
-HB_M2_TARGETS_PATH = HB_FIXTURES_DIR / "m2_target_branches.json"
-HB_UPSTREAM_UNION_PROFILE_PATH = HB_FIXTURES_DIR / "upstream_union_profile.json"
-HB_M2_SMOKE_LOG_PATH = HB_FIXTURES_DIR / "m2_smoke_log.json"
+RE2_V2_FIXTURES_DIR = _TARGETS["re2"].fixtures_dir
+RE2_V2_M2_TARGETS_PATH = _TARGETS["re2"].m2_targets_path
+RE2_V2_UPSTREAM_UNION_PROFILE_PATH = _TARGETS["re2"].upstream_union_profile_path
+RE2_V2_M2_SMOKE_LOG_PATH = _TARGETS["re2"].m2_smoke_log_path
+
+HB_FIXTURES_DIR = _TARGETS["harfbuzz"].fixtures_dir
+HB_M2_TARGETS_PATH = _TARGETS["harfbuzz"].m2_targets_path
+HB_UPSTREAM_UNION_PROFILE_PATH = _TARGETS["harfbuzz"].upstream_union_profile_path
+HB_M2_SMOKE_LOG_PATH = _TARGETS["harfbuzz"].m2_smoke_log_path
 
 M2_TARGET_COUNT = 50
 M2_SHOWN_COUNT = 30

@@ -205,10 +205,22 @@ The Harfbuzz results table has a structural gap: Claude is only evaluated at v0/
 This is not just a completeness concern. The pattern on RE2 shows that gap-targeting raises M2 by 0.10–0.33 for most capable models. If Claude on Harfbuzz with v4_src_gaps reaches M2=0.70+, it would be the strongest result in the entire experiment. If it degrades (continues the v0→v1 trend), that is also a scientifically important finding about binary format prompting.
 
 **Cost estimate:**
-~150 seeds × 5 variants × 2 models × ~4 inputs/call ≈ 375 API calls per model. At Sonnet pricing (~$3/MTok input, ~$15/MTok output), estimating ~2k input tokens + 800 output tokens per call: ~375 × ($0.006 + $0.012) = ~$6.75 per model, ~$13 total. Affordable.
+Derived from `analysis/scripts/estimate_cost.py`, which multiplies `core.llm_client.PRICING_USD_PER_MTOK` by historical per-call token means from `results/cost_audit/summary.json`. Six empty cells (3 variants × 2 Claude models). Assuming the attempt cap will dominate (~100 calls/cell on binary — the binary parse rate is ~10–30%):
+
+```
+# Sonnet on 3 variants × ~100 calls/cell
+$ python -m analysis.scripts.estimate_cost --model claude-sonnet-4-6 --n-calls 300
+# Per-call: $0.0560  →  Total: $16.81
+
+# Haiku on 3 variants × ~100 calls/cell
+$ python -m analysis.scripts.estimate_cost --model claude-haiku-4-5-20251001 --n-calls 300
+# Per-call: $0.0135  →  Total: $4.04
+```
+
+**Realistic envelope: $20 ≤ total ≤ $30** for all 6 missing cells, depending on how many attempts each cell needs to reach 150 seeds. For context, the 4 completed Claude HB cells (v0 + v1) cost $11.04 on the cache audit, giving ~$2.76/cell average — but v3/v4 cells use longer gap-context prompts, so the per-call input tokens will run higher. The pre-experiment estimator is the source of truth; do not hand-estimate.
 
 **Implementation:**
-Set `FREE_ONLY = False` in `scripts/run_ablation_harfbuzz.py`, set `SONNET_ONLY_VARIANTS = {"v2_src_tests", "v3_all", "v4_src_gaps"}` to run both Claude models on the missing variants. Run with `--skip-existing --attempt-offset 60000`.
+Set `FREE_ONLY = False` in `scripts/run_ablation_harfbuzz.py`, set `SONNET_ONLY_VARIANTS = {"v2_src_tests", "v3_all", "v4_src_gaps"}` to run both Claude models on the missing variants. Run with `--skip-existing --attempt-offset 60000`. Re-run `python -m analysis.scripts.cost_audit` after completion to confirm the envelope.
 
 ---
 
@@ -282,18 +294,27 @@ Compute the cost per unit of M2 improvement for each model and variant, and plot
 **Why it matters:**
 The experiment was expensive in both time and API cost. A practitioner choosing a model for LLM-guided fuzzing does not just want the highest M2 — they want the best M2 achievable within a budget. This analysis answers: *for $10 of API calls, what is the best model and variant to use?*
 
-**Data needed:**
-- Cost per synthesis call: logged in `.cache/llm/*.json` under `cost_usd` field for each cached call. Aggregate per (model, variant) cell.
-- M2 achieved per cell: already in results.
+**Data source:**
+Run `python -m analysis.scripts.cost_audit` — walks `.cache/llm/*.json`, sums `cost_usd`, and produces `results/cost_audit/summary.{md,json,csv}`. This is authoritative on-disk spend and supersedes any prose estimate in older docs.
+
+Current actual spend (2026-04-21 audit, 14,161 cached responses):
+
+| provider | spend |
+|---|---:|
+| Anthropic (`claude-sonnet-4-6` + `claude-haiku-4-5`) | **$86.25** |
+| UF LiteLLM (llama + codestral + nemotron + gpt-oss) | $13.83* |
+| **Total on-disk** | **$100.09** |
+
+\* UF LiteLLM bills the user $0 — the $13.83 is an *internal accounting figure* produced by `PRICING_USD_PER_MTOK` (which assigns llama-8b $0.22/MTok, etc. per the UF dashboard). It is useful for apples-to-apples comparisons, but the actual invoice paid by the researcher is $0 for those rows. Any "free model" claim should specify which number is meant.
 
 **Expected findings:**
-- Codestral-22b at v3/v4 on RE2 (M2=0.800, cost=$0) dominates the Pareto frontier for text targets.
-- Claude Sonnet on Harfbuzz (M2=0.640, cost ~$6–7) is the only viable option for binary targets — no free model comes close.
-- Haiku is likely dominated by codestral on RE2 (similar M2, but haiku costs money).
-- The "free model + text target" combination is not just cost-competitive — it is *cost-dominant* for text input formats.
+- Codestral-22b at v3/v4 on RE2 (M2=0.800) is vendor-invoice-free and accounting-cost ~$0.17 per 150-seed cell — it dominates the Pareto frontier for text targets on either definition of "cost."
+- Claude Sonnet on Harfbuzz (M2=0.640, ~$1.93/cell audited) is the only viable option for binary targets — no free model comes close.
+- Haiku is likely dominated by codestral on RE2 (similar M2, but haiku actually invoices and costs ~$0.26/cell).
+- The "free model + text target" combination is cost-dominant for text input formats under both the vendor-invoice and accounting-cost definitions.
 
 **Why this matters for the paper:**
-One of the strongest practical claims of this work is that LLM-guided fuzzing is accessible without frontier model API access. This analysis quantifies that claim precisely.
+One of the strongest practical claims of this work is that LLM-guided fuzzing is accessible without frontier model API access. This analysis quantifies that claim precisely. Report both the vendor-invoice number (for the "accessible without paid APIs" claim) and the accounting number (for fair cross-model cost comparisons).
 
 ---
 
@@ -375,3 +396,25 @@ Given the current state of the project, the recommended order of execution is:
 ---
 
 *Document written: 2026-04-19 | Author: experimental session log | Intended audience: any future researcher or agent resuming this project without prior context*
+
+---
+
+## How the cost numbers in this document were produced
+
+- **Historical spend** — `analysis/scripts/cost_audit.py` walks
+  `.cache/llm/*.json` and sums the `cost_usd` field stored in each
+  response record. The grand total is authoritative; the per-target
+  breakdown is best-effort (response messages are not cached, so target
+  attribution falls back to a substring match on the cached content).
+- **Pre-experiment estimates** — `analysis/scripts/estimate_cost.py`
+  multiplies `core.llm_client.PRICING_USD_PER_MTOK` by a requested
+  `(n_calls, mean_in, mean_out)`. Default means come from the audit
+  output, so estimates cite *observed* per-call averages rather than
+  hand-guessed token counts.
+- **Single source of truth** — `PRICING_USD_PER_MTOK` in
+  `core/llm_client.py` is the only place vendor rates live. Updating
+  rates there re-prices both the audit and the estimator automatically.
+- Prior versions of this document contained hand-estimated cost numbers
+  that were wrong by an order of magnitude. If you catch a cost figure
+  in prose that is not backed by one of the two scripts above, flag it
+  — it is probably stale.

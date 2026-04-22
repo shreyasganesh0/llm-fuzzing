@@ -1,0 +1,121 @@
+{{ system_prompt }}
+
+You are generating binary FONT FILE bytes to exercise code paths in the
+{{ target_name }} font shaping engine. Harfbuzz is a C++ OpenType/TrueType
+shaping library. Hard-to-reach code lives in the FONT TABLE PARSERS (GDEF,
+GSUB, GPOS, cmap, head, hhea, maxp, loca, glyf, CFF) and the SHAPING
+PIPELINE (script/language detection, feature lookup, glyph substitution,
+mark attachment, cluster reordering, Unicode normalization).
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness does this with your bytes:
+
+```cpp
+{{ harness_code }}
+```
+
+Your bytes will be fed DIRECTLY to `hb_blob_create(data, size)`, then
+`hb_face_create(blob, 0)` → `hb_font_create(face)` → `hb_shape(font, buffer, NULL, 0)`.
+
+**YOUR JOB**: produce base64-encoded bytes representing a font blob.
+You do NOT need a fully valid font. Partial tables, truncated headers,
+and deliberately malformed features are all useful if they exercise
+specific code paths. The harness silently ignores crashes.
+**Keep each blob TINY (≤ 64 bytes, HARD LIMIT)**. Harfbuzz parses headers
+first, so a 12–64 byte sfnt stub exercises multiple parse paths. A 64-byte
+blob base64-encodes to exactly 88 characters — stay under that.
+
+**OUTPUT FORMAT**: each `content_b64` must be standard base64 of the RAW
+BYTES you want fed to hb_blob_create. Do NOT base64-encode text. Do NOT
+output hex strings. Output BINARY bytes encoded as base64.
+{% if include_tests and few_shot_examples %}
+
+=== UPSTREAM API CONTEXT ===
+These are real upstream unit tests showing how the harfbuzz API works:
+{% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}
+{% endif %}
+{% if include_source and source_files %}
+
+=== LIBRARY SOURCE CODE ===
+{% for sf in source_files %}
+=== {{ sf.path }} ({{ sf.line_count }} lines) ===
+{{ sf.content }}
+
+{% endfor %}
+{% endif %}
+{% if include_gaps and coverage_gaps %}
+
+=== UNCOVERED BRANCHES ===
+The {{ total_upstream_tests }} upstream tests cover {{ union_coverage_pct }}%
+of harfbuzz branches. Each branch below has ONE side that upstream tests
+NEVER took. Your font bytes must trigger the **specific uncovered side**.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch**
+(the side upstream tests never reached)
+Code:
+```cpp
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}
+{% endif %}
+
+=== YOUR TASK ===
+STRICT CHAIN-OF-THOUGHT TASK — for EACH of your {{ num_inputs }} inputs, the
+`reasoning` field MUST contain these FOUR labeled steps, IN ORDER, before
+any bytes are finalised:
+
+  Step 1 (Quote): Copy ONE verbatim C++ branch condition from the harfbuzz
+    source snippet(s) shown above. Quote it exactly — no paraphrasing.
+  Step 2 (Locate): Name the specific OpenType table or struct that hosts
+    that branch (e.g. `OT::GSUB`, `OT::cmap::subtable_4`, `hb_face_t`,
+    `hb_ot_layout_lookup_accelerator_t`).
+  Step 3 (Offset): State the EXACT byte offset inside your 64-byte blob
+    whose value drives the branch condition, and give its hex value
+    (e.g. `offset 0x04 = 0x00010000 (sfnt version)`).
+  Step 4 (Bytes): Emit the base64 bytes in the `content_b64` field
+    (≤ 64 raw bytes, ≤ 88 base64 characters).
+
+All four step labels — literally `Step 1 (Quote):`, `Step 2 (Locate):`,
+`Step 3 (Offset):`, `Step 4 (Bytes):` — MUST appear in the `reasoning`
+string. Responses missing any label will be discarded.
+
+Produce {{ num_inputs }} DISTINCT font byte sequences.
+{% if include_gaps %}Name the specific `file:line` target in `target_gaps`
+and distribute inputs across the {{ coverage_gaps | length }} gap branches
+listed above.{% endif %}
+
+OUTPUT RULES — read carefully, violations cause parse failure:
+- Start your response DIRECTLY with the opening `{`. No preamble, no explanation.
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `inputs` must contain AT MOST {{ num_inputs }} entries.
+- Every `content_b64` must be valid standard base64 of raw bytes.
+- **SIZE LIMIT — CRITICAL**: each `content_b64` must encode AT MOST 64 bytes
+  (≤ 88 base64 characters). Count the base64 characters before finalising.
+  Responses exceeding this are truncated and discarded entirely.
+- Every `content_b64` must be UNIQUE across entries — no two identical blobs.
+- Every `reasoning` must contain all four step labels (Step 1 (Quote):,
+  Step 2 (Locate):, Step 3 (Offset):, Step 4 (Bytes):) and each input
+  should describe a DIFFERENT execution path.
+- `target_gaps` entries must be real `path:integer` pairs from the source
+  above. Never emit the literal string `LINE` or a placeholder.
+- If you cannot produce {{ num_inputs }} genuinely distinct inputs, emit
+  fewer. Never pad with duplicates.
+
+Schema:
+{
+  "inputs": [
+    {
+      "content_b64": "<standard base64 of raw font bytes — unique per entry>",
+      "target_gaps": ["src/hb-ot-layout.cc:420", "..."],
+      "reasoning": "Step 1 (Quote): <verbatim C++ condition>. Step 2 (Locate): <OT table/struct>. Step 3 (Offset): <byte offset + hex>. Step 4 (Bytes): <one-line note about the emitted bytes>."
+    }
+  ]
+}

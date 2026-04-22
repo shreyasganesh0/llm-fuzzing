@@ -1,0 +1,53 @@
+{
+  "exemplars": [
+    {
+      "content": null,
+      "content_b64": "AAABAAAJAE4AAAAAAAAAAAAAAAAAAAAAAAAAAABDRkYgAAAAAQAAABRHREVGAAABAAAAACRHUE9TAAABJAAAACRHU1VCAAACaAAAACRPUy8yAAADDAAAACBjbWFwAAADLAAAACBoZWFkAAADTAAAADZoaGVhAAADhAAAACRobXR4AAADqAAAACBsb2NhAAADyAAAACBtYXhwAAAD6AAAACBuYW1lAAAECAAAACBwb3N0AAAEKAAAACAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAgAA",
+      "origin": {
+        "model": "claude-sonnet-4-6",
+        "sample_index": 0,
+        "seed_path": "synthesis/harfbuzz/ablation/v1_src/claude-sonnet-4-6/sample_0.json",
+        "variant": "v1_src"
+      },
+      "reasoning": "Crafts a minimal sfnt header with 9 tables claiming valid offsets but truncated data, exercising the table-directory parsing and bounds-checking code paths in hb_face_create and hb_ot_font_set_funcs.",
+      "target_gaps": [
+        "src/hb-ot-font.h:40",
+        "src/hb-face.h:47"
+      ]
+    },
+    {
+      "content": null,
+      "content_b64": "QUFFQUFBQUxBUUFBQmdBQUFRQUFBQWdBQUFBR0FBQUFVQUFCQUFFQUFRQUFBZ0FBQUFNQUFBQUlBQUFBQkFBRUFBQUFNQUFBREFBQUFBZ0FBQVFBQUFBRUFBQUFCQUFBQUF3QUFBUUFBQUFVQUFBQUJBQUFBQVFBQUFRQUFBQVFBQUFBQkFBQUFBUUFBQVFBQUFBSUFBQUFCQUFBQUFRQUFBUUFBQUFFQUFBQUJBQUFBQVFBQUFRQUFBQUVBQUFBQkFBQUFBUUFBQVFBQUFBUUFBQUFCQUFBQUFRQUFBUUFBQUFJQUFBQUJBQUFBQVFBQUFRQUFBQUVBQUFBQkFBQUFBUUFBQVFBQUFBRUFBQUFCQUFBQUFRQUFBUUFBQUFRQUFBQUJBQUFBQVFBQUFRQUFBQUlBQUFBQg==",
+      "origin": {
+        "model": "codestral-22b",
+        "sample_index": 0,
+        "seed_path": "synthesis/harfbuzz/ablation/v2_src_tests/codestral-22b/sample_0.json",
+        "variant": "v2_src_tests"
+      },
+      "reasoning": "This input creates a valid sfnt header with multiple offsets and table types, exercising various parsing code paths.",
+      "target_gaps": [
+        "src/hb-ot-layout.cc:420",
+        "src/hb-ot-layout.cc:450"
+      ]
+    },
+    {
+      "content": null,
+      "content_b64": "AAEAAAABAAAAAQAABwAIAAAAzQAAAAQAAAAMAAAA",
+      "origin": {
+        "model": "codestral-22b",
+        "sample_index": 0,
+        "seed_path": "synthesis/harfbuzz/ablation/v4_src_gaps/codestral-22b/sample_0.json",
+        "variant": "v4_src_gaps"
+      },
+      "reasoning": "Targeting the TRUE branch at src/hb-blob.cc:73. By setting the destroy function in the blob, we can trigger the branch.",
+      "target_gaps": [
+        "src/hb-blob.cc:73"
+      ]
+    }
+  ],
+  "harvested_at": "2026-04-22T02:23:31.406782+00:00",
+  "schema_version": 1,
+  "selection_method": "m2_best",
+  "source_commit": "368ed4887da12855de5d273bebad4d2b6bb211b8",
+  "target": "harfbuzz"
+}

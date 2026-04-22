@@ -1,0 +1,103 @@
+{{ system_prompt }}
+
+You are FINALIZING the font-blob seed for the {{ target_name }} shaping
+engine. This is STAGE 3 of a 3-stage pipeline: PLAN → SKETCH → FINALIZE.
+Stage 1's plan and Stage 2's sketch are both below. Your job is to
+INSPECT the sketch and emit the final seed — either the sketch unchanged
+if it is correct, or a fixed version if it has obvious defects.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness does this with your bytes:
+
+```cpp
+{{ harness_code }}
+```
+
+Your bytes will be fed DIRECTLY to `hb_blob_create(data, size)`, then
+`hb_face_create(blob, 0)` → `hb_font_create(face)` → `hb_shape(font, buffer, NULL, 0)`.
+**Keep the blob TINY (≤ 64 bytes, HARD LIMIT)**. A 64-byte blob
+base64-encodes to exactly 88 characters — stay under that.
+
+**OUTPUT FORMAT**: `content_b64` must be standard base64 of the RAW
+BYTES fed to hb_blob_create. Do NOT base64-encode text. Do NOT output
+hex strings. Output BINARY bytes encoded as base64.
+{% if include_tests and few_shot_examples %}
+
+=== UPSTREAM API CONTEXT ===
+{% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}
+{% endif %}
+{% if include_source and source_files %}
+
+=== LIBRARY SOURCE CODE ===
+{% for sf in source_files %}
+=== {{ sf.path }} ({{ sf.line_count }} lines) ===
+{{ sf.content }}
+
+{% endfor %}
+{% endif %}
+{% if include_gaps and coverage_gaps %}
+
+=== UNCOVERED BRANCHES ===
+The {{ total_upstream_tests }} upstream tests cover {{ union_coverage_pct }}%
+of harfbuzz branches. Each branch below has ONE side that upstream tests
+NEVER took.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch**
+(the side upstream tests never reached)
+Code:
+```cpp
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}
+{% endif %}
+
+=== ATTACK PLAN (COMMITTED) ===
+Committed target gap: {{ plan_target_gap }}
+Committed plan:
+{{ plan_text }}
+
+=== SKETCH UNDER REVIEW ===
+Stage 2 produced this candidate seed. INSPECT it for obvious defects:
+  - Does it target the committed gap, or did it drift?
+  - Is `content_b64` valid base64 of ≤ 64 raw bytes (≤ 88 base64 chars)?
+  - Is it truncated or malformed?
+  - Do the bytes actually reach the committed branch side?
+
+Sketch bytes (base64): {{ sketch_content }}
+Sketch reasoning:
+{{ sketch_reasoning }}
+
+=== YOUR TASK (STAGE 3 OF 3: FINALIZE) ===
+Produce the FINAL seed. If the sketch is sound, reuse its
+`content_b64` unchanged. If it has a defect, emit a corrected version.
+In the `reasoning` field (2-3 sentences), state whether you kept or
+fixed the sketch, and why. Name the committed `target_gap` in
+`target_gaps`.
+
+OUTPUT RULES — violations cause parse failure:
+- Start your response DIRECTLY with the opening `{`. No preamble.
+- Emit EXACTLY ONE JSON object. Stop generating after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `inputs` must contain EXACTLY ONE entry.
+- `content_b64` must be valid standard base64 of raw bytes.
+- **SIZE LIMIT — CRITICAL**: `content_b64` must encode AT MOST 64 bytes
+  (≤ 88 base64 characters). Responses exceeding this are discarded.
+- `target_gaps` entries must be real `path:integer` pairs.
+
+Schema:
+{
+  "inputs": [
+    {
+      "content_b64": "<standard base64 of raw font bytes>",
+      "target_gaps": ["{{ plan_target_gap }}"],
+      "reasoning": "<kept-or-fixed decision + 1-2 sentences on why>"
+    }
+  ]
+}

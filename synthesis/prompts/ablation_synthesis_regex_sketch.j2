@@ -1,0 +1,81 @@
+{{ system_prompt }}
+
+You are SKETCHING a candidate regex seed for the {{ target_name }} regex
+library (C++ regex engine). This is STAGE 2 of a 3-stage pipeline:
+PLAN → SKETCH → FINALIZE. Stage 1's plan is already committed below —
+your job is to turn it into a concrete regex pattern.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex. The tooling will prepend random flag
+bytes for you.
+
+**YOUR JOB**: produce the REGEX STRING ONLY, as plain text UTF-8.
+**DO NOT** base64-encode. **DO NOT** escape. **DO NOT** wrap in quotes
+inside the regex field. Just the pattern itself.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
+Code:
+```{{ source_language }}
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+
+=== ATTACK PLAN (COMMITTED) ===
+Stage 1 committed to ONE uncovered branch and this natural-language plan.
+You MUST execute this plan; do not pivot to a different gap.
+
+Committed target gap: {{ plan_target_gap }}
+Committed plan:
+{{ plan_text }}
+
+=== YOUR TASK (STAGE 2 OF 3: SKETCH) ===
+Produce ONE candidate regex pattern that implements the committed plan.
+Keep it 1-60 characters. In the `reasoning` field, in 2-3 sentences,
+explain which syntactic feature drives the parser/compiler to the
+committed branch side. Name the committed `target_gap` in `target_gaps`.
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain EXACTLY ONE entry.
+- `regex` is plain text, NOT base64, NOT escaped JSON — just the raw
+  pattern. If it contains `"` or `\`, escape using JSON string-escape
+  rules.
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["{{ plan_target_gap }}"],
+      "reasoning": "<2-3 sentences tying the regex to the committed plan>"
+    }
+  ]
+}
