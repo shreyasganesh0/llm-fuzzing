@@ -58,7 +58,14 @@ fi
 
 mkdir -p "${BUILD_DIR}"
 
-VARIANTS="coverage sanitizer fuzzer afl"
+# Variants. afl/ requires AFL++ (afl-clang-fast); skip it if missing so a
+# user without AFL++ can still build coverage / sanitizer / fuzzer.
+VARIANTS="coverage sanitizer fuzzer"
+if [ -x "${AFL_CC}" ] && [ -x "${AFL_CXX}" ]; then
+  VARIANTS="${VARIANTS} afl"
+else
+  echo "==> AFL++ not found at ${AFL_CC} (set AFL_CC / AFL_CXX or skip experiment2_2 campaigns)"
+fi
 
 # --- RE2 build ---------------------------------------------------------------
 build_re2() {

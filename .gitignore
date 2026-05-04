@@ -69,3 +69,7 @@ AGENTS.md
 .windsurf/
 .continue/
 .github/copilot-instructions.md
+
+# Personal notes (gitignored individually, not by pattern)
+llm_fuzzing_summary_for_interview_prep.md
+default.profraw

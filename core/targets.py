@@ -7,12 +7,12 @@ third target (libxml2, sqlite3, ...) becomes a `TargetSpec` entry — no
 new orchestrator fork.
 
 Invariants:
-- `coverage_binary` paths may have a baked-in DWARF source prefix (see
-  `docs/EXPERIMENT_HANDOFF.md §Replay note`). If the binary was built
-  against `phase1_dataset/...`, point `source_roots` at the same prefix
-  — `seed_replay` does a literal DWARF-path prefix match.
+- `coverage_binary` paths may have a baked-in DWARF source prefix.
+  `source_roots` is a tuple so multiple candidate prefixes can be matched
+  against the binary's DWARF — useful when a stale binary still references
+  a pre-rearch path while a freshly built one uses the post-rearch path.
 - `results_root` is load-bearing: downstream analysis scripts and
-  `docs/*_RESULTS.md` hardcode these paths.
+  `docs/experiment*.md` hardcode these paths.
 - `fixtures_dir` holds the frozen M2 target branches
   (`m2_target_branches.json`) + upstream union profile. Do not
   recompute on the fly — regenerate via
@@ -32,7 +32,13 @@ class TargetSpec:
     name: str
     input_format: Literal["regex", "binary", "text"]
     coverage_binary: Path
-    source_roots: Path
+    # One or more DWARF source-path prefixes. The coverage filter keeps any
+    # file whose DWARF path startswith one of these; mismatches are dropped.
+    # Multi-entry support exists so a stale binary (pre-rearch
+    # `phase1_dataset/...` paths) and a freshly built one (current
+    # `dataset/targets/src/...` paths) can both produce non-zero M1 with the
+    # same `TargetSpec`.
+    source_roots: tuple[Path, ...]
     fixtures_dir: Path
     prep_dataset_root: Path
     synthesis_results_root: Path
@@ -97,9 +103,14 @@ TARGETS: dict[str, TargetSpec] = {
         name="re2",
         input_format="regex",
         coverage_binary=REPO_ROOT / "dataset/targets/src/re2/build/coverage/seed_replay",
-        # DWARF note: this binary was built with the pre-rearch
-        # `phase1_dataset/...` source prefix baked into it.
-        source_roots=REPO_ROOT / "phase1_dataset/targets/src/re2/upstream",
+        # Two prefixes so both the locally-checked-in binary (whose static
+        # library was built when the repo lived under `phase1_dataset/`)
+        # AND a freshly built binary (post-rearch `dataset/targets/src/`)
+        # produce non-zero M1.
+        source_roots=(
+            REPO_ROOT / "dataset/targets/src/re2/upstream",
+            REPO_ROOT / "phase1_dataset/targets/src/re2/upstream",
+        ),
         fixtures_dir=REPO_ROOT / "dataset/fixtures/re2_ab_v2/re2",
         prep_dataset_root=REPO_ROOT / "dataset/fixtures/_ablation_re2_v2_dataset",
         synthesis_results_root=REPO_ROOT / "synthesis/results/ablation_re2_v2",
@@ -111,7 +122,7 @@ TARGETS: dict[str, TargetSpec] = {
         name="harfbuzz",
         input_format="binary",
         coverage_binary=REPO_ROOT / "dataset/targets/src/harfbuzz/build/coverage/seed_replay",
-        source_roots=REPO_ROOT / "dataset/targets/src/harfbuzz/upstream/src",
+        source_roots=(REPO_ROOT / "dataset/targets/src/harfbuzz/upstream/src",),
         fixtures_dir=REPO_ROOT / "dataset/fixtures/harfbuzz_ab/harfbuzz",
         prep_dataset_root=REPO_ROOT / "dataset/fixtures/_ablation_hb_dataset",
         synthesis_results_root=REPO_ROOT / "synthesis/results/ablation_harfbuzz",

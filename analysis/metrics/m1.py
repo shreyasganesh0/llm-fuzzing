@@ -22,7 +22,7 @@ class M1EdgesMetric:
             sys.executable, "-m", "synthesis.scripts.measure_coverage",
             "--binary", str(target.coverage_binary),
             "--seeds-dir", str(seeds_dir),
-            "--source-roots", str(target.source_roots),
+            "--source-roots", *(str(p) for p in target.source_roots),
         ]
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0:
