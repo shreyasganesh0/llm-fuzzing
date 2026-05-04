@@ -1,9 +1,33 @@
 # Project Status — LLM-Guided Fuzzing Seed Corpora
 
 _Living handoff doc. Rewritten whenever state changes. If you're picking
-this up cold: read this first, then `docs/AB_RE2_REPORT.md`; the
+this up cold: read this first, then `docs/experiment1.md` (RE2 A/B + generalization),
+`docs/experiment2.md` (multi-model ablation + campaigns),
+`docs/experiment3.md` (prompt-strategy axis); the
 `docs/research_document_v3.md` and `docs/plan_v3.md` are the
 authoritative specs._
+
+## Naming
+
+The experiment numbering used throughout this doc maps to the consolidated
+naming scheme in `experiment{1,2,3}.md`:
+
+| Old name | New name |
+|---|---|
+| RE2 A/B (bytes-format, 2026-04-12) | [`experiment1_0`](experiment1.md#experiment1_0) |
+| RE2 A/B (regex-format headline, 2026-04-13) | [`experiment1_1`](experiment1.md#experiment1_1) |
+| P0 / three-way random baseline | [`experiment1_2`](experiment1.md#experiment1_2) |
+| Experiment A / held-out source subset | [`experiment1_3`](experiment1.md#experiment1_3) |
+| Experiment B / 7-cell prompt ablation | [`experiment1_4`](experiment1.md#experiment1_4) |
+| Experiment C / 1h libFuzzer (deferred) | [`experiment1_5`](experiment1.md#experiment1_5) |
+| 4×2 RE2 `ablation_v3` (invalidated) | [`experiment2_0`](experiment2.md#experiment2_0) |
+| 5-variant × 7-model `ablation_re2_v2` + `ablation_harfbuzz` | [`experiment2_1`](experiment2.md#experiment2_1) |
+| Real-fuzzer campaigns (libFuzzer + AFL++, 2026-04-16) | [`experiment2_2`](experiment2.md#experiment2_2) |
+| Prompt-strategy axis added (commit `e64bf5e`) | [`experiment3_0`](experiment3.md#experiment3_0) |
+| Prompt-optimization 5-cell (gpt-oss-20b, blocked) | [`experiment3_1`](experiment3.md#experiment3_1) |
+
+On-disk fixture and results paths (e.g. `dataset/fixtures/re2_ab/`,
+`results/ablation_re2_v2/`) are unchanged — the renaming is documentation-only.
 
 **Last updated:** 2026-04-21
 
@@ -50,9 +74,9 @@ yet regenerated for the new experiments).
 
 ## 2. Planned next (ordered by payoff / cost)
 
-1. **Write up A+B results** — update `docs/AB_RE2_REPORT.md` with
-   held-out + ablation tables, regenerate slide deck. Zero LLM cost;
-   ~1 hour edit.
+1. **Write up A+B results** — held-out + ablation tables now folded into
+   `docs/experiment1.md` (sub-versions `experiment1_3` and `experiment1_4`).
+   Slide deck regeneration is unwired in the current cleanup.
 2. **Experiment C (1h × 3-trial libFuzzer campaign)** — deferred
    2026-04-13 after A+B. Needs `build/fuzzer/` variant (empty dir right
    now; run `build_instrumented.sh`) + ~9 CPU-hours. Revisit if reviewers
@@ -117,7 +141,7 @@ Key code entry points:
 
 | Thing | Path |
 |---|---|
-| A/B writeup (full numbers + reproducibility) | `docs/AB_RE2_REPORT.md` |
+| A/B writeup (full numbers + reproducibility) | `docs/experiment1.md` (sub-versions `experiment1_0`, `experiment1_1`) |
 | Research design (authoritative) | `docs/research_document_v3.md` |
 | Execution plan (authoritative) | `docs/plan_v3.md` |
 | Review slide deck (16 slides, .pptx) | `docs/slides/llm_fuzzing_review.pptx` |
@@ -394,7 +418,7 @@ pair.
 - **2026-04-21** — cost accounting fix + component-based refactor.
   (a) New `analysis/scripts/cost_audit.py` + `estimate_cost.py` replace
   hand-estimated cost prose; `docs/FUTURE_DIRECTIONS.md` §2/§6 and
-  `docs/WEEKLY_REVIEW_PROMPT.md` §7 rewritten against the audit
+  `docs/experiment2.md` rewritten against the audit
   (Anthropic $86.25, LiteLLM $13.83, grand total $100.09). `docs/RESUME.md`
   deleted (stale). `scripts/run_ablation_experiment.py` archived.
   (b) New registries: `core/targets.py` (`TargetSpec`),

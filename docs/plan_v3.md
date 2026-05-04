@@ -1,4 +1,4 @@
-# CLAUDE CODE EXECUTION PLAN v3: Unit Test–Conditioned LLM-Guided Fuzzing
+# EXECUTION PLAN v3: Unit Test–Conditioned LLM-Guided Fuzzing
 
 ## Changelog from v2
 
@@ -252,7 +252,7 @@ utcf/                              # Unit Test–Conditioned Fuzzing
 
 ## pinned_versions.yaml (NEW audit — BLOCKING)
 
-Every target must have its upstream commit SHA, FuzzBench commit SHA, harness path, dictionary path, and libFuzzer-specific flags pinned in a single source of truth. All `targets/*.yaml` files and all scripts read from this file. Without this, Claude Code will have to guess commit SHAs and miss target-specific flags (dictionaries, timeouts, memory limits) that can shift coverage by 20%+.
+Every target must have its upstream commit SHA, FuzzBench commit SHA, harness path, dictionary path, and libFuzzer-specific flags pinned in a single source of truth. All `targets/*.yaml` files and all scripts read from this file. Without this, the build pipeline has to guess commit SHAs and will miss target-specific flags (dictionaries, timeouts, memory limits) that can shift coverage by 20%+.
 
 ```yaml
 # pinned_versions.yaml — Single source of truth for all upstream + FuzzBench version pins
@@ -2637,7 +2637,7 @@ Compute: ~29,440 CPU-hours for fuzzing (22,080 Phase 3 + 7,360 Exp 2)
 
 ---
 
-## Key Design Decisions for Claude Code
+## Key Design Decisions
 
 1. **Provenance is sacred.** Every test object MUST trace back to upstream_repo:upstream_commit:upstream_file:upstream_line. No exceptions. Build provenance checks into every stage.
 
