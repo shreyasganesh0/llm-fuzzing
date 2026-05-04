@@ -343,6 +343,8 @@ class LLMClient:
         guided_json: dict[str, Any] | None = None,
         tools: list[dict] | None = None,
         tool_choice: str | dict | None = None,
+        timeout_s: float | None = None,
+        cell_key: str | None = None,
     ) -> Response:
         """Send messages to the configured provider; return a normalised Response.
 
@@ -441,6 +443,46 @@ class LLMClient:
             cached["cached"] = True
             return Response(**cached)
 
+        # Budget preflight — refuse the call if it would trip a cap.
+        # Upper-bound the estimate with max_tokens as output (worst case)
+        # and a conservative input-token estimate derived from message bytes
+        # (~4 chars/token). Callers that want tighter bounds can lower
+        # max_tokens.
+        from core.budget import BudgetExceededError, get_default_tracker
+        tracker = get_default_tracker()
+        caps = tracker.caps
+        # cell_key defaults to UTCF_BUDGET_CELL_KEY so orchestrator-managed
+        # subprocesses can set it once instead of threading it through every
+        # call site.
+        if cell_key is None:
+            cell_key = os.environ.get("UTCF_BUDGET_CELL_KEY") or None
+        _budget_enforced = (
+            caps.global_cap is not None
+            or caps.per_cell_cap is not None
+            or caps.per_call_cap is not None
+        )
+        if _budget_enforced:
+            try:
+                approx_input = sum(
+                    len(m.get("content", "") or "")
+                    for m in messages
+                ) // 4
+            except Exception:  # noqa: BLE001
+                approx_input = 0
+            pre_estimate = _estimate_cost(model, approx_input, max_tokens)
+            try:
+                tracker.assert_can_spend(pre_estimate, cell_key=cell_key)
+            except BudgetExceededError:
+                logger.error(
+                    "llm.budget_blocked",
+                    extra={
+                        "model": model,
+                        "cell_key": cell_key,
+                        "pre_estimate_usd": pre_estimate,
+                    },
+                )
+                raise
+
         wall_start = time.perf_counter()
         latency_start = time.perf_counter()
         text: str = ""
@@ -466,6 +508,8 @@ class LLMClient:
                         extra_kwargs["tools"] = tools
                     if tool_choice is not None:
                         extra_kwargs["tool_choice"] = tool_choice
+                    if timeout_s is not None:
+                        extra_kwargs["timeout"] = float(timeout_s)
                     # Streaming + tool_calls don't mix cleanly across providers
                     # (partial tool_call deltas need reassembly and the loop-
                     # abort detector doesn't read them). Fall back to non-
@@ -530,12 +574,24 @@ class LLMClient:
                 break
 
             except Exception as exc:  # noqa: BLE001 — we want to retry on any transient
+                # Don't retry on hard 4xx errors — they are not transient.
+                # The OpenAI SDK surfaces them as subclasses of APIStatusError
+                # with a `.status_code` attribute; reraise immediately so the
+                # caller sees the real failure in <1s instead of waiting
+                # through 10 exponential-backoff attempts.
+                status_code = getattr(exc, "status_code", None)
+                if status_code is not None and 400 <= int(status_code) < 500 and int(status_code) != 429:
+                    logger.error(
+                        "LLM call failed with non-retryable 4xx",
+                        extra={"attempt": attempt, "status_code": status_code, "error": str(exc)[:500]},
+                    )
+                    raise
                 if attempt == max_retries - 1:
                     raise
                 sleep = min(2**attempt, 30) + random.uniform(0, 1)
                 logger.warning(
                     "LLM call failed, retrying",
-                    extra={"attempt": attempt, "sleep_s": sleep, "error": str(exc)},
+                    extra={"attempt": attempt, "sleep_s": sleep, "error": str(exc)[:500]},
                 )
                 time.sleep(sleep)
 
@@ -563,6 +619,17 @@ class LLMClient:
         if use_cache:
             cache_path.write_text(json.dumps(response.to_log_dict(), ensure_ascii=False))
 
+        # Record actual spend to the shared ledger (only if enforcement
+        # was requested via env; otherwise skip the I/O).
+        if _budget_enforced:
+            tracker.record(
+                cost,
+                model=model,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                cell_key=cell_key,
+            )
+
         logger.info(
             "llm.complete",
             extra={
@@ -573,6 +640,7 @@ class LLMClient:
                 "latency_ms": latency_ms,
                 "prompt_hash": h,
                 "cached": False,
+                "cell_key": cell_key,
             },
         )
         return response

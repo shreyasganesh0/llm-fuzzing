@@ -16,8 +16,10 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
@@ -98,6 +100,10 @@ _TEMPLATE_SUFFIX_BY_STRATEGY: dict[str, str] = {
     # appending assistant + tool messages to the history — no new Jinja
     # template needed.
     "tool_use": "",
+    # tool_use_retrieval also reuses the base template; the difference is
+    # which tools are exposed + that the initial prompt starts lean
+    # (typically v0_none) so the model has to pull context itself.
+    "tool_use_retrieval": "",
 }
 _REFINE_TEMPLATE_SUFFIX = "_refine"  # only self_critique
 _CHAIN_SKETCH_SUFFIX = "_sketch"  # only prompt_chain
@@ -607,17 +613,47 @@ def run_ablation(
                             },
                         )
             resp = used_resp
-        elif strategy == "tool_use":
-            # Phase 7 — iterative tool-use loop. Model drafts a seed,
-            # optionally calls ``check_seed`` for a structural verdict, and
-            # either emits the final seed or retries up to max_tool_turns
-            # refinement turns. Gating on supports_tool_use lives one level
-            # up (see `run_ablation` prelude) so this branch never runs on
-            # unsupported models.
-            from core.prompt_strategies import ToolUseStrategy
-            from synthesis.scripts.oracles import CHECK_SEED_TOOL_OPENAI, check_seed
+        elif strategy in ("tool_use", "tool_use_retrieval"):
+            # Iterative tool-use loop. Shared body for both strategies; they
+            # differ in (a) which tools are exposed, (b) max_tool_turns, and
+            # (c) which fn_names the dispatcher routes. Gating on
+            # supports_tool_use lives one level up (run_ablation prelude)
+            # so this branch never runs on unsupported models.
+            from core.prompt_strategies import (
+                ToolUseRetrievalStrategy, ToolUseStrategy,
+            )
+            from synthesis.scripts.oracles import (
+                CHECK_SEED_TOOL_OPENAI,
+                GET_SOURCE_TOOL_OPENAI,
+                LIST_UNCOVERED_BRANCHES_TOOL_OPENAI,
+                check_seed,
+                get_source,
+                list_uncovered_branches,
+            )
 
-            tu = ToolUseStrategy()
+            if strategy == "tool_use_retrieval":
+                tu = ToolUseRetrievalStrategy()
+                tool_schemas = [
+                    CHECK_SEED_TOOL_OPENAI,
+                    LIST_UNCOVERED_BRANCHES_TOOL_OPENAI,
+                    GET_SOURCE_TOOL_OPENAI,
+                ]
+                retrieval_enabled = True
+            else:
+                tu = ToolUseStrategy()
+                tool_schemas = [CHECK_SEED_TOOL_OPENAI]
+                retrieval_enabled = False
+
+            # Source root for get_source resolves via env override first, then
+            # falls back to the standard dataset/targets/src/<target>/upstream
+            # layout. Stale ``TargetSpec.source_roots`` (phase1_dataset/...
+            # prefix on RE2) is intentionally not trusted here.
+            source_root_override = os.environ.get("UTCF_SOURCE_ROOT")
+            source_root = (
+                Path(source_root_override) if source_root_override
+                else Path("dataset/targets/src") / target / "upstream"
+            )
+
             conversation: list[dict] = [
                 {"role": "system", "content": ""},
                 {"role": "user", "content": rendered},
@@ -627,6 +663,7 @@ def run_ablation(
             inputs: list = []
             status = "parse_failure"
             used_resp = None
+            tool_call_counts: dict[str, int] = {}
 
             for turn_i in range(tu.max_tool_turns + 1):
                 turn_resp = client.complete(
@@ -640,7 +677,7 @@ def run_ablation(
                         run_offset=run_id, strategy=strategy,
                         round=f"turn_{turn_i}",
                     ),
-                    tools=[CHECK_SEED_TOOL_OPENAI],
+                    tools=tool_schemas,
                     tool_choice="auto",
                 )
                 turn_responses.append(turn_resp)
@@ -659,25 +696,52 @@ def run_ablation(
                     for tc in turn_resp.tool_calls:
                         fn = tc.get("function") or {}
                         fn_name = fn.get("name")
+                        tool_call_counts[fn_name or "unknown"] = (
+                            tool_call_counts.get(fn_name or "unknown", 0) + 1
+                        )
                         fn_args_raw = fn.get("arguments") or "{}"
                         try:
                             fn_args = json.loads(fn_args_raw) if isinstance(
                                 fn_args_raw, str) else (fn_args_raw or {})
                         except (TypeError, ValueError):
                             fn_args = {}
-                        if fn_name == "check_seed":
-                            result = check_seed(
-                                target,
-                                content=fn_args.get("content"),
-                                content_b64=fn_args.get("content_b64"),
-                            )
-                            oracle_ok_final = bool(result.get("ok"))
-                        else:
-                            # Unknown tool — still respond with a well-formed
-                            # error dict so the conversation stays valid.
+                        # Tool dispatch. Every branch returns a dict that
+                        # becomes the tool message content. Exceptions are
+                        # caught and surfaced as {"ok": False, "issues": ...}
+                        # so one malformed call doesn't poison the loop.
+                        result: dict[str, Any]
+                        try:
+                            if fn_name == "check_seed":
+                                result = check_seed(
+                                    target,
+                                    content=fn_args.get("content"),
+                                    content_b64=fn_args.get("content_b64"),
+                                )
+                                oracle_ok_final = bool(result.get("ok"))
+                            elif retrieval_enabled and fn_name == "list_uncovered_branches":
+                                result = list_uncovered_branches(
+                                    target=target,
+                                    k=int(fn_args.get("k", 10)),
+                                    dataset_root=dataset_root,
+                                )
+                            elif retrieval_enabled and fn_name == "get_source":
+                                result = get_source(
+                                    target=target,
+                                    file=str(fn_args.get("file", "")),
+                                    line_start=int(fn_args.get("line_start", 1)),
+                                    line_end=int(fn_args.get("line_end", 1)),
+                                    source_root=source_root,
+                                )
+                            else:
+                                result = {
+                                    "ok": False,
+                                    "issues": [f"unknown tool: {fn_name!r}"],
+                                    "details": {},
+                                }
+                        except Exception as exc:  # noqa: BLE001
                             result = {
                                 "ok": False,
-                                "issues": [f"unknown tool: {fn_name!r}"],
+                                "issues": [f"tool error: {type(exc).__name__}: {exc}"],
                                 "details": {},
                             }
                         conversation.append({
@@ -709,12 +773,14 @@ def run_ablation(
 
             tool_turns_used = max(0, len(turn_responses) - 1)
             logger.info(
-                "tool_use turns",
+                f"{strategy} turns",
                 extra={
                     "cell": cell, "model": model, "sample": k,
+                    "strategy": strategy,
                     "tool_turns_used": tool_turns_used,
                     "oracle_ok_final": oracle_ok_final,
                     "parse_status": status,
+                    "tool_call_counts": tool_call_counts,
                 },
             )
             resp = used_resp

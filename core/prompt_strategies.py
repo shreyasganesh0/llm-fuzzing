@@ -522,6 +522,45 @@ class ToolUseStrategy:
         )
 
 
+@dataclass
+class ToolUseRetrievalStrategy:
+    """Tool-driven retrieval strategy (cell E of the CoT×RAG×tools ablation).
+
+    Same iterative-loop shape as ``ToolUseStrategy`` but exposes THREE tools
+    instead of one:
+      * ``check_seed`` — structural validator (unchanged).
+      * ``list_uncovered_branches`` — returns top-K gaps from the pinned
+        ``coverage_gaps.json``.
+      * ``get_source`` — returns a bounded slice of upstream source.
+
+    The model starts from a lean prompt (``v0_none`` or ``v1_src``) and
+    retrieves the context it needs before emitting a seed. The loop caps
+    at 5 total calls (1 initial + 4 refinement turns) per the
+    experiment-design 5-turn budget.
+
+    Cache salt follows the same ``round=turn_<i>`` convention as
+    ``ToolUseStrategy`` — the only differentiator is the strategy name
+    segment, so cached ``tool_use`` entries remain byte-identical.
+    """
+    name: str = "tool_use_retrieval"
+    n_calls_per_seed: int = 5  # 1 initial + up to 4 refinement turns
+    supports_tool_use: bool = True
+    description: str = "oracle + retrieval tool loop (5-turn cap)"
+    max_tool_turns: int = 4
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        raise NotImplementedError(
+            "ToolUseRetrievalStrategy.build_messages is intentionally unused; "
+            "the subprocess driver orchestrates the retrieval-augmented loop."
+        )
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "ToolUseRetrievalStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver orchestrates the retrieval-augmented loop."
+        )
+
+
 STRATEGIES: dict[str, PromptStrategy] = {
     DEFAULT_STRATEGY_NAME: DefaultStrategy(),
     "cot_strict": CotStrictStrategy(),
@@ -529,6 +568,7 @@ STRATEGIES: dict[str, PromptStrategy] = {
     "self_critique": SelfCritiqueStrategy(),
     "prompt_chain": PromptChainStrategy(),
     "tool_use": ToolUseStrategy(),
+    "tool_use_retrieval": ToolUseRetrievalStrategy(),
 }
 
 

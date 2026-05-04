@@ -57,7 +57,7 @@ _ABLATION_TEMPLATES = [
 
 _EXPECTED_STRATEGY_NAMES = {
     "default", "cot_strict", "few_shot",
-    "self_critique", "prompt_chain", "tool_use",
+    "self_critique", "prompt_chain", "tool_use", "tool_use_retrieval",
 }
 
 _EXPECTED_CALL_BUDGETS = {
@@ -67,6 +67,7 @@ _EXPECTED_CALL_BUDGETS = {
     "self_critique": 2,
     "prompt_chain": 3,
     "tool_use": 4,
+    "tool_use_retrieval": 5,
 }
 
 
@@ -128,7 +129,7 @@ def test_only_tool_use_supports_tool_use():
     tool_use_strategies = {
         name for name, s in STRATEGIES.items() if s.supports_tool_use
     }
-    assert tool_use_strategies == {"tool_use"}, (
+    assert tool_use_strategies == {"tool_use", "tool_use_retrieval"}, (
         f"Unexpected supports_tool_use set: {tool_use_strategies}"
     )
 
@@ -174,6 +175,9 @@ def test_round_kwarg_round_trip():
         "self_critique": ["draft", "refine"],
         "prompt_chain": ["plan", "sketch", "finalize"],
         "tool_use": ["turn_0", "turn_1", "turn_2", "turn_3"],
+        "tool_use_retrieval": [
+            "turn_0", "turn_1", "turn_2", "turn_3", "turn_4",
+        ],
     }
     for strategy, rounds in rounds_by_strategy.items():
         salts = [
@@ -491,8 +495,12 @@ def test_all_strategies_execute_single_seed_end_to_end(
     from core.variants import VARIANTS_BY_NAME
     from synthesis.scripts.generate_ablation_inputs import run_ablation
 
-    # tool_use must run against a model whose supports_tool_use is True.
-    model = "gpt-oss-20b" if strategy_name == "tool_use" else "llama-3.1-8b-instruct"
+    # tool_use / tool_use_retrieval must run against a model whose supports_tool_use is True.
+    _tool_use_strategies = {"tool_use", "tool_use_retrieval"}
+    model = (
+        "gpt-oss-20b" if strategy_name in _tool_use_strategies
+        else "llama-3.1-8b-instruct"
+    )
     target = TARGETS["harfbuzz"]
     variant = VARIANTS_BY_NAME["v0_none"]
 
@@ -538,10 +546,11 @@ def test_all_strategies_execute_single_seed_end_to_end(
 
     # Call count matches the strategy's budget (upper bound for tool_use).
     expected_calls = STRATEGIES[strategy_name].n_calls_per_seed
-    if strategy_name == "tool_use":
-        # tool_use emits a final seed on turn 0 → exactly one call.
+    if strategy_name in {"tool_use", "tool_use_retrieval"}:
+        # Tool-use strategies emit a final seed on turn 0 → exactly one call
+        # under this mock (no tool_calls surfaced).
         assert len(captured_salts) == 1, (
-            f"tool_use made {len(captured_salts)} calls, expected 1 "
+            f"{strategy_name!r} made {len(captured_salts)} calls, expected 1 "
             f"(model answered without a tool_call on turn 0)"
         )
     else:
@@ -562,6 +571,8 @@ def test_all_strategies_execute_single_seed_end_to_end(
         assert first_salt.endswith(",strategy=prompt_chain,round=plan")
     elif strategy_name == "tool_use":
         assert first_salt.endswith(",strategy=tool_use,round=turn_0")
+    elif strategy_name == "tool_use_retrieval":
+        assert first_salt.endswith(",strategy=tool_use_retrieval,round=turn_0")
     else:  # cot_strict, few_shot
         assert first_salt.endswith(f",strategy={strategy_name}")
 

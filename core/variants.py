@@ -22,6 +22,12 @@ STANDARD_VARIANTS: list[VariantSpec] = [
     VariantSpec("v2_src_tests", include_source=True,  include_tests=True,  include_gaps=False),
     VariantSpec("v3_all",       include_source=True,  include_tests=True,  include_gaps=True),
     VariantSpec("v4_src_gaps",  include_source=True,  include_tests=False, include_gaps=True),
+    # Gap-only retrieval variant: no full-file source, no tests, only the
+    # top-K uncovered branches (each with its own code_context window).
+    # The prompt template is the same; the difference is purely which
+    # `include_*` flags fire. K is implicitly len(m2_targets['shown']) —
+    # for RE2 that is already 10.
+    VariantSpec("v5_topk_gaps", include_source=False, include_tests=False, include_gaps=True),
 ]
 
 VARIANTS_BY_NAME: dict[str, VariantSpec] = {v.name: v for v in STANDARD_VARIANTS}

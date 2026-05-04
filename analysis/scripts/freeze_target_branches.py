@@ -1015,35 +1015,12 @@ def freeze_targets_harfbuzz(*, dry_run: bool = False) -> dict:
             "n_hard": len(hard),
         })
 
-        # Fallback: if fewer than M2_TARGET_COUNT hard branches, include
-        # any branch that TTF seeds can hit (even if random also hits some)
-        if len(hard) < M2_TARGET_COUNT:
-            logger.warning(
-                "fewer hard branches than target count; falling back to all TTF-reachable",
-                extra={"n_hard": len(hard), "target": M2_TARGET_COUNT},
-            )
-            ttf_reachable: list[tuple[str, int, str, str, str, list[str]]] = []
-            for entry in smoke_log["candidates"]:
-                if entry["ttf_hits"] >= 1:
-                    # find the original candidate tuple
-                    for cand in candidates:
-                        if cand[0] == entry["file"] and cand[1] == entry["line"]:
-                            ttf_hitters_names = [
-                                sp.name for sp, prof in ttf_profiles
-                                if prof and entry["file"] in prof.files
-                                and prof.files[entry["file"]].branches.get(
-                                    f"{entry['file']}:{entry['line']}"
-                                ) is not None
-                            ]
-                            ttf_reachable.append((*cand, ttf_hitters_names))
-                            break
-            hard = ttf_reachable
-            logger.info("fallback set size", extra={"n_ttf_reachable": len(hard)})
-
     if len(hard) < M2_TARGET_COUNT:
         raise RuntimeError(
             f"only {len(hard)} harfbuzz hard branches found; need >= {M2_TARGET_COUNT}. "
-            "Consider increasing the smoke corpus or lowering M2_TARGET_COUNT."
+            "Consider increasing the smoke corpus or lowering M2_TARGET_COUNT. "
+            "Do not relax the rand_hits == 0 predicate — random baseline must "
+            "score exactly 0% on M2 by construction."
         )
 
     rng = random.Random(M2_RNG_SEED)

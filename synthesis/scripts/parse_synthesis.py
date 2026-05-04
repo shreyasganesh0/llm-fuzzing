@@ -149,9 +149,15 @@ def parse_synthesis_response(
     sample_index: int,
     experiment: Literal["exp1", "exp2"] = "exp1",
 ) -> tuple[list[GeneratedInput], Literal["ok", "parse_failure"]]:
-    # Strip base64 payloads before loop detection — long runs of A's (null
-    # bytes) in binary font data trigger false positives on signal (a).
-    text_for_loop_check = re.sub(r"[A-Za-z0-9+/=]{60,}", "<B64>", text)
+    # Mask base64 blobs of legitimate seed size before loop detection — long
+    # runs of A's (null bytes) in ≤64-byte font data trigger false positives
+    # on signal (a). Legit blobs top out at 88 b64 chars (64 bytes + padding);
+    # anything materially larger is a model that looped *inside* a content_b64
+    # field, which the outer detector must still see. Keep unmasked so the
+    # guard fires.
+    def _mask_short_b64(m: re.Match[str]) -> str:
+        return "<B64>" if len(m.group(0)) <= 120 else m.group(0)
+    text_for_loop_check = re.sub(r"[A-Za-z0-9+/=]{60,}", _mask_short_b64, text)
     if is_degenerate_loop(text_for_loop_check):
         return [], "parse_failure"
     data = _extract_json(text)

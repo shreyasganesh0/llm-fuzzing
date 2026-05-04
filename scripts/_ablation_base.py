@@ -104,7 +104,10 @@ class AblationRunner:
             return MAX_ATTEMPTS_CAPPED
         return MAX_ATTEMPTS_DEFAULT
 
-    def _env_for_model(self, model: str) -> dict[str, str]:
+    def _env_for_model(
+        self, model: str, *,
+        cell_key: str | None = None,
+    ) -> dict[str, str]:
         env = os.environ.copy()
         if defaults(model).provider == "anthropic":
             env["UTCF_ANTHROPIC_KEY_PATH"] = str(CLAUDE_KEY_PATH)
@@ -112,6 +115,8 @@ class AblationRunner:
         else:
             env["UTCF_LITELLM_URL"] = LITELLM_URL
             env.pop("UTCF_ANTHROPIC_KEY_PATH", None)
+        if cell_key is not None:
+            env["UTCF_BUDGET_CELL_KEY"] = cell_key
         return env
 
     def _count_seeds(self, seeds_dir: Path) -> int:
@@ -229,10 +234,12 @@ class AblationRunner:
         if variant.include_source:
             cmd.append("--include-source")
 
+        cell_key = f"{self.target.name}/{strategy.name}/{variant.name}/{model}"
         try:
             r = subprocess.run(
                 cmd, capture_output=True, text=True,
-                env=self._env_for_model(model), timeout=SUBPROCESS_TIMEOUT,
+                env=self._env_for_model(model, cell_key=cell_key),
+                timeout=SUBPROCESS_TIMEOUT,
             )
         except subprocess.TimeoutExpired as exc:
             raise RuntimeError(

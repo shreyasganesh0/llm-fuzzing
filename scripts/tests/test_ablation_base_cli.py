@@ -79,8 +79,8 @@ def test_dry_run_prints_matrix_and_exits_0(capsys):
     out = capsys.readouterr().out
     assert "=== Ablation run ===" in out
     assert "Total cells:" in out
-    # Full default matrix: 5 variants x 7 models x 1 strategy = 35 cells.
-    assert "Total cells:  35" in out
+    # Full default matrix: 6 variants x 7 models x 1 strategy = 42 cells.
+    assert "Total cells:  42" in out
     assert all(v == 0 for v in counts.values()), counts
 
 
@@ -153,9 +153,9 @@ def test_preflight_partial_filter(capsys):
     captured = capsys.readouterr()
     assert "WARN" in captured.err
     assert "llama-3.1-8b-instruct" in captured.err
-    # After filter: 5 variants x 1 model x 1 strategy = 5 cells
+    # After filter: 6 variants x 1 model x 1 strategy = 6 cells
     assert "Models (1):   gpt-oss-20b" in captured.out
-    assert "Total cells:  5" in captured.out
+    assert "Total cells:  6" in captured.out
 
 
 def test_default_args_unchanged(capsys):
@@ -171,11 +171,11 @@ def test_default_args_unchanged(capsys):
     rc = runner.main(["--phase", "prep", "--skip-existing", "--dry-run"])
     assert rc == 0
     out = capsys.readouterr().out
-    # 5 variants x 1 model x 1 strategy (default).
-    assert "Variants (5):" in out
+    # 6 variants x 1 model x 1 strategy (default).
+    assert "Variants (6):" in out
     assert "Models (1):   llama-3.1-8b-instruct" in out
     assert "Strategies (1): default" in out
-    assert "Total cells:  5" in out
+    assert "Total cells:  6" in out
     assert "Seeds/cell:   150" in out
 
 
@@ -223,9 +223,9 @@ def test_list_strategies_works_without_any_other_args(flag, capsys):
     rc = runner.main([flag])
     assert rc == 0
     out = capsys.readouterr().out
-    # Sanity: exactly 6 strategies are listed.
+    # Sanity: exactly 7 strategies are listed.
     nonempty_lines = [line for line in out.splitlines() if line.strip()]
-    assert len(nonempty_lines) == 6, nonempty_lines
+    assert len(nonempty_lines) == 7, nonempty_lines
 
 
 def test_dry_run_logs_all_metric_phases(capsys):
@@ -255,5 +255,5 @@ def test_wrapper_integration_harfbuzz_dry_run(capsys, monkeypatch):
     assert rc == 0
     out = capsys.readouterr().out
     assert "Target:       harfbuzz" in out
-    # Default HB wrapper ships 7 models; 5 variants x 7 x 1 = 35.
-    assert "Total cells:  35" in out
+    # Default HB wrapper ships 7 models; 6 variants x 7 x 1 = 42.
+    assert "Total cells:  42" in out

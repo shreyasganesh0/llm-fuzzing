@@ -32,6 +32,7 @@ MODELS = [
     "llama-3.3-70b-instruct",
     "codestral-22b",
     "nemotron-3-super-120b-a12b",
+    "gpt-oss-20b",
 ]
 
 SONNET_ONLY_VARIANTS = {"v4_src_gaps"}
