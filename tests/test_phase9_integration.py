@@ -504,6 +504,13 @@ def test_all_strategies_execute_single_seed_end_to_end(
     target = TARGETS["harfbuzz"]
     variant = VARIANTS_BY_NAME["v0_none"]
 
+    # Make the test self-contained: route LLMClient through the LiteLLM
+    # provider branch so it doesn't try to load secrets/llm_key from disk
+    # (which won't exist on a fresh clone). The complete() method itself
+    # is mocked further down, so the URL is never actually called.
+    monkeypatch.setenv("UTCF_LITELLM_URL", "https://localhost.invalid")
+    monkeypatch.delenv("UTCF_ANTHROPIC_KEY_PATH", raising=False)
+
     # Skip if the prep dataset isn't materialised — build_ablation_prompt
     # reads metadata/harness from disk. Integration coverage is preserved
     # by the strategies that don't need the prep dataset.
