@@ -289,9 +289,11 @@ class LLMClient:
             self.base_url = base_url or os.environ.get("UTCF_VLLM_URL", "http://localhost:8000/v1")
         elif litellm_url and provider is None:
             # LiteLLM proxies are OpenAI-compatible; route through the vllm path
-            # (shared OpenAI SDK code) but authenticate with the real key.
+            # (shared OpenAI SDK code). The UF LiteLLM proxy does not require a
+            # key file, so fall back to "EMPTY" when no secrets/llm_key exists
+            # — same convention as the explicit vllm branch above.
             self.provider = "vllm"
-            self.api_key = api_key or _load_key(secrets_path)
+            self.api_key = api_key or _try_load_key(secrets_path) or "EMPTY"
             self.base_url = base_url or litellm_url
         else:
             anthropic_override = os.environ.get(ANTHROPIC_KEY_ENV)
