@@ -44,12 +44,15 @@ section.
 | Dep | Required by | Where it lives | How to install |
 |---|---|---|---|
 | **LLVM 15** (`clang-15`, `clang++-15`, `llvm-cov-15`, `llvm-profdata-15`) | every experiment (build + coverage replay) | `$PATH` | `apt install clang-15 llvm-15` (override via `CC` / `CXX` / `LLVM_PROFDATA` / `LLVM_COV` env vars). |
+| **Ragel** (`ragel`) | harfbuzz build only (Ragel-generated `.hh` files) | `$PATH` | `apt install ragel`. The build script aborts with a clear error if missing. |
+| **Autotools** (`autoconf`, `automake`, `libtool`, `pkg-config`, `make`) | harfbuzz build (`./autogen.sh && ./configure`) | `$PATH` | `apt install autoconf automake libtool pkg-config make`. |
 | **AFL++** | `experiment2_2` campaigns only (skip if you only run seed-time experiments) | `/home/shreyasganesh/tools/aflpp/` (`afl-clang-fast`, `afl-clang-fast++`, `afl-fuzz`) — hardcoded in `dataset/scripts/build_instrumented.sh` lines 43–44 and overridable via `AFL_CC` / `AFL_CXX` env vars | Build from source: `git clone https://github.com/AFLplusplus/AFLplusplus ~/tools/aflpp && cd ~/tools/aflpp && make`. |
 | **Target source code** (RE2, harfbuzz upstream) | every experiment | `dataset/targets/src/<name>/upstream/` (gitignored) | Auto-fetched by `dataset/scripts/fetch_target.sh dataset/targets/<name>.yaml` from the upstream repo at the SHA pinned in `pinned_versions.yaml`. |
 | **FuzzBench harness** (`fuzzer-test-suite/<benchmark>/target.cc`, dictionaries) | every experiment | `dataset/targets/src/<name>/harness/` (gitignored) | Auto-fetched by `fetch_target.sh` via `curl` against `raw.githubusercontent.com/google/fuzzer-test-suite` (or `oss-fuzz`) at the commit pinned in `pinned_versions.yaml::fuzzer_test_suite.commit`. **No separate clone.** |
 | **Build artefacts** (`seed_replay`, `<t>_fuzzer`, `<t>_afl_fuzzer`) | every experiment (coverage replay needs `seed_replay`; `experiment2_2` needs `_fuzzer` and `_afl_fuzzer`) | `dataset/targets/src/<name>/build/{coverage,sanitizer,fuzzer,afl}/` (gitignored) | Built by `dataset/scripts/build_instrumented.sh dataset/targets/<name>.yaml`. |
 | **Anthropic API key** | only Claude cells (Sonnet, Haiku) | `secrets/claude_key` (single line, gitignored) | Generate at console.anthropic.com. |
-| **UF LiteLLM proxy** | every other model (llama, codestral, nemotron, gpt-oss) | URL only | `export UTCF_LITELLM_URL=https://api.ai.it.ufl.edu`. Vendor invoice $0 but responses truncate at 2048 chars. |
+| **UF LiteLLM proxy URL** | every UF LiteLLM-served model (llama, codestral, nemotron, gpt-oss) | env var only | `export UTCF_LITELLM_URL=https://api.ai.it.ufl.edu` |
+| **UF LiteLLM proxy virtual key** | same as above | `secrets/llm_key` (single line, gitignored; the key must start with `sk-`) | Issued by the proxy operator. Without this, the proxy returns `401 Authentication Error, LiteLLM Virtual Key expected`. Vendor invoice on the LiteLLM side is $0 but responses truncate at 2048 chars. |
 | **Frozen M2 hard-branch sets** | every M2 measurement | `dataset/fixtures/{re2_ab_v2,harfbuzz_ab}/<target>/m2_target_branches.json` (checked in — small JSON) | Already present. **Do not regenerate** — re-running `analysis.scripts.freeze_target_branches` invalidates all prior comparisons. |
 | **LLM cache** | optional (cheap-replay) | `.cache/llm/` (gitignored) | Populated lazily; persists across runs. |
 

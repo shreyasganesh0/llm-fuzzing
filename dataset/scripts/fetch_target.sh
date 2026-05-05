@@ -96,6 +96,39 @@ case "${HARNESS_SOURCE}" in
     ;;
 esac
 
+# Standalone seed-replay driver that runs the libFuzzer harness once per
+# input file. Embedded here so a fresh clone has everything it needs to build
+# the coverage variant without any extra fetch step.
+cat > "${HARNESS_DIR}/seed_replay_main.cc" <<'CPP'
+// Standalone driver that invokes the libFuzzer entry point once per seed file.
+// Used by synthesis/scripts/measure_coverage.py to replay a seed corpus
+// under coverage instrumentation without pulling in libFuzzer itself.
+#include <cstdint>
+#include <cstdio>
+#include <fstream>
+#include <iterator>
+#include <vector>
+
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
+
+int main(int argc, char **argv) {
+  if (argc < 2) {
+    std::fprintf(stderr, "usage: %s <seed_file>\n", argv[0]);
+    return 1;
+  }
+  std::ifstream in(argv[1], std::ios::binary);
+  if (!in) {
+    std::fprintf(stderr, "cannot open %s\n", argv[1]);
+    return 2;
+  }
+  std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(in)),
+                             std::istreambuf_iterator<char>());
+  LLVMFuzzerTestOneInput(bytes.data(), bytes.size());
+  return 0;
+}
+CPP
+echo "==> wrote ${HARNESS_DIR}/seed_replay_main.cc"
+
 if [ -n "${DICTIONARY}" ]; then
   case "${HARNESS_SOURCE}" in
     fuzzer-test-suite)

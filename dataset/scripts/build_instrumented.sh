@@ -137,6 +137,22 @@ _harfbuzz_configure() {
       --without-fontconfig --without-icu \
       --enable-static --disable-shared \
       --quiet)
+
+  # The library build below targets `libharfbuzz.la` directly, which skips
+  # automake's BUILT_SOURCES step. Generate the Ragel-produced .hh files
+  # explicitly so a fresh clone (which only has the .rl sources) compiles.
+  if ! command -v ragel >/dev/null 2>&1; then
+    echo "==> ragel not found on PATH (apt install ragel); harfbuzz build will fail" >&2
+    exit 4
+  fi
+  (cd "${UPSTREAM_DIR}/src" && \
+    for f in hb-buffer-deserialize-json.hh hb-buffer-deserialize-text.hh \
+             hb-ot-shape-complex-indic-machine.hh \
+             hb-ot-shape-complex-myanmar-machine.hh \
+             hb-ot-shape-complex-use-machine.hh; do
+      [ -f "$f" ] || { echo "==> ragel $f"; ragel -e -F1 -o "$f" "${f%.hh}.rl"; }
+    done)
+
   _harfbuzz_configured=1
 }
 
