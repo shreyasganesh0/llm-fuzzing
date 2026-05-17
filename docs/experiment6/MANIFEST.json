@@ -1,0 +1,129 @@
+{
+  "experiment": "experiment6",
+  "codename": "U6 — Entropy-Stratified Seed Selection (ESSS)",
+  "one_line": "Within a single (target x variant x model) cell, do the 150 seeds that carry the M2 union score have systematically higher per-seed mean payload entropy than the seeds that do not?",
+  "status": "stage0_pending",
+  "pinned_at": {
+    "date_utc": "2026-05-17",
+    "timestamp_utc": "2026-05-17T23:35:58Z",
+    "commit": "a5bc4c61f8fe2b9d94031d10b3b4c8144861d7ba",
+    "branch": "master",
+    "python": "3.12.3"
+  },
+
+  "scope": {
+    "target": "harfbuzz",
+    "model": "codestral-22b",
+    "provider": "litellm",
+    "litellm_url": "https://api.ai.it.ufl.edu",
+    "variants": ["v1_src", "v3_all"],
+    "strategy": "default",
+    "stages": ["stage0_logprob_gate", "stage1_overgen_stratify_score"],
+    "explicitly_out_of_scope": [
+      "RE2",
+      "any model other than codestral-22b",
+      "any strategy other than default",
+      "any variant other than v1_src and v3_all",
+      "Stage 2 mechanism analysis",
+      "additional subsample strategies beyond S_random/S_high/S_low",
+      "additional metrics beyond M2"
+    ]
+  },
+
+  "variant_config": {
+    "v1_src": {
+      "include_source": true,
+      "include_tests": false,
+      "include_gaps": false,
+      "m2_baseline_union_frac_all": 0.46,
+      "m2_baseline_source": "results/ablation_harfbuzz/m2/v1_src/codestral-22b/summary.json (experiment2_1)"
+    },
+    "v3_all": {
+      "include_source": true,
+      "include_tests": true,
+      "include_gaps": true,
+      "m2_baseline_union_frac_all": 0.26,
+      "m2_baseline_source": "results/ablation_harfbuzz/m2/v3_all/codestral-22b/summary.json (experiment2_1)"
+    }
+  },
+
+  "m2_definition": {
+    "metric": "slices.all.union_frac_targets_hit",
+    "meaning": "fraction of the frozen hard-branch set hit by the union of the seeds in the scored corpus",
+    "frozen_set_path": "dataset/fixtures/harfbuzz_ab/harfbuzz/m2_target_branches.json",
+    "frozen_set": {"target_count": 50, "shown": 30, "held_back": 20, "n_all_candidates": 376, "n_hard_candidates": 58, "rng_seed": 42},
+    "filter": "struct_hits >= 1 AND rand_hits == 0 (frozen; NOT recomputed by this experiment)",
+    "scored_by": "analysis/scripts/measure_gap_coverage.py via analysis.metrics.M2HardBranchMetric, UNMODIFIED",
+    "coverage_binary": "dataset/targets/src/harfbuzz/build/coverage/seed_replay",
+    "baseline_profile": "dataset/fixtures/harfbuzz_ab/harfbuzz/upstream_union_profile.json"
+  },
+
+  "generation_params": {
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "max_tokens": 4096,
+    "num_inputs_per_call": 3,
+    "source_token_budget": 2000,
+    "max_gaps": 30,
+    "samples_per_call": 1,
+    "note": "Values are the repo defaults for codestral-22b (core/config.py); NOT overridden. Generation occurs at the spec-mandated temperature=0.7/top_p=0.95 (research_document_v3.md S5.2)."
+  },
+
+  "logprobs": {
+    "requested": true,
+    "logprobs": true,
+    "top_logprobs": 20,
+    "transport": "LLMClient.complete(logprobs=True, top_logprobs=20) — additive, env-gated via UTCF_CAPTURE_LOGPROBS",
+    "cache_safety": "logprobs/top_logprobs enter _prompt_hash payload ONLY when non-None; default None => byte-identical key. Guarded by tests/test_llm_client_logprob_backcompat.py."
+  },
+
+  "pool_and_subsampling": {
+    "pool_target_per_cell": 450,
+    "scored_corpus_size": 150,
+    "subsamples": ["S_random", "S_high", "S_low"],
+    "S_random": "random.Random(42).sample(pool_sorted_by_seed_id, 150)",
+    "S_high": "top-150 by per-seed mean payload entropy (descending; deterministic tie-break by seed_id)",
+    "S_low": "bottom-150 by per-seed mean payload entropy (ascending; deterministic tie-break by seed_id)",
+    "subsample_rng_seed": 42,
+    "invariant_4_note": "Every SCORED corpus is exactly 150 seeds. The 450 figure is the over-generation POOL only; the 150-seed normalization invariant is preserved at the scoring step."
+  },
+
+  "bootstrap": {
+    "n_resamples": 10000,
+    "rng_seed": 42,
+    "statistics": ["M2(S_high) - M2(S_random)", "M2(S_high) - M2(S_low)"],
+    "procedure": "see docs/experiment6/METHODS.md (resample 150 seeds with replacement within each subsample, recompute union M2, take percentile 95% CI of the paired difference)"
+  },
+
+  "isolation": {
+    "approach": "scripts/run_experiment6_harfbuzz.py — ~40-LOC wrapper instantiating the UNMODIFIED scripts._ablation_base.AblationRunner against dataclasses.replace(TARGETS['harfbuzz'], synthesis_results_root=..., results_root=...)",
+    "synthesis_results_root": "synthesis/results/experiment6",
+    "results_root": "results/experiment6",
+    "m2_fixtures": "UNCHANGED — coverage_binary, m2_targets_path, upstream_union_profile_path still point at the real frozen harfbuzz artifacts so M2 is scored against the identical frozen 50-branch set",
+    "experiment2_1_canonical_dirs": "NEVER touched (synthesis/results/ablation_harfbuzz/...)"
+  },
+
+  "attempt_offset": {
+    "value": 600000,
+    "rationale": "Invariant 5 requires bumping >=5000 on restart to avoid replaying cached failures. Prior offsets seen in docs are <=70000; 600000 is well clear. Also, requesting logprobs changes the cache key vs. experiment2_1's no-logprob entries, so no collision is possible regardless — the offset is belt-and-suspenders + restart-safety."
+  },
+
+  "invariants_honored": {
+    "2_m2_filter": "frozen set + measure_gap_coverage UNMODIFIED",
+    "3_rng_seed_42": "subsample selection uses random.Random(42)",
+    "4_150_normalization": "every scored corpus is exactly 150",
+    "5_cache_salt_offset": "attempt-offset 600000 (>=5000 bump)",
+    "9_default_cache_backcompat": "default-strategy non-logprob cache key byte-identical; regression-tested"
+  },
+
+  "deviations_from_prompt": [
+    {
+      "item": "scripts/run_experiment6_harfbuzz.py instead of run_ablation_harfbuzz.py verbatim",
+      "why": "Running the 450-seed pool through run_ablation_harfbuzz.py literally would append-and-subsample into the canonical experiment2_1 codestral-22b harfbuzz v1_src/v3_all seed dirs, destroying experiment2_1's headline cells. The wrapper reuses the UNMODIFIED AblationRunner (all 5 phases + attempt-offset/salt semantics intact) and only redirects output roots. Approved by user 2026-05-17."
+    },
+    {
+      "item": "Additive logprobs param in core/llm_client.py + generate_ablation_inputs.py",
+      "why": "Per-token logprobs cannot be obtained through the existing client path without requesting them. Implemented additively following the established tools/response_format back-compat pattern; default-off and regression-tested for byte-identical cache keys. Approved by user 2026-05-17."
+    }
+  ]
+}
