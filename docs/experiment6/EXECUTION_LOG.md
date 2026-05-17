@@ -94,4 +94,98 @@ prior entries.
   at probe time, recorded in STAGE0_RESULT.md + METHODS §3 before
   Stage 1 step 2.
 
+## 2026-05-17 — Stage 1 pipeline code landed
+
+- `synthesis/scripts/generate_ablation_inputs.py`: env-gated
+  (`UTCF_CAPTURE_LOGPROBS`) per-token logprob request + per-seed sidecar
+  persistence, default-strategy branch only (experiment6 scope).
+  Default-off ⇒ byte-identical behaviour + cache key for every other
+  run. **My edits add ZERO new lint findings**: original file at HEAD
+  already had 8×E402 (pyproject-ignored in-tree for the sys.path
+  bootstrap convention) + 1×I001 at line 694; the I001 is in the
+  untouched `tool_use` import block, pre-existing, NOT introduced here —
+  deliberately left alone (out of change scope).
+- `scripts/run_experiment6_harfbuzz.py`: ~40-LOC wrapper; UNMODIFIED
+  `AblationRunner` against `dataclasses.replace`'d harfbuzz TargetSpec
+  (only `synthesis_results_root` / `results_root` redirected; M2
+  fixtures, coverage binary, prep dataset, source roots unchanged).
+  Dry-run verified: harfbuzz, v1_src+v3_all, codestral-22b, default,
+  450 seeds/cell, 2 cells.
+- `analysis/scripts/experiment6_{entropy,stratify,score}.py` + tests
+  (built in parallel by three subagents to the METHODS contracts;
+  reviewed). Subagent ambiguity resolutions accepted as logged in each
+  file's docstring; notable ones: (a) a payload token with an
+  uncomputable head drops the whole seed as a counted/disclosed drop
+  (never silently shrinks the token set); (b) S_high/S_low/S_random are
+  defined by their own rules, disjointness is an emergent property of a
+  large pool, not enforced (consistent with METHODS §5 "independent
+  draws"); (c) `union_m2` treats missing (seed,target) pairs as not-hit,
+  mirroring the metric's own zero-row behaviour.
+- `.venv/bin/pytest -q` (full fast suite) → **385 passed, 1 skipped**
+  (incl. 52 new experiment6 tests + the cache back-compat regression).
+  Commits `83bc5f0`, `a2a51e4`, `d1a44ab` on branch `experiment6`.
+
+---
+
+## PRE-REGISTRATION (appended BEFORE any M2 scoring — Stage 1 step 4)
+
+**Timestamp (UTC):** 2026-05-17T23:52:23Z
+**Commit at pre-registration:** `d1a44ab0b5559a96ba1028f594a956e62afc40fa`
+(branch `experiment6`)
+**Status:** written before the over-generation pool is even launched —
+no M2 number for any subsample has been observed (none exist yet).
+
+### The statistics (fixed; METHODS §5)
+
+For each variant ∈ {`v1_src`, `v3_all`}, on exactly-150-seed subsamples
+drawn from that cell's over-generation pool, with M2 = the UNMODIFIED
+metric's `slices.all.union_frac_targets_hit`:
+
+- `Δ_hr = M2(S_high) − M2(S_random)`
+- `Δ_hl = M2(S_high) − M2(S_low)`
+
+### My predicted sign (this is MY prediction, made blind)
+
+- `Δ_hr > 0` for **both** variants.
+- `Δ_hl > 0` for **both** variants.
+
+Reasoning (stated so a reviewer can judge it, not to hedge): M2 is a
+*union* over a by-construction-random-unreachable hard-branch set, so it
+rewards a corpus that *deviates* from the common/random byte
+distribution. Higher per-seed payload entropy ⇒ the model was less
+locked into one continuation ⇒ the corpus spans more of the byte space
+⇒ more of the rare hard branches get covered by *someone* in the union.
+I hold this with **lower confidence for `v3_all`** (M2 baseline 0.26 vs
+0.46 — fewer hits, noisier, and the extra v3 context may compress the
+payload-entropy spread), and I explicitly note the competing hypothesis:
+harfbuzz fonts need *low*-entropy well-formed structural headers to
+parse at all, so the sign could plausibly reverse — that is exactly why
+this is worth running and why all three outcomes are reportable.
+
+### Falsifier (per the prompt, exactly)
+
+For a given variant the pre-registered prediction is **falsified** if
+**either**:
+
+1. the bootstrap 95% CI of the difference **contains 0**, OR
+2. the point-estimate **sign is negative** (reversed).
+
+A variant where both `Δ_hr` and `Δ_hl` are strictly positive with 95%
+CIs entirely above 0 **corroborates** the prediction for that variant.
+Outcomes are reported per variant; mixed outcomes across the two
+variants are reported honestly, not aggregated into a single verdict.
+
+### Frozen analysis parameters (no post-hoc tuning permitted)
+
+- subsample size k = 150 (Invariant 4); pool target ≈ 450/cell.
+- S_random = `random.Random(42).sample(sorted(eligible_ids), 150)`.
+- S_high / S_low = top / bottom 150 by mean payload entropy, ties by
+  `input_id` ascending.
+- bootstrap: n = 10000 resamples, `random.Random(42)`, percentile
+  [2.5, 97.5], independent (unpaired) row-draws per subsample.
+- entropy = renormalised top-K(=20)-head Shannon entropy in bits over
+  base64-value tokens only (METHODS §3/§4); SentencePiece `▁`→space
+  detokenisation; unlocatable / reconstruction-mismatch seeds dropped
+  and counted.
+
 <!-- subsequent entries appended below as work proceeds -->
