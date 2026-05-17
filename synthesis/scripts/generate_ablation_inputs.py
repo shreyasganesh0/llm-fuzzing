@@ -256,6 +256,78 @@ def _maybe_response_format(model: str) -> dict | None:
     return None
 
 
+# ── experiment6: opt-in per-token logprob capture ────────────────────────
+#
+# Strictly additive and DEFAULT-OFF. When the env var is unset (every
+# normal run, every other experiment), `_capture_logprobs_enabled()` is
+# False, no `logprobs` kwarg is passed to `client.complete`, the cache
+# key is byte-identical, and no sidecars are written — i.e. behaviour is
+# indistinguishable from before this change. Only the experiment6 wrapper
+# (`scripts/run_experiment6_harfbuzz.py`) sets `UTCF_CAPTURE_LOGPROBS`,
+# and only for the default strategy (experiment6 scope). Per-token
+# logprobs are persisted as one sidecar JSON per generated seed; the
+# schema is the consumption contract of
+# `analysis/scripts/experiment6_entropy.py`.
+
+_LOGPROBS_ENV = "UTCF_CAPTURE_LOGPROBS"
+_LOGPROBS_TOPK_ENV = "UTCF_LOGPROBS_TOPK"
+_DEFAULT_LOGPROBS_TOPK = 20
+
+
+def _capture_logprobs_enabled() -> bool:
+    return os.environ.get(_LOGPROBS_ENV, "").strip().lower() in {"1", "true", "yes"}
+
+
+def _logprobs_topk() -> int:
+    try:
+        return int(os.environ.get(_LOGPROBS_TOPK_ENV, _DEFAULT_LOGPROBS_TOPK))
+    except ValueError:
+        return _DEFAULT_LOGPROBS_TOPK
+
+
+def _write_logprob_sidecars(
+    *, resp, inputs: list, results_root: Path, target: str, cell: str,
+    safe_model: str, run_id: int, sample_index: int,
+) -> int:
+    """Write one logprob sidecar JSON per parsed seed of this response.
+
+    Returns the number of sidecars written. No-ops (returns 0) unless the
+    response actually carries captured logprobs (``resp.raw``) — so this
+    is safe to call unconditionally; non-default strategies / non-logprob
+    runs simply write nothing.
+    """
+    raw = getattr(resp, "raw", None)
+    if not raw or not raw.get("content") or not inputs:
+        return 0
+    sidecar_dir = (
+        results_root / "logprobs" / target / "ablation" / cell / safe_model
+    )
+    sidecar_dir.mkdir(parents=True, exist_ok=True)
+    written = 0
+    for i, inp in enumerate(inputs):
+        # input_index_in_response = how many earlier parsed inputs of THIS
+        # response carried the identical content_b64. 0 for the (almost
+        # always) unique case; disambiguates exact-duplicate blobs. The
+        # entropy module locates the occ-th verbatim occurrence of the
+        # quoted base64 value in raw_response.
+        occ = sum(1 for j in range(i) if inputs[j].content_b64 == inp.content_b64)
+        sidecar = {
+            "input_id": inp.input_id,
+            "variant": cell,
+            "content_b64": inp.content_b64,
+            "raw_response": resp.content,
+            "input_index_in_response": occ,
+            "run_id": run_id,
+            "sample_index": sample_index,
+            "logprobs": raw,
+        }
+        (sidecar_dir / f"{inp.input_id}.json").write_text(
+            json.dumps(sidecar, ensure_ascii=False)
+        )
+        written += 1
+    return written
+
+
 def _parse_plan_response(text: str) -> tuple[str, str] | None:
     """Extract ``(plan, target_gap)`` from a prompt_chain plan response.
 
@@ -785,6 +857,12 @@ def run_ablation(
             )
             resp = used_resp
         else:
+            # experiment6: opt-in logprob capture (default strategy only,
+            # env-gated). When disabled, lp_kwargs is empty → the call is
+            # byte-identical to before (same cache key).
+            lp_kwargs: dict = {}
+            if _capture_logprobs_enabled():
+                lp_kwargs = {"logprobs": True, "top_logprobs": _logprobs_topk()}
             resp = client.complete(
                 messages=[
                     {"role": "system", "content": ""},
@@ -798,6 +876,7 @@ def run_ablation(
                     model=model, sample=k, cell=cell,
                     run_offset=run_id, strategy=strategy,
                 ),
+                **lp_kwargs,
             )
             inputs, status = parse_fn(
                 resp.content,
@@ -808,6 +887,14 @@ def run_ablation(
 
         for inp in inputs:
             (seeds_dir / f"seed_{inp.input_id}.bin").write_bytes(base64.b64decode(inp.content_b64))
+
+        # experiment6: persist per-token logprobs alongside each seed.
+        # No-op unless this response actually carried captured logprobs.
+        _write_logprob_sidecars(
+            resp=resp, inputs=inputs, results_root=results_root,
+            target=target, cell=cell, safe_model=safe_model,
+            run_id=run_id, sample_index=k,
+        )
 
         log = PromptLogEntry(
             model=resp.model,
