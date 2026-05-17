@@ -57,4 +57,41 @@ prior entries.
   and stubs `STAGE0_RESULT.md`, `RESULTS.md` **before** any experiment
   code, per the prompt's "MANIFEST + METHODS before code" rule.
 
+## 2026-05-17 — core/llm_client.py logprob support (cache-safe)
+
+- Added additive `logprobs`/`top_logprobs` kwargs to `_prompt_hash` and
+  `LLMClient.complete` + `_extract_logprobs` helper; captured logprobs go
+  to `Response.raw` (not in cache key). Anthropic path refuses logprobs.
+- Wrote `tests/test_llm_client_logprob_backcompat.py`.
+  `.venv/bin/python -m pytest -q tests/ core/tests/` →
+  **123 passed, 1 skipped** (the opt-in 14k cache audit). `ruff check
+  core/llm_client.py` → only the pre-existing SIM105 at line ~210
+  (documented in STATUS.md); no new findings.
+- Verified byte-identity: `_prompt_hash(... no logprobs ...)` ==
+  frozen pre-change digest
+  `9878904ae4d50fe49e162f5aadaf2bc1f649bab90fdd3fc05dc9d38cdfa7f373`;
+  requesting logprobs yields a different key (own cache namespace).
+  **Invariant 9 preserved and machine-checked.**
+- Commits: `828fe0b` (doc scaffolding), `83bc5f0` (llm_client +
+  regression test), on branch `experiment6`.
+
+## 2026-05-17 — Stage 0 logprob capability gate
+
+- Cmd: `UTCF_LITELLM_URL` defaulted in-script;
+  `.venv/bin/python -m analysis.scripts.experiment6_stage0_probe`.
+  One live call to `codestral-22b`, `logprobs=True, top_logprobs=20`,
+  `use_cache=False`, `max_tokens=64`.
+- Artifact: `results/experiment6/stage0_probe.json`. Exit 0.
+- **Classification = FULL.** All 6/6 completion tokens carry an observed
+  logprob AND 20/20 top-k alternatives. Per-token top-K-head Shannon
+  entropy (METHODS §4) is computable. Gate CLEARED → Stage 1 proceeds.
+- **Methods refinement (pre-computation, logged before any entropy):**
+  the proxy codestral-22b tokenizer is SentencePiece-style — leading
+  space encoded as `▁` (U+2581). Token→char reconstruction (METHODS §3)
+  detokenises a single leading `▁`→space and asserts the reconstruction
+  equals `resp.content`; on mismatch the response's seeds are dropped
+  from the entropy pool and counted. Not a post-hoc change — discovered
+  at probe time, recorded in STAGE0_RESULT.md + METHODS §3 before
+  Stage 1 step 2.
+
 <!-- subsequent entries appended below as work proceeds -->

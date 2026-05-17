@@ -2,7 +2,7 @@
   "experiment": "experiment6",
   "codename": "U6 — Entropy-Stratified Seed Selection (ESSS)",
   "one_line": "Within a single (target x variant x model) cell, do the 150 seeds that carry the M2 union score have systematically higher per-seed mean payload entropy than the seeds that do not?",
-  "status": "stage0_pending",
+  "status": "stage0_FULL_stage1_in_progress",
   "pinned_at": {
     "date_utc": "2026-05-17",
     "timestamp_utc": "2026-05-17T23:35:58Z",

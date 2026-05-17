@@ -104,13 +104,21 @@ surrounding double-quotes themselves, the `target_gaps` array, the
 `reasoning` string, any markdown code fence (```` ```json ````), or any
 prose the model emits around the JSON.
 
-Token→char mapping: OpenAI-compatible logprob responses return
-`choices[0].logprobs.content` as an ordered list whose `.token` fields are
-the literal substrings of the completion. Concatenating them reproduces
-the completion text exactly; cumulative token lengths give each token a
-half-open `[start, end)` char span. The `content_b64` value spans are
-located on that reconstructed text with the same lenient JSON view the
-parser uses, then matched positionally to the parsed inputs.
+Token→char mapping: logprob responses return `choices[0].logprobs.content`
+as an ordered list of token records. **Refinement recorded after the
+Stage 0 probe, before any entropy is computed** (see STAGE0_RESULT.md,
+EXECUTION_LOG.md): the UF-proxy codestral-22b tokenizer is SentencePiece-
+style — a leading space is encoded as `▁` (U+2581) on the token, so the
+raw `.token` strings do *not* concatenate to the literal completion. The
+reconstruction therefore detokenises each `.token` by replacing a single
+leading `▁` with a space before accumulating char offsets, and the
+reconstructed string is asserted equal to `resp.content` at runtime. On
+mismatch the whole response's seeds are dropped from the entropy pool and
+counted (same disclosure rule as below) rather than guessing an
+alignment. Cumulative detokenised lengths give each token a half-open
+`[start, end)` char span; the `content_b64` value spans are located on
+the reconstructed text with the same lenient JSON view the parser uses
+and matched positionally to the parsed inputs.
 
 Boundary tokens (a token that straddles the closing `"` of a base64 value,
 common because models tokenise `...XYZ"` as one piece) are **excluded**:
