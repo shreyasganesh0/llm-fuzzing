@@ -231,14 +231,19 @@ def _prompt_hash(
     guided_json: dict | None = None,
     tools: list[dict] | None = None,
     tool_choice: str | dict | None = None,
+    logprobs: bool | None = None,
+    top_logprobs: int | None = None,
 ) -> str:
     """Compute the cache key for a completion request.
 
     Backwards-compatible: when ``response_format``, ``guided_json``,
-    ``tools`` and ``tool_choice`` are all None (the pre-Phase-3 /
-    pre-Phase-7 default), the JSON payload hashed here is byte-identical
-    to the pre-Phase-3 payload. The new keys are only added when non-None
-    so the existing ~14k cache entries stay reachable.
+    ``tools``, ``tool_choice``, ``logprobs`` and ``top_logprobs`` are all
+    None (the pre-Phase-3 / pre-Phase-7 / pre-experiment6 default), the
+    JSON payload hashed here is byte-identical to the pre-Phase-3 payload.
+    The new keys are only added when non-None so the existing ~14k cache
+    entries stay reachable. ``logprobs`` follows the exact same additive
+    pattern as ``tools`` (experiment6: only the entropy-stratification run
+    requests it; every other caller passes None and gets the legacy key).
     """
     payload_dict: dict[str, Any] = {
         "model": model,
@@ -256,8 +261,55 @@ def _prompt_hash(
         payload_dict["tools"] = tools
     if tool_choice is not None:
         payload_dict["tool_choice"] = tool_choice
+    if logprobs is not None:
+        payload_dict["logprobs"] = logprobs
+    if top_logprobs is not None:
+        payload_dict["top_logprobs"] = top_logprobs
     payload = json.dumps(payload_dict, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _extract_logprobs(resp: Any) -> dict | None:
+    """Serialise an OpenAI-compatible response's token logprobs to plain JSON.
+
+    Returns a dict shaped:
+
+        {"content": [
+            {"token": str, "logprob": float,
+             "top_logprobs": [{"token": str, "logprob": float}, ...]},
+            ...
+        ]}
+
+    or ``None`` if the provider returned no logprob structure. Kept
+    defensive (``getattr`` everywhere) because LiteLLM-proxied backends
+    vary in exactly which sub-fields they populate; experiment6's Stage 0
+    gate is precisely the check that this returns the FULL shape for
+    codestral-22b before any Stage 1 work proceeds.
+    """
+    try:
+        choice0 = resp.choices[0]
+    except (AttributeError, IndexError, TypeError):
+        return None
+    lp = getattr(choice0, "logprobs", None)
+    if lp is None:
+        return None
+    content = getattr(lp, "content", None)
+    if not content:
+        return None
+    out_content: list[dict] = []
+    for tok in content:
+        alts: list[dict] = []
+        for alt in getattr(tok, "top_logprobs", None) or []:
+            alts.append({
+                "token": getattr(alt, "token", None),
+                "logprob": getattr(alt, "logprob", None),
+            })
+        out_content.append({
+            "token": getattr(tok, "token", None),
+            "logprob": getattr(tok, "logprob", None),
+            "top_logprobs": alts,
+        })
+    return {"content": out_content}
 
 
 class LLMClient:
@@ -345,6 +397,8 @@ class LLMClient:
         guided_json: dict[str, Any] | None = None,
         tools: list[dict] | None = None,
         tool_choice: str | dict | None = None,
+        logprobs: bool | None = None,
+        top_logprobs: int | None = None,
         timeout_s: float | None = None,
         cell_key: str | None = None,
     ) -> Response:
@@ -382,10 +436,17 @@ class LLMClient:
         form because Phase 0's probe could not verify the capability
         (zero API credits) and we don't want silent capability drift.
 
-        When all four new args (``response_format``, ``guided_json``,
-        ``tools``, ``tool_choice``) are None the cache key is byte-
-        identical to the pre-Phase-3 key, so existing cache entries
-        remain reachable.
+        `logprobs` / `top_logprobs`: experiment6 per-token logprob
+        capture (OpenAI-compatible path only — raises on Anthropic). When
+        ``logprobs`` is truthy the call is forced non-streaming and the
+        provider's per-token logprob structure is serialised into
+        ``Response.raw`` via :func:`_extract_logprobs`. ``Response.raw``
+        is NOT part of the cache key.
+
+        When all six new args (``response_format``, ``guided_json``,
+        ``tools``, ``tool_choice``, ``logprobs``, ``top_logprobs``) are
+        None the cache key is byte-identical to the pre-Phase-3 key, so
+        the ~14k existing cache entries remain reachable.
         """
         if response_format is not None and guided_json is not None:
             raise ValueError(
@@ -433,10 +494,22 @@ class LLMClient:
                     "the vendor emits well-formed tool_calls."
                 )
 
+        # experiment6 — per-token logprob capture is opt-in and only
+        # supported on the OpenAI-compatible (openai / vllm / LiteLLM)
+        # path. The Anthropic Messages API does not expose top-k token
+        # logprobs, so refuse rather than silently drop the request (same
+        # discipline as response_format on Anthropic).
+        if logprobs and self.provider == "anthropic":
+            raise ValueError(
+                "logprobs are not available on the Anthropic Messages API; "
+                f"provider={self.provider!r} cannot satisfy logprobs=True."
+            )
+
         h = _prompt_hash(
             model, messages, temperature, top_p, max_tokens, cache_salt,
             response_format=response_format, guided_json=guided_json,
             tools=tools, tool_choice=tool_choice,
+            logprobs=logprobs, top_logprobs=top_logprobs,
         )
         cache_path = self.cache_dir / f"{model.replace('/', '_')}_{h}.json"
 
@@ -491,6 +564,10 @@ class LLMClient:
         input_tokens = 0
         output_tokens = 0
         tool_calls_out: list[dict] | None = None
+        # experiment6 — captured per-token logprobs (None unless requested).
+        # Stored in Response.raw, which is NOT part of the cache key, so
+        # this never perturbs back-compat for non-logprob callers.
+        logprobs_raw: dict | None = None
 
         for attempt in range(max_retries):
             try:
@@ -510,6 +587,15 @@ class LLMClient:
                         extra_kwargs["tools"] = tools
                     if tool_choice is not None:
                         extra_kwargs["tool_choice"] = tool_choice
+                    if logprobs:
+                        # OpenAI/LiteLLM require logprobs=True alongside
+                        # top_logprobs. Having a non-empty extra_kwargs
+                        # also routes us to the non-streaming branch below
+                        # (the streaming loop-abort path cannot read
+                        # logprob deltas), exactly like response_format.
+                        extra_kwargs["logprobs"] = True
+                        if top_logprobs is not None:
+                            extra_kwargs["top_logprobs"] = int(top_logprobs)
                     if timeout_s is not None:
                         extra_kwargs["timeout"] = float(timeout_s)
                     # Streaming + tool_calls don't mix cleanly across providers
@@ -548,6 +634,8 @@ class LLMClient:
                         usage = getattr(resp, "usage", None)
                         input_tokens = getattr(usage, "prompt_tokens", 0) or 0
                         output_tokens = getattr(usage, "completion_tokens", 0) or 0
+                        if logprobs:
+                            logprobs_raw = _extract_logprobs(resp)
 
                 elif self.provider == "anthropic":
                     client = self._get_client()
@@ -615,7 +703,7 @@ class LLMClient:
             generation_wall_clock_s=wall_s,
             cached=False,
             tool_calls=tool_calls_out,
-            raw=None,
+            raw=logprobs_raw,
         )
 
         if use_cache:
