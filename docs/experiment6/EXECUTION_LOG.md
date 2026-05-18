@@ -293,4 +293,30 @@ variants are reported honestly, not aggregated into a single verdict.
   LLVM on pool + 3 subsamples/variant, consistency anchor, 10k
   bootstrap) launched; results pending → RESULTS.md.
 
-<!-- subsequent entries appended below as work proceeds -->
+## 2026-05-18 — M2 SCORING COMPLETE (post-pre-registration; results observed)
+
+- `analysis.scripts.experiment6_score` for both variants (UNMODIFIED
+  `M2HardBranchMetric` → real `seed_replay`+LLVM on pool+3 subsamples;
+  consistency anchor; 10k bootstrap, RNG 42). Exit 0.
+- **All consistency anchors passed** (`consistency_ok=true`,
+  S_random/S_high/S_low, both variants).
+- M2 (slices.all.union_frac_targets_hit):
+  - v1_src: S_random 0.26, S_high 0.38, S_low 0.46.
+  - v3_all: S_random 0.26, S_high 0.26, S_low 0.50.
+- Differences + 95% bootstrap CI:
+  - v1_src Δ_hr +0.12 [−0.06,+0.26]; Δ_hl −0.08 [−0.30,+0.20].
+  - v3_all Δ_hr  0.00 [−0.10,+0.14]; Δ_hl −0.24 [−0.34,+0.04].
+- **Verdict vs pre-registration (`4d96b1c`): FALSIFIED for both
+  variants on all four differences** (every CI contains 0; both Δ_hl
+  sign-reversed). Data leans to the pre-registered *competing*
+  hypothesis: LOW payload entropy carries more M2 (S_low highest in both
+  cells; v3_all S_low 0.50 vs baseline/random 0.26). Inverse outcome —
+  one of the three pre-declared admissible outcomes — reported as-is.
+  Full prose: `RESULTS.md`.
+- Cost accounting (user request, ran post-generation — disclosed):
+  `estimate_cost.py` codestral 900-call upper bound $1.64 / ~337 calls
+  $0.61; `cost_audit.py` actual: +342 cache entries, cumulative litellm
+  re-price $14.39 vs $25 proxy cap, no `400 Budget exceeded` at any
+  point. No remaining step issues LLM/proxy calls.
+- Experiment COMPLETE. Stopping criterion honored: no additional
+  analyses / subsamples / models. Stage 2 out of scope.

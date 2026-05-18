@@ -29,7 +29,8 @@ naming scheme in `experiment{1,2,3}.md`:
 On-disk fixture and results paths (e.g. `dataset/fixtures/re2_ab/`,
 `results/ablation_re2_v2/`) are unchanged — the renaming is documentation-only.
 
-**Last updated:** 2026-04-21
+**Last updated:** 2026-05-18 — experiment6 (ESSS) landed; see
+`docs/experiment6/RESULTS.md`.
 
 ---
 
@@ -406,6 +407,25 @@ pair.
 
 ## 11. Changelog of this doc
 
+- **2026-05-18** — **experiment6 (ESSS — Entropy-Stratified Seed
+  Selection)** landed on branch `experiment6`. Tests whether per-seed
+  mean payload entropy predicts which seeds carry M2, on harfbuzz /
+  codestral-22b / {v1_src, v3_all} / default. Stage 0 logprob gate =
+  FULL. Pre-registered (commit `4d96b1c`) before scoring. Result: the
+  predicted "high-entropy carries M2" direction is **falsified** for
+  both variants (all four CIs contain 0; both Δ_hl sign-reversed); the
+  data leans to the pre-registered competing hypothesis — **low**-entropy
+  seeds carry more M2 (v3_all S_low M2 = 0.50 vs random/baseline 0.26).
+  New code: `scripts/run_experiment6_harfbuzz.py`,
+  `analysis/scripts/experiment6_{stage0_probe,entropy,stratify,score}.py`
+  (+ tests), additive env-gated `logprobs` in `core/llm_client.py` /
+  `synthesis/scripts/generate_ablation_inputs.py` (cache-key byte-
+  identical for non-logprob callers, regression-tested). Full numbers,
+  methods, pre-registration, and every deviation:
+  `docs/experiment6/{RESULTS,METHODS,MANIFEST,EXECUTION_LOG,STAGE0_RESULT}`.
+  Verify: `.venv/bin/pytest -q` (expect all green incl. 50+ experiment6
+  tests + cache back-compat); `python -m json.tool
+  results/experiment6/v3_all/v3_all_score.json` (gitignored output).
 - **2026-04-21** — Phases 0–9 landed: 6 prompt strategies
   (`default`, `cot_strict`, `few_shot`, `self_critique`, `prompt_chain`,
   `tool_use`) in `core/prompt_strategies.py`, constrained-output plumbing
