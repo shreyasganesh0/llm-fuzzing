@@ -250,4 +250,25 @@ responses from stage 1:
   yield-ceiling instead of bleeding ~$1-2. Then the gated cheap
   prompt_chain probe.
 
+## 2026-05-18 — few_shot COMPLETE (viable) + analyzer landed
+
+- `few_shot` filled **150/150 on all 5 variants**, scored, no budget
+  error. M2 (slices.all.union_frac_targets_hit): v0_none 0.467,
+  v1_src 0.333, v2_src_tests 0.400, v3_all 0.467, **v4_src_gaps 0.733**.
+- `analysis/scripts/seed_yield_audit.py` (+10 tests, ruff clean) built.
+  Real smoke: `cot_strict` LOST_CAUSE on all 5 variants (parse_ok 94%,
+  diversity 0.105, distinct ceiling 124<150), est wasted **$0.49**
+  (cost basis cited: cost_audit mean tokens × PRICING_USD_PER_MTOK);
+  `few_shot` VIABLE (realized 150/150). Subagent surfaced that the
+  regex-level re-parse diversity differs from the content_b64-level
+  probe (position-dependent sha256 flag bytes); it added a
+  realized-fill VIABLE override so verdicts match the runner's true
+  fill semantics (few_shot 150→VIABLE; cot_strict <150→LOST_CAUSE).
+  Sound, test-pinned; kept.
+- Next: stage 2 `self_critique` (2× calls; draft round reuses the
+  default base template so it should keep diversity) launched WITH
+  `UTCF_ABANDON_NOGAIN=5` — first live use of the aggressive opt-in
+  abandon, so a cot_strict-style collapse is killed in ~5 no-gain
+  attempts / at the yield-ceiling. Offset 705000 (pre-registered).
+
 <!-- subsequent entries appended below as work proceeds -->
