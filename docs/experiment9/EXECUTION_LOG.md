@@ -48,3 +48,36 @@ Both outcomes are reportable; neither is optimized for. Must be read
 jointly with experiment8 (labels-vs-examples isolation).
 
 <!-- approval/freeze commit, run, deviations appended below -->
+
+---
+
+## 2026-05-18 — B RESULT (read JOINTLY with experiment8 A)
+
+Run: harfbuzz×v3_all×codestral×cot_strict, binary template (no changes),
+`UTCF_ABANDON_NOGAIN=5`, offset 810000, `--phase all --skip-existing`
+(default@harfbuzz/v3_all NOT regenerated). 0 budget errors.
+
+- `cot_strict@harfbuzz/v3_all`: **FILLED 150** (reason `filled`, 56
+  attempts, no_gain 0.08 — fast, NO diversity collapse), **M2 = 0.120**.
+- `default@harfbuzz/v3_all` (existing, M2 **0.260**, not regenerated).
+- Δ = M2(cot_strict) − M2(default) = **−0.140** (≫ the 0.05 minimum).
+
+**Pre-registered interpretation rule:** "cot_strict CENSORED, OR fills
+but M2 < default − 0.05 → collapse is GENERAL". The *fills-but-M2-below*
+branch fired → mechanically **GENERAL**.
+
+**Honest joint reading with experiment8 A (the precise picture):** the
+two results SPLIT what the pre-reg lumped together:
+- **Diversity/fill collapse is RE2-example-list-specific.** The binary
+  cot template has the rigid 4-step labels but NO RE2 example list;
+  cot_strict FILLED 150 fast on harfbuzz with no collapse. This
+  CORROBORATES experiment8 A (the static example list, not the labels,
+  drives the RE2 fill collapse).
+- **The rigid-label scaffold independently DEGRADES seed quality on
+  structured targets even without a collapse.** Filled, but M2 0.120 ≪
+  default 0.260 (−0.140). So the label scaffold has a real, general M2
+  cost distinct from the example-anchor fill collapse.
+Net: the pre-reg's binary "RE2-specific vs general" framing was too
+coarse; the data resolves it as *fill-collapse = example-specific
+(A+B agree); label-scaffold M2 penalty = general*. Both outcomes were
+pre-declared reportable; reported as-is.
