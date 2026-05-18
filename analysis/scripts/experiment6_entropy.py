@@ -131,39 +131,44 @@ def reconstruct(logprobs_content: list[dict]) -> tuple[str, list[tuple[int, int]
     return "".join(pieces), spans
 
 
-def _nth_quoted_value_span(
-    raw_response: str, content_b64: str, occurrence_index: int
+# Locates a ``content_b64`` key and its opening value quote. Base64 values
+# use only ``[A-Za-z0-9+/=]`` and contain no ``"`` or ``\``, so the closing
+# quote is unambiguously the next ``"`` after the opening one.
+_CONTENT_B64_KEY_RE = re.compile(r'"content_b64"\s*:\s*"')
+
+
+def _nth_content_b64_value_region(
+    raw_response: str, region_index: int
 ) -> tuple[int, int] | None:
-    """Locate the ``occurrence_index``-th verbatim ``"<content_b64>"`` value.
+    """Locate the ``region_index``-th JSON ``content_b64`` VALUE region.
 
-    The model emits JSON ``{"inputs":[{"content_b64":"<BASE64>", ...}, ...]}``.
-    Per METHODS.md §3 we find the (occurrence_index)-th occurrence of the
-    exact substring ``"<content_b64>"`` — the base64 value wrapped in a pair
-    of double quotes — in ``raw_response``. We return the *open interval*
-    between the two delimiting quotes, i.e. ``(open_quote_pos, close_quote_pos)``
-    where both endpoints are the indices of the quote characters themselves
-    (so the value text is ``raw_response[open_quote_pos + 1 : close_quote_pos]``).
+    METHODS.md §3 (2026-05-18 refinement, user-approved): the persisted
+    ``content_b64`` is a parser ``_coerce_to_b64`` artifact and is NOT
+    reliably a verbatim substring of ``resp.content`` (the parser
+    re-encodes any non-strictly-valid base64), so we do NOT match by
+    string equality. Instead we locate the (region_index)-th
+    ``"content_b64"`` key structurally and take the literal value the
+    model actually emitted — the tokens that emit *those* characters are
+    by definition "the tokens that emit the payload bytes," independent
+    of the parser's downstream coercion.
 
-    Returns ``None`` if there is no such occurrence at that positional index
-    (METHODS.md §3 "unlocatable payload" disclosure rule — the caller drops
-    the seed and counts it; it does not fall back to a fuzzy match).
+    The model emits ``{"inputs":[{"content_b64":"<BASE64>", ...}, ...]}``.
+    Returns the *open interval* ``(open_quote_pos, close_quote_pos)``
+    between the two delimiting quote characters (value text =
+    ``raw_response[open_quote_pos + 1 : close_quote_pos]``), or ``None``
+    if there are fewer than ``region_index + 1`` ``content_b64`` regions
+    (METHODS.md §3 "unlocatable payload" disclosure rule — caller drops
+    the seed and counts it; no fuzzy fallback).
     """
-    needle = '"' + content_b64 + '"'
-    search_from = 0
-    found = 0
-    while True:
-        hit = raw_response.find(needle, search_from)
-        if hit == -1:
-            return None
-        if found == occurrence_index:
-            open_quote_pos = hit
-            close_quote_pos = hit + len(needle) - 1
-            return (open_quote_pos, close_quote_pos)
-        found += 1
-        # Advance past this opening quote so overlapping occurrences (rare,
-        # but possible if a b64 value is a prefix of another) are still
-        # enumerated positionally rather than skipped.
-        search_from = hit + 1
+    matches = list(_CONTENT_B64_KEY_RE.finditer(raw_response))
+    if region_index < 0 or region_index >= len(matches):
+        return None
+    m = matches[region_index]
+    open_quote_pos = m.end() - 1  # index of the opening '"' of the value
+    close_rel = raw_response.find('"', m.end())
+    if close_rel == -1:
+        return None  # malformed/truncated value — drop + count
+    return (open_quote_pos, close_rel)
 
 
 def payload_token_indices(
@@ -180,11 +185,14 @@ def payload_token_indices(
     1. The reconstructed ``full_text`` must equal ``raw_response`` by exact
        string equality. On mismatch return ``None`` (the caller drops this
        seed and counts it — "rather than guessing an alignment").
-    2. Locate the value span of ``content_b64`` as the
-       ``input_index_in_response``-th verbatim quoted occurrence in
-       ``raw_response``. If it is not present as a verbatim quoted substring
-       at that occurrence index, return ``None`` (caller drops; counted —
-       the "unlocatable payload" disclosure rule).
+    2. Locate the value region as the ``input_index_in_response``-th
+       ``content_b64`` JSON value located STRUCTURALLY (METHODS.md §3
+       2026-05-18 refinement — the persisted ``content_b64`` is a parser
+       artifact, not a reliable verbatim substring; ``content_b64`` is
+       retained only for the call contract/audit and is not used for
+       location). If fewer than ``input_index_in_response + 1`` regions
+       exist, return ``None`` (caller drops; counted — "unlocatable
+       payload" disclosure rule).
     3. A payload token is one whose ENTIRE ``[start, end)`` span lies
        strictly inside the open interval ``(open_quote_pos, close_quote_pos)``.
        A token straddling either delimiting quote is EXCLUDED (the §3
@@ -197,7 +205,10 @@ def payload_token_indices(
     if full_text != raw_response:
         return None
 
-    value_span = _nth_quoted_value_span(raw_response, content_b64, input_index_in_response)
+    # content_b64 retained for the call contract/audit only; structural
+    # location does not match on it (see _nth_content_b64_value_region).
+    _ = content_b64
+    value_span = _nth_content_b64_value_region(raw_response, input_index_in_response)
     if value_span is None:
         return None
     open_quote_pos, close_quote_pos = value_span

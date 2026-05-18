@@ -228,4 +228,45 @@ variants are reported honestly, not aggregated into a single verdict.
   outcome-driven. Pre-registration (`4d96b1c`) predates it and is
   unchanged.
 
+## 2026-05-18 — MASKING-RULE REFINEMENT (pre-results; user-approved)
+
+- First entropy+stratify on the 450-pool: ~50 % `drop_b64_unlocatable`
+  (eligible v1_src=193, v3_all=233). With k=150, S_high∩S_low ≈ 109/150
+  (v1_src) — the top-vs-bottom-quantile contrast was largely destroyed.
+- Diagnosis (data, not guess): the parser `_coerce_to_b64` re-encodes any
+  non-strictly-valid base64 (no padding etc.), so the persisted
+  `content_b64` is a parser artifact, NOT a verbatim substring of
+  `resp.content`. Strict canonical-substring location is therefore both
+  over-strict (drops 50 %) AND subtly wrong (keys payload-token identity
+  to a downstream coercion artifact rather than the model's emitted
+  value). Measured: strict 193/233 of 456; **structural value-region
+  location 456/456 in BOTH variants, neither=0**; seed↔region count
+  exact in 303/305 responses (2 v3_all seeds<regions → drop+counted).
+- **User decision (AskUserQuestion, 2026-05-18): adopt structural
+  value-region location.** It is the more FAITHFUL realisation of
+  METHODS §3's intent ("tokens that emit the payload bytes" = the i-th
+  emitted `content_b64` value's tokens; the parser artifact is
+  downstream and irrelevant to generation entropy). Pre-registration
+  (`4d96b1c`) and the entropy formula / bootstrap are unchanged; no M2
+  number existed when this was decided.
+- Code: `experiment6_entropy.py` `_nth_quoted_value_span` →
+  `_nth_content_b64_value_region` (locate i-th `"content_b64":"…"` JSON
+  region structurally; closing quote = next `"` since base64 has no
+  `"`/`\\`). `payload_token_indices` uses it; `content_b64` retained for
+  the call contract/audit only. Driver sidecar
+  `input_index_in_response` changed from "count of earlier same-canonical
+  inputs" to the seed's POSITIONAL index `i` among parsed inputs (the
+  correct key for region selection). METHODS §3 updated. Tests updated to
+  structural semantics (`test_experiment6_entropy.py` → 27 passed); ruff
+  clean (only the pre-existing line-694 I001 remains, untouched).
+- Pool regenerated so sidecars carry the corrected positional index.
+  Reused `--attempt-offset 600000` ON PURPOSE: run-1's logprob responses
+  are cached under those exact keys, so regeneration is cache-HIT (fast,
+  $0, identical responses). Invariant 5's rationale (don't get stuck
+  replaying cached *failures* after partial progress) does not apply —
+  run 1 completed successfully (reached 450); replay reproduces that
+  success deterministically. Bumping the offset would MISS the cache and
+  waste fresh API calls for no benefit. Logged here as a deliberate,
+  justified interpretation, not a relaxation.
+
 <!-- subsequent entries appended below as work proceeds -->

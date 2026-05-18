@@ -305,18 +305,19 @@ def _write_logprob_sidecars(
     sidecar_dir.mkdir(parents=True, exist_ok=True)
     written = 0
     for i, inp in enumerate(inputs):
-        # input_index_in_response = how many earlier parsed inputs of THIS
-        # response carried the identical content_b64. 0 for the (almost
-        # always) unique case; disambiguates exact-duplicate blobs. The
-        # entropy module locates the occ-th verbatim occurrence of the
-        # quoted base64 value in raw_response.
-        occ = sum(1 for j in range(i) if inputs[j].content_b64 == inp.content_b64)
+        # input_index_in_response = this seed's POSITIONAL index among the
+        # parsed inputs of THIS response (0,1,2,...). The entropy module
+        # maps it to the i-th JSON ``content_b64`` VALUE region located
+        # structurally in raw_response (METHODS §3, 2026-05-18 refinement):
+        # the persisted content_b64 is a parser `_coerce_to_b64` artifact
+        # and is NOT reliably a verbatim substring of the model output, so
+        # the seed↔region mapping must be positional, not string-equality.
         sidecar = {
             "input_id": inp.input_id,
             "variant": cell,
             "content_b64": inp.content_b64,
             "raw_response": resp.content,
-            "input_index_in_response": occ,
+            "input_index_in_response": i,
             "run_id": run_id,
             "sample_index": sample_index,
             "logprobs": raw,

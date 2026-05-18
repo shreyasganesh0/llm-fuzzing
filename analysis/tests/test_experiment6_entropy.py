@@ -183,23 +183,23 @@ def test_boundary_token_straddling_opening_quote_excluded():
 # --------------------------------------------------------------------------- #
 
 
-def test_multi_input_positional_selection_with_shared_prefix():
-    # Three inputs in one response. inputs[0] and inputs[2] have the SAME
-    # base64 value; inputs[1] differs. We must select by occurrence index,
-    # not by first match — selecting input_index_in_response == 2 must land
-    # on the THIRD occurrence even though it equals the first.
-    b64_a = "QUJDRA=="  # shared by inputs 0 and 2
-    b64_b = "WFlaWg=="  # input 1
+def test_multi_input_positional_region_selection():
+    # Structural rule (METHODS §3, 2026-05-18): input_index_in_response is
+    # the seed's POSITIONAL index among parsed inputs and maps to the i-th
+    # `content_b64` JSON value REGION — NOT a string match on content_b64
+    # (which is a parser artifact). Three regions in one response; the
+    # content_b64 argument is irrelevant to selection (pass a dummy).
+    DUMMY = "ignored-by-structural-location"
     tokens = [
         '{"inputs":[{"content_b64":"',
-        "QUJD",  # 1: payload of input 0
-        "RA==",  # 2: payload of input 0
+        "QUJD",  # 1: region 0 payload
+        "RA==",  # 2: region 0 payload
         '","reasoning":"r0"},{"content_b64":"',  # 3
-        "WFla",  # 4: payload of input 1
-        "Wg==",  # 5: payload of input 1
+        "WFla",  # 4: region 1 payload
+        "Wg==",  # 5: region 1 payload
         '","reasoning":"r1"},{"content_b64":"',  # 6
-        "QUJD",  # 7: payload of input 2 (same b64 as input 0)
-        "RA==",  # 8: payload of input 2
+        "QUJD",  # 7: region 2 payload
+        "RA==",  # 8: region 2 payload
         '","reasoning":"r2"}]}',  # 9
     ]
     content = [_record(t) for t in tokens]
@@ -207,14 +207,14 @@ def test_multi_input_positional_selection_with_shared_prefix():
     _ft, spans = reconstruct(content)
     assert _ft == full_text
 
-    # Occurrence 0 of b64_a -> input 0 payload tokens.
-    assert payload_token_indices(full_text, spans, full_text, b64_a, 0) == [1, 2]
-    # b64_b appears once -> occurrence 0.
-    assert payload_token_indices(full_text, spans, full_text, b64_b, 0) == [4, 5]
-    # Occurrence 1 of b64_a -> input 2 payload tokens (positional, not first).
-    assert payload_token_indices(full_text, spans, full_text, b64_a, 1) == [7, 8]
-    # There is no occurrence 2 of b64_a -> unlocatable.
-    assert payload_token_indices(full_text, spans, full_text, b64_a, 2) is None
+    # Seed 0 -> 0th content_b64 region.
+    assert payload_token_indices(full_text, spans, full_text, DUMMY, 0) == [1, 2]
+    # Seed 1 -> 1st region (positional, independent of payload identity).
+    assert payload_token_indices(full_text, spans, full_text, DUMMY, 1) == [4, 5]
+    # Seed 2 -> 2nd region.
+    assert payload_token_indices(full_text, spans, full_text, DUMMY, 2) == [7, 8]
+    # No 4th region -> unlocatable disclosure.
+    assert payload_token_indices(full_text, spans, full_text, DUMMY, 3) is None
 
 
 # --------------------------------------------------------------------------- #
@@ -339,12 +339,15 @@ def test_mean_payload_entropy_reconstruction_mismatch():
 
 
 def test_mean_payload_entropy_b64_unlocatable():
-    # Reconstruction matches, but the content_b64 is not a verbatim quoted
-    # substring of the response (parser would have re-encoded it).
+    # Structural rule: "unlocatable" now means there are fewer than
+    # input_index_in_response + 1 content_b64 regions in the response.
+    # Here there is exactly ONE region but the seed claims positional
+    # index 1 (no 2nd region) -> disclosed drop. (The 2 v3_all
+    # seeds<regions responses in the real pool hit exactly this path.)
     tokens = ['{"inputs":[{"content_b64":"', "QUJD", '"}]}']
     content = [_record(t) for t in tokens]
     full_text = "".join(tokens)
-    sc = _sidecar(content, full_text, "ZZZZ", 0)  # ZZZZ never appears
+    sc = _sidecar(content, full_text, "QUJD", 1)  # asks for region 1; none
     value, status = mean_payload_entropy(sc)
     assert value is None
     assert status == STATUS_DROP_B64_UNLOCATABLE
@@ -386,9 +389,10 @@ def test_per_seed_entropies_aggregates_and_counts(tmp_path):
     sc_bad = _sidecar([_record("AB")], "MISMATCH", "QUJD", 0)
     sc_bad["input_id"] = "bbbbbbbbbbbbbbbb"
 
-    # Sidecar 3: b64 unlocatable -> dropped.
+    # Sidecar 3: unlocatable -> dropped. One region, but the seed claims
+    # positional index 1 (no 2nd content_b64 region) -> structural drop.
     tokens_u = ['{"inputs":[{"content_b64":"', "QUJD", '"}]}']
-    sc_unloc = _sidecar([_record(t) for t in tokens_u], "".join(tokens_u), "ZZZZ", 0)
+    sc_unloc = _sidecar([_record(t) for t in tokens_u], "".join(tokens_u), "QUJD", 1)
     sc_unloc["input_id"] = "cccccccccccccccc"
 
     for name, sc in (
