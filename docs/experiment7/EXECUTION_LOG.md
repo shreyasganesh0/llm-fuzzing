@@ -271,4 +271,31 @@ responses from stage 1:
   abandon, so a cot_strict-style collapse is killed in ~5 no-gain
   attempts / at the yield-ceiling. Offset 705000 (pre-registered).
 
+## 2026-05-18 — self_critique partial collapse; aggressive fail-safe WORKED
+
+- `self_critique` (2× calls): only **v2_src_tests filled 150**
+  (M2=0.467). The other 4 cells censored by the aggressive opt-in
+  abandon (first live use, `UTCF_ABANDON_NOGAIN=5`):
+  - v0_none 121 seeds, reason `nogain_window`, 185 attempts (M2 0.40)
+  - v1_src 95, `nogain_window`, 151 attempts (M2 0.40)
+  - v3_all 54, `nogain_window`, 72 attempts (M2 0.533)
+  - **v4_src_gaps 59, reason `yield_ceiling`** — log: "projected 303
+    attempts to reach 150 (> max 300) at rate 0.496"; abandoned at 117
+    attempts (M2 0.667). The new yield-ceiling guard fired exactly as
+    designed (the true "practically-guaranteed-failure" stop).
+  - `_synthesis_stats.json` written for every cell (final_seeds,
+    reason, no_gain_rate, strategy_calls_per_seed) — always-on artifact
+    confirmed in production.
+- Cost (cost_audit): litellm $15.16 → **$17.74** (+$2.58; grand total
+  $104.00 / 17,272 entries). Headroom to $25 cap ≈ $7.3. 0 budget
+  errors. The fail-safe demonstrably saved spend (censored cells cut at
+  72–185 attempts, not ground to 300).
+- `prompt_chain` (3× calls) is the last stage and shares cot_strict's
+  rigid-multi-call collapse risk near a shrinking cap → run a single
+  fail-safe-BOUNDED probe cell (v2_src_tests, the variant that filled
+  for self_critique) under `UTCF_ABANDON_NOGAIN=5`, offset 710000;
+  worst-case cost is bounded by the 5-window/yield-ceiling (~$0.2). Then
+  surface the probe result + a full-sweep go/no-go before any larger
+  prompt_chain spend.
+
 <!-- subsequent entries appended below as work proceeds -->
