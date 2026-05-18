@@ -210,4 +210,44 @@ responses from stage 1:
   signature (seeds plateau while attempts climb; unique/total ratio),
   not just the runner's parse-failure label.
 
+## 2026-05-18 — Cost fail-safe hardened (user-approved, opt-in)
+
+- Verified the EXISTING fail-safe works: `scripts/_ablation_base.py`
+  20-attempt no-gain sliding window + MAX_ATTEMPTS=300; it DID fire for
+  cot_strict (aborted v0_none@63, v1_src@44, v2_src_tests@132 — not
+  300). Gap: slow (20-window, reset by trickle uniques) + no persisted
+  failure artifact.
+- Implemented (additive, default byte-identical — user-approved option
+  "opt-in tighter+rate, default unchanged + always-on stats"):
+  `abandon_policy()` reads `UTCF_ABANDON_NOGAIN` (unset/blank/invalid/<1
+  → legacy `(20, False, None)`; valid int → tighter no-gain window +
+  yield-ceiling guard; `UTCF_ABANDON_WARMUP` default 30). `_run_cell`
+  now: (a) ALWAYS writes behaviour-neutral `_synthesis_stats.json` into
+  seeds_dir (invisible to all `*.bin` consumers — verified by test);
+  (b) the yield-ceiling guard abandons (reason `yield_ceiling`) when,
+  after warmup, realised unique-seed rate projects > MAX_ATTEMPTS to
+  reach 150 — the true cot_strict-style "lost cause" signal. Dollars
+  NOT computed in-runner (invariant 7); orchestration facts persisted
+  so $ is derivable from the single pricing source.
+- Guard test `scripts/tests/test_abandon_policy.py` (11 passed) pins
+  default==legacy byte-identity + stats-artifact invisibility. Full
+  fast suite **416 passed, 1 skipped**; ruff clean.
+- Post-hoc lost-cause analyzer `analysis/scripts/seed_yield_audit.py`
+  under construction in parallel (offline; flags LOST_CAUSE +
+  est wasted $).
+
+## 2026-05-18 — few_shot stage = VIABLE
+
+- `few_shot` filled 150 on v0_none/v1_src/v2_src_tests/v3_all
+  (v4_src_gaps in progress) with NO early-exit/cap — diversity ratio
+  ~0.80 (vs cot_strict 0.10). Confirms: the exemplar scaffold preserves
+  codestral diversity; the rigid 4-step CoT scaffold is what collapses
+  it. Stage ran under legacy abort behaviour (process predates the
+  abandon-policy edit; legacy == new for unset env anyway).
+- Next: when few_shot completes → stage 2 `self_critique` launched WITH
+  `UTCF_ABANDON_NOGAIN=5` (aggressive opt-in) so a cot_strict-style
+  collapse is abandoned within ~5 no-gain attempts / at the
+  yield-ceiling instead of bleeding ~$1-2. Then the gated cheap
+  prompt_chain probe.
+
 <!-- subsequent entries appended below as work proceeds -->

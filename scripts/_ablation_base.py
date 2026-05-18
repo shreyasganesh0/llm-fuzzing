@@ -44,7 +44,44 @@ SAMPLES_PER_CALL = 1
 MAX_ATTEMPTS_DEFAULT = 300
 MAX_ATTEMPTS_CAPPED = 100    # for models that hit the UF output cap on binary
 SUBPROCESS_TIMEOUT = 45
-CONSEC_FAIL_WINDOW = 20      # early-exit: no seeds in last N batches
+CONSEC_FAIL_WINDOW = 20      # early-exit: no seeds in last N batches (legacy default)
+
+# Opt-in aggressive abandon policy (experiment7 cost protection). DEFAULT
+# (env unset) is byte-identical to the legacy behaviour: no-gain window
+# == CONSEC_FAIL_WINDOW (20), yield-ceiling guard OFF. Setting
+# UTCF_ABANDON_NOGAIN switches on the aggressive policy (tighter window
+# + a yield-ceiling guard that abandons, after a warmup, when the
+# realised unique-seed rate provably cannot reach the target within
+# MAX_ATTEMPTS — the true "lost cause" signal, e.g. cot_strict's
+# diversity collapse). UTCF_ABANDON_WARMUP tunes the warmup (default 30).
+ABANDON_NOGAIN_ENV = "UTCF_ABANDON_NOGAIN"
+ABANDON_WARMUP_ENV = "UTCF_ABANDON_WARMUP"
+DEFAULT_ABANDON_WARMUP = 30
+
+
+def abandon_policy() -> tuple[int, bool, int | None]:
+    """Resolve (no_gain_window, yield_ceiling_enabled, warmup) from env.
+
+    Returns the legacy tuple ``(CONSEC_FAIL_WINDOW, False, None)`` when
+    ``UTCF_ABANDON_NOGAIN`` is unset/blank/invalid — so every prior and
+    non-opt-in experiment keeps byte-identical abort behaviour (the
+    experiment2_1 baselines stay comparable). When set to a valid int it
+    enables the aggressive policy.
+    """
+    raw = os.environ.get(ABANDON_NOGAIN_ENV)
+    if raw is None or not raw.strip():
+        return CONSEC_FAIL_WINDOW, False, None
+    try:
+        window = int(raw)
+    except ValueError:
+        return CONSEC_FAIL_WINDOW, False, None
+    if window < 1:
+        return CONSEC_FAIL_WINDOW, False, None
+    try:
+        warmup = int(os.environ.get(ABANDON_WARMUP_ENV, DEFAULT_ABANDON_WARMUP))
+    except ValueError:
+        warmup = DEFAULT_ABANDON_WARMUP
+    return window, True, max(1, warmup)
 
 LITELLM_URL = "https://api.ai.it.ufl.edu"
 CLAUDE_KEY_PATH = REPO_ROOT / "secrets/claude_key"
@@ -303,6 +340,62 @@ class AblationRunner:
         recent_gains: list[bool] = []
         last_recorded_seeds = self._count_seeds(seeds_dir)
 
+        # Abandon policy. window/yield-ceiling default to the LEGACY
+        # behaviour unless UTCF_ABANDON_NOGAIN is set (see abandon_policy).
+        nogain_window, yield_ceiling_on, warmup = abandon_policy()
+        completed_attempts = 0
+        n_no_gain = 0
+        abandon_reason = "attempts_exhausted"  # overwritten below
+
+        def _write_synthesis_stats(final_seeds: int, reason: str) -> None:
+            """Always-on, behaviour-neutral per-cell yield artifact.
+
+            Written into ``seeds_dir`` as ``_synthesis_stats.json``; it is
+            invisible to every consumer (``_count_seeds`` /
+            ``_subsample_seeds`` / ``measure_gap_coverage`` all filter to
+            ``*.bin``), so this changes no seed count, subsample, metric,
+            or cache. Dollars are intentionally NOT computed here
+            (invariant 7 — the single pricing source is cost_audit /
+            estimate_cost); we persist the orchestration facts
+            (attempts, no-gain rate, calls/seed) so $ is derivable
+            downstream without duplicating the pricing table.
+            """
+            stats = {
+                "target": self.target.name,
+                "model": model,
+                "strategy": strategy.name,
+                "cell": variant.name,
+                "num_seeds_target": self.num_seeds,
+                "final_seeds": final_seeds,
+                "filled": final_seeds >= self.num_seeds,
+                "abandoned": final_seeds < self.num_seeds,
+                "reason": reason,
+                "n_attempts_dispatched": attempt_counter,
+                "n_attempts_completed": completed_attempts,
+                "n_no_gain": n_no_gain,
+                "no_gain_rate": (
+                    n_no_gain / completed_attempts if completed_attempts else 0.0
+                ),
+                "strategy_calls_per_seed": strategy.n_calls_per_seed,
+                "abandon_policy": {
+                    "nogain_window": nogain_window,
+                    "yield_ceiling_enabled": yield_ceiling_on,
+                    "warmup": warmup,
+                    "max_attempts": max_attempts,
+                },
+            }
+            try:
+                (seeds_dir / "_synthesis_stats.json").write_text(
+                    json.dumps(stats, indent=2)
+                )
+            except OSError as exc:  # never let a stats write break a run
+                self.logger.warning(
+                    "synthesis_stats write failed", extra={
+                        "variant": variant.name, "model": model,
+                        "strategy": strategy.name, "error": str(exc)[:200],
+                    },
+                )
+
         def _submit_next(executor, futures):
             nonlocal attempt_counter
             attempt_counter += 1
@@ -337,24 +430,57 @@ class AblationRunner:
                     })
 
                 current = self._count_seeds(seeds_dir)
+                completed_attempts += 1
                 gained = current > last_recorded_seeds
+                if not gained:
+                    n_no_gain += 1
                 last_recorded_seeds = current
                 recent_gains.append(gained)
-                if len(recent_gains) > CONSEC_FAIL_WINDOW:
+                if len(recent_gains) > nogain_window:
                     recent_gains.pop(0)
-                if (len(recent_gains) == CONSEC_FAIL_WINDOW
+                if (len(recent_gains) == nogain_window
                         and not any(recent_gains)):
                     self.logger.warning(
                         "early exit: no seeds in last %d attempts",
-                        CONSEC_FAIL_WINDOW,
+                        nogain_window,
                         extra={"variant": variant.name, "model": model,
                                "strategy": strategy.name,
                                "n_seeds": current, "n_attempts": attempt_counter},
                     )
+                    abandon_reason = "nogain_window"
                     executor.shutdown(wait=False, cancel_futures=True)
                     break
 
+                # Opt-in yield-ceiling guard: after a warmup, if the
+                # realised unique-seed acquisition rate provably cannot
+                # reach the target within MAX_ATTEMPTS, this method is a
+                # lost cause (e.g. cot_strict diversity collapse) — stop
+                # bleeding budget. Disabled by default (env unset), so the
+                # legacy path never reaches this branch.
+                if (yield_ceiling_on and current < self.num_seeds
+                        and attempt_counter >= (warmup or 0)):
+                    rate = current / attempt_counter if attempt_counter else 0.0
+                    projected = (
+                        self.num_seeds / rate if rate > 0 else float("inf")
+                    )
+                    if projected > max_attempts:
+                        self.logger.warning(
+                            "early exit: yield-ceiling — projected %s attempts "
+                            "to reach %d (> max %d) at rate %.3f",
+                            ("inf" if projected == float("inf")
+                             else f"{projected:.0f}"),
+                            self.num_seeds, max_attempts, rate,
+                            extra={"variant": variant.name, "model": model,
+                                   "strategy": strategy.name,
+                                   "n_seeds": current,
+                                   "n_attempts": attempt_counter},
+                        )
+                        abandon_reason = "yield_ceiling"
+                        executor.shutdown(wait=False, cancel_futures=True)
+                        break
+
                 if current >= self.num_seeds:
+                    abandon_reason = "filled"
                     executor.shutdown(wait=False, cancel_futures=True)
                     break
 
@@ -368,8 +494,10 @@ class AblationRunner:
                 extra={"variant": variant.name, "model": model,
                        "strategy": strategy.name,
                        "n_seeds": final_count, "n_attempts": attempt_counter,
-                       "max_attempts": max_attempts},
+                       "max_attempts": max_attempts,
+                       "abandon_reason": abandon_reason},
             )
+            _write_synthesis_stats(final_count, abandon_reason)
             return
 
         self._subsample_seeds(seeds_dir, self.num_seeds)
@@ -379,6 +507,7 @@ class AblationRunner:
             "strategy": strategy.name,
             "n_seeds": final_count, "n_attempts": attempt_counter,
         })
+        _write_synthesis_stats(final_count, "filled")
         assert final_count == self.num_seeds, (
             f"Expected {self.num_seeds} seeds, got {final_count}"
         )
