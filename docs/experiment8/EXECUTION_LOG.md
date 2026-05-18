@@ -70,3 +70,44 @@ set (would implicate neither isolated feature). All outcomes are
 reportable; none is optimized for.
 
 <!-- subsequent entries (approval/freeze, runs, deviations) appended below -->
+
+---
+
+## 2026-05-18 — A RESULTS (predictions FALSIFIED — informative)
+
+Freeze/authorization commit: `44d8104` (pre-reg) → impl `a3dc0cf`.
+Run: RE2×v3_all×codestral × {3 new}, `UTCF_ABANDON_NOGAIN=5`, offset
+800000, `--phase all --skip-existing`. 0 budget errors.
+
+| strategy | seeds | reason | M2 | uniq_regex/realized |
+|---|---|---|---|---|
+| cot_strict_no_examples | 150 | filled (108 att) | **0.800** | 121/150 ≈0.81 |
+| cot_strict_rotated_examples | 150 | filled (95 att) | **0.667** | 119/150 ≈0.79 |
+| cot_strict_no_labels | 50 | nogain_window (60 att) | 0.400 (n=50, CENSORED) | 39/50 |
+| default@v3_all (control, existing) | 150 | — | 0.800 | 134/150 |
+
+**Adjudication vs the frozen pre-registration (all 3 predictions FALSIFIED):**
+- Predicted `no_labels` FILLS≈default → **FALSE**: it CENSORED (50),
+  dominant set = the original example regexes `(?P<x>a+)`/`(a*)*`/
+  `(a{1000,})`.
+- Predicted `no_examples` STILL CENSORED → **FALSE**: it FILLED 150 at
+  M2 **0.800** (= default), diversity 0.81 (≫0.5 recovery threshold),
+  dominant set diversified off the original 5.
+- Predicted `rotated` STILL CENSORED → **FALSE**: FILLED 150, M2 0.667,
+  diversity 0.79.
+
+**Mechanism reading (data-driven, opposite of the pre-reg hypothesis):**
+the **static in-template example list is the proximate cause** of the
+cot_strict diversity collapse, NOT the rigid 4-step labels. Removing the
+list (labels kept) fully recovers (fill + M2 0.800); rotating it
+recovers (0.667); removing the labels while KEEPING the static list
+still collapses onto exactly those example patterns. Labels are neither
+necessary nor sufficient. Reconciles with existing data as an
+(static-example-anchor × reasoning-elaboration-demand) interaction:
+`default` has the list but only informal step *hints* (no mandated
+reasoning field) so it escapes; `cot_strict`/`no_labels` pair the static
+list with a mandated rationale → anchor; `no_examples`/`rotated` break
+the anchor. Diversity-recovery (pre-registered def: fill 150 AND
+uniq-ratio ≥0.5): no_examples ✅, rotated ✅, no_labels ❌. All M2
+deltas ≫ the 0.05 minimum. This is a clean falsification of EXPERIMENT_
+DEEP_DIVE §6.1's "labels are the cause"; directly supports lever **L2**.
