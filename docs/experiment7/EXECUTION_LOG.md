@@ -298,4 +298,27 @@ responses from stage 1:
   surface the probe result + a full-sweep go/no-go before any larger
   prompt_chain spend.
 
+## 2026-05-18 — prompt_chain probe = VIABLE (falsifies my prediction)
+
+- `prompt_chain` v2_src_tests probe (3× calls, aggressive abandon
+  armed): **FILLED 150** (reason `filled`, 190 attempts dispatched,
+  no_gain_rate 0.246), **M2=0.467**. It did NOT collapse like
+  cot_strict — the rigid 3-call scaffold still produced enough seed
+  diversity for codestral on this variant. This **falsifies my
+  pre-registered claim 2** ("prompt_chain UNDERperforms / collapses at
+  high-context"); honest negative on my prediction, recorded as-is
+  (the pre-registration declared all outcomes admissible).
+- Cost: litellm $17.74 → **$18.37** (+$0.63 for the single 3× cell).
+  Headroom to $25 ≈ **$6.6** (re-price; proxy internal counter opaque).
+  0 budget errors. The fail-safe was armed but not needed (cell filled).
+- Decision surfaced to the user (gated): the remaining 4 prompt_chain
+  cells ≈ +$2.5–$4 (3×; some may fill, some may abandon under the
+  fail-safe), landing ~$21–22 re-price — within ~$3 of a hard,
+  opaque, mid-run-killing cap. The headline finding (strategy
+  *reliability* dominates: default/few_shot viable; cot_strict
+  diversity-collapses; self_critique mostly collapses) is already in
+  hand; the per-cell pre-registration + CENSORED handling make a
+  partial-but-honest prompt_chain result fully valid. Awaiting the
+  user's spend call before any further prompt_chain generation.
+
 <!-- subsequent entries appended below as work proceeds -->
