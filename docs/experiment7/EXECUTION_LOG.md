@@ -321,4 +321,28 @@ responses from stage 1:
   partial-but-honest prompt_chain result fully valid. Awaiting the
   user's spend call before any further prompt_chain generation.
 
-<!-- subsequent entries appended below as work proceeds -->
+## 2026-05-18 — experiment7 phase 1 COMPLETE (results observed)
+
+- prompt_chain 2-cell subset: v0_none 146 (nogain_window @196, M2 0.533),
+  **v3_all 6 seeds (nogain_window @14 — collapsed instantly, +$0.26 for
+  both)**, v2_src_tests 150 (filled, M2 0.467). cot_strict partial dirs
+  scored zero-proxy → CENSORED with true n (18/14/32/124; v4 n=0
+  MISSING). self_critique CENSORED cells already had partial-corpus M2.
+- `experiment7_rank` (25 cells, 12 rankable) + `seed_yield_audit` run.
+  **Headline: no strategy beats `default` at any variant** (no
+  Holm-significant contrast; Friedman n.s. @v2 p=0.147; not computable
+  elsewhere because most non-default cells censored). Dominant effect =
+  strategy *reliability*: default/few_shot fill 150 everywhere;
+  cot_strict collapses everywhere; self_critique fills 1/5; prompt_chain
+  fills 2/5 (collapses v3_all). Full table + adjudication vs `5b96f61`
+  in RESULTS.md (claim "some strategy beats default" FALSIFIED;
+  strategy×variant interaction SUPPORTED but via fillability).
+- Cost (cost_audit): litellm $14.39 → **$18.63** (≈$4.2 total exp7);
+  **$25 cap never hit**, 0 budget errors; the opt-in fail-safe
+  demonstrably saved spend (prompt_chain@v3_all cut at 14 attempts;
+  self_critique@v4 stopped by yield-ceiling). seed_yield_audit est.
+  wasted ≈ $0.27.
+- Phase-2 (harfbuzz) trigger evaluated: RE2 yields a clear negative/
+  characterization result → recommendation NOT to spend on a harfbuzz
+  strategy sweep on this evidence (separate pre-registration if ever
+  pursued). experiment7 phase 1 COMPLETE; stopping criterion satisfied.

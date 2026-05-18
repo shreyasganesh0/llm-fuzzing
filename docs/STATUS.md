@@ -29,8 +29,8 @@ naming scheme in `experiment{1,2,3}.md`:
 On-disk fixture and results paths (e.g. `dataset/fixtures/re2_ab/`,
 `results/ablation_re2_v2/`) are unchanged — the renaming is documentation-only.
 
-**Last updated:** 2026-05-18 — experiment6 (ESSS) landed; see
-`docs/experiment6/RESULTS.md`.
+**Last updated:** 2026-05-18 — experiment6 (ESSS) + experiment7 (SVA)
+landed; see `docs/experiment{6,7}/RESULTS.md` and `docs/EXPERIMENTS.md`.
 
 ---
 
@@ -407,6 +407,25 @@ pair.
 
 ## 11. Changelog of this doc
 
+- **2026-05-18** — **experiment7 (SVA — Strategy-as-Variant Ablation)**
+  landed on branch `experiment7`. RE2 × codestral-22b × 5 variants × 5
+  strategies, pre-registered (`5b96f61`) before scoring, staged
+  cheapest-first under a $25-proxy-cap cost gate. **Result: no strategy
+  beats `default` at any variant** (no Holm-significant contrast;
+  Friedman n.s.); the dominant effect is strategy *reliability* —
+  `default`/`few_shot` fill 150 everywhere, `cot_strict` mode-collapses
+  (142 unique < 150) everywhere, `self_critique` fills 1/5,
+  `prompt_chain` 2/5 (collapses at `v3_all`). Falsifies "some strategy
+  beats default"; supports the strategy×variant interaction (via
+  fillability). Added an **opt-in aggressive abandon fail-safe** to
+  `scripts/_ablation_base.py` (`UTCF_ABANDON_NOGAIN` + yield-ceiling;
+  default byte-identical, regression-pinned) and a lost-cause auditor
+  `analysis/scripts/seed_yield_audit.py`. Total spend ≈ $4.2; $25 cap
+  never hit. Detail: `docs/experiment7/{RESULTS,METHODS,MANIFEST,
+  EXECUTION_LOG}.md`, `docs/EXPERIMENTS.md`. Verify: `.venv/bin/pytest
+  -q` (all green incl. abandon-policy + experiment7_rank +
+  seed_yield_audit suites); `python -m analysis.scripts.experiment7_rank
+  --target re2 --model codestral-22b ...` (gitignored output).
 - **2026-05-18** — **experiment6 (ESSS — Entropy-Stratified Seed
   Selection)** landed on branch `experiment6`. Tests whether per-seed
   mean payload entropy predicts which seeds carry M2, on harfbuzz /

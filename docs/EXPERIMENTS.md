@@ -153,7 +153,7 @@ detokeniser; strict→structural payload masking, user-approved) are
 logged in `docs/experiment6/EXECUTION_LOG.md`; the pre-registration
 predates and is unchanged by both.
 
-## 7. experiment7 — Strategy-as-Variant Ablation (SVA) — IN PROGRESS
+## 7. experiment7 — Strategy-as-Variant Ablation (SVA) — COMPLETE (phase 1, RE2)
 
 - **Question.** Treating prompting *strategy* as an axis next to
   *variant*: which `(variant, strategy)` cell maximizes M2/M1 on
@@ -165,13 +165,20 @@ predates and is unchanged by both.
   `{v0_none,v1_src,v2_src_tests,v3_all,v4_src_gaps} ×
   {default,cot_strict,few_shot,self_critique,prompt_chain}`, single
   150-seed draw + bootstrap + Friedman/Nemenyi. Branch `experiment7`.
-- **Status.** Pre-registered (commit `5b96f61`, 2026-05-18T01:02:14Z,
-  before any scoring). Cost-gated (`estimate_cost.py`: ~$8.6 typical
-  for 20 non-default cells vs the $25 proxy cap; `default` cells = $0,
-  cache hits). Executing **staged cheapest-first**: stage 1
-  `cot_strict,few_shot` (offset 700000) → stage 2 `self_critique`
-  (705000) → stage 3 `prompt_chain` (710000), `--skip-existing`,
-  monitored for `400 Budget exceeded`.
+- **Result (frozen; `docs/experiment7/RESULTS.md`).** Pre-registered
+  `5b96f61` before scoring; staged cheapest-first under the $25-cap
+  gate. **No strategy beats `default` at any variant** (no
+  Holm-significant contrast; Friedman n.s. @v2 p=0.147, not computable
+  elsewhere). Dominant effect = strategy **reliability**:
+  `default`/`few_shot` fill 150 on all 5 variants; `cot_strict`
+  mode-collapses (5 regexes ≈60% of output, 142 unique < 150) at every
+  variant; `self_critique` fills 1/5; `prompt_chain` fills 2/5
+  (collapses at high-context `v3_all`, 6 seeds). Best cell:
+  `default @ v3_all` M2 **0.800**. Pre-registered "some strategy beats
+  default" **FALSIFIED**; strategy×variant interaction **SUPPORTED** but
+  via fillability, not M2-of-filled. Total spend ≈ $4.2; $25 cap never
+  hit (the opt-in fail-safe cut collapsed cells early — e.g.
+  `prompt_chain@v3_all` at 14 attempts).
 - **Replicate.** Exact commands in `docs/experiment7/METHODS.md §7`.
   Uses the UNMODIFIED `scripts/run_ablation_re2.py`; non-default cells
   write under `results/ablation_re2_v2/<strategy>/m{1,2}/...` (disjoint
@@ -184,9 +191,12 @@ predates and is unchanged by both.
 | Action | Path | Note |
 |---|---|---|
 | Added | `docs/experiment7/{MANIFEST.json,METHODS.md,EXECUTION_LOG.md,RESULTS.md}` | replication docs + pre-registration + cost-gate record |
-| Added (in progress) | `analysis/scripts/experiment7_rank.py` + `analysis/tests/test_experiment7_rank.py` | ranking aggregator (Friedman/Nemenyi, bootstrap CIs, Holm) — built because the existing `ablation_summary.py` is pinned to the invalidated `experiment2_0` path |
-| Modified | `docs/STATUS.md`, this file | index/changelog |
-| Untouched (by design) | `scripts/run_ablation_re2.py`, `core/*`, `analysis/metrics/*`, `analysis/scripts/{measure_gap_coverage,freeze_target_branches}.py` | reuses the existing orchestrator + metric unchanged; **no logprobs requested** ⇒ every cache key byte-identical to pre-experiment6 |
+| Added | `analysis/scripts/experiment7_rank.py` + `analysis/tests/test_experiment7_rank.py` | ranking aggregator (M2/M1 table, bootstrap CIs, Friedman/Nemenyi/CD, Holm Wilcoxon) — built because `ablation_summary.py` is pinned to the invalidated `experiment2_0` path |
+| Added | `analysis/scripts/seed_yield_audit.py` + `analysis/tests/test_seed_yield_audit.py` | offline lost-cause auditor: per-cell VIABLE/MARGINAL/LOST_CAUSE + est. wasted $ + ABANDON recommendation |
+| Added | `scripts/tests/test_abandon_policy.py` | pins default==legacy byte-identity + stats-artifact `*.bin`-invisibility |
+| Modified | `scripts/_ablation_base.py` | **additive, default byte-identical**: `abandon_policy()` (opt-in `UTCF_ABANDON_NOGAIN`/`UTCF_ABANDON_WARMUP` → tighter no-gain window + yield-ceiling guard) + always-on behaviour-neutral `_synthesis_stats.json`. Env unset ⇒ legacy 20-window, no yield-ceiling (regression-pinned) |
+| Modified | `docs/STATUS.md`, `docs/EXPERIMENTS.md` | index/changelog |
+| Untouched (by design) | `scripts/run_ablation_re2.py`, `core/*`, `analysis/metrics/*`, `analysis/scripts/{measure_gap_coverage,freeze_target_branches}.py`, `synthesis/scripts/parse_synthesis.py` | reuses the orchestrator + metric unchanged; **no logprobs requested** ⇒ every cache key byte-identical; M2 filter/frozen set untouched |
 
 Commit trail (branch `experiment7`, base `experiment6` HEAD `7627ad8`):
 `5b96f61` (pre-registration) → … (appended as stages complete; see

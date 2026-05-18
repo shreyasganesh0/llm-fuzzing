@@ -2,7 +2,7 @@
   "experiment": "experiment7",
   "codename": "Strategy-as-Variant Ablation (SVA)",
   "one_line": "Treat the prompting STRATEGY as an ablation axis alongside the context VARIANT and rank every (variant x strategy) cell by M2/M1 on RE2/codestral-22b, testing whether strategy beats default and whether strategy interacts with variant.",
-  "status": "preregistered_phase1_pending",
+  "status": "phase1_complete_global_null_default_unbeaten",
   "pinned_at": {
     "date_utc": "2026-05-18",
     "timestamp_utc": "2026-05-18T01:02:14Z",
