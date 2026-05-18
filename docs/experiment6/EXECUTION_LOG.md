@@ -269,4 +269,28 @@ variants are reported honestly, not aggregated into a single verdict.
   waste fresh API calls for no benefit. Logged here as a deliberate,
   justified interpretation, not a relaxation.
 
+## 2026-05-18 — Pool regenerated; instrument now healthy (pre-M2 diagnostics)
+
+- `rm -rf` of stale experiment6 outputs was denied by the user; instead
+  the gitignored dirs were **moved** to `/tmp/exp6_stale/` (reversible),
+  `results/experiment6/stage0_probe.json` preserved.
+- Regeneration via the wrapper (`--attempt-offset 600000`, cache-HIT)
+  completed in ~30 s: v1_src 450 seeds / 456 sidecars (163 attempts),
+  v3_all 450 / 461 (171). Sidecars now carry the corrected positional
+  `input_index_in_response` (verified: multi-seed responses show
+  `[0,1,2]`).
+- entropy + stratify (offline) — instrument-health diagnostics, NOT the
+  pre-registered M2 outcome:
+  - v1_src: n_ok=456, **0 drops**, entropy bits min0.100/med1.615/max3.453.
+  - v3_all: n_ok=461, **0 drops**, entropy bits min0.038/med1.434/max2.992.
+  - Disjoint strata restored: **S_high ∩ S_low = 0** for both variants.
+    Mean payload entropy S_high / S_random / S_low —
+    v1_src: 2.344 / 1.620 / 0.676 bits; v3_all: 2.199 / 1.376 / 0.617.
+    S_random partially overlaps both (v1_src 58/45; v3_all 46/54), as
+    expected for an independent uniform draw. The designed top-vs-bottom
+    quantile contrast is intact.
+- M2 scoring (unmodified `M2HardBranchMetric` → real `seed_replay` +
+  LLVM on pool + 3 subsamples/variant, consistency anchor, 10k
+  bootstrap) launched; results pending → RESULTS.md.
+
 <!-- subsequent entries appended below as work proceeds -->
