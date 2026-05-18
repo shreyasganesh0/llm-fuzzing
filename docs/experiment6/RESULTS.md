@@ -1,125 +1,92 @@
-# experiment6 — RESULTS
+# experiment6 — RESULTS (Follow-up A: cot_strict mechanism isolation)
 
-**Status: COMPLETE.** Stage 0 = FULL; Stage 1 executed end-to-end.
-Pre-registration: `EXECUTION_LOG.md`, committed `4d96b1c`
-(2026-05-17T23:52:23Z) **before** any M2 scoring. M2 scored by the
-UNMODIFIED `analysis.metrics.M2HardBranchMetric` against the identical
-frozen 50-branch set used by `experiment2_1`. All subsample consistency
-anchors passed (`consistency_ok = true` for S_random/S_high/S_low in both
-variants — the pool hit-matrix union equals each subsample's standalone
-`union_frac_targets_hit`).
+**Status: COMPLETE.** Pre-registered & frozen at commit `44d8104`
+(2026-05-18) **before** the strategies/templates existed and before any
+run. Impl `a3dc0cf`; run RE2×v3_all×codestral-22b×{3 new strategies},
+`UTCF_ABANDON_NOGAIN=5`, offset 800000, unmodified M1/M2 pipeline,
+0 budget errors.
 
-## Pool & stratification (instrument health)
+## Result table (vs the two existing, non-regenerated controls)
 
-| Variant | Pool | Eligible (entropy-locatable) | Drops | S_high∩S_low | Mean payload entropy (bits) S_high / S_random / S_low |
-|---|---:|---:|---:|---:|---|
-| `v1_src` | 450 | 456 | 0 | 0 | 2.344 / 1.620 / 0.676 |
-| `v3_all` | 450 | 461 | 0 | 0 | 2.199 / 1.376 / 0.617 |
+| strategy | seeds | fill reason | M2 | uniq_regex / realized | diversity-recovery* |
+|---|---|---|---:|---|---|
+| `cot_strict` (exp5 ref) | 124 | CENSORED | 0.533† | — (142 unique total < 150) | ❌ |
+| **`cot_strict_no_examples`** | **150** | filled (108 att) | **0.800** | 121/150 ≈ **0.81** | ✅ |
+| **`cot_strict_rotated_examples`** | **150** | filled (95 att) | **0.667** | 119/150 ≈ **0.79** | ✅ |
+| `cot_strict_no_labels` | 50 | CENSORED (nogain) | 0.400† | 39/50 | ❌ |
+| `default` (control, existing) | 150 | — | 0.800 | 134/150 | ✅ |
 
-Structural value-region masking located 100 % of payloads (0 drops);
-S_high and S_low are fully disjoint with a large entropy separation; the
-top-vs-bottom-quantile contrast is intact.
+\* pre-registered def: fills 150 AND unique-content ratio ≥ 0.50
+(`cot_strict` reference = 0.103). † CENSORED M2 (n<150) is corpus-size-
+dependent and NOT comparable to a 150 cell — shown for audit only.
 
-## M2 table (slices.all.union_frac_targets_hit; exactly 150 seeds each)
+## Top-5 realized-regex histograms (the key §6.1-style diagnostic)
 
-| Variant | M2(S_random) | M2(S_high) | M2(S_low) | experiment2_1 baseline |
-|---|---:|---:|---:|---:|
-| `v1_src` | 0.26 | **0.38** | **0.46** | 0.46 |
-| `v3_all` | 0.26 | **0.26** | **0.50** | 0.26 |
+- `cot_strict` (exp5, reference): collapse onto `(?P<x>a+)` / `(a*)*` /
+  `\p{Greek}+` / `a{1000,}` / `[^a-zA-Z0-9]` — **byte-identical to the
+  in-template example list**.
+- `cot_strict_no_examples`: `(a)`, `(?P<A>expr)`, `(a)(b)`, `a|b`,
+  `(?P<name>` — each only ×3; **diversified off the original 5**.
+- `cot_strict_rotated_examples`: `(a)`, `(a)*`, `(?P<name>a+)`,
+  `((a*)*)` — each ×3; diversified.
+- `cot_strict_no_labels`: `(?P<x>a+)`×3, `(a*)*`×3, `(a{1000,})`×2,
+  `[^\p{Greek}]+`×2 — **still the original example-list patterns**.
+- `default` control: `\p{Greek}+`, `((a*)*)`, `(?P<x>a+)` — each ≤3;
+  diverse.
 
-## Pre-registered differences + bootstrap 95 % CIs (n=10000, RNG 42)
+## Adjudication vs the frozen pre-registration — **ALL 3 PREDICTIONS FALSIFIED**
 
-| Variant | Δ_hr = M2(S_high)−M2(S_random) | 95 % CI | Δ_hl = M2(S_high)−M2(S_low) | 95 % CI |
-|---|---:|---|---:|---|
-| `v1_src` | **+0.12** | [−0.06, +0.26] | **−0.08** | [−0.30, +0.20] |
-| `v3_all` | **0.00** | [−0.10, +0.14] | **−0.24** | [−0.34, +0.04] |
+The pre-registered (and EXPERIMENT_DEEP_DIVE §6.1) hypothesis was "the
+rigid 4-step labels, not the example list, cause the collapse." Every
+directional prediction was wrong:
 
-## Interpretation vs the pre-registered prediction
+| pre-registered prediction | outcome |
+|---|---|
+| `no_labels` FILLS ≈ default | **FALSE** — CENSORED at 50; collapsed onto the example regexes |
+| `no_examples` STILL CENSORED | **FALSE** — FILLED 150, M2 0.800 (= default), diversity recovered |
+| `rotated_examples` STILL CENSORED | **FALSE** — FILLED 150, M2 0.667, diversity recovered |
 
-**Pre-registered prediction:** `Δ_hr > 0` and `Δ_hl > 0` for *both*
-variants (higher per-seed payload entropy → more M2 hard branches).
-**Falsifier:** for a variant, falsified if *either* the 95 % CI contains
-0 *or* the point-estimate sign is negative.
+The pre-registered falsifier clause "(b) `cot_strict_no_examples` DOES
+fill 150 and recovers diversity → contradicts 'labels are the cause'"
+fired explicitly.
 
-**Outcome: the prediction is FALSIFIED for both variants, on all four
-differences, and the data leans toward the explicitly pre-registered
-*competing* hypothesis (lower payload entropy carries more M2).**
+## Mechanism reading (data-driven; opposite of the prior hypothesis)
 
-- **Δ_hr (high vs random) is null in both variants.** v1_src +0.12 with
-  CI [−0.06, +0.26] (contains 0); v3_all exactly 0.00 with CI
-  [−0.10, +0.14] (contains 0). High-entropy selection is **not** better
-  than a uniform-random 150-seed draw. Falsified by the CI-contains-0
-  clause in both.
-- **Δ_hl (high vs low) is negative in both variants** — the *opposite*
-  of the predicted sign. v1_src −0.08 (CI [−0.30, +0.20], contains 0);
-  v3_all **−0.24** (CI [−0.34, +0.04], whose mass sits almost entirely
-  below zero and only just touches 0 at the +0.04 edge). The
-  bottom-entropy subsample `S_low` has the **highest** M2 in both cells:
-  v1_src S_low 0.46 ≥ S_high 0.38 ≥ S_random 0.26; v3_all S_low **0.50**
-  ≫ S_high 0.26 = S_random 0.26.
-- The effect is strongest and nearly conventionally-significant for
-  **`v3_all`**: selecting the 150 lowest-payload-entropy seeds raised M2
-  from the `experiment2_1` published baseline 0.26 to **0.50**, while the
-  high-entropy and random subsamples stayed at 0.26. This corroborates
-  the competing mechanism flagged in the pre-registration verbatim:
-  *"harfbuzz fonts need low-entropy well-formed structural headers to
-  parse at all, so the sign could plausibly reverse."* A confident
-  (low-entropy) base64-of-font generation is more likely to be a
-  well-formed font that survives early parsing and reaches the
-  hard-branch set; a high-entropy generation is more likely a garbled
-  blob rejected before it gets deep.
+**The static, fixed in-template example list is the proximate cause of
+the `cot_strict` diversity collapse — not the rigid 4-step labels.**
+Removing the list (labels kept) fully recovers fill *and* M2 to
+default's 0.800; rotating it recovers (0.667); removing the labels while
+keeping the static list still collapses onto exactly those example
+patterns. Labels are **neither necessary nor sufficient**.
 
-**Bottom line.** Within a (harfbuzz × variant × codestral-22b ×
-default) cell, the 150 seeds are *not* equally responsible for M2 — per-
-seed mean payload entropy **does** predict which seeds carry the score,
-but in the **inverse** direction to the pre-registered hypothesis: it is
-the **low**-entropy seeds, not the high-entropy ones, that carry M2 (and
-markedly so for `v3_all`). All three scientifically-informative outcomes
-were declared admissible in advance; this is the inverse outcome,
-reported as-is. No `Δ_hr`/`Δ_hl` reaches a CI strictly excluding 0, so
-no claim is made at conventional significance; the consistent negative
-`Δ_hl` and the v3_all magnitude are the substantive signal.
+Reconciles with all prior data as a **(static-example-anchor ×
+mandated-reasoning-elaboration) interaction**: `default` shows the same
+list but only informal numbered *hints* (no mandated multi-clause
+reasoning field) and escapes; `cot_strict` and `cot_strict_no_labels`
+pair the static list with a mandated rationale field → the model leans
+on the anchor and mode-collapses; `no_examples` / `rotated` break the
+anchor → diversity returns. This cleanly **falsifies EXPERIMENT_DEEP_DIVE
+§6.1's "labels are the cause"** and directly **supports lever L2**
+(remove/rotate the in-template example list) — and shows the cot_strict
+*scaffold itself* is not harmful on RE2 once the anchor is removed
+(`no_examples` ties `default` at M2 0.800).
 
-## Deviations from the original plan (every one, explicitly)
+## Deviations / notes
 
-1. **Wrapper instead of `run_ablation_harfbuzz.py` verbatim**
-   (`scripts/run_experiment6_harfbuzz.py`): unmodified `AblationRunner`
-   with `dataclasses.replace`'d output roots, to protect the canonical
-   `experiment2_1` codestral cells. M2 fixtures unchanged. User-approved.
-2. **Additive env-gated `logprobs` in `core/llm_client.py` +
-   `generate_ablation_inputs.py`**: required to obtain per-token
-   logprobs through the existing path; default-off, cache-key byte-
-   identical for all non-logprob callers (regression-tested,
-   `tests/test_llm_client_logprob_backcompat.py`). User-approved.
-3. **Tokenizer detokenisation refined twice before any entropy/M2
-   existed** — Stage-0 SentencePiece note, then the real-data
-   byte-fallback/special-token fix (reconstruction was 0 %→100 %
-   faithful). Pre-results instrument corrections; pre-registration
-   unchanged.
-4. **Payload masking switched from strict canonical-substring to
-   structural `content_b64` value-region location** (the persisted
-   `content_b64` is a parser `_coerce_to_b64` artifact; strict matching
-   dropped ~50 % and was keyed off a downstream artifact). Recovered
-   456/461 of 456/461 (0 drops); restored disjoint strata. **Explicitly
-   surfaced and user-approved (AskUserQuestion, 2026-05-18).**
-   Pre-registration (`4d96b1c`) and the entropy formula / bootstrap were
-   unchanged.
-5. **Pool regenerated once** (cache-HIT, `--attempt-offset 600000`
-   reused on purpose to replay cached successes deterministically) so
-   sidecars carried the corrected positional `input_index_in_response`.
-   Reasoning logged; invariant-5's anti-stuck-on-failure rationale does
-   not apply (run 1 succeeded). Stale dirs **moved** (not deleted, after
-   an `rm -rf` denial) to `/tmp/exp6_stale/`.
-6. **Cost estimate ran AFTER generation, not before.** The user asked
-   for an `estimate_cost.py` projection prior to generation; it was
-   surfaced only after the pool already existed. Disclosed in the
-   conversation. Actual cost (cost_audit.py): experiment6 added 342
-   cache entries (~$0.55 codestral accounting); cumulative litellm
-   re-price $14.39 vs the $25 proxy cap; no `400 Budget exceeded`
-   occurred. No remaining step makes any LLM/proxy call.
+- Pre-registration falsified — reported as-is (the design declared all
+  outcomes admissible; this is the high-information outcome). The prior
+  EXPERIMENT_DEEP_DIVE §6.1 inference (from default-vs-cot_strict alone)
+  was wrong because it did not account for `default`'s lack of a
+  mandated reasoning field.
+- CENSORED M2 values are non-comparable (n<150) and excluded from the
+  primary claims; the diversity-recovery flag + the realized-regex
+  histograms are the comparable evidence.
+- Cost: covered by the experiment6/9 cost gate (estimate $1.52 ≪ $5
+  abort threshold); litellm cumulative ~$19.1 of the $25 cap; 0 budget
+  errors; the yield-ceiling fail-safe aborted `no_labels` at 60 attempts.
 
 ## Stopping
 
-Per the stopping criterion, no further analyses, subsample strategies,
-or models were run after the primary result. Stage 2 mechanism analysis
-remains explicitly out of scope.
+experiment6 complete: 3-row table, histograms vs the default control,
+and the mechanism reading adjudicated against the frozen pre-reg are all
+recorded. No extra variants/models/targets run.

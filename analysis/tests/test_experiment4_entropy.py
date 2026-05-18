@@ -1,4 +1,4 @@
-"""Unit tests for analysis/scripts/experiment6_entropy.py.
+"""Unit tests for analysis/scripts/experiment4_entropy.py.
 
 All fixtures are hand-built synthetic token streams — no network, no LLM,
 no LLVM. The goal is to pin the load-bearing METHODS.md §3 masking rule
@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 import math
 
-from analysis.scripts.experiment6_entropy import (
+from analysis.scripts.experiment4_entropy import (
     STATUS_DROP_B64_UNLOCATABLE,
     STATUS_DROP_NO_PAYLOAD_TOKENS,
     STATUS_DROP_RECONSTRUCTION_MISMATCH,

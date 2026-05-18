@@ -1,13 +1,13 @@
-"""experiment6 — FOLLOW-UP C: per-seed mechanism check (NO new LLM calls).
+"""experiment4 — FOLLOW-UP C: per-seed mechanism check (NO new LLM calls).
 
-Implements ``docs/experiment6/FOLLOWUP.md`` EXACTLY. The pre-registration in
+Implements ``docs/experiment4/FOLLOWUP.md`` EXACTLY. The pre-registration in
 that doc is FROZEN (surrogate §3, predictions §5, interpretation rule §5);
 this module does not redraw any of it. Everything here is offline plumbing
-over experiment6's already-on-disk over-generated pools — there is zero LLM
+over experiment4's already-on-disk over-generated pools — there is zero LLM
 cost. The per-seed M1 step does drive the unmodified LLVM coverage pipeline
 (real CPU compute), but touches no research invariant.
 
-What this answers (FOLLOWUP.md §1): experiment6 found, against its
+What this answers (FOLLOWUP.md §1): experiment4 found, against its
 pre-registered prediction, that the LOW-entropy subsample carried the M2
 union. That is a *union-level* result; the *per-seed* mechanism ("low-entropy
 seeds pass early parsing and reach deep code") was untested. This module
@@ -16,24 +16,24 @@ tests it per seed using only existing data.
 Inputs (FOLLOWUP.md §2, all verified on disk; NO regeneration):
 
 - Per-seed mean payload entropy:
-  ``results/experiment6/{v1_src,v3_all}/entropies.json``
+  ``results/experiment4/{v1_src,v3_all}/entropies.json``
   (schema ``{"entropies": {input_id: float}, ...}``).
 - Per-seed × 50-branch hit matrix:
-  ``results/experiment6/{v1_src,v3_all}/{v1_src,v3_all}/pool/gap_hits.jsonl``
+  ``results/experiment4/{v1_src,v3_all}/{v1_src,v3_all}/pool/gap_hits.jsonl``
   (one JSON line per ``(seed_id, target_idx)``; ``seed_id`` carries a
   ``seed_`` prefix that ``input_id`` in entropies.json does not — they are
   aligned by stripping that prefix). Used for DEEP-reach.
 - Logprob sidecars:
-  ``synthesis/results/experiment6/logprobs/harfbuzz/ablation/{v}/codestral-22b/<input_id>.json``
+  ``synthesis/results/experiment4/logprobs/harfbuzz/ablation/{v}/codestral-22b/<input_id>.json``
   used for PREFIX entropy (mean per-token entropy over only the FIRST 8
-  payload tokens), reusing ``experiment6_entropy``'s masking/entropy
+  payload tokens), reusing ``experiment4_entropy``'s masking/entropy
   internals verbatim (imported, never copied), with the SAME drop rules.
 - Per-seed M1: NOT on disk. Computed here with the unmodified coverage
   pipeline (replay ONE pool seed through ``TARGETS['harfbuzz']``'s coverage
   binary, ``llvm-profdata merge`` + ``llvm-cov export``, count distinct
   covered edges using the same edge definition as the official
   ``synthesis.scripts.measure_coverage`` M1 metric). Cached to
-  ``results/experiment6/followup/per_seed_m1_<v>.json`` so a rerun is fast;
+  ``results/experiment4/followup/per_seed_m1_<v>.json`` so a rerun is fast;
   the replay pass is resumable and skips (and counts) any seed that
   times out / errors.
 
@@ -44,8 +44,8 @@ counts on the 50 frozen targets: EARLY=13, DEEP=37 (total 50).
 
 CLI::
 
-    python -m analysis.scripts.experiment6_followup \
-        --pools v1_src,v3_all --out-dir results/experiment6/followup
+    python -m analysis.scripts.experiment4_followup \
+        --pools v1_src,v3_all --out-dir results/experiment4/followup
     # add --skip-m1-replay to reuse cached per_seed_m1_*.json (or skip the
     # replay entirely) for a fast structural dry-run.
 
@@ -66,7 +66,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from analysis.scripts.experiment6_entropy import (  # noqa: E402
+from analysis.scripts.experiment4_entropy import (  # noqa: E402
     STATUS_DROP_B64_UNLOCATABLE,
     STATUS_DROP_NO_PAYLOAD_TOKENS,
     STATUS_DROP_RECONSTRUCTION_MISMATCH,
@@ -82,7 +82,7 @@ from core.targets import TARGETS  # noqa: E402
 # Constants
 # ---------------------------------------------------------------------------
 
-# experiment6 used codestral-22b only (FOLLOWUP.md §2).
+# experiment4 used codestral-22b only (FOLLOWUP.md §2).
 MODEL = "codestral-22b"
 
 # Prefix entropy = mean per-token entropy over only the FIRST 8 payload
@@ -188,22 +188,22 @@ def seed_deep_reach(gap_hits_path: Path, deep_keys: set[str]) -> dict[str, bool]
 
 
 # ---------------------------------------------------------------------------
-# Prefix entropy (first-8-payload-token mean), reusing experiment6_entropy
+# Prefix entropy (first-8-payload-token mean), reusing experiment4_entropy
 # ---------------------------------------------------------------------------
 
 
 def prefix_entropy(sidecar: dict) -> tuple[float | None, str]:
     """Mean entropy over the FIRST ``PREFIX_TOKEN_COUNT`` payload tokens.
 
-    Reuses ``experiment6_entropy`` verbatim (reconstruct / payload masking /
+    Reuses ``experiment4_entropy`` verbatim (reconstruct / payload masking /
     per-token top-K-head Shannon entropy) and applies the IDENTICAL drop
-    rules as ``experiment6_entropy.mean_payload_entropy``:
+    rules as ``experiment4_entropy.mean_payload_entropy``:
 
     - reconstructed text != raw_response → ``drop_reconstruction_mismatch``
     - payload region unlocatable          → ``drop_b64_unlocatable``
     - no payload tokens after masking     → ``drop_no_payload_tokens``
     - a prefix payload token with an unusable head (None) → the whole seed
-      drops (``drop_no_payload_tokens``), mirroring experiment6_entropy's
+      drops (``drop_no_payload_tokens``), mirroring experiment4_entropy's
       "do not silently average over a shrunk token set" rule.
 
     The ONLY difference from the full-payload statistic is that the mean is
@@ -250,7 +250,7 @@ def prefix_entropy(sidecar: dict) -> tuple[float | None, str]:
 def per_seed_prefix_entropies(sidecar_dir: Path) -> dict:
     """Aggregate prefix entropy over every ``*.json`` sidecar in a dir.
 
-    Mirrors ``experiment6_entropy.per_seed_entropies`` shape so callers /
+    Mirrors ``experiment4_entropy.per_seed_entropies`` shape so callers /
     tests can treat both the same way::
 
         {"entropies": {input_id: float}, "dropped": {input_id: status},
@@ -532,7 +532,7 @@ def interpret_pool(
 ) -> dict:
     """Apply FOLLOWUP.md §5's frozen 3-way interpretation rule for one pool.
 
-    The rule keys off FULL mean payload entropy (the experiment6 statistic);
+    The rule keys off FULL mean payload entropy (the experiment4 statistic);
     prefix entropy is reported alongside as the separation comparison
     requested in §5 ("prefix separates deep-reach at least as well").
 
@@ -594,17 +594,17 @@ def analyze_pool(
     targets_path = Path(target.m2_targets_path)
     deep_keys, surrogate_counts = load_deep_target_keys(targets_path)
 
-    entropies_path = repo_root / "results/experiment6" / pool / "entropies.json"
+    entropies_path = repo_root / "results/experiment4" / pool / "entropies.json"
     full_entropies = json.loads(entropies_path.read_text())["entropies"]
 
     gap_hits_path = (
-        repo_root / "results/experiment6" / pool / pool / "pool" / "gap_hits.jsonl"
+        repo_root / "results/experiment4" / pool / pool / "pool" / "gap_hits.jsonl"
     )
     deep_reach = seed_deep_reach(gap_hits_path, deep_keys)
 
     sidecar_dir = (
         repo_root
-        / "synthesis/results/experiment6/logprobs/harfbuzz/ablation"
+        / "synthesis/results/experiment4/logprobs/harfbuzz/ablation"
         / pool
         / MODEL
     )
@@ -612,11 +612,11 @@ def analyze_pool(
     prefix_entropies = prefix_result["entropies"]
 
     cache_path = (
-        repo_root / "results/experiment6/followup" / f"per_seed_m1_{pool}.json"
+        repo_root / "results/experiment4/followup" / f"per_seed_m1_{pool}.json"
     )
     seeds_dir = (
         repo_root
-        / "synthesis/results/experiment6/seeds/harfbuzz/ablation"
+        / "synthesis/results/experiment4/seeds/harfbuzz/ablation"
         / pool
         / MODEL
     )
@@ -710,7 +710,7 @@ def _fmt(x: float | None, nd: int = 4) -> str:
 
 def render_markdown(pools_result: list[dict]) -> str:
     lines: list[str] = []
-    lines.append("# experiment6 FOLLOW-UP C — per-seed mechanism check")
+    lines.append("# experiment4 FOLLOW-UP C — per-seed mechanism check")
     lines.append("")
     lines.append(
         "Offline, no new LLM calls. Frozen DEEP/EARLY surrogate "
@@ -800,10 +800,10 @@ def render_markdown(pools_result: list[dict]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        prog="experiment6_followup",
+        prog="experiment4_followup",
         description=(
-            "experiment6 FOLLOW-UP C: per-seed mechanism check "
-            "(offline, no new LLM calls). Implements docs/experiment6/"
+            "experiment4 FOLLOW-UP C: per-seed mechanism check "
+            "(offline, no new LLM calls). Implements docs/experiment4/"
             "FOLLOWUP.md §3-§5 exactly."
         ),
     )
@@ -815,7 +815,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--out-dir",
         type=Path,
-        default=REPO_ROOT / "results/experiment6/followup",
+        default=REPO_ROOT / "results/experiment4/followup",
         help="output directory for summary.json / summary.md.",
     )
     parser.add_argument(

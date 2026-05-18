@@ -1,12 +1,12 @@
-# experiment6 — STAGE 0 RESULT (logprob capability gate)
+# experiment4 — STAGE 0 RESULT (logprob capability gate)
 
 **Status: COMPLETE. Classification = `FULL`. Gate CLEARED → Stage 1 proceeds.**
 
 Probe: one call to `codestral-22b` through the existing
 `LLMClient.complete()` path with `logprobs=True, top_logprobs=20`,
 `use_cache=False`, on the UF LiteLLM proxy `https://api.ai.it.ufl.edu`.
-Driver: `analysis/scripts/experiment6_stage0_probe.py`.
-Artifact: `results/experiment6/stage0_probe.json`.
+Driver: `analysis/scripts/experiment4_stage0_probe.py`.
+Artifact: `results/experiment4/stage0_probe.json`.
 Run at commit `a5bc4c61f8fe2b9d94031d10b3b4c8144861d7ba`, 2026-05-17.
 
 ## Classification table
@@ -18,7 +18,7 @@ Run at commit `a5bc4c61f8fe2b9d94031d10b3b4c8144861d7ba`, 2026-05-17.
 Gate logic: `FULL` ⇒ proceed to Stage 1. (`PARTIAL` ⇒ stop & ask;
 `NONE`/`ERROR` ⇒ stop & surface. Neither applies.)
 
-## Evidence (from `results/experiment6/stage0_probe.json`)
+## Evidence (from `results/experiment4/stage0_probe.json`)
 
 ```json
 {

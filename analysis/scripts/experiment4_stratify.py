@@ -1,13 +1,13 @@
-"""experiment6 — deterministic entropy-stratified subsample selection.
+"""experiment4 — deterministic entropy-stratified subsample selection.
 
-This module is the *selection + materialisation* plumbing for experiment6
-(U6 — Entropy-Stratified Seed Selection). It consumes:
+This module is the *selection + materialisation* plumbing for experiment4
+(U4 — Entropy-Stratified Seed Selection). It consumes:
 
   1. A pool directory of ``seed_<input_id>.bin`` files (the over-generated
      450-seed pool for one ``(target, variant, model, strategy)`` cell).
   2. A per-seed *mean payload entropy* map ``{input_id: float}`` produced by
      a sibling module (the payload-masked top-K-head entropy of §3/§4 of
-     ``docs/experiment6/METHODS.md``). This module only *consumes* that map;
+     ``docs/experiment4/METHODS.md``). This module only *consumes* that map;
      it never recomputes entropy and never touches logprobs.
 
 It produces three disjoint 150-seed subsamples and materialises each as its
@@ -16,8 +16,8 @@ own directory of *copied* ``.bin`` files so the **unmodified** M2 metric
 `analysis/scripts/measure_gap_coverage.py`) can be run against each one with
 no metric-code fork.
 
-The selection rule is fixed by ``docs/experiment6/METHODS.md`` §6 and
-``docs/experiment6/MANIFEST.json`` ``pool_and_subsampling``:
+The selection rule is fixed by ``docs/experiment4/METHODS.md`` §6 and
+``docs/experiment4/MANIFEST.json`` ``pool_and_subsampling``:
 
   - ``S_random``: ``sorted(eligible_by_seed_id)`` then
     ``random.Random(42).sample(., 150)``. This deliberately mirrors the
@@ -283,7 +283,7 @@ def _load_entropy_map(entropy_json: Path) -> dict[str, float]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "experiment6: form S_random/S_high/S_low 150-seed subsamples "
+            "experiment4: form S_random/S_high/S_low 150-seed subsamples "
             "from a seed pool + per-seed mean payload entropy map, and "
             "materialise each as a directory of copied .bin files."
         )

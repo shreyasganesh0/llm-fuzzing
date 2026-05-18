@@ -85,7 +85,7 @@ def _resolve_input_format(target: str, input_format: str | None) -> str:
 _TEMPLATE_SUFFIX_BY_STRATEGY: dict[str, str] = {
     DEFAULT_STRATEGY_NAME: "",
     "cot_strict": "_cot",
-    # experiment8 (Follow-up A) — single-call cot_strict ablations; each
+    # experiment6 (Follow-up A) — single-call cot_strict ablations; each
     # dispatches through the generic else-branch in run_ablation.
     "cot_strict_no_examples": "_cot_noex",
     "cot_strict_rotated_examples": "_cot_rot",
@@ -146,7 +146,7 @@ def _chain_finalize_template_name(fmt: str) -> str:
     return f"{base}{_CHAIN_FINALIZE_SUFFIX}.j2"
 
 
-# experiment8 (Follow-up A) — cot_strict_rotated_examples support.
+# experiment6 (Follow-up A) — cot_strict_rotated_examples support.
 _COT_ROT_SUFFIX = "_cot_rot"
 _COT_ROT_K = 3
 COT_EXAMPLES_POOL_PATH = REPO_ROOT / "dataset" / "fixtures" / "cot_examples_pool.json"
@@ -269,7 +269,7 @@ def build_ablation_prompt(
         render_kwargs["plan_target_gap"] = plan_target_gap or ""
         render_kwargs["sketch_content"] = sketch_content or ""
         render_kwargs["sketch_reasoning"] = sketch_reasoning or ""
-    # experiment8 (Follow-up A): the rotated cot template needs its
+    # experiment6 (Follow-up A): the rotated cot template needs its
     # per-attempt 3-of-8 example subset; gate it like the chain kwargs so
     # StrictUndefined doesn't trip on the other templates.
     if resolved_template.endswith(f"{_COT_ROT_SUFFIX}.j2"):
@@ -292,18 +292,18 @@ def _maybe_response_format(model: str) -> dict | None:
     return None
 
 
-# ── experiment6: opt-in per-token logprob capture ────────────────────────
+# ── experiment4: opt-in per-token logprob capture ────────────────────────
 #
 # Strictly additive and DEFAULT-OFF. When the env var is unset (every
 # normal run, every other experiment), `_capture_logprobs_enabled()` is
 # False, no `logprobs` kwarg is passed to `client.complete`, the cache
 # key is byte-identical, and no sidecars are written — i.e. behaviour is
-# indistinguishable from before this change. Only the experiment6 wrapper
-# (`scripts/run_experiment6_harfbuzz.py`) sets `UTCF_CAPTURE_LOGPROBS`,
-# and only for the default strategy (experiment6 scope). Per-token
+# indistinguishable from before this change. Only the experiment4 wrapper
+# (`scripts/run_experiment4_harfbuzz.py`) sets `UTCF_CAPTURE_LOGPROBS`,
+# and only for the default strategy (experiment4 scope). Per-token
 # logprobs are persisted as one sidecar JSON per generated seed; the
 # schema is the consumption contract of
-# `analysis/scripts/experiment6_entropy.py`.
+# `analysis/scripts/experiment4_entropy.py`.
 
 _LOGPROBS_ENV = "UTCF_CAPTURE_LOGPROBS"
 _LOGPROBS_TOPK_ENV = "UTCF_LOGPROBS_TOPK"
@@ -491,7 +491,7 @@ def run_ablation(
         )
 
     base_template = _default_template_name(fmt, strategy=strategy)
-    # experiment8 (Follow-up A): cot_strict_rotated_examples picks a
+    # experiment6 (Follow-up A): cot_strict_rotated_examples picks a
     # deterministic per-attempt 3-of-8 example subset keyed by run_id
     # (the attempt index). Other strategies pass None (gated downstream).
     _cot_rot = (
@@ -903,7 +903,7 @@ def run_ablation(
             )
             resp = used_resp
         else:
-            # experiment6: opt-in logprob capture (default strategy only,
+            # experiment4: opt-in logprob capture (default strategy only,
             # env-gated). When disabled, lp_kwargs is empty → the call is
             # byte-identical to before (same cache key).
             lp_kwargs: dict = {}
@@ -934,7 +934,7 @@ def run_ablation(
         for inp in inputs:
             (seeds_dir / f"seed_{inp.input_id}.bin").write_bytes(base64.b64decode(inp.content_b64))
 
-        # experiment6: persist per-token logprobs alongside each seed.
+        # experiment4: persist per-token logprobs alongside each seed.
         # No-op unless this response actually carried captured logprobs.
         _write_logprob_sidecars(
             resp=resp, inputs=inputs, results_root=results_root,

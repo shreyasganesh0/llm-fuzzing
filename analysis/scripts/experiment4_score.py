@@ -1,7 +1,7 @@
-"""experiment6 — M2 scoring + entropy-stratified subsample bootstrap.
+"""experiment4 — M2 scoring + entropy-stratified subsample bootstrap.
 
 This module implements ONLY the scoring / bootstrap plumbing for
-experiment6 (METHODS.md §2, §2.1, §5). It does NOT reimplement M2, the
+experiment4 (METHODS.md §2, §2.1, §5). It does NOT reimplement M2, the
 hard-branch filter (`struct_hits >= 1 AND rand_hits == 0`), or the frozen
 50-branch set. M2 is obtained by *calling the unmodified*
 `analysis.metrics.M2HardBranchMetric.compute_cell`, which shells out to the
@@ -42,7 +42,7 @@ import sys
 from pathlib import Path
 
 # Bootstrap REPO_ROOT onto sys.path so this works as
-# `python -m analysis.scripts.experiment6_score` AND as a plain script,
+# `python -m analysis.scripts.experiment4_score` AND as a plain script,
 # mirroring the idiom in analysis/scripts/measure_gap_coverage.py (~26-29).
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
@@ -438,7 +438,7 @@ def main() -> int:
     parser.add_argument("--s-low-dir", type=Path, required=True,
                         help="materialised S_low 150-seed dir")
     parser.add_argument("--out-root", type=Path, required=True,
-                        help="results/experiment6 (or a test dir)")
+                        help="results/experiment4 (or a test dir)")
     args = parser.parse_args()
 
     result = run(

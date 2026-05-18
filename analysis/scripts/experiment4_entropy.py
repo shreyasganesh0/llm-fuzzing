@@ -1,8 +1,8 @@
-"""experiment6 — payload-token masking + mean payload entropy.
+"""experiment4 — payload-token masking + mean payload entropy.
 
 This module implements METHODS.md §3 (the LOAD-BEARING payload-vs-structural
 masking rule) and §4 (the per-token top-K-head Shannon entropy formula) for
-the experiment6 entropy-stratification hypothesis. It is pure offline
+the experiment4 entropy-stratification hypothesis. It is pure offline
 plumbing: it consumes "logprob sidecar" JSON files produced by another
 module and emits a per-seed mean payload entropy.
 
@@ -391,13 +391,13 @@ def per_seed_entropies(sidecar_dir: Path) -> dict:
 def main(argv: list[str] | None = None) -> int:
     """CLI: read a sidecar directory, write the per_seed_entropies JSON.
 
-    Runnable as ``python -m analysis.scripts.experiment6_entropy
+    Runnable as ``python -m analysis.scripts.experiment4_entropy
     --sidecar-dir PATH --out PATH``.
     """
     parser = argparse.ArgumentParser(
-        prog="experiment6_entropy",
+        prog="experiment4_entropy",
         description=(
-            "Compute experiment6 per-seed mean payload entropy from a "
+            "Compute experiment4 per-seed mean payload entropy from a "
             "directory of logprob sidecar JSON files (METHODS.md §3 + §4)."
         ),
     )
@@ -421,7 +421,7 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(result, fh, indent=2, sort_keys=True)
         fh.write("\n")
     print(
-        f"experiment6_entropy: n_total={result['n_total']} "
+        f"experiment4_entropy: n_total={result['n_total']} "
         f"n_ok={result['n_ok']} dropped={len(result['dropped'])} -> {args.out}"
     )
     return 0

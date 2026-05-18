@@ -1,4 +1,4 @@
-"""Guards the opt-in abandon policy added for experiment7 cost protection.
+"""Guards the opt-in abandon policy added for experiment5 cost protection.
 
 The load-bearing requirement: with the env UNSET the policy is
 byte-identical to the legacy behaviour (no-gain window ==

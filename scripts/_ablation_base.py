@@ -46,7 +46,7 @@ MAX_ATTEMPTS_CAPPED = 100    # for models that hit the UF output cap on binary
 SUBPROCESS_TIMEOUT = 45
 CONSEC_FAIL_WINDOW = 20      # early-exit: no seeds in last N batches (legacy default)
 
-# Opt-in aggressive abandon policy (experiment7 cost protection). DEFAULT
+# Opt-in aggressive abandon policy (experiment5 cost protection). DEFAULT
 # (env unset) is byte-identical to the legacy behaviour: no-gain window
 # == CONSEC_FAIL_WINDOW (20), yield-ceiling guard OFF. Setting
 # UTCF_ABANDON_NOGAIN switches on the aggressive policy (tighter window

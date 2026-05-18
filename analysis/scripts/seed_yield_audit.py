@@ -4,7 +4,7 @@ PURPOSE
 -------
 Some (strategy, variant) cells can never reach the 150-seed floor no matter
 how many more LLM calls are spent on them. The canonical case is
-experiment7's `cot_strict` on codestral-22b/RE2: parsing succeeds ~94% of
+experiment5's `cot_strict` on codestral-22b/RE2: parsing succeeds ~94% of
 the time, but the rigid 4-step CoT scaffold collapses generation diversity
 so hard that only **142 distinct content_b64 seeds exist across every
 cot_strict generation** — strictly fewer than 150. Because seeds are

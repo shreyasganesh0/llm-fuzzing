@@ -222,7 +222,7 @@ Adds 7 strategies (`default`, `cot_strict`, `few_shot`, `self_critique`,
   tool-use on RE2 with `gpt-oss-20b`. **Currently blocked on UF
   LiteLLM credit** (`400 Budget has been exceeded`).
 
-#### Canonical experiment3_1 push-button (run when credit returns)
+#### Canonical experiment3_1
 
 ```bash
 source .venv/bin/activate

@@ -1,10 +1,10 @@
-"""Unit tests for analysis/scripts/experiment7_rank.py.
+"""Unit tests for analysis/scripts/experiment5_rank.py.
 
 These tests exercise ONLY the pure offline plumbing on SYNTHETIC
 ``summary.json`` + ``gap_hits.jsonl`` fixtures. They never invoke the real
 M1/M2 metrics, the RE2 ``seed_replay`` binary, LLVM, or any network — so the
 suite stays green without the coverage toolchain (matching the
-experiment6_score test discipline).
+experiment4_score test discipline).
 
 Coverage:
   * path resolution      — default strategy has NO <strategy> segment;
@@ -31,7 +31,7 @@ from pathlib import Path
 
 import pytest
 
-from analysis.scripts.experiment7_rank import (
+from analysis.scripts.experiment5_rank import (
     DEFAULT_STRATEGY,
     STATUS_CENSORED,
     STATUS_MISSING,
@@ -354,9 +354,9 @@ def test_rank_end_to_end_stable_table_and_friedman(tmp_path: Path) -> None:
     assert result["cd_diagram"]["v1_src"]["critical_difference"] > 0.0
 
     # Both output artefacts written.
-    assert (out_dir / "experiment7_re2_rank.json").is_file()
-    md = (out_dir / "experiment7_re2_rank.md").read_text()
-    assert "experiment7 — re2" in md
+    assert (out_dir / "experiment5_re2_rank.json").is_file()
+    md = (out_dir / "experiment5_re2_rank.md").read_text()
+    assert "experiment5 — re2" in md
     assert "MISSING" in md and "CENSORED" in md
     assert "Critical" in md or "CD=" in md  # CD summary present
 

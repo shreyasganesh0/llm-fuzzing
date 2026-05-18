@@ -1,4 +1,4 @@
-"""Unit tests for analysis/scripts/experiment6_stratify.py.
+"""Unit tests for analysis/scripts/experiment4_stratify.py.
 
 Synthetic, deterministic, fully offline (no network/LLVM/LLM). Every pool
 and output dir is a pytest ``tmp_path`` so reruns never collide.
@@ -22,9 +22,9 @@ import pytest
 # load it via importlib from its file path to avoid import-path coupling.
 
 _MOD_PATH = (
-    Path(__file__).resolve().parents[1] / "scripts" / "experiment6_stratify.py"
+    Path(__file__).resolve().parents[1] / "scripts" / "experiment4_stratify.py"
 )
-_spec = importlib.util.spec_from_file_location("experiment6_stratify", _MOD_PATH)
+_spec = importlib.util.spec_from_file_location("experiment4_stratify", _MOD_PATH)
 assert _spec is not None and _spec.loader is not None
 e6 = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(e6)

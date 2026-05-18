@@ -223,7 +223,7 @@ def test_list_strategies_works_without_any_other_args(flag, capsys):
     rc = runner.main([flag])
     assert rc == 0
     out = capsys.readouterr().out
-    # Sanity: exactly 10 strategies are listed (7 base + 3 experiment8
+    # Sanity: exactly 10 strategies are listed (7 base + 3 experiment6
     # cot_strict mechanism-isolation variants — registry drift guard;
     # update in lockstep when strategies are intentionally added).
     nonempty_lines = [line for line in out.splitlines() if line.strip()]

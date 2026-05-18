@@ -238,11 +238,11 @@ def _prompt_hash(
 
     Backwards-compatible: when ``response_format``, ``guided_json``,
     ``tools``, ``tool_choice``, ``logprobs`` and ``top_logprobs`` are all
-    None (the pre-Phase-3 / pre-Phase-7 / pre-experiment6 default), the
+    None (the pre-Phase-3 / pre-Phase-7 / pre-experiment4 default), the
     JSON payload hashed here is byte-identical to the pre-Phase-3 payload.
     The new keys are only added when non-None so the existing ~14k cache
     entries stay reachable. ``logprobs`` follows the exact same additive
-    pattern as ``tools`` (experiment6: only the entropy-stratification run
+    pattern as ``tools`` (experiment4: only the entropy-stratification run
     requests it; every other caller passes None and gets the legacy key).
     """
     payload_dict: dict[str, Any] = {
@@ -282,7 +282,7 @@ def _extract_logprobs(resp: Any) -> dict | None:
 
     or ``None`` if the provider returned no logprob structure. Kept
     defensive (``getattr`` everywhere) because LiteLLM-proxied backends
-    vary in exactly which sub-fields they populate; experiment6's Stage 0
+    vary in exactly which sub-fields they populate; experiment4's Stage 0
     gate is precisely the check that this returns the FULL shape for
     codestral-22b before any Stage 1 work proceeds.
     """
@@ -436,7 +436,7 @@ class LLMClient:
         form because Phase 0's probe could not verify the capability
         (zero API credits) and we don't want silent capability drift.
 
-        `logprobs` / `top_logprobs`: experiment6 per-token logprob
+        `logprobs` / `top_logprobs`: experiment4 per-token logprob
         capture (OpenAI-compatible path only — raises on Anthropic). When
         ``logprobs`` is truthy the call is forced non-streaming and the
         provider's per-token logprob structure is serialised into
@@ -494,7 +494,7 @@ class LLMClient:
                     "the vendor emits well-formed tool_calls."
                 )
 
-        # experiment6 — per-token logprob capture is opt-in and only
+        # experiment4 — per-token logprob capture is opt-in and only
         # supported on the OpenAI-compatible (openai / vllm / LiteLLM)
         # path. The Anthropic Messages API does not expose top-k token
         # logprobs, so refuse rather than silently drop the request (same
@@ -564,7 +564,7 @@ class LLMClient:
         input_tokens = 0
         output_tokens = 0
         tool_calls_out: list[dict] | None = None
-        # experiment6 — captured per-token logprobs (None unless requested).
+        # experiment4 — captured per-token logprobs (None unless requested).
         # Stored in Response.raw, which is NOT part of the cache key, so
         # this never perturbs back-compat for non-logprob callers.
         logprobs_raw: dict | None = None

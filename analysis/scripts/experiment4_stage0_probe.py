@@ -1,4 +1,4 @@
-"""experiment6 Stage 0 — logprob capability gate (HARD GATE).
+"""experiment4 Stage 0 — logprob capability gate (HARD GATE).
 
 Makes ONE probe call to codestral-22b through the existing
 ``LLMClient.complete`` path with logprobs requested, inspects the raw
@@ -12,13 +12,13 @@ Stage 1 (entropy stratification) is CONDITIONAL on FULL. PARTIAL or NONE
 means STOP — the caller surfaces to the user; no fallbacks here.
 
 Writes a machine-readable artifact to
-``results/experiment6/stage0_probe.json`` and prints a summary. The
-human-readable ``docs/experiment6/STAGE0_RESULT.md`` is composed from
+``results/experiment4/stage0_probe.json`` and prints a summary. The
+human-readable ``docs/experiment4/STAGE0_RESULT.md`` is composed from
 this artifact.
 
 Run:
     UTCF_LITELLM_URL=https://api.ai.it.ufl.edu \
-    .venv/bin/python -m analysis.scripts.experiment6_stage0_probe
+    .venv/bin/python -m analysis.scripts.experiment4_stage0_probe
 """
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ from core.llm_client import LLMClient  # noqa: E402
 
 MODEL = "codestral-22b"
 TOP_LOGPROBS = 20
-ARTIFACT = REPO_ROOT / "results" / "experiment6" / "stage0_probe.json"
+ARTIFACT = REPO_ROOT / "results" / "experiment4" / "stage0_probe.json"
 
 # A tiny, deterministic-shaped prompt. We do not parse the content; we
 # only inspect the logprob structure, so keep max_tokens small/cheap.

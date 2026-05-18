@@ -1,278 +1,89 @@
-# experiment6 — METHODS
+# experiment6 — METHODS (Follow-up A: cot_strict mechanism isolation)
 
-Every methodological choice, with its justification. This file is written
-*before* the code that depends on it (the payload-masking rule in §3 is
-load-bearing for interpretability and is fixed here before any entropy is
-computed). If a later choice contradicts something here, the contradiction
-is logged in `EXECUTION_LOG.md` with a justification — this file is not
-silently rewritten after seeing results.
+DRAFT for user review. No strategies/templates/runs created yet.
 
----
+## 1. Question
 
-## 1. Scientific claim under test
+`cot_strict` collapses on RE2/codestral (EXPERIMENT_DEEP_DIVE §6.1:
+462/492 parse OK, 142 unique `content_b64` across all responses, top-5
+regexes byte-identical to the in-template "Examples …" list, → CENSORED
+at every variant). Two candidate causes: (i) the example list anchors
+the model; (ii) the rigid 4-step labels (`Step 1 (Quote): … Step 4
+(Regex):`) force terse template-completion. Isolate them.
 
-Within one `(target=harfbuzz, variant, model=codestral-22b, strategy=default)`
-cell, the 150 seeds that determine the M2 union score are **not**
-interchangeable. Per-seed *mean payload entropy* of the generation predicts
-which seeds carry M2. Operationally: a 150-seed subsample chosen as the
-**top** quantile by mean payload entropy (`S_high`) hits more M2 hard
-branches than a **bottom**-quantile subsample (`S_low`), with a
-uniformly-random subsample (`S_random`) in between.
+## 2. What existing data already tells us (basis for the predictions)
 
-This is a directional, falsifiable hypothesis. The three outcomes
-(predicted direction holds / no relationship / inverse) are all
-scientifically reportable. The pre-registered prediction and its falsifier
-are recorded in `EXECUTION_LOG.md` **before** M2 scoring (Stage 1 step 4),
-not here.
+`default` and `cot_strict` render the **byte-identical** example block
+(base template lines 69–75 ≡ cot template lines 77–83). At the *same*
+cell `re2/v3_all/codestral`: `default` **filled 150, M2 0.800**;
+`cot_strict` **CENSORED n=124**. The *only* difference is the 4-step
+labels. ⇒ "the example list alone causes the collapse" is already
+falsified by existing data; the rigid labels are the prime suspect.
+This drives the asymmetric predictions in §6.
 
-## 2. M2 metric — exactly as the existing pipeline defines it
+## 3. Three new strategies (registry + template + dispatch only — NOT yet created)
 
-We do not redefine M2. M2 for a corpus `S` is
+Each is a minimal edit of `synthesis/prompts/ablation_synthesis_regex_cot.j2`,
+registered in `core/prompt_strategies.py` + `_TEMPLATE_SUFFIX_BY_STRATEGY`
+in `generate_ablation_inputs.py`, with `,strategy=<name>` cache salt and
+a `<name>/` path segment (invariant 9; phase9 test must still pass).
 
-    M2(S) = (# of the 50 frozen hard branches hit by the UNION of seeds in S) / 50
+- **cot_strict_no_examples** — cot template with the entire "Examples of
+  the kind of patterns that stress the parser/compiler:" block
+  (`(?P<x>a+)`, `(a*)*`, `\p{Greek}+`, `(?=abc)` rejected, `a{1000,}`,
+  `[^a-zA-Z0-9]`) removed. Labels kept. Isolates: do the labels collapse
+  diversity *without* the example crutch (onto a different set)?
+- **cot_strict_rotated_examples** — pool of 8 = the existing 5 + 3 new
+  RE2-**rejected** patterns (RE2 is a finite-automaton engine; rejected
+  syntax exercises the parser's *error* paths — consistent with the
+  existing `Lookarounds (rejected): (?=abc)` convention):
+  `backreference (a)\1`, `possessive quantifier a++`,
+  `class intersection [\w&&[^a-c]]`. Pool persisted at
+  `dataset/fixtures/cot_examples_pool.json`. Per call, deterministically
+  pick 3 of 8 by `hash(attempt_index) % C(8,3)` so the same attempt
+  index always sees the same 3 (reproducible) but successive attempts
+  rotate. (Most invasive of the three: the rotation seed must be
+  threaded from the synthesis driver's `run_id` into prompt build.)
+  Isolates: does *varying* the anchor restore diversity (anchor-content
+  vs anchor-presence)?
+- **cot_strict_no_labels** — cot template with the rigid 4 labels
+  replaced by a single "Explain your reasoning briefly, then emit the
+  regex." Example block kept. This is ≈ the base/`default` template +
+  a soft rationale ask → it is the *midpoint of a rigidity gradient*
+  (none=default → free-form=this → rigid-4-step=cot_strict).
 
-read directly as `slices.all.union_frac_targets_hit` from the `summary.json`
-that the **unmodified** `analysis/scripts/measure_gap_coverage.py` writes
-(invoked through `analysis.metrics.M2HardBranchMetric`, also unmodified).
+## 4. Runs
 
-- The frozen hard-branch set is `dataset/fixtures/harfbuzz_ab/harfbuzz/m2_target_branches.json`
-  (50 branches: 30 `shown` + 20 `held_back`), produced by
-  `freeze_target_branches.py` under the filter
-  `struct_hits >= 1 AND rand_hits == 0`. **Invariant 2.** This experiment
-  neither re-freezes nor relaxes that filter. It scores against the
-  identical frozen file used by `experiment2_1`, so its numbers are
-  directly comparable to the published `v1_src=0.46` / `v3_all=0.26`
-  baselines.
-- M2 is a *set/union* function of the corpus, not a per-seed mean. The
-  headline number for each subsample is the union fraction over the
-  `all` slice. We also retain `shown` / `held_back` slice numbers for
-  audit but the pre-registered statistic is the `all` slice.
+`RE2 × v3_all × codestral-22b × {the 3 new strategies}` = **3 cells**.
+Same 300-attempt cap + `UTCF_ABANDON_NOGAIN=5` yield-ceiling +
+150-normalization as experiment5. CENSORED if it cannot fill. Score with
+the **unmodified** M1+M2 pipeline. `--attempt-offset` ≥ 5000 above all
+prior (propose 800000). estimate_cost first; abort if >$5 projected.
 
-### 2.1 Why M2 of a subsample is computable without re-replaying
+## 5. Control baseline (no spend) — REQUIRED
 
-`measure_gap_coverage.py` writes `gap_hits.jsonl`: one line per
-`(seed_id, target_idx)` with a boolean `hit`. That is exactly the
-per-seed × 50-branch hit matrix. Two consequences:
+Compute the `default @ re2/v3_all/codestral` regex-frequency histogram
+from the **already-cached** responses (no new calls) as the diversity
+reference. "Diversified vs collapsed" is meaningless without it.
 
-1. We run the **unmodified** metric once per *materialised subsample
-   directory* (S_random/S_high/S_low) to obtain its canonical
-   `summary.json` → `union_frac_targets_hit` is M2(S). This is the
-   "score M2 on each subsample using the existing M2 metric" step,
-   taken literally.
-2. The same run's `gap_hits.jsonl` is the resampling substrate for the
-   bootstrap (§5). The bootstrap therefore reuses the metric's own
-   output; it does not re-implement the hit logic or the filter.
+## 6. Pre-registered predictions (see EXECUTION_LOG for the frozen block)
 
-We additionally run the metric once over the **full pool** as a
-consistency anchor: the union over a subsample's rows in the pool matrix
-must equal that subsample's standalone `union_frac_targets_hit`. A
-mismatch aborts the experiment (it would indicate a seed-identity bug).
+| strategy | fills 150? | diversity-recovery (ratio ≥0.5)? | M2 vs cot_strict CENSORED ref | dominant-regex set |
+|---|---|---|---|---|
+| cot_strict_no_labels | **Y** (≈default) | **Y** | ≈ default region (≫ +0.05) | resembles default, not the 5 |
+| cot_strict_no_examples | **N (still CENSORED)** | N | not meaningfully > cot_strict | collapses onto a *different* small set (not the original 5) |
+| cot_strict_rotated_examples | **N (still CENSORED)** | N | not meaningfully > cot_strict | rotates but still low-diversity |
 
-## 3. Payload-vs-structural masking rule (LOAD-BEARING — fixed before any entropy is computed)
+Mechanism reading rule: if `no_labels` fills & `no_examples` /
+`rotated_examples` stay CENSORED → **the rigid labels are the cause**,
+the example list only determines *what* it collapses onto. If
+`no_examples` *also* fills → examples are (jointly) necessary. If
+`rotated_examples` fills but `no_examples` doesn't → anchor *fixity*,
+not presence, is the lever. Minimum meaningful M2 effect = **0.05**.
 
-codestral-22b on harfbuzz emits the binary-format response parsed by
-`synthesis/scripts/parse_synthesis.py::parse_synthesis_response`. The wire
-shape is JSON:
+## 7. Stopping
 
-```
-{"inputs": [
-   {"content_b64": "<BASE64>", "target_gaps": ["file:line", ...], "reasoning": "..."},
-   ... up to num_inputs ...
-]}
-```
-
-The **payload** of a seed is the harfbuzz font blob = the bytes obtained by
-`base64.b64decode(content_b64)` and written verbatim to `seed_*.bin`.
-"Mean payload entropy" is the mean per-token Shannon entropy over **only
-the tokens that emit the base64 characters of that seed's `content_b64`
-string value** — and nothing else.
-
-Concretely, a generation token is a **payload token for seed *j*** iff:
-
-- it falls strictly inside the character span of the *value* of the
-  `content_b64` key for the *j*-th parsed input — i.e. between (but not
-  including) the opening and closing `"` that delimit that base64 string;
-  and
-- it lies in the half-open char range `(open_quote, close_quote)` of that
-  specific value occurrence (the *j*-th, matched positionally to the *j*-th
-  parsed `GeneratedInput`).
-
-A token is **structural / excluded** if it emits any of: JSON punctuation
-or whitespace (`{ } [ ] : ,` and inter-field whitespace/newlines), the key
-names (`"inputs"`, `"content_b64"`, `"target_gaps"`, `"reasoning"`), the
-surrounding double-quotes themselves, the `target_gaps` array, the
-`reasoning` string, any markdown code fence (```` ```json ````), or any
-prose the model emits around the JSON.
-
-Token→char mapping: logprob responses return `choices[0].logprobs.content`
-as an ordered list of token records. The detokenisation rule was refined
-**twice before any entropy value or M2 number existed** (Stage 0 probe →
-SentencePiece note; then the real-data reconstruction failure on
-2026-05-18 → the rule below). Both refinements are recorded in
-STAGE0_RESULT.md / EXECUTION_LOG.md and are pre-results instrument
-corrections, not post-hoc rationalisation: the first entropy run dropped
-100 % of seeds on reconstruction mismatch, i.e. *no* entropy number was
-produced until the instrument was made faithful. The verified rule
-(`detokenize` in `analysis/scripts/experiment6_entropy.py`, asserted to
-reproduce `raw_response` exactly on sampled real sidecars) has three
-token classes:
-
-1. **Special / control tokens** (`</s>`, `<s>`, `<unk>`, `<pad>`,
-   `<|...|>`) → empty string (the proxy's `resp.content` excludes them).
-2. **Byte-fallback tokens** `<0xHH>` → the raw byte. ASCII (`< 0x80`,
-   e.g. `<0x0A>` newline in the pretty-printed JSON) maps 1:1 to a
-   character; a `>= 0x80` fragment (multibyte UTF-8 needing cross-token
-   assembly — never present in ASCII base64-in-JSON) emits U+FFFD so the
-   reconstruction provably differs and the whole response is dropped +
-   counted rather than silently misaligned.
-3. **Ordinary tokens** → every SentencePiece metaspace `▁` (U+2581)
-   becomes a space (blanket replace is safe: the base64 alphabet
-   `[A-Za-z0-9+/=]` and JSON structure never contain U+2581).
-
-The reconstructed string is asserted equal to `resp.content` at runtime;
-on mismatch the whole response's seeds are dropped from the entropy pool
-and counted (disclosure rule below) rather than guessing an alignment.
-Cumulative detokenised lengths give each token a half-open `[start, end)`
-char span; the `content_b64` value spans are located on the reconstructed
-text with the same lenient JSON view the parser uses and matched
-positionally to the parsed inputs.
-
-Boundary tokens (a token that straddles the closing `"` of a base64 value,
-common because models tokenise `...XYZ"` as one piece) are **excluded**:
-only tokens whose entire span lies within `(open_quote, close_quote)`
-count. This biases the payload-token set toward *pure* base64 tokens,
-which is the conservative choice for interpretability — we measure the
-entropy of the bytes-emitting tokens, not the entropy of "deciding to stop
-the string."
-
-Seed exclusion: if a parsed seed's `content_b64` cannot be located as a
-verbatim substring of the raw completion (e.g. the parser's
-`_coerce_to_b64` re-encoded hex/text/non-b64 input, or the JSON-salvage
-path reconstructed it), that seed **cannot have a faithful payload-token
-set** and is dropped from the entropy-stratified pool. The drop is counted
-and reported in `RESULTS.md`; it does not silently shrink a stratum
-without disclosure. (We expect this to be rare for codestral, which emits
-clean base64, but it must be handled, not assumed away.)
-
-Rationale for masking exactly here: the hypothesis is about the *payload*
-the fuzzer ingests. Structural-token entropy is dominated by the model's
-JSON-formatting certainty and `reasoning` prose — confounds with nothing
-to do with whether the resulting font blob reaches a hard branch. Masking
-to base64-value tokens isolates "how uncertain was the model about the
-bytes it shipped."
-
-## 4. Per-token entropy formula
-
-For a payload token *t*, the API returns the chosen token's logprob plus
-the top-`K` alternatives' logprobs (`K = top_logprobs = 20`). Let the
-returned set of (token, logprob) pairs for position *t* be
-`{(w_i, ℓ_i)}`. Convert to probabilities `p_i = exp(ℓ_i)`. These do **not**
-sum to 1 (they are a truncated head of the full vocab distribution). We
-compute the **Shannon entropy of the observed top-K head, renormalised**:
-
-    q_i = p_i / Σ_j p_j
-    H(t) = − Σ_i q_i * log2(q_i)      [bits]
-
-This is an entropy *estimate over the model's top-K head*, not the full
-softmax — stated explicitly because it is a known, bounded approximation:
-H(t) ∈ [0, log2(K)] = [0, ≈4.32] bits. It is monotone in the model's
-local uncertainty over its most probable continuations, which is the
-quantity the hypothesis is about. The renormalisation choice and the
-top-K-head caveat are recorded here so the result is interpreted as
-"top-20-head entropy," not "true predictive entropy."
-
-If Stage 0 returns **PARTIAL** (observed logprob only, no top-K), H(t) is
-not computable and the experiment STOPS and asks the user (surrogate:
-surprisal stratification) — it does not silently substitute surprisal.
-
-Per-seed statistic: `mean_payload_entropy(j) = mean over payload tokens of
-seed j of H(t)`. Seeds with zero payload tokens after masking are dropped
-(counted/reported), same disclosure rule as §3.
-
-## 5. Bootstrap procedure
-
-For each variant we report two differences with 95% bootstrap CIs:
-
-    Δ_hr = M2(S_high) − M2(S_random)
-    Δ_hl = M2(S_high) − M2(S_low)
-
-M2 is a union (set) statistic, so the resampling unit is the **seed**.
-From the unmodified metric's `gap_hits.jsonl` for a 150-seed subsample we
-have a 150×50 boolean matrix `B`. One bootstrap replicate of `M2(S)`:
-
-1. draw 150 row indices uniformly with replacement from `0..149`;
-2. `M2* = (# columns c where any drawn row has B[row, c] == True) / 50`.
-
-`S_high`, `S_random`, `S_low` are disjoint seed sets, so their replicates
-are drawn **independently** (no pairing across subsamples). For
-`b = 1..10000`: compute `M2*_high(b)`, `M2*_random(b)`, `M2*_low(b)` from
-independent row-draws, then
-`Δ_hr*(b) = M2*_high(b) − M2*_random(b)` and likewise `Δ_hl*`. The 95% CI
-is the [2.5, 97.5] percentile of `{Δ*(b)}`. `n_resamples = 10000`. The
-bootstrap RNG is `random.Random(42)`, instantiated once at the bootstrap
-call site (a different, independently-seeded `random.Random(42)` instance
-than the one used for `S_random` selection — same seed value, distinct
-streams at distinct call sites; both fixed for reproducibility per
-research_document_v3.md §6.2 "fixed random seeds recorded for every
-trial").
-
-Falsifier (the literal pre-registered condition is in `EXECUTION_LOG.md`):
-the prediction is falsified for a variant if either CI contains 0, or if
-the point estimate sign is opposite to the pre-registered sign.
-
-## 6. Determinism of subsample selection
-
-- `S_random`: `sorted(pool, key=seed_id)` then `random.Random(42).sample(.,150)`.
-  Mirrors the existing protocol (`scripts/_ablation_base.py::_subsample_seeds`
-  uses `random.Random(42).sample`). **Invariant 3.**
-- `S_high`: pool sorted by `mean_payload_entropy` descending; ties broken
-  by `seed_id` ascending (total order → fully deterministic); take first 150.
-- `S_low`: same key ascending; take first 150.
-- All three seed-id lists are persisted under
-  `results/experiment6/<variant>/subsamples/{S_random,S_high,S_low}.json`
-  before scoring.
-- Each subsample is materialised as a directory of the actual `seed_*.bin`
-  files (copied, not symlinked, so the metric's `iterdir()` is stable)
-  so the **unmodified** `M2HardBranchMetric.compute_cell` runs against it
-  with no metric-code fork. **Invariant 4** (every scored dir = 150).
-
-## 7. Over-generation, isolation, cache safety
-
-- Orchestration is the **unmodified** `scripts._ablation_base.AblationRunner`
-  driven by a ~40-LOC wrapper `scripts/run_experiment6_harfbuzz.py` that
-  passes `dataclasses.replace(TARGETS['harfbuzz'], synthesis_results_root=
-  synthesis/results/experiment6, results_root=results/experiment6)`. M2
-  fixture paths are left untouched so scoring uses the identical frozen
-  set. The canonical `experiment2_1` dirs are never written.
-- Pool size 450/cell via `--num-seeds 450`. The non-default `--num-seeds`
-  warning is expected and acknowledged: 450 is the *pool*; every *scored*
-  corpus is exactly 150 (invariant 4 intact). If a single
-  attempt-capped pass yields < ~450, additional passes with the
-  `--attempt-offset` bumped by ≥5000 each (invariant 5) accumulate into
-  the same pool dir; every deviation logged in `EXECUTION_LOG.md`.
-- `--attempt-offset 600000` (≥5000 bump; clear of all prior offsets).
-- Logprob capture is env-gated (`UTCF_CAPTURE_LOGPROBS`, set only by the
-  experiment6 wrapper). `LLMClient.complete(logprobs=..., top_logprobs=...)`
-  and `_prompt_hash` add these to the cache-key payload **only when
-  non-None**; default `None` ⇒ byte-identical key. The 14,268 pre-existing
-  `.cache/llm/` entries and every non-logprob caller are provably
-  unaffected — guarded by `tests/test_llm_client_logprob_backcompat.py`,
-  which asserts `_prompt_hash(...)` with `logprobs=None` equals a frozen
-  pre-change digest. **Invariant 9.**
-
-## 8. Threats to validity carried from the spec
-
-- harfbuzz is a Tier-1, high-contamination, mixed binary/text target
-  (research_document_v3.md §4.2, §9 TV1). Payload entropy on a partly
-  base64-of-binary format is being measured at the *base64-character*
-  token level, not raw-byte level — the entropy is of the model's
-  base64-emitting decisions. This is the honest readout of "model
-  uncertainty about the bytes it shipped" and is stated as such; we do
-  not claim it equals the Shannon entropy of the decoded font bytes.
-- Top-K-head truncation (§4) bounds H ≤ log2(20). Differences between
-  strata are still informative because the truncation is identical across
-  all seeds.
-- M2 is a union statistic; a single extreme seed can move it. The
-  bootstrap over seed composition (§5) is exactly the right uncertainty
-  model for that, which is why we bootstrap the set function rather than a
-  per-seed mean.
+experiment6 complete when RESULTS.md has the 3-row M2 + diversity-ratio
+(or CENSORED) table, the per-cell top-5 regex histograms vs the default
+control histogram, and the one-paragraph mechanism reading adjudicated
+against §6. No extra variants/models/targets.

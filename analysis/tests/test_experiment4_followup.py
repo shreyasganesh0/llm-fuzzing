@@ -1,10 +1,10 @@
-"""Unit tests for analysis/scripts/experiment6_followup.py.
+"""Unit tests for analysis/scripts/experiment4_followup.py.
 
 Pure offline plumbing tests on SYNTHETIC fixtures only — synthetic
 ``gap_hits.jsonl`` + synthetic entropies + a fake per-seed-M1 cache +
 hand-built logprob sidecars. They never invoke the harfbuzz ``seed_replay``
 binary, LLVM, the LLM, or any network, so the suite stays green without the
-coverage toolchain (matching the experiment6_entropy / experiment7_rank test
+coverage toolchain (matching the experiment4_entropy / experiment5_rank test
 discipline). The one real-replay path is guarded with skipif on the
 harfbuzz coverage binary's presence.
 
@@ -30,7 +30,7 @@ from pathlib import Path
 
 import pytest
 
-from analysis.scripts.experiment6_followup import (
+from analysis.scripts.experiment4_followup import (
     DEEP,
     EARLY,
     PREFIX_TOKEN_COUNT,
@@ -414,7 +414,7 @@ def test_compute_per_seed_m1_uses_cache_and_skips(tmp_path: Path, monkeypatch):
         return 777  # cc -> 777
 
     monkeypatch.setattr(
-        "analysis.scripts.experiment6_followup.replay_one_seed_edges",
+        "analysis.scripts.experiment4_followup.replay_one_seed_edges",
         fake_replay,
     )
     out = compute_per_seed_m1(
@@ -435,7 +435,7 @@ def test_compute_per_seed_m1_records_error(tmp_path: Path, monkeypatch):
     cache_path = tmp_path / "cache.json"
 
     monkeypatch.setattr(
-        "analysis.scripts.experiment6_followup.replay_one_seed_edges",
+        "analysis.scripts.experiment4_followup.replay_one_seed_edges",
         lambda *a, **k: None,  # simulate timeout/error
     )
     out = compute_per_seed_m1(
@@ -479,14 +479,14 @@ def test_real_replay_one_seed_edges_smoke(tmp_path: Path):
 
 def test_analyze_pool_end_to_end_synthetic(tmp_path: Path, monkeypatch):
     pool = "v1_src"
-    # results/experiment6/<pool>/entropies.json
-    ent_dir = tmp_path / "results/experiment6" / pool
+    # results/experiment4/<pool>/entropies.json
+    ent_dir = tmp_path / "results/experiment4" / pool
     ent_dir.mkdir(parents=True)
     entropies = {f"id{i:02d}": float(i) for i in range(8)}
     (ent_dir / "entropies.json").write_text(
         json.dumps({"entropies": entropies})
     )
-    # results/experiment6/<pool>/<pool>/pool/gap_hits.jsonl
+    # results/experiment4/<pool>/<pool>/pool/gap_hits.jsonl
     gh_dir = ent_dir / pool / "pool"
     gh_dir.mkdir(parents=True)
     rows = []
@@ -503,7 +503,7 @@ def test_analyze_pool_end_to_end_synthetic(tmp_path: Path, monkeypatch):
     # synthesis/.../logprobs/.../<pool>/codestral-22b/*.json
     sc_dir = (
         tmp_path
-        / "synthesis/results/experiment6/logprobs/harfbuzz/ablation"
+        / "synthesis/results/experiment4/logprobs/harfbuzz/ablation"
         / pool
         / "codestral-22b"
     )
@@ -513,7 +513,7 @@ def test_analyze_pool_end_to_end_synthetic(tmp_path: Path, monkeypatch):
         sc["input_id"] = f"id{i:02d}"
         (sc_dir / f"id{i:02d}.json").write_text(json.dumps(sc))
     # per_seed_m1 cache
-    fu_dir = tmp_path / "results/experiment6/followup"
+    fu_dir = tmp_path / "results/experiment4/followup"
     fu_dir.mkdir(parents=True)
     (fu_dir / f"per_seed_m1_{pool}.json").write_text(
         json.dumps({f"id{i:02d}": 100 + i for i in range(8)})
@@ -529,7 +529,7 @@ def test_analyze_pool_end_to_end_synthetic(tmp_path: Path, monkeypatch):
                        "uncovered_side": "true"}],
     }))
 
-    import analysis.scripts.experiment6_followup as mod
+    import analysis.scripts.experiment4_followup as mod
 
     # Swap the TARGETS registry the module reads for a tiny fake whose
     # m2_targets_path / coverage_binary / source_roots point at synthetic

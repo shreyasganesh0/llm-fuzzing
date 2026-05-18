@@ -1,10 +1,10 @@
-"""experiment6 cache-key back-compat guard.
+"""experiment4 cache-key back-compat guard.
 
 The entropy-stratification experiment adds optional ``logprobs`` /
 ``top_logprobs`` kwargs to ``LLMClient.complete`` and ``_prompt_hash``.
 The hard constraint (PROJECT_CONTEXT §6 invariant 9): when these are NOT
 requested the cache key must be **byte-identical** to the pre-change key,
-so the ~14k existing ``.cache/llm/`` entries — and every non-experiment6
+so the ~14k existing ``.cache/llm/`` entries — and every non-experiment4
 caller — keep hitting cache.
 
 ``FROZEN_PRE_CHANGE_HASH`` was computed by reproducing the exact
@@ -86,7 +86,7 @@ def test_requesting_logprobs_changes_the_key():
 def test_legacy_cache_json_still_rehydrates():
     """Old cache files (no raw/tool_calls fields) must load unchanged.
 
-    ``Response.raw`` (where experiment6 stows logprobs) and
+    ``Response.raw`` (where experiment4 stows logprobs) and
     ``tool_calls`` default to None, so ``Response(**legacy_dict)`` works
     for the pre-existing entries.
     """

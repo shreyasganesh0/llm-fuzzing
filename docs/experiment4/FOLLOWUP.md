@@ -1,6 +1,6 @@
-# experiment6 — FOLLOW-UP C: mechanism check (NO new LLM calls)
+# experiment4 — FOLLOW-UP C: mechanism check (NO new LLM calls)
 
-Lives in `docs/experiment6/` because it is a follow-up *to* experiment6,
+Lives in `docs/experiment4/` because it is a follow-up *to* experiment4,
 reusing its on-disk over-generated pools. Append-only deviation log at
 the bottom. Pre-registration FROZEN (user delegated autonomous
 execution, 2026-05-18 — this commit is the freeze; precedes any
@@ -8,8 +8,8 @@ computation).
 
 ## 1. Question
 
-Verify or falsify the experiment6 mechanism: *"low-entropy seeds carry
-M2 because they pass early parsing and reach deep code."* experiment6
+Verify or falsify the experiment4 mechanism: *"low-entropy seeds carry
+M2 because they pass early parsing and reach deep code."* experiment4
 found, against its pre-registered prediction, that the **low**-entropy
 subsample carried the M2 union (harfbuzz v1_src S_low 0.46, v3_all S_low
 0.50, vs random/high 0.26). That established a *union-level* effect; the
@@ -17,10 +17,10 @@ subsample carried the M2 union (harfbuzz v1_src S_low 0.46, v3_all S_low
 
 ## 2. Inputs (verified on disk; NO regeneration)
 
-- Per-seed mean payload entropy: `results/experiment6/{v1_src,v3_all}/entropies.json` (present).
-- Per-seed × 50-branch hit matrix: `results/experiment6/{v1_src,v3_all}/{v1_src,v3_all}/pool/gap_hits.jsonl` (present) → deep-reach is computable for free.
-- Logprob sidecars: `synthesis/results/experiment6/logprobs/harfbuzz/ablation/{v1_src,v3_all}/codestral-22b/*.json` (456/461) → **prefix entropy** (first 8 payload tokens) recomputable offline via the experiment6_entropy masking logic, no LLM.
-- **Per-seed M1 is NOT on disk.** experiment6 only computed *union*
+- Per-seed mean payload entropy: `results/experiment4/{v1_src,v3_all}/entropies.json` (present).
+- Per-seed × 50-branch hit matrix: `results/experiment4/{v1_src,v3_all}/{v1_src,v3_all}/pool/gap_hits.jsonl` (present) → deep-reach is computable for free.
+- Logprob sidecars: `synthesis/results/experiment4/logprobs/harfbuzz/ablation/{v1_src,v3_all}/codestral-22b/*.json` (456/461) → **prefix entropy** (first 8 payload tokens) recomputable offline via the experiment4_entropy masking logic, no LLM.
+- **Per-seed M1 is NOT on disk.** experiment4 only computed *union*
   M2/M1. Per-seed M1 (edges from replaying ONE seed) requires a new
   per-seed `seed_replay`+llvm-cov pass over the ~450 pool seeds × 2
   pools. **Zero LLM cost**, but real CPU/LLVM compute — this corrects
@@ -59,7 +59,7 @@ For each pool (v1_src, v3_all):
 
 ## 5. Pre-registered prediction + 3-way interpretation (FROZEN)
 
-**Predicted (blind, recommended call):** consistent with experiment6's
+**Predicted (blind, recommended call):** consistent with experiment4's
 inverse finding, **the lowest-entropy quartile (Q1) has the highest
 deep-reach rate**, monotone-ish decreasing toward Q4; prefix entropy
 separates deep-reach **at least as well** as full entropy (the "did the
@@ -116,7 +116,7 @@ pre-registered ±0.10 threshold (max 0.061), is **non-monotone** (e.g.
 v1_src full is U-shaped: Q1 0.142, Q3 0.063, Q4 0.134), and per-seed M1
 does not differ by quartile (conditional or unconditional). So:
 
-- experiment6's headline (the **low-entropy 150-seed subsample carries
+- experiment4's headline (the **low-entropy 150-seed subsample carries
   the M2 union**, S_low 0.46/0.50 vs random/high 0.26) is **real and
   unchanged** — but the proposed *per-seed* mechanism ("low-entropy
   seeds are individually more valid → individually reach deep code more
@@ -137,7 +137,7 @@ does not differ by quartile (conditional or unconditional). So:
   blob/open/ot/shape — mapping corrected and frozen before computation).
   Corrected the plan's "per-seed coverage already on disk": per-seed M1
   required a new (zero-LLM) per-seed replay pass (450×2, cached to
-  `results/experiment6/followup/per_seed_m1_*.json`).
+  `results/experiment4/followup/per_seed_m1_*.json`).
 - 2026-05-18 — §5's "mechanism DIFFERENT" arm pinned only the +0.10
   deep-reach gap, not a threshold for "per-seed M1 differs conditional
   on deep-reach". Resolved with a pre-committed-style mechanical rule:

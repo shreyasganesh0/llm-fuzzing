@@ -230,7 +230,7 @@ class CotStrictStrategy:
 
 @dataclass
 class CotStrictNoExamplesStrategy:
-    """experiment8 (Follow-up A): cot_strict with the in-template
+    """experiment6 (Follow-up A): cot_strict with the in-template
     "Examples of the kind of patterns…" stress list REMOVED; the rigid
     4-step labels are KEPT. Isolates whether the labels collapse
     diversity without the example crutch (and onto what set).
@@ -273,7 +273,7 @@ class CotStrictNoExamplesStrategy:
 
 @dataclass
 class CotStrictRotatedExamplesStrategy:
-    """experiment8 (Follow-up A): cot_strict whose example block is a
+    """experiment6 (Follow-up A): cot_strict whose example block is a
     deterministic per-attempt 3-of-8 rotation of a frozen candidate pool
     (`dataset/fixtures/cot_examples_pool.json`). Same attempt index → same
     3 examples (reproducible); successive attempts rotate. Isolates
@@ -317,7 +317,7 @@ class CotStrictRotatedExamplesStrategy:
 
 @dataclass
 class CotStrictNoLabelsStrategy:
-    """experiment8 (Follow-up A): cot_strict with the rigid 4 step
+    """experiment6 (Follow-up A): cot_strict with the rigid 4 step
     labels (`Step 1 (Quote): … Step 4 (Regex):`) replaced by a single
     free-form "explain briefly, then emit the regex". Example block KEPT.
     The midpoint of a rigidity gradient: none(default) → free-form(this)

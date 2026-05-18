@@ -77,7 +77,7 @@ validity, or scaffolding — is the dominant lever.
    v3_all for one more reliable free model (e.g. `llama-3.1-70b`) — 2
    cells ≈ **$1**. Tests whether example-anchoring is model-general.
 3. **C's union-complementarity claim, direct test** (zero LLM): from
-   the existing exp6 pools, compute the marginal hard-branch coverage
+   the existing exp4 pools, compute the marginal hard-branch coverage
    added by each seed in entropy order vs random order (greedy union
    curves) for v1_src/v3_all — confirms "low-entropy set = less
    redundant" directly. **$0**, ~1h compute.
@@ -85,5 +85,5 @@ validity, or scaffolding — is the dominant lever.
    already explains most of the strategy-axis variance).
 
 Cumulative spend for A+B+C ≈ **$0.7** (within the gate); the proxy cap
-was never approached. All raw numbers: `docs/experiment8/RESULTS.md`,
-`docs/experiment9/RESULTS.md`, `docs/experiment6/FOLLOWUP.md`.
+was never approached. All raw numbers: `docs/experiment6/RESULTS.md`,
+`docs/experiment7/RESULTS.md`, `docs/experiment4/FOLLOWUP.md`.

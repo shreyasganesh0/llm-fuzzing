@@ -29,8 +29,19 @@ naming scheme in `experiment{1,2,3}.md`:
 On-disk fixture and results paths (e.g. `dataset/fixtures/re2_ab/`,
 `results/ablation_re2_v2/`) are unchanged — the renaming is documentation-only.
 
-**Last updated:** 2026-05-18 — experiment6 (ESSS) + experiment7 (SVA)
-landed; see `docs/experiment{6,7}/RESULTS.md` and `docs/EXPERIMENTS.md`.
+**Iteration renumber (2026-05-18).** The new-iteration experiments were
+renumbered contiguous after `experiment1–3`: `experiment6→4` (ESSS),
+`7→5` (SVA), `8→6` (Follow-up A), `9→7` (Follow-up B);
+`experiment6/FOLLOWUP.md → experiment4/FOLLOWUP.md` (Follow-up C). Docs,
+code modules and output-data dirs use the NEW numbers. Git history was
+not rewritten: the pre-registration/run commits and the branches on
+`origin` keep the OLD labels (branches `experiment6`, `experiment7`,
+`experiment-followups`); frozen pre-reg commit hashes/timestamps are
+unchanged. Full note + the immutable-provenance caveat:
+`docs/EXPERIMENTS.md` → "Numbering & git-provenance note".
+
+**Last updated:** 2026-05-18 — experiment4 (ESSS) + experiment5 (SVA)
+landed; see `docs/experiment{4,5}/RESULTS.md` and `docs/EXPERIMENTS.md`.
 
 ---
 
@@ -409,24 +420,24 @@ pair.
 
 - **2026-05-18** — **Follow-ups A/B/C** (branch `experiment-followups`,
   pre-registered+frozen `44d8104` before any run; cost-gated; ≈$0.7
-  total, $25 proxy cap never approached). **experiment8 (A)**: 3 new
+  total, $25 proxy cap never approached). **experiment6 (A)**: 3 new
   RE2-only `cot_strict_*` strategies isolate the collapse cause —
   pre-reg FALSIFIED: the **static in-template example list** (not the
   rigid labels) causes it; `cot_strict_no_examples` ties `default` at
-  M2 0.800. **experiment9 (B)**: `cot_strict@harfbuzz/v3_all` filled
+  M2 0.800. **experiment7 (B)**: `cot_strict@harfbuzz/v3_all` filled
   (no collapse — corroborates A) but M2 0.120 vs default 0.260 → a
   *general* rigid-label M2 penalty distinct from the example-anchor
-  collapse. **experiment6 FOLLOWUP (C)**: no-LLM per-seed analysis →
-  experiment6's low-entropy→M2 effect is **union-level complementarity,
+  collapse. **experiment4 FOLLOWUP (C)**: no-LLM per-seed analysis →
+  experiment4's low-entropy→M2 effect is **union-level complementarity,
   not a per-seed reach mechanism** (deep-reach & per-seed M1 flat across
   entropy quartiles). Supersedes `EXPERIMENT_DEEP_DIVE.md §6.1`. New
   code: 3 strategies + templates + `dataset/fixtures/cot_examples_pool.json`
-  + `analysis/scripts/experiment6_followup.py` (+tests); phase9/CLI
+  + `analysis/scripts/experiment4_followup.py` (+tests); phase9/CLI
   drift-guards updated in lockstep (426 passed). Detail:
-  `docs/experiment{8,9}/`, `docs/experiment6/FOLLOWUP.md`,
+  `docs/experiment{6,7}/`, `docs/experiment4/FOLLOWUP.md`,
   `docs/experiment_iteration_summary.md`. Verify: `.venv/bin/pytest -q`.
-- **2026-05-18** — **experiment7 (SVA — Strategy-as-Variant Ablation)**
-  landed on branch `experiment7`. RE2 × codestral-22b × 5 variants × 5
+- **2026-05-18** — **experiment5 (SVA — Strategy-as-Variant Ablation)**
+  landed on branch `experiment5`. RE2 × codestral-22b × 5 variants × 5
   strategies, pre-registered (`5b96f61`) before scoring, staged
   cheapest-first under a $25-proxy-cap cost gate. **Result: no strategy
   beats `default` at any variant** (no Holm-significant contrast;
@@ -439,13 +450,13 @@ pair.
   `scripts/_ablation_base.py` (`UTCF_ABANDON_NOGAIN` + yield-ceiling;
   default byte-identical, regression-pinned) and a lost-cause auditor
   `analysis/scripts/seed_yield_audit.py`. Total spend ≈ $4.2; $25 cap
-  never hit. Detail: `docs/experiment7/{RESULTS,METHODS,MANIFEST,
+  never hit. Detail: `docs/experiment5/{RESULTS,METHODS,MANIFEST,
   EXECUTION_LOG}.md`, `docs/EXPERIMENTS.md`. Verify: `.venv/bin/pytest
-  -q` (all green incl. abandon-policy + experiment7_rank +
-  seed_yield_audit suites); `python -m analysis.scripts.experiment7_rank
+  -q` (all green incl. abandon-policy + experiment5_rank +
+  seed_yield_audit suites); `python -m analysis.scripts.experiment5_rank
   --target re2 --model codestral-22b ...` (gitignored output).
-- **2026-05-18** — **experiment6 (ESSS — Entropy-Stratified Seed
-  Selection)** landed on branch `experiment6`. Tests whether per-seed
+- **2026-05-18** — **experiment4 (ESSS — Entropy-Stratified Seed
+  Selection)** landed on branch `experiment4`. Tests whether per-seed
   mean payload entropy predicts which seeds carry M2, on harfbuzz /
   codestral-22b / {v1_src, v3_all} / default. Stage 0 logprob gate =
   FULL. Pre-registered (commit `4d96b1c`) before scoring. Result: the
@@ -453,16 +464,16 @@ pair.
   both variants (all four CIs contain 0; both Δ_hl sign-reversed); the
   data leans to the pre-registered competing hypothesis — **low**-entropy
   seeds carry more M2 (v3_all S_low M2 = 0.50 vs random/baseline 0.26).
-  New code: `scripts/run_experiment6_harfbuzz.py`,
-  `analysis/scripts/experiment6_{stage0_probe,entropy,stratify,score}.py`
+  New code: `scripts/run_experiment4_harfbuzz.py`,
+  `analysis/scripts/experiment4_{stage0_probe,entropy,stratify,score}.py`
   (+ tests), additive env-gated `logprobs` in `core/llm_client.py` /
   `synthesis/scripts/generate_ablation_inputs.py` (cache-key byte-
   identical for non-logprob callers, regression-tested). Full numbers,
   methods, pre-registration, and every deviation:
-  `docs/experiment6/{RESULTS,METHODS,MANIFEST,EXECUTION_LOG,STAGE0_RESULT}`.
-  Verify: `.venv/bin/pytest -q` (expect all green incl. 50+ experiment6
+  `docs/experiment4/{RESULTS,METHODS,MANIFEST,EXECUTION_LOG,STAGE0_RESULT}`.
+  Verify: `.venv/bin/pytest -q` (expect all green incl. 50+ experiment4
   tests + cache back-compat); `python -m json.tool
-  results/experiment6/v3_all/v3_all_score.json` (gitignored output).
+  results/experiment4/v3_all/v3_all_score.json` (gitignored output).
 - **2026-04-21** — Phases 0–9 landed: 6 prompt strategies
   (`default`, `cot_strict`, `few_shot`, `self_critique`, `prompt_chain`,
   `tool_use`) in `core/prompt_strategies.py`, constrained-output plumbing

@@ -1,7 +1,7 @@
-"""experiment7 — Strategy-as-Variant ablation aggregator + ranking analysis.
+"""experiment5 — Strategy-as-Variant ablation aggregator + ranking analysis.
 
-This module is the *offline scoring/ranking* layer for experiment7
-(`docs/experiment7/METHODS.md` §2, §4). It does NOT run synthesis, does NOT
+This module is the *offline scoring/ranking* layer for experiment5
+(`docs/experiment5/METHODS.md` §2, §4). It does NOT run synthesis, does NOT
 re-score seeds, does NOT touch the M2 hard-branch filter or the frozen
 15-branch RE2-v2 set. It ONLY reads the two per-cell artefacts that the
 *unmodified* `analysis/scripts/measure_gap_coverage.py` already wrote:
@@ -20,7 +20,7 @@ Documented metric keys (quote them — METHODS §2 mandates a blind reader can
 reproduce every number):
 
   * M2 key:  ``summary["slices"]["all"]["union_frac_targets_hit"]``
-             — identical to ``experiment6_score.M2_SLICE``/``M2_KEY`` and to
+             — identical to ``experiment4_score.M2_SLICE``/``M2_KEY`` and to
              the real ``results/ablation_re2_v2/m2/.../summary.json`` schema.
   * M1 key:  ``summary["edges_covered"]`` — "total union edges covered by
              all seeds in a cell", emitted by the unmodified
@@ -50,7 +50,7 @@ exposes the three functions we need —
 
 ``per_target_ranks`` is the shape ``friedman_nemenyi`` expects: a list of
 "blocks", each block a list of one metric value per treatment/config. For
-experiment7 the **repeated measure (block)** is one of the (up to) 15
+experiment5 the **repeated measure (block)** is one of the (up to) 15
 frozen hard-branch *targets*, and the **treatments** are the strategy cells
 within a single variant. That is the unit ``friedman_nemenyi`` was written
 for (per-(target,config) values feeding a CD diagram) and it is also the
@@ -76,7 +76,7 @@ import sys
 from pathlib import Path
 
 # Bootstrap REPO_ROOT onto sys.path so this works as
-# `python -m analysis.scripts.experiment7_rank` AND as a plain script,
+# `python -m analysis.scripts.experiment5_rank` AND as a plain script,
 # mirroring the idiom in analysis/scripts/measure_gap_coverage.py (~26-29).
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
@@ -85,16 +85,16 @@ if str(REPO_ROOT) not in sys.path:
 # Imports after the sys.path bootstrap above (E402/I001 intentional —
 # same idiom as analysis/scripts/measure_gap_coverage.py).
 from analysis.scripts import friedman_nemenyi as fn  # noqa: E402, I001
-from analysis.scripts.experiment6_score import (  # noqa: E402
+from analysis.scripts.experiment4_score import (  # noqa: E402
     load_hit_matrix as _exp6_load_hit_matrix,
 )
-from analysis.scripts.experiment6_score import (  # noqa: E402
+from analysis.scripts.experiment4_score import (  # noqa: E402
     union_m2 as _exp6_union_m2,
 )
 from core.targets import TARGETS  # noqa: E402
 
 # ---------------------------------------------------------------------------
-# Pre-registered constants (METHODS §2, §4; mirrors experiment6_score).
+# Pre-registered constants (METHODS §2, §4; mirrors experiment4_score).
 # ---------------------------------------------------------------------------
 M2_SLICE = "all"
 M2_KEY = "union_frac_targets_hit"
@@ -104,7 +104,7 @@ M1_KEY = "edges_covered"
 
 DEFAULT_STRATEGY = "default"
 
-# Per-cell seed bootstrap (METHODS §4 — reuse the experiment6 pattern:
+# Per-cell seed bootstrap (METHODS §4 — reuse the experiment4 pattern:
 # resample the cell's seeds WITH replacement, recompute union M2,
 # n=10000, random.Random(42), percentile [2.5, 97.5]).
 BOOTSTRAP_N_RESAMPLES = 10000
@@ -222,7 +222,7 @@ def cell_status(m2_summary: dict | None) -> str:
 
 
 # ---------------------------------------------------------------------------
-# 3. Hit matrix + union M2 (mirror experiment6_score; import the clean
+# 3. Hit matrix + union M2 (mirror experiment4_score; import the clean
 #    pure functions rather than re-implementing — they are binary-free).
 # ---------------------------------------------------------------------------
 def hit_matrix(
@@ -230,10 +230,10 @@ def hit_matrix(
 ) -> tuple[list[str], list[int], dict[tuple[str, int], bool]]:
     """Parse ``gap_hits.jsonl`` -> (seed_ids, target_idxs, {(sid,tidx):hit}).
 
-    Delegates to the UNMODIFIED ``experiment6_score.load_hit_matrix``: same
+    Delegates to the UNMODIFIED ``experiment4_score.load_hit_matrix``: same
     file format, same first-seen ordering, same (sid,tidx)->bool mapping.
     Re-using it (rather than copying) keeps this aggregator byte-consistent
-    with the experiment6 bootstrap convention METHODS §4 points at.
+    with the experiment4 bootstrap convention METHODS §4 points at.
     """
     return _exp6_load_hit_matrix(Path(gap_hits_jsonl))
 
@@ -245,7 +245,7 @@ def union_m2(
 ) -> float:
     """Fraction of ``target_idxs`` hit by ANY seed in the subset.
 
-    Thin re-export of ``experiment6_score.union_m2`` (the union/set M2 of a
+    Thin re-export of ``experiment4_score.union_m2`` (the union/set M2 of a
     corpus). Missing pairs count as not-hit, matching the metric's zero-row
     behaviour for replay failures.
     """
@@ -256,7 +256,7 @@ def union_m2(
 # 4. Per-cell seed bootstrap CI (METHODS §4).
 # ---------------------------------------------------------------------------
 def _percentile(sorted_vals: list[float], pct: float) -> float:
-    """Same nearest-rank convention as measure_gap_coverage / experiment6:
+    """Same nearest-rank convention as measure_gap_coverage / experiment4:
     index into the sorted resample array at ``int(pct * n)``."""
     n = len(sorted_vals)
     idx = int(pct * n)
@@ -602,13 +602,13 @@ def rank(
     results_root: Path,
     out_dir: Path,
 ) -> dict:
-    """Full experiment7 ranking for one (target, model).
+    """Full experiment5 ranking for one (target, model).
 
     Builds the variant×strategy M2/M1 tables (with MISSING/CENSORED), the
     per-cell bootstrap CIs, the per-variant Friedman+Nemenyi over the
     strategy cells, and the Holm strategy-vs-default contrasts. Writes
-    ``out_dir/experiment7_<target>_rank.json`` and a human-readable
-    ``out_dir/experiment7_<target>_rank.md`` (markdown tables + a text
+    ``out_dir/experiment5_<target>_rank.json`` and a human-readable
+    ``out_dir/experiment5_<target>_rank.md`` (markdown tables + a text
     critical-difference summary). The JSON also carries CD-diagram-ready
     data (per-variant mean ranks + the CD value).
     """
@@ -665,7 +665,7 @@ def rank(
     }
 
     result = {
-        "experiment": "experiment7",
+        "experiment": "experiment5",
         "target": target,
         "model": model,
         "variants": variants,
@@ -687,9 +687,9 @@ def rank(
         "cd_diagram": cd_diagram,
     }
 
-    json_path = out_dir / f"experiment7_{target}_rank.json"
+    json_path = out_dir / f"experiment5_{target}_rank.json"
     json_path.write_text(json.dumps(result, indent=2))
-    md_path = out_dir / f"experiment7_{target}_rank.md"
+    md_path = out_dir / f"experiment5_{target}_rank.md"
     md_path.write_text(_render_markdown(result))
     return result
 
@@ -724,7 +724,7 @@ def _render_markdown(result: dict) -> str:
     strategies = result["strategies"]
     cells = result["cells"]
     lines: list[str] = []
-    lines.append(f"# experiment7 — {result['target']} / {result['model']} ranking")
+    lines.append(f"# experiment5 — {result['target']} / {result['model']} ranking")
     lines.append("")
     lines.append(
         "M2 = `" + result["metric_keys"]["m2"] + "` (primary); "
@@ -838,7 +838,7 @@ def main() -> int:
     parser.add_argument(
         "--out-dir",
         type=Path,
-        default=REPO_ROOT / "results" / "experiment7",
+        default=REPO_ROOT / "results" / "experiment5",
     )
     args = parser.parse_args()
 

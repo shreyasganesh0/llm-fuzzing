@@ -1,4 +1,4 @@
-"""Unit tests for analysis/scripts/experiment6_score.py.
+"""Unit tests for analysis/scripts/experiment4_score.py.
 
 These tests exercise ONLY the pure bootstrap + matrix logic on SYNTHETIC
 `gap_hits.jsonl` content. They never invoke the real M2 metric, the
@@ -24,7 +24,7 @@ from pathlib import Path
 
 import pytest
 
-from analysis.scripts.experiment6_score import (
+from analysis.scripts.experiment4_score import (
     bootstrap_diffs,
     consistency_check,
     load_hit_matrix,

@@ -12,6 +12,30 @@ for each experiment lives in the per-experiment docs named below; where
 this file and a per-experiment doc disagree, the per-experiment doc
 (and, for numbers, the on-disk `summary.json` it cites) wins.
 
+## Numbering & git-provenance note (renumbered 2026-05-18)
+
+The iteration experiments were renumbered to run contiguously after the
+historical `experiment1–3`. **All docs / code modules / output-data
+dirs use the NEW numbers.** Map:
+
+| New | Old | What it is |
+|---|---|---|
+| `experiment4` | `experiment6` | ESSS — entropy-stratified seed selection |
+| `experiment5` | `experiment7` | SVA — strategy-as-variant ablation |
+| `experiment6` | `experiment8` | Follow-up A — cot_strict mechanism isolation |
+| `experiment7` | `experiment9` | Follow-up B — cross-target reliability |
+| `experiment4/FOLLOWUP.md` | `experiment6/FOLLOWUP.md` | Follow-up C — exp4 mechanism check |
+
+**Immutable git provenance (history NOT rewritten — safety):** the
+original pre-registration/run commits, and the branches pushed to
+`origin`, retain the OLD labels — branches `experiment6`, `experiment7`,
+`experiment-followups`. Frozen pre-registration **commit hashes and
+timestamps are unchanged** (the authoritative anchors; hex hashes were
+never touched). Only experiment *identity* labels were renumbered; any
+`branch`/`base_branch` field inside a frozen pre-reg doc that now shows
+a renumbered label refers to the experiment identity — resolve the
+actual VCS branch via the map above + the commit hash.
+
 ---
 
 ## 0. Global prerequisites (replication, once)
@@ -70,7 +94,7 @@ behind each: `docs/PROJECT_CONTEXT_FOR_WEB.md §6`.
   `v1_src`); harfbuzz best M2 **0.640** (sonnet @ `v0_none`).
   codestral-22b is the most reliable free model (RE2 M2 ≤ 0.800,
   harfbuzz ≤ 0.480; `v1_src`=0.46, `v3_all`=0.26 on harfbuzz — the
-  baselines experiment6 builds on). Random M2 = 0.000.
+  baselines experiment4 builds on). Random M2 = 0.000.
 - **Replicate.** `docs/experiment2.md §4.5`:
   `nohup .venv/bin/python scripts/run_ablation_{re2,harfbuzz}.py
   --phase all --skip-existing`.
@@ -91,21 +115,21 @@ behind each: `docs/PROJECT_CONTEXT_FOR_WEB.md §6`.
   (`default,cot_strict,few_shot,self_critique,prompt_chain,tool_use,
   tool_use_retrieval`); `default` cache byte-identical (14k entries
   preserved). **End-to-end scored strategy sweep never run** — that is
-  the gap `experiment7` closes.
+  the gap `experiment5` closes.
 - **Replicate.** `docs/experiment3.md §3.5` (queued push-button, blocked
   on credit).
 - **Detail.** `docs/experiment3.md`; `PROJECT_CONTEXT §5.3, §8 gap 6,
   §9 Q5`.
 - **Provenance.** Historical (`master`); `docs/experiment3.md`.
 
-## 6. experiment6 — Entropy-Stratified Seed Selection (ESSS) — COMPLETE
+## 6. experiment4 — Entropy-Stratified Seed Selection (ESSS) — COMPLETE
 
 - **Question.** Within one `(harfbuzz × variant × codestral-22b ×
   default)` cell, does per-seed mean *payload entropy* predict which of
   the 150 seeds carry the M2 union score?
 - **Scope.** harfbuzz, codestral-22b, `{v1_src, v3_all}`, default
-  strategy, Stages 0–1 only. Branch `experiment6`.
-- **Result (frozen; `docs/experiment6/RESULTS.md`).** Stage 0 logprob
+  strategy, Stages 0–1 only. Branch `experiment4`.
+- **Result (frozen; `docs/experiment4/RESULTS.md`).** Stage 0 logprob
   gate = **FULL**. Pre-registered (commit `4d96b1c`,
   2026-05-17T23:52:23Z, before scoring) prediction "high-entropy carries
   M2" is **FALSIFIED for both variants** (all four bootstrap CIs contain
@@ -118,42 +142,42 @@ behind each: `docs/PROJECT_CONTEXT_FOR_WEB.md §6`.
   Δ_hr v1_src +0.12 [−0.06,+0.26], v3_all 0.00 [−0.10,+0.14]; Δ_hl
   v1_src −0.08 [−0.30,+0.20], v3_all −0.24 [−0.34,+0.04]. Inverse
   outcome, reported as one of the three pre-declared admissible outcomes.
-- **Replicate.** `docs/experiment6/METHODS.md` §7 + the commands in
-  `docs/experiment6/EXECUTION_LOG.md`; driver
-  `scripts/run_experiment6_harfbuzz.py` (sandboxed output roots),
-  analysis `analysis/scripts/experiment6_{stage0_probe,entropy,
+- **Replicate.** `docs/experiment4/METHODS.md` §7 + the commands in
+  `docs/experiment4/EXECUTION_LOG.md`; driver
+  `scripts/run_experiment4_harfbuzz.py` (sandboxed output roots),
+  analysis `analysis/scripts/experiment4_{stage0_probe,entropy,
   stratify,score}.py`. Logprob capture is env-gated
   (`UTCF_CAPTURE_LOGPROBS`); default-off ⇒ cache byte-identical.
-- **Detail.** `docs/experiment6/{MANIFEST.json,METHODS.md,
+- **Detail.** `docs/experiment4/{MANIFEST.json,METHODS.md,
   STAGE0_RESULT.md,EXECUTION_LOG.md,RESULTS.md}` (replication-grade).
 
-### experiment6 — Built / Added / Removed (precise, from git, branch `experiment6`)
+### experiment4 — Built / Added / Removed (precise, from git, branch `experiment4`)
 
 | Action | Path | Note |
 |---|---|---|
-| Added | `analysis/scripts/experiment6_stage0_probe.py` | Stage 0 logprob-capability probe |
-| Added | `analysis/scripts/experiment6_entropy.py` | payload-masked top-K-head entropy (METHODS §3/§4) |
-| Added | `analysis/scripts/experiment6_stratify.py` | deterministic S_random/S_high/S_low (inv 3/4) |
-| Added | `analysis/scripts/experiment6_score.py` | M2 via UNMODIFIED metric + seed bootstrap |
-| Added | `analysis/tests/test_experiment6_{entropy,stratify,score}.py` | unit suites (synthetic, offline) |
-| Added | `scripts/run_experiment6_harfbuzz.py` | ~40-LOC AblationRunner wrapper, redirected output roots |
+| Added | `analysis/scripts/experiment4_stage0_probe.py` | Stage 0 logprob-capability probe |
+| Added | `analysis/scripts/experiment4_entropy.py` | payload-masked top-K-head entropy (METHODS §3/§4) |
+| Added | `analysis/scripts/experiment4_stratify.py` | deterministic S_random/S_high/S_low (inv 3/4) |
+| Added | `analysis/scripts/experiment4_score.py` | M2 via UNMODIFIED metric + seed bootstrap |
+| Added | `analysis/tests/test_experiment4_{entropy,stratify,score}.py` | unit suites (synthetic, offline) |
+| Added | `scripts/run_experiment4_harfbuzz.py` | ~40-LOC AblationRunner wrapper, redirected output roots |
 | Added | `tests/test_llm_client_logprob_backcompat.py` | freezes the pre-change `_prompt_hash` digest |
-| Added | `docs/experiment6/{MANIFEST.json,METHODS.md,STAGE0_RESULT.md,EXECUTION_LOG.md,RESULTS.md}` | replication docs |
+| Added | `docs/experiment4/{MANIFEST.json,METHODS.md,STAGE0_RESULT.md,EXECUTION_LOG.md,RESULTS.md}` | replication docs |
 | Modified | `core/llm_client.py` | additive opt-in `logprobs/top_logprobs` (cache key byte-identical when unused; +`_extract_logprobs`) |
 | Modified | `synthesis/scripts/generate_ablation_inputs.py` | env-gated default-strategy logprob request + per-seed sidecar persistence (no-op when env unset) |
 | Modified | `docs/STATUS.md` | §11 changelog entry + "Last updated" |
 | Added→Removed | `docs/RESUME.md` | created during the run (commit `1293882`), retired when complete (commit `7627ad8`) per the resume protocol |
 | Untouched (by design) | `analysis/metrics/m2.py`, `analysis/scripts/{freeze_target_branches,measure_gap_coverage}.py`, `core/{variants,prompt_strategies}.py` | M2 filter / frozen sets / registries never modified |
 
-Commit trail (branch `experiment6`, base `master`): `828fe0b` →
+Commit trail (branch `experiment4`, base `master`): `828fe0b` →
 `83bc5f0` → `a2a51e4` → `d1a44ab` → `4d96b1c` (pre-registration) →
 `1293882` → `10f2a88` → `0ae16a1` → `e37cdfe` → `7627ad8` (results).
 Two pre-results instrument refinements (SentencePiece byte-fallback
 detokeniser; strict→structural payload masking, user-approved) are
-logged in `docs/experiment6/EXECUTION_LOG.md`; the pre-registration
+logged in `docs/experiment4/EXECUTION_LOG.md`; the pre-registration
 predates and is unchanged by both.
 
-## 7. experiment7 — Strategy-as-Variant Ablation (SVA) — COMPLETE (phase 1, RE2)
+## 7. experiment5 — Strategy-as-Variant Ablation (SVA) — COMPLETE (phase 1, RE2)
 
 - **Question.** Treating prompting *strategy* as an axis next to
   *variant*: which `(variant, strategy)` cell maximizes M2/M1 on
@@ -164,8 +188,8 @@ predates and is unchanged by both.
   signal — separately pre-registered), codestral-22b only, 5×5 grid
   `{v0_none,v1_src,v2_src_tests,v3_all,v4_src_gaps} ×
   {default,cot_strict,few_shot,self_critique,prompt_chain}`, single
-  150-seed draw + bootstrap + Friedman/Nemenyi. Branch `experiment7`.
-- **Result (frozen; `docs/experiment7/RESULTS.md`).** Pre-registered
+  150-seed draw + bootstrap + Friedman/Nemenyi. Branch `experiment5`.
+- **Result (frozen; `docs/experiment5/RESULTS.md`).** Pre-registered
   `5b96f61` before scoring; staged cheapest-first under the $25-cap
   gate. **No strategy beats `default` at any variant** (no
   Holm-significant contrast; Friedman n.s. @v2 p=0.147, not computable
@@ -179,36 +203,36 @@ predates and is unchanged by both.
   via fillability, not M2-of-filled. Total spend ≈ $4.2; $25 cap never
   hit (the opt-in fail-safe cut collapsed cells early — e.g.
   `prompt_chain@v3_all` at 14 attempts).
-- **Replicate.** Exact commands in `docs/experiment7/METHODS.md §7`.
+- **Replicate.** Exact commands in `docs/experiment5/METHODS.md §7`.
   Uses the UNMODIFIED `scripts/run_ablation_re2.py`; non-default cells
   write under `results/ablation_re2_v2/<strategy>/m{1,2}/...` (disjoint
   from the default `experiment2_1` cells; nothing canonical touched).
-- **Detail.** `docs/experiment7/{MANIFEST.json,METHODS.md,
+- **Detail.** `docs/experiment5/{MANIFEST.json,METHODS.md,
   EXECUTION_LOG.md(+pre-registration),RESULTS.md}`.
 
-### experiment7 — Built / Added / Removed (precise, from git, branch `experiment7`)
+### experiment5 — Built / Added / Removed (precise, from git, branch `experiment5`)
 
 | Action | Path | Note |
 |---|---|---|
-| Added | `docs/experiment7/{MANIFEST.json,METHODS.md,EXECUTION_LOG.md,RESULTS.md}` | replication docs + pre-registration + cost-gate record |
-| Added | `analysis/scripts/experiment7_rank.py` + `analysis/tests/test_experiment7_rank.py` | ranking aggregator (M2/M1 table, bootstrap CIs, Friedman/Nemenyi/CD, Holm Wilcoxon) — built because `ablation_summary.py` is pinned to the invalidated `experiment2_0` path |
+| Added | `docs/experiment5/{MANIFEST.json,METHODS.md,EXECUTION_LOG.md,RESULTS.md}` | replication docs + pre-registration + cost-gate record |
+| Added | `analysis/scripts/experiment5_rank.py` + `analysis/tests/test_experiment5_rank.py` | ranking aggregator (M2/M1 table, bootstrap CIs, Friedman/Nemenyi/CD, Holm Wilcoxon) — built because `ablation_summary.py` is pinned to the invalidated `experiment2_0` path |
 | Added | `analysis/scripts/seed_yield_audit.py` + `analysis/tests/test_seed_yield_audit.py` | offline lost-cause auditor: per-cell VIABLE/MARGINAL/LOST_CAUSE + est. wasted $ + ABANDON recommendation |
 | Added | `scripts/tests/test_abandon_policy.py` | pins default==legacy byte-identity + stats-artifact `*.bin`-invisibility |
 | Modified | `scripts/_ablation_base.py` | **additive, default byte-identical**: `abandon_policy()` (opt-in `UTCF_ABANDON_NOGAIN`/`UTCF_ABANDON_WARMUP` → tighter no-gain window + yield-ceiling guard) + always-on behaviour-neutral `_synthesis_stats.json`. Env unset ⇒ legacy 20-window, no yield-ceiling (regression-pinned) |
 | Modified | `docs/STATUS.md`, `docs/EXPERIMENTS.md` | index/changelog |
 | Untouched (by design) | `scripts/run_ablation_re2.py`, `core/*`, `analysis/metrics/*`, `analysis/scripts/{measure_gap_coverage,freeze_target_branches}.py`, `synthesis/scripts/parse_synthesis.py` | reuses the orchestrator + metric unchanged; **no logprobs requested** ⇒ every cache key byte-identical; M2 filter/frozen set untouched |
 
-Commit trail (branch `experiment7`, base `experiment6` HEAD `7627ad8`):
+Commit trail (branch `experiment5`, base `experiment4` HEAD `7627ad8`):
 `5b96f61` (pre-registration) → … (appended as stages complete; see
-`docs/experiment7/EXECUTION_LOG.md`).
+`docs/experiment5/EXECUTION_LOG.md`).
 
 ---
 
 ## Branch / merge state (for the replicator)
 
-`experiment6` and `experiment7` are **branches off `master`**, not
-merged. `master` is the clean base; `experiment6` adds the ESSS work;
-`experiment7` branches from `experiment6` (so all experiment docs
+`experiment4` and `experiment5` are **branches off `master`**, not
+merged. `master` is the clean base; `experiment4` adds the ESSS work;
+`experiment5` branches from `experiment4` (so all experiment docs
 co-exist for this index) and adds SVA. Each branch is an independent,
 revertable checkpoint trail with no tooling attribution in commit
 messages. To reproduce a given experiment, check out its branch and
@@ -220,7 +244,7 @@ committed.
 ## Where the authoritative numbers live
 
 Frozen headline numbers: `docs/experiment{1,2,3}.md`,
-`docs/experiment6/RESULTS.md`, `docs/experiment7/RESULTS.md`.
+`docs/experiment4/RESULTS.md`, `docs/experiment5/RESULTS.md`.
 Per-cell ground truth: the on-disk
 `results/ablation_<target>[/<strategy>]/m{1,2}/<variant>/<model>/summary.json`
 (gitignored — regenerate). Cost ground truth:
@@ -228,27 +252,27 @@ Per-cell ground truth: the on-disk
 load-bearing-invariant incident history: `docs/PROJECT_CONTEXT_FOR_WEB.md`.
 Living "what is running now": `docs/STATUS.md` (or `docs/RESUME.md`).
 
-## 8/9 + experiment6-FOLLOWUP — iteration follow-ups (branch `experiment-followups`)
+## 8/9 + experiment4-FOLLOWUP — iteration follow-ups (branch `experiment-followups`)
 
-- **Question.** Mechanism-isolate the experiment7 `cot_strict` collapse
-  (A), test its target-generality (B), and check experiment6's
+- **Question.** Mechanism-isolate the experiment5 `cot_strict` collapse
+  (A), test its target-generality (B), and check experiment4's
   low-entropy→M2 per-seed mechanism (C). Pre-registered+frozen
   (`44d8104`) before any run; cost-gated; ≈$0.7 total.
 - **Result (frozen).**
-  - **experiment8 (A)** `docs/experiment8/RESULTS.md`: pre-reg
+  - **experiment6 (A)** `docs/experiment6/RESULTS.md`: pre-reg
     FALSIFIED — the **static in-template example list** (not the rigid
     4-step labels) causes the `cot_strict` diversity collapse.
     `cot_strict_no_examples` FILLED 150 @ M2 **0.800** (= `default`);
     `cot_strict_rotated_examples` FILLED @ 0.667; `cot_strict_no_labels`
     CENSORED 50 (collapsed onto the example regexes).
-  - **experiment9 (B)** `docs/experiment9/RESULTS.md`:
+  - **experiment7 (B)** `docs/experiment7/RESULTS.md`:
     `cot_strict@harfbuzz/v3_all` FILLED 150 (no collapse — binary cot
     has no RE2 example list; corroborates A) but M2 **0.120** vs
     `default` 0.260 → a *general* rigid-label M2 penalty distinct from
     the example-anchor fill collapse.
-  - **experiment6 FOLLOWUP (C)** `docs/experiment6/FOLLOWUP.md`: no-LLM;
+  - **experiment4 FOLLOWUP (C)** `docs/experiment4/FOLLOWUP.md`: no-LLM;
     deep-reach & per-seed M1 ~flat across entropy quartiles (Q1−Q4 ≤
-    0.061 ≪ ±0.10) → experiment6's low-entropy→M2 is **union-level
+    0.061 ≪ ±0.10) → experiment4's low-entropy→M2 is **union-level
     complementarity**, the per-seed "valid→reaches deep" mechanism is
     **FALSIFIED**.
   - Cross-experiment 1-pager: `docs/experiment_iteration_summary.md`.
@@ -257,8 +281,8 @@ Living "what is running now": `docs/STATUS.md` (or `docs/RESUME.md`).
   `core/prompt_strategies.py` (+3 strategy classes & registry entries);
   `synthesis/prompts/ablation_synthesis_regex_cot_{noex,rot,nolbl}.j2`;
   `dataset/fixtures/cot_examples_pool.json`;
-  `analysis/scripts/experiment6_followup.py` (+`analysis/tests/test_experiment6_followup.py`);
-  `docs/experiment8/*`, `docs/experiment9/*`, `docs/experiment6/FOLLOWUP.md`,
+  `analysis/scripts/experiment4_followup.py` (+`analysis/tests/test_experiment4_followup.py`);
+  `docs/experiment6/*`, `docs/experiment7/*`, `docs/experiment4/FOLLOWUP.md`,
   `docs/experiment_iteration_summary.md`. Modified (additive):
   `synthesis/scripts/generate_ablation_inputs.py` (3 dispatch entries +
   rotated-examples threading), `tests/test_phase9_integration.py` &
