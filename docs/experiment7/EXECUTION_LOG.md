@@ -164,4 +164,50 @@ frozen RE2-v2 set unchanged (invariant 2); attempt-offset 700000/
   collapses" outcome is representable in the ranking as a disclosed
   negative result.
 
+## 2026-05-18 — cot_strict collapse DIAGNOSED (free; mechanism corrected)
+
+Zero-proxy-cost analysis of the 492 cached `cot_strict` codestral-RE2
+responses from stage 1:
+
+- **It is NOT a parse failure.** `parse_regex_response` succeeds on
+  **462/492 (94%)**; content median 1080 chars (well under the 2048
+  LiteLLM cap); `is_degenerate_loop` trips 0/492. The runner's
+  "synthesis capped: too many parse failures" is its *generic* no-new-
+  seeds label, not the actual cause.
+- **True mechanism = generation-diversity collapse.** The 462 OK
+  responses yield **1384 parsed seed-instances but only 142 UNIQUE
+  `content_b64`** (diversity ratio **0.103**). Five regexes dominate:
+  `(?P<x>a+)` ×264, `(a*)*` ×192, `\p{Greek}+` ×162, `a{1000,}` ×125,
+  `[^a-zA-Z0-9]` ×108. The rigid 4-step CoT scaffold suppresses
+  codestral's sampling diversity on RE2.
+- **Why cells censor at 14–32:** seeds are content-addressed
+  (`seed_{sha256(target|sample|idx|content_b64)}.bin`), so a repeated
+  regex overwrites the same file and `_count_seeds` does not grow → the
+  20-attempt no-gain early-exit fires. Correct, invariant-consistent
+  behaviour (dedup + 150-floor + no padding, invariant 4).
+- **Intrinsic & unfixable by more generation:** only 142 distinct
+  seeds exist across ALL cot_strict generations — < 150. cot_strict is
+  therefore **CENSORED for codestral-22b/RE2**, with the precise cause
+  being diversity collapse, not parsing. This is a clean negative
+  result and is *sharper* than the pre-registered prediction (which
+  expected cot_strict ≈ default at high-context, not a cross-variant
+  diversity collapse). The pre-registration (`5b96f61`) declared all
+  outcomes admissible and is unchanged.
+- TODO at finalization (zero proxy cost): run `--phase m1,m2
+  --skip-existing --strategy cot_strict` on the existing partial
+  cot_strict seed dirs so each gets a `summary.json` with `n_seeds`<150
+  → the aggregator marks them CENSORED (not MISSING) with the true
+  count.
+
+## 2026-05-18 — Stage continues: few_shot (offset 715000)
+
+- Per the user-selected path (diagnose → continue staged, prompt_chain
+  gated). cot_strict NOT re-run (write-off). Launch few_shot only,
+  `--skip-existing` (default cells free/cached; cot_strict partial dirs
+  untouched), `--attempt-offset 715000` (≥5000 bump, invariant 5;
+  distinct from the 705000/710000 earmarked for self_critique/
+  prompt_chain). Monitor specifically for the diversity-saturation
+  signature (seeds plateau while attempts climb; unique/total ratio),
+  not just the runner's parse-failure label.
+
 <!-- subsequent entries appended below as work proceeds -->
