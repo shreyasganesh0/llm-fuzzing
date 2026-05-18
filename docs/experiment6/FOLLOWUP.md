@@ -84,9 +84,67 @@ Complete when this doc's RESULTS section has: the two tables per pool
 (mean entropy + prefix entropy), and the one-paragraph interpretation
 adjudicated against §5.
 
-## RESULTS
+## RESULTS — COMPLETE (no LLM; per-seed replay over both ~450-seed pools)
 
-**PENDING** — no-LLM analysis not yet run.
+Surrogate verified live: EARLY=13, DEEP=37, UNMAPPED=0 (both pools).
+Per-seed M1 = replayed (450/450 each pool); prefix entropy n_ok=456/461,
+0 drops. Quartiles ≈113/113/112/112.
+
+**Pool v1_src** — deep_reach_rate by entropy quartile (Q1=lowest):
+
+| metric | Q1 | Q2 | Q3 | Q4 | Q1−Q4 | mean per-seed M1 (Q1..Q4) |
+|---|---|---|---|---|---|---|
+| full payload entropy | 0.142 | 0.080 | 0.063 | 0.134 | **+0.008** | 549 / 541 / 539 / 541 |
+| prefix entropy (8 tok) | 0.124 | 0.088 | 0.107 | 0.098 | **+0.026** | 548 / 541 / 540 / 539 |
+
+**Pool v3_all**:
+
+| metric | Q1 | Q2 | Q3 | Q4 | Q1−Q4 | mean per-seed M1 (Q1..Q4) |
+|---|---|---|---|---|---|---|
+| full payload entropy | 0.142 | 0.080 | 0.054 | 0.080 | **+0.061** | 551 / 540 / 535 / 537 |
+| prefix entropy (8 tok) | 0.133 | 0.071 | 0.080 | 0.071 | **+0.061** | 548 / 538 / 539 / 537 |
+
+Conditional-on-deep-reach mean per-seed M1: v1_src Q1 574.6 vs Q4 574.3;
+v3_all Q1 595.3 vs Q4 577.7 — `differs = False` both pools. Per-seed M1
+is essentially flat across all entropy quartiles (~535–551 edges).
+
+### Interpretation (FOLLOWUP.md §5 pre-committed rule — fired cleanly)
+
+**Verdict for BOTH pools: "mechanism WRONG / union-level".** Every
+Q1−Q4 deep-reach gap (full and prefix, both pools) is well below the
+pre-registered ±0.10 threshold (max 0.061), is **non-monotone** (e.g.
+v1_src full is U-shaped: Q1 0.142, Q3 0.063, Q4 0.134), and per-seed M1
+does not differ by quartile (conditional or unconditional). So:
+
+- experiment6's headline (the **low-entropy 150-seed subsample carries
+  the M2 union**, S_low 0.46/0.50 vs random/high 0.26) is **real and
+  unchanged** — but the proposed *per-seed* mechanism ("low-entropy
+  seeds are individually more valid → individually reach deep code more
+  often") is **FALSIFIED**. Low-entropy seeds are *not* individually
+  more deep-reaching, and contribute the same ~540 edges each.
+- Therefore the M2(S_low) advantage is a **union-level / complementarity
+  effect**: a low-entropy 150-seed set collectively covers a *less
+  redundant, more complementary* spread of hard branches, even though no
+  individual low-entropy seed reaches deep code more than a high-entropy
+  one. prefix entropy separated marginally better than full (still ≪
+  threshold), consistent with "the effect is not concentrated in the
+  payload prefix / per-seed validity".
+
+## DEVIATION LOG (append-only)
+
+- 2026-05-18 — Surrogate frozen as §3 (the web plan guessed
+  `hb-cff-*`/`hb-buffer-*`; the actual frozen-set files are
+  blob/open/ot/shape — mapping corrected and frozen before computation).
+  Corrected the plan's "per-seed coverage already on disk": per-seed M1
+  required a new (zero-LLM) per-seed replay pass (450×2, cached to
+  `results/experiment6/followup/per_seed_m1_*.json`).
+- 2026-05-18 — §5's "mechanism DIFFERENT" arm pinned only the +0.10
+  deep-reach gap, not a threshold for "per-seed M1 differs conditional
+  on deep-reach". Resolved with a pre-committed-style mechanical rule:
+  differ iff `|Q1−Q4| / max(|Q1|,|Q4|) ≥ 0.10` over deep-reaching seeds
+  only (relative 10%). Surfaced (not silently chosen); did not affect
+  the verdict (the deep-reach gap alone already selected the
+  "WRONG / union-level" branch for both pools).
 
 ## DEVIATION LOG (append-only)
 

@@ -227,3 +227,42 @@ Per-cell ground truth: the on-disk
 `analysis/scripts/cost_audit.py`. Cross-experiment narrative & the
 load-bearing-invariant incident history: `docs/PROJECT_CONTEXT_FOR_WEB.md`.
 Living "what is running now": `docs/STATUS.md` (or `docs/RESUME.md`).
+
+## 8/9 + experiment6-FOLLOWUP — iteration follow-ups (branch `experiment-followups`)
+
+- **Question.** Mechanism-isolate the experiment7 `cot_strict` collapse
+  (A), test its target-generality (B), and check experiment6's
+  low-entropy→M2 per-seed mechanism (C). Pre-registered+frozen
+  (`44d8104`) before any run; cost-gated; ≈$0.7 total.
+- **Result (frozen).**
+  - **experiment8 (A)** `docs/experiment8/RESULTS.md`: pre-reg
+    FALSIFIED — the **static in-template example list** (not the rigid
+    4-step labels) causes the `cot_strict` diversity collapse.
+    `cot_strict_no_examples` FILLED 150 @ M2 **0.800** (= `default`);
+    `cot_strict_rotated_examples` FILLED @ 0.667; `cot_strict_no_labels`
+    CENSORED 50 (collapsed onto the example regexes).
+  - **experiment9 (B)** `docs/experiment9/RESULTS.md`:
+    `cot_strict@harfbuzz/v3_all` FILLED 150 (no collapse — binary cot
+    has no RE2 example list; corroborates A) but M2 **0.120** vs
+    `default` 0.260 → a *general* rigid-label M2 penalty distinct from
+    the example-anchor fill collapse.
+  - **experiment6 FOLLOWUP (C)** `docs/experiment6/FOLLOWUP.md`: no-LLM;
+    deep-reach & per-seed M1 ~flat across entropy quartiles (Q1−Q4 ≤
+    0.061 ≪ ±0.10) → experiment6's low-entropy→M2 is **union-level
+    complementarity**, the per-seed "valid→reaches deep" mechanism is
+    **FALSIFIED**.
+  - Cross-experiment 1-pager: `docs/experiment_iteration_summary.md`.
+    Supersedes `EXPERIMENT_DEEP_DIVE.md §6.1`.
+- **Built/Added/Removed (git, branch `experiment-followups`).** Added:
+  `core/prompt_strategies.py` (+3 strategy classes & registry entries);
+  `synthesis/prompts/ablation_synthesis_regex_cot_{noex,rot,nolbl}.j2`;
+  `dataset/fixtures/cot_examples_pool.json`;
+  `analysis/scripts/experiment6_followup.py` (+`analysis/tests/test_experiment6_followup.py`);
+  `docs/experiment8/*`, `docs/experiment9/*`, `docs/experiment6/FOLLOWUP.md`,
+  `docs/experiment_iteration_summary.md`. Modified (additive):
+  `synthesis/scripts/generate_ablation_inputs.py` (3 dispatch entries +
+  rotated-examples threading), `tests/test_phase9_integration.py` &
+  `scripts/tests/test_ablation_base_cli.py` (drift-guards updated in
+  lockstep), `docs/STATUS.md`, `docs/EXPERIMENTS.md`. Untouched
+  (invariants): M2 filter / frozen sets / `measure_gap_coverage` /
+  default cache layout (byte-identical, guarded — 426 tests pass).

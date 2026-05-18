@@ -407,6 +407,24 @@ pair.
 
 ## 11. Changelog of this doc
 
+- **2026-05-18** — **Follow-ups A/B/C** (branch `experiment-followups`,
+  pre-registered+frozen `44d8104` before any run; cost-gated; ≈$0.7
+  total, $25 proxy cap never approached). **experiment8 (A)**: 3 new
+  RE2-only `cot_strict_*` strategies isolate the collapse cause —
+  pre-reg FALSIFIED: the **static in-template example list** (not the
+  rigid labels) causes it; `cot_strict_no_examples` ties `default` at
+  M2 0.800. **experiment9 (B)**: `cot_strict@harfbuzz/v3_all` filled
+  (no collapse — corroborates A) but M2 0.120 vs default 0.260 → a
+  *general* rigid-label M2 penalty distinct from the example-anchor
+  collapse. **experiment6 FOLLOWUP (C)**: no-LLM per-seed analysis →
+  experiment6's low-entropy→M2 effect is **union-level complementarity,
+  not a per-seed reach mechanism** (deep-reach & per-seed M1 flat across
+  entropy quartiles). Supersedes `EXPERIMENT_DEEP_DIVE.md §6.1`. New
+  code: 3 strategies + templates + `dataset/fixtures/cot_examples_pool.json`
+  + `analysis/scripts/experiment6_followup.py` (+tests); phase9/CLI
+  drift-guards updated in lockstep (426 passed). Detail:
+  `docs/experiment{8,9}/`, `docs/experiment6/FOLLOWUP.md`,
+  `docs/experiment_iteration_summary.md`. Verify: `.venv/bin/pytest -q`.
 - **2026-05-18** — **experiment7 (SVA — Strategy-as-Variant Ablation)**
   landed on branch `experiment7`. RE2 × codestral-22b × 5 variants × 5
   strategies, pre-registered (`5b96f61`) before scoring, staged
