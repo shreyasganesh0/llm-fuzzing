@@ -107,4 +107,25 @@ k=150 seeds/cell (invariant 4); subsample `random.Random(42)`
 frozen RE2-v2 set unchanged (invariant 2); attempt-offset 700000/
 705000/710000 per stage (invariant 5).
 
+## 2026-05-18 — Stage 1 launched (cot_strict, few_shot)
+
+- Pre-registration committed `5b96f61` BEFORE this launch (no
+  experiment7 cell scored prior).
+- Cmd: `UTCF_LLM_RPM=12 nohup .venv/bin/python
+  scripts/run_ablation_re2.py --phase all --skip-existing
+  --variants v0_none,v1_src,v2_src_tests,v3_all,v4_src_gaps
+  --strategy cot_strict,few_shot --only-models codestral-22b
+  --attempt-offset 700000 >> /tmp/exp7_re2_s1.log 2>&1 &`
+- Unmodified `AblationRunner` / `run_ablation_re2.py`; non-default
+  cells write under the `<strategy>/` path + `,strategy=<name>` salt
+  (invariant 9) — `experiment2_1` default cells read-only via
+  `--skip-existing`, never touched. No logprobs requested (cache key
+  byte-identical to pre-experiment6 for every cell).
+- Health monitor: **0 `400 Budget exceeded`** lines; seeds accumulating
+  (proxy accepting traffic). Stage 2 (`self_critique`, offset 705000)
+  and Stage 3 (`prompt_chain`, offset 710000) gated on this staying
+  clean + a `cost_audit.py` headroom check between stages.
+- Aggregator `analysis/scripts/experiment7_rank.py` (+tests) under
+  construction in parallel (offline; no proxy/LLM).
+
 <!-- subsequent entries appended below as work proceeds -->
