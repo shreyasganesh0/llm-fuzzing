@@ -1,0 +1,71 @@
+{
+  "experiment": "experiment7",
+  "codename": "Strategy-as-Variant Ablation (SVA)",
+  "one_line": "Treat the prompting STRATEGY as an ablation axis alongside the context VARIANT and rank every (variant x strategy) cell by M2/M1 on RE2/codestral-22b, testing whether strategy beats default and whether strategy interacts with variant.",
+  "status": "preregistered_phase1_pending",
+  "pinned_at": {
+    "date_utc": "2026-05-18",
+    "timestamp_utc": "2026-05-18T01:02:14Z",
+    "commit": "7627ad81e3f6ff73e1b6d98b01f16daf7b196eef",
+    "branch": "experiment7",
+    "python": "3.12.3"
+  },
+
+  "scope_locked_with_user_2026-05-18": {
+    "target": "re2 (phase 1); harfbuzz only if RE2 shows signal (phase 2, NOT pre-registered here)",
+    "model": "codestral-22b",
+    "provider": "litellm",
+    "litellm_url": "https://api.ai.it.ufl.edu",
+    "variants": ["v0_none", "v1_src", "v2_src_tests", "v3_all", "v4_src_gaps"],
+    "strategies": ["default", "cot_strict", "few_shot", "self_critique", "prompt_chain"],
+    "strategies_excluded": ["tool_use", "tool_use_retrieval"],
+    "strategies_excluded_reason": "require supports_tool_use models (gpt-oss-20b/nemotron-120b); codestral-22b.supports_tool_use=False; out of locked scope",
+    "replication": "single 150-seed draw per cell; uncertainty via per-seed bootstrap + Friedman/Nemenyi across cells",
+    "metrics": ["m1", "m2"],
+    "cells": "5 variants x 5 strategies = 25 cells x 150 seeds",
+    "cells_cached_free": "5 (default x v0..v4 already in results/ablation_re2_v2 from experiment2_1; read-only via --skip-existing)",
+    "cells_to_generate": "20 (4 non-default strategies x 5 variants)"
+  },
+
+  "primary_metric": {
+    "name": "m2",
+    "definition": "results/ablation_re2_v2[/<strategy>]/m2/<variant>/codestral-22b/summary.json -> slices.all.union_frac_targets_hit",
+    "frozen_set": "dataset/fixtures/re2_ab_v2/re2/m2_target_branches.json (15 hard branches: 10 shown + 5 held; struct_hits>=1 AND rand_hits==0)",
+    "scored_by": "UNMODIFIED analysis.metrics.M2HardBranchMetric via AblationRunner phase m2",
+    "secondary_metric": "m1 = total union edges (slices/edges per M1EdgesMetric)",
+    "random_anchor": "M2 random = 0.000 by construction; report absolute AND vs-random"
+  },
+
+  "orchestration": {
+    "driver": "scripts/run_ablation_re2.py (UNMODIFIED AblationRunner) — NO new orchestrator, NO isolation wrapper",
+    "why_no_wrapper": "non-default strategy cells write under a <strategy>/ path segment (results/ablation_re2_v2/<strategy>/m{1,2}/...) and append ',strategy=<name>' to the cache salt; they do NOT collide with the default-strategy experiment2_1 cells (invariant 9). default cells are read-only via --skip-existing.",
+    "attempt_offset": 700000,
+    "attempt_offset_reason": ">=5000 bump (invariant 5); clear of experiment6's 600000 and all prior offsets",
+    "logprobs": "NOT requested (no entropy here) -> UTCF_CAPTURE_LOGPROBS unset -> cache key byte-identical to pre-experiment6 for every cell",
+    "rpm_throttle": "UTCF_LLM_RPM=12 (matches prior UF-proxy practice)"
+  },
+
+  "staged_execution_plan": {
+    "rationale": "UF LiteLLM proxy-side $25 cap (blocked experiment3_1 at $25.01). estimate_cost.py: ~$8.6 typical / ~$15.8 conservative for the 20 non-default cells; cumulative litellm re-price $14.39 -> apparent headroom ~$10.6, proxy's internal counter opaque. Stage cheapest-first, monitor for 400, abort-safe.",
+    "stage_1": "cot_strict,few_shot (1x calls/seed) — ~$2.5; also calibrates real calls/cell + confirms proxy not capped",
+    "stage_2": "self_critique (2x calls/seed) — ~$2.5; only if stage 1 clean + budget headroom",
+    "stage_3": "prompt_chain (3x calls/seed) — ~$3.7; only if stages 1-2 clean + headroom + signal",
+    "each_stage": "--skip-existing (default cells free, partial progress resumable with bumped offset per invariant 5); monitor 400 Budget exceeded + live seed counts"
+  },
+
+  "invariants_honored": {
+    "1_no_fabricated_tests": "frozen RE2 m2 set unchanged; assert_no_tests guard intact",
+    "2_m2_filter": "frozen set + M2HardBranchMetric/measure_gap_coverage UNMODIFIED",
+    "3_rng_seed_42": "AblationRunner._subsample_seeds random.Random(42); bootstrap RNG documented in METHODS",
+    "4_150_normalization": "every scored cell exactly 150 seeds",
+    "5_cache_salt_offset": "--attempt-offset 700000 (>=5000 bump)",
+    "9_default_cache_backcompat": "default cells byte-identical (no logprobs, no strategy salt); non-default append ',strategy=<name>' as designed"
+  },
+
+  "deliverables": [
+    "docs/experiment7/{MANIFEST.json,METHODS.md,EXECUTION_LOG.md (+pre-registration +cost gate),RESULTS.md}",
+    "analysis/scripts/experiment7_rank.py (+ tests) — new aggregator (existing ablation_summary.py is pinned to the invalidated experiment2_0 path)",
+    "per-cell ranked M1/M2 table, bootstrap 95% CIs, Friedman + Nemenyi + critical-difference diagram, prose vs the pre-registered ranking",
+    "docs/EXPERIMENTS.md — unified blind-reader replication index across experiments 1,2,3,6,7"
+  ]
+}
