@@ -105,20 +105,37 @@ surrounding double-quotes themselves, the `target_gaps` array, the
 prose the model emits around the JSON.
 
 Token→char mapping: logprob responses return `choices[0].logprobs.content`
-as an ordered list of token records. **Refinement recorded after the
-Stage 0 probe, before any entropy is computed** (see STAGE0_RESULT.md,
-EXECUTION_LOG.md): the UF-proxy codestral-22b tokenizer is SentencePiece-
-style — a leading space is encoded as `▁` (U+2581) on the token, so the
-raw `.token` strings do *not* concatenate to the literal completion. The
-reconstruction therefore detokenises each `.token` by replacing a single
-leading `▁` with a space before accumulating char offsets, and the
-reconstructed string is asserted equal to `resp.content` at runtime. On
-mismatch the whole response's seeds are dropped from the entropy pool and
-counted (same disclosure rule as below) rather than guessing an
-alignment. Cumulative detokenised lengths give each token a half-open
-`[start, end)` char span; the `content_b64` value spans are located on
-the reconstructed text with the same lenient JSON view the parser uses
-and matched positionally to the parsed inputs.
+as an ordered list of token records. The detokenisation rule was refined
+**twice before any entropy value or M2 number existed** (Stage 0 probe →
+SentencePiece note; then the real-data reconstruction failure on
+2026-05-18 → the rule below). Both refinements are recorded in
+STAGE0_RESULT.md / EXECUTION_LOG.md and are pre-results instrument
+corrections, not post-hoc rationalisation: the first entropy run dropped
+100 % of seeds on reconstruction mismatch, i.e. *no* entropy number was
+produced until the instrument was made faithful. The verified rule
+(`detokenize` in `analysis/scripts/experiment6_entropy.py`, asserted to
+reproduce `raw_response` exactly on sampled real sidecars) has three
+token classes:
+
+1. **Special / control tokens** (`</s>`, `<s>`, `<unk>`, `<pad>`,
+   `<|...|>`) → empty string (the proxy's `resp.content` excludes them).
+2. **Byte-fallback tokens** `<0xHH>` → the raw byte. ASCII (`< 0x80`,
+   e.g. `<0x0A>` newline in the pretty-printed JSON) maps 1:1 to a
+   character; a `>= 0x80` fragment (multibyte UTF-8 needing cross-token
+   assembly — never present in ASCII base64-in-JSON) emits U+FFFD so the
+   reconstruction provably differs and the whole response is dropped +
+   counted rather than silently misaligned.
+3. **Ordinary tokens** → every SentencePiece metaspace `▁` (U+2581)
+   becomes a space (blanket replace is safe: the base64 alphabet
+   `[A-Za-z0-9+/=]` and JSON structure never contain U+2581).
+
+The reconstructed string is asserted equal to `resp.content` at runtime;
+on mismatch the whole response's seeds are dropped from the entropy pool
+and counted (disclosure rule below) rather than guessing an alignment.
+Cumulative detokenised lengths give each token a half-open `[start, end)`
+char span; the `content_b64` value spans are located on the reconstructed
+text with the same lenient JSON view the parser uses and matched
+positionally to the parsed inputs.
 
 Boundary tokens (a token that straddles the closing `"` of a base64 value,
 common because models tokenise `...XYZ"` as one piece) are **excluded**:

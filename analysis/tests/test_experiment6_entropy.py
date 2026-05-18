@@ -439,3 +439,50 @@ def test_per_seed_entropies_is_filename_sorted_deterministic(tmp_path):
     assert set(result["entropies"]) == {"1111111111111111", "2222222222222222"}
     for v in result["entropies"].values():
         assert math.isclose(v, 1.0, rel_tol=1e-9)  # clean 2-way head -> 1 bit
+
+
+# ---------------------------------------------------------------------------
+# detokenize: byte-fallback + special tokens (instrument refinement
+# 2026-05-18 — see EXECUTION_LOG.md). Verified to reproduce real
+# codestral-22b raw_response exactly.
+# ---------------------------------------------------------------------------
+
+
+def test_detokenize_byte_fallback_newline():
+    assert detokenize("<0x0A>") == "\n"
+    assert detokenize("<0x09>") == "\t"
+    assert detokenize("<0x7E>") == "~"
+
+
+def test_detokenize_byte_fallback_multibyte_is_replacement_char():
+    # >=0x80 fragment -> U+FFFD so reconstruction != raw_response and the
+    # response is dropped+counted (never silently misaligned).
+    assert detokenize("<0x80>") == "�"
+    assert detokenize("<0xC3>") == "�"
+
+
+def test_detokenize_special_tokens_are_empty():
+    for t in ("</s>", "<s>", "<unk>", "<pad>", "<|im_end|>", "<|endoftext|>"):
+        assert detokenize(t) == ""
+
+
+def test_detokenize_byte_fallback_is_not_confused_with_payload():
+    # A literal-looking token that is NOT the <0xHH> shape passes through.
+    assert detokenize("0x0A") == "0x0A"
+    assert detokenize("<0xZZ>") == "<0xZZ>"
+
+
+def test_reconstruct_mixed_sentencepiece_bytefallback_special():
+    # Mirrors the real shape: ' {\n  "x"' then EOS (zero text).
+    content = [
+        {"token": "▁{"},      # ' {'
+        {"token": "<0x0A>"},       # '\n'
+        {"token": "▁▁"},  # '  '
+        {"token": '"x"'},          # '"x"'
+        {"token": "</s>"},          # ''
+    ]
+    full_text, spans = reconstruct(content)
+    assert full_text == ' {\n  "x"'
+    assert spans[0] == (0, 2)
+    assert spans[1] == (2, 3)
+    assert spans[4] == (len(full_text), len(full_text))  # zero-width EOS

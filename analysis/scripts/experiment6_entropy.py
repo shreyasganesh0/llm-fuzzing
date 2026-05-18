@@ -27,9 +27,12 @@ Input contract — a "logprob sidecar" is a JSON dict with this schema
       ]}
     }
 
-Tokenizer note (STAGE0_RESULT.md): tokens are SentencePiece-style — a
-leading space is encoded as ``▁`` (U+2581) prefixed onto the token. The
-chosen token is also present as one entry inside its own ``top_logprobs``
+Tokenizer note (STAGE0_RESULT.md + EXECUTION_LOG.md 2026-05-18): tokens are
+SentencePiece-style — every space is encoded as ``▁`` (U+2581); newlines and
+other non-merged bytes appear as byte-fallback ``<0xHH>`` tokens; ``</s>`` /
+``<|...|>`` are zero-text control tokens. See ``detokenize`` for the exact
+verified rule. The chosen token is also present as one entry inside its
+own ``top_logprobs``
 list (observed via the Stage 0 probe). Multiple seeds (up to 3) can share
 the same ``raw_response`` / ``logprobs`` but have different ``content_b64``
 and ``input_index_in_response``.
@@ -39,6 +42,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -46,9 +50,21 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-# SentencePiece "metaspace" marker: a leading space on a token is encoded as
-# this codepoint (U+2581 LOWER ONE EIGHTH BLOCK). See STAGE0_RESULT.md.
+# SentencePiece "metaspace" marker: a space is encoded as this codepoint
+# (U+2581 LOWER ONE EIGHTH BLOCK) wherever it appears in a token. See
+# STAGE0_RESULT.md and EXECUTION_LOG.md (2026-05-18 instrument refinement).
 SENTENCEPIECE_SPACE = "▁"  # ▁
+
+# Byte-fallback tokens: the codestral/Mistral SentencePiece vocab renders a
+# raw byte the BPE merge could not cover as the literal string ``<0xHH>``
+# (uppercase or lowercase hex). On real harfbuzz generations this is almost
+# always ``<0x0A>`` (newline) inside the pretty-printed JSON.
+_BYTE_FALLBACK_RE = re.compile(r"^<0x([0-9A-Fa-f]{2})>$")
+
+# Control / special vocab tokens that carry NO completion text (the proxy's
+# ``resp.content`` excludes them, so the reconstruction must too): BOS/EOS,
+# unk/pad, and chat-template sentinels like ``<|im_end|>``.
+_SPECIAL_TOKEN_RE = re.compile(r"^(</?s>|<unk>|<pad>|<\|.*\|>)$")
 
 # The four status strings mean_payload_entropy / per_seed_entropies can emit.
 STATUS_OK = "ok"
@@ -60,19 +76,33 @@ STATUS_DROP_NO_PAYLOAD_TOKENS = "drop_no_payload_tokens"
 def detokenize(tok: str) -> str:
     """Return the literal completion text a single SentencePiece token emits.
 
-    METHODS.md §3 / STAGE0_RESULT.md "Tokenizer note": a leading space is
-    encoded as ``▁`` (U+2581). The detokenise rule is therefore: replace a
-    single leading ``▁`` with a single space; any other (rare) ``▁``
-    occurrences likewise map to a space. Every other character is passed
-    through verbatim.
+    Refined after the real-data reconstruction failure (EXECUTION_LOG.md
+    2026-05-18; verified to reproduce ``raw_response`` exactly on sampled
+    sidecars). Three token classes:
 
-    We implement this as "every ``▁`` becomes a space". Replacing *all*
-    occurrences is equivalent to "one leading + other rare ones" because
-    SentencePiece never emits a literal ``▁`` as content here — the marker
-    is unambiguously the space encoding — so a blanket replace cannot
-    corrupt real payload bytes (base64 alphabet is ``[A-Za-z0-9+/=]``,
-    which never contains U+2581).
+    1. **Special / control tokens** (``</s>``, ``<s>``, ``<unk>``,
+       ``<pad>``, ``<|...|>``) → empty string. The proxy's
+       ``resp.content`` does not include them, so the reconstruction
+       must not either.
+    2. **Byte-fallback tokens** ``<0xHH>`` → the raw byte. ASCII bytes
+       (``< 0x80``: newline ``<0x0A>``, tab, the JSON/base64 ASCII set)
+       map 1:1 to a character. A ``>= 0x80`` byte is a fragment of a
+       multibyte UTF-8 codepoint requiring cross-token assembly, which
+       this experiment does not support; we emit U+FFFD so the
+       reconstruction provably ``!= raw_response`` and the whole response
+       is dropped + counted (METHODS.md §3 disclosure rule) rather than
+       silently mis-aligned. On harfbuzz base64-in-JSON this branch is
+       never taken (all content is ASCII).
+    3. **Ordinary tokens** → every SentencePiece metaspace ``▁`` becomes
+       a space (a blanket replace is safe: the base64 alphabet
+       ``[A-Za-z0-9+/=]`` and JSON structure never contain U+2581).
     """
+    if _SPECIAL_TOKEN_RE.match(tok):
+        return ""
+    m = _BYTE_FALLBACK_RE.match(tok)
+    if m:
+        b = int(m.group(1), 16)
+        return chr(b) if b < 0x80 else "�"
     return tok.replace(SENTENCEPIECE_SPACE, " ")
 
 

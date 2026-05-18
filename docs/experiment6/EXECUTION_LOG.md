@@ -188,4 +188,44 @@ variants are reported honestly, not aggregated into a single verdict.
   detokenisation; unlocatable / reconstruction-mismatch seeds dropped
   and counted.
 
+## 2026-05-18 — Over-generation pool complete
+
+- `UTCF_LLM_RPM=12 .venv/bin/python scripts/run_experiment6_harfbuzz.py
+  --phase synthesis --variants v1_src,v3_all --only-models codestral-22b
+  --num-seeds 450 --attempt-offset 600000` (background; exit 0). Log
+  `/tmp/exp6_hb_pool.log`.
+- Result: **v1_src 450 seeds (166 attempts), v3_all 450 seeds (176
+  attempts)**; 456 logprob sidecars/cell (6 extra = ids the runner's own
+  `_subsample_seeds` trimmed to land exactly on 450 — naturally excluded
+  by stratify eligibility since they are not in the 450-seed pool dir).
+  Logprob capture worked end-to-end through the UNMODIFIED AblationRunner
+  → subprocess → modified driver → modified client; fresh API calls (new
+  cache key), experiment2_1 cache + dirs untouched. Pool = exactly
+  450/cell (Invariant-4 note: scored corpora are still 150).
+
+## 2026-05-18 — INSTRUMENT REFINEMENT (pre-results; no entropy/M2 yet)
+
+- First `experiment6_entropy` run: **100 % drop
+  (`drop_reconstruction_mismatch`, 456/456 both cells)** → NO entropy
+  value produced; stratify correctly refused (0 eligible < 150,
+  Invariant 4 not relaxed). This is an instrument bug, not a pool-size
+  issue.
+- Root cause (inspected real sidecars): the UF-proxy codestral-22b
+  tokenizer is SentencePiece **with byte-fallback**: every space → `▁`
+  (not just leading — already handled), newlines → byte-fallback token
+  `<0x0A>`, plus a zero-text `</s>` EOS. The Stage-0-era rule only
+  covered `▁`.
+- Fix: `detokenize` now handles 3 classes — special/control → ``;
+  `<0xHH>` → byte (ASCII 1:1; ≥0x80 → U+FFFD ⇒ drop+count); else
+  `▁`→space. **Verified: module `reconstruct` reproduces `raw_response`
+  exactly for 80/80 sampled real sidecars** (was 0/60). METHODS §3
+  rewritten to the verified rule; 5 regression tests added
+  (`test_experiment6_entropy.py` → 27 passed); ruff clean.
+- **Integrity statement:** this correction happened with ZERO entropy
+  values and ZERO M2 numbers in existence (the first run dropped
+  everything; no subsample was scored). It makes the measurement
+  faithful to `resp.content`; it is not parameter tuning and cannot be
+  outcome-driven. Pre-registration (`4d96b1c`) predates it and is
+  unchanged.
+
 <!-- subsequent entries appended below as work proceeds -->
