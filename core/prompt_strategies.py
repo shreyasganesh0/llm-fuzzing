@@ -228,6 +228,137 @@ class CotStrictStrategy:
         )
 
 
+@dataclass
+class CotStrictNoExamplesStrategy:
+    """experiment8 (Follow-up A): cot_strict with the in-template
+    "Examples of the kind of patterns…" stress list REMOVED; the rigid
+    4-step labels are KEPT. Isolates whether the labels collapse
+    diversity without the example crutch (and onto what set).
+    """
+    name: str = "cot_strict_no_examples"
+    n_calls_per_seed: int = 1
+    supports_tool_use: bool = False
+    description: str = "cot_strict minus the in-template example list (labels kept)"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name,
+            _resolve_input_format,
+            build_ablation_prompt,
+        )
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(ctx.target.name, ctx.extra.get("input_format"))
+        rendered = build_ablation_prompt(
+            ctx.target.name, dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+        )
+        return [{"role": "system", "content": ""},
+                {"role": "user", "content": rendered}]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "CotStrictNoExamplesStrategy.run_one_seed is intentionally unused; "
+            "AblationRunner dispatches via the subprocess driver."
+        )
+
+
+@dataclass
+class CotStrictRotatedExamplesStrategy:
+    """experiment8 (Follow-up A): cot_strict whose example block is a
+    deterministic per-attempt 3-of-8 rotation of a frozen candidate pool
+    (`dataset/fixtures/cot_examples_pool.json`). Same attempt index → same
+    3 examples (reproducible); successive attempts rotate. Isolates
+    whether VARYING the anchor (not removing it) restores diversity.
+    """
+    name: str = "cot_strict_rotated_examples"
+    n_calls_per_seed: int = 1
+    supports_tool_use: bool = False
+    description: str = "cot_strict with a per-attempt rotated 3-of-8 example subset"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name,
+            _resolve_input_format,
+            build_ablation_prompt,
+        )
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(ctx.target.name, ctx.extra.get("input_format"))
+        rendered = build_ablation_prompt(
+            ctx.target.name, dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+        )
+        return [{"role": "system", "content": ""},
+                {"role": "user", "content": rendered}]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "CotStrictRotatedExamplesStrategy.run_one_seed is intentionally "
+            "unused; the subprocess driver computes the per-attempt rotation."
+        )
+
+
+@dataclass
+class CotStrictNoLabelsStrategy:
+    """experiment8 (Follow-up A): cot_strict with the rigid 4 step
+    labels (`Step 1 (Quote): … Step 4 (Regex):`) replaced by a single
+    free-form "explain briefly, then emit the regex". Example block KEPT.
+    The midpoint of a rigidity gradient: none(default) → free-form(this)
+    → rigid-4-step(cot_strict).
+    """
+    name: str = "cot_strict_no_labels"
+    n_calls_per_seed: int = 1
+    supports_tool_use: bool = False
+    description: str = "cot_strict with free-form reasoning instead of the 4 rigid labels"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name,
+            _resolve_input_format,
+            build_ablation_prompt,
+        )
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(ctx.target.name, ctx.extra.get("input_format"))
+        rendered = build_ablation_prompt(
+            ctx.target.name, dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+        )
+        return [{"role": "system", "content": ""},
+                {"role": "user", "content": rendered}]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "CotStrictNoLabelsStrategy.run_one_seed is intentionally unused; "
+            "AblationRunner dispatches via the subprocess driver."
+        )
+
+
 EXEMPLARS_FIXTURES_DIR = Path(__file__).resolve().parents[1] / "dataset" / "fixtures" / "exemplars"
 
 
@@ -564,6 +695,9 @@ class ToolUseRetrievalStrategy:
 STRATEGIES: dict[str, PromptStrategy] = {
     DEFAULT_STRATEGY_NAME: DefaultStrategy(),
     "cot_strict": CotStrictStrategy(),
+    "cot_strict_no_examples": CotStrictNoExamplesStrategy(),
+    "cot_strict_rotated_examples": CotStrictRotatedExamplesStrategy(),
+    "cot_strict_no_labels": CotStrictNoLabelsStrategy(),
     "few_shot": FewShotStrategy(),
     "self_critique": SelfCritiqueStrategy(),
     "prompt_chain": PromptChainStrategy(),

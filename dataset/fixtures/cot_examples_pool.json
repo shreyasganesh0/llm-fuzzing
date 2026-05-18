@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "purpose": "experiment8 Follow-up A — cot_strict_rotated_examples candidate pool. Per-attempt, the synthesis driver deterministically picks 3 of these 8 via random.Random(run_id).sample(...): same attempt index -> same 3 (reproducible); successive attempts rotate. Items 1-5 are the original cot_strict in-template examples (the documented collapse set, EXPERIMENT_DEEP_DIVE.md §6.1); items 6-8 are RE2-REJECTED syntax (RE2 is a finite-automaton engine) included deliberately to exercise the parser's error/rejection paths — consistent with the existing 'Lookarounds (rejected): (?=abc)' convention.",
+  "pool": [
+    {"label": "Named captures",            "pattern": "(?P<x>a+)"},
+    {"label": "Nested repetitions",        "pattern": "(a*)*"},
+    {"label": "Unicode classes",           "pattern": "\\p{Greek}+"},
+    {"label": "Large counted reps",        "pattern": "a{1000,}"},
+    {"label": "Character classes",         "pattern": "[^a-zA-Z0-9]"},
+    {"label": "Backreference (rejected)",  "pattern": "(a)\\1"},
+    {"label": "Possessive quant (rejected)", "pattern": "a++"},
+    {"label": "Class intersection (rejected)", "pattern": "[\\w&&[^a-c]]"}
+  ]
+}

@@ -37,7 +37,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROMPTS_DIR = REPO_ROOT / "synthesis" / "prompts"
 CACHE_DIR = REPO_ROOT / ".cache" / "llm"
 
-# All 14 ablation templates that live on disk for the 6 strategies.
+# Ablation templates on disk. 14 base (7 strategies x {binary,regex})
+# + 3 experiment8 RE2-only cot_strict ablation variants = 17.
 _ABLATION_TEMPLATES = [
     "ablation_synthesis_binary.j2",
     "ablation_synthesis_binary_cot.j2",
@@ -53,11 +54,19 @@ _ABLATION_TEMPLATES = [
     "ablation_synthesis_regex_plan.j2",
     "ablation_synthesis_regex_sketch.j2",
     "ablation_synthesis_regex_finalize.j2",
+    # experiment8 (Follow-up A) — RE2-only cot_strict mechanism-isolation
+    # variants (no binary counterparts; experiment8 scope is RE2 only).
+    "ablation_synthesis_regex_cot_noex.j2",
+    "ablation_synthesis_regex_cot_rot.j2",
+    "ablation_synthesis_regex_cot_nolbl.j2",
 ]
 
 _EXPECTED_STRATEGY_NAMES = {
     "default", "cot_strict", "few_shot",
     "self_critique", "prompt_chain", "tool_use", "tool_use_retrieval",
+    # experiment8 (Follow-up A)
+    "cot_strict_no_examples", "cot_strict_rotated_examples",
+    "cot_strict_no_labels",
 }
 
 _EXPECTED_CALL_BUDGETS = {
@@ -68,6 +77,10 @@ _EXPECTED_CALL_BUDGETS = {
     "prompt_chain": 3,
     "tool_use": 4,
     "tool_use_retrieval": 5,
+    # experiment8 (Follow-up A) — all single-call
+    "cot_strict_no_examples": 1,
+    "cot_strict_rotated_examples": 1,
+    "cot_strict_no_labels": 1,
 }
 
 
@@ -256,6 +269,9 @@ def _base_fixture() -> dict:
         "source_files": [],
         "num_inputs": 1,
         "few_shot_exemplars": [],
+        # experiment8 (Follow-up A): the _cot_rot template iterates this;
+        # empty list renders an empty example block (still valid output).
+        "cot_rotated_examples": [],
     }
 
 
@@ -494,6 +510,18 @@ def test_all_strategies_execute_single_seed_end_to_end(
     from core.targets import TARGETS
     from core.variants import VARIANTS_BY_NAME
     from synthesis.scripts.generate_ablation_inputs import run_ablation
+
+    # experiment8 (Follow-up A): the cot_strict mechanism-isolation
+    # variants are RE2-only by design (no binary counterpart). This
+    # end-to-end test runs against harfbuzz (binary), so skip them here;
+    # their coverage is the experiment8 RE2 run + the template render /
+    # registry / cache-salt guards above.
+    if strategy_name in {
+        "cot_strict_no_examples",
+        "cot_strict_rotated_examples",
+        "cot_strict_no_labels",
+    }:
+        pytest.skip("RE2-only experiment8 strategy; no binary template by design")
 
     # tool_use / tool_use_retrieval must run against a model whose supports_tool_use is True.
     _tool_use_strategies = {"tool_use", "tool_use_retrieval"}

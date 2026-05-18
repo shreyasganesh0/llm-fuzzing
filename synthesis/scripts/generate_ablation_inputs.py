@@ -17,6 +17,7 @@ import argparse
 import base64
 import json
 import os
+import random
 import sys
 from pathlib import Path
 from typing import Any
@@ -84,6 +85,11 @@ def _resolve_input_format(target: str, input_format: str | None) -> str:
 _TEMPLATE_SUFFIX_BY_STRATEGY: dict[str, str] = {
     DEFAULT_STRATEGY_NAME: "",
     "cot_strict": "_cot",
+    # experiment8 (Follow-up A) — single-call cot_strict ablations; each
+    # dispatches through the generic else-branch in run_ablation.
+    "cot_strict_no_examples": "_cot_noex",
+    "cot_strict_rotated_examples": "_cot_rot",
+    "cot_strict_no_labels": "_cot_nolbl",
     "few_shot": "_fewshot",
     # self_critique's round-1 (draft) reuses the DefaultStrategy base template
     # so the draft call is structurally identical to plain `default`. Round-2
@@ -140,6 +146,30 @@ def _chain_finalize_template_name(fmt: str) -> str:
     return f"{base}{_CHAIN_FINALIZE_SUFFIX}.j2"
 
 
+# experiment8 (Follow-up A) — cot_strict_rotated_examples support.
+_COT_ROT_SUFFIX = "_cot_rot"
+_COT_ROT_K = 3
+COT_EXAMPLES_POOL_PATH = REPO_ROOT / "dataset" / "fixtures" / "cot_examples_pool.json"
+
+
+def _rotated_cot_examples(run_id: int) -> list[dict]:
+    """Deterministic per-attempt 3-of-8 example subset.
+
+    ``random.Random(run_id).sample(pool, 3)``: the same attempt index
+    always yields the same 3 examples (reproducible), but successive
+    attempts (distinct run_id) rotate through different subsets. Returns
+    [] if the fixture is missing/malformed (the template then renders an
+    empty example block — degraded but still valid output).
+    """
+    try:
+        pool = json.loads(COT_EXAMPLES_POOL_PATH.read_text())["pool"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+    if not isinstance(pool, list) or len(pool) <= _COT_ROT_K:
+        return pool if isinstance(pool, list) else []
+    return random.Random(run_id).sample(pool, _COT_ROT_K)
+
+
 def build_ablation_prompt(
     target: str,
     *,
@@ -155,6 +185,7 @@ def build_ablation_prompt(
     input_format: str | None = None,
     template_name: str | None = None,
     few_shot_exemplars: list | None = None,
+    cot_rotated_examples: list | None = None,
     draft_content: str | None = None,
     draft_reasoning: str | None = None,
     plan_text: str | None = None,
@@ -238,6 +269,11 @@ def build_ablation_prompt(
         render_kwargs["plan_target_gap"] = plan_target_gap or ""
         render_kwargs["sketch_content"] = sketch_content or ""
         render_kwargs["sketch_reasoning"] = sketch_reasoning or ""
+    # experiment8 (Follow-up A): the rotated cot template needs its
+    # per-attempt 3-of-8 example subset; gate it like the chain kwargs so
+    # StrictUndefined doesn't trip on the other templates.
+    if resolved_template.endswith(f"{_COT_ROT_SUFFIX}.j2"):
+        render_kwargs["cot_rotated_examples"] = cot_rotated_examples or []
     return template.render(**render_kwargs)
 
 
@@ -429,7 +465,8 @@ def run_ablation(
                       plan_text: str | None = None,
                       plan_target_gap: str | None = None,
                       sketch_content: str | None = None,
-                      sketch_reasoning: str | None = None) -> str:
+                      sketch_reasoning: str | None = None,
+                      cot_rotated_examples: list | None = None) -> str:
         return build_ablation_prompt(
             target,
             dataset_root=dataset_root,
@@ -444,6 +481,7 @@ def run_ablation(
             input_format=fmt,
             template_name=template,
             few_shot_exemplars=exemplars,
+            cot_rotated_examples=cot_rotated_examples,
             draft_content=draft_content,
             draft_reasoning=draft_reasoning,
             plan_text=plan_text,
@@ -453,7 +491,14 @@ def run_ablation(
         )
 
     base_template = _default_template_name(fmt, strategy=strategy)
-    rendered = _build_prompt(template=base_template)
+    # experiment8 (Follow-up A): cot_strict_rotated_examples picks a
+    # deterministic per-attempt 3-of-8 example subset keyed by run_id
+    # (the attempt index). Other strategies pass None (gated downstream).
+    _cot_rot = (
+        _rotated_cot_examples(run_id)
+        if strategy == "cot_strict_rotated_examples" else None
+    )
+    rendered = _build_prompt(template=base_template, cot_rotated_examples=_cot_rot)
 
     safe_model = model.replace("/", "_")
     # Non-default strategies insert a <strategy> segment so the legacy

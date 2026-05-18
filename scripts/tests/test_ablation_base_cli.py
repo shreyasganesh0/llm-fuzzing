@@ -223,9 +223,11 @@ def test_list_strategies_works_without_any_other_args(flag, capsys):
     rc = runner.main([flag])
     assert rc == 0
     out = capsys.readouterr().out
-    # Sanity: exactly 7 strategies are listed.
+    # Sanity: exactly 10 strategies are listed (7 base + 3 experiment8
+    # cot_strict mechanism-isolation variants — registry drift guard;
+    # update in lockstep when strategies are intentionally added).
     nonempty_lines = [line for line in out.splitlines() if line.strip()]
-    assert len(nonempty_lines) == 7, nonempty_lines
+    assert len(nonempty_lines) == 10, nonempty_lines
 
 
 def test_dry_run_logs_all_metric_phases(capsys):
