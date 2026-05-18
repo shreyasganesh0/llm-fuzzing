@@ -128,4 +128,40 @@ frozen RE2-v2 set unchanged (invariant 2); attempt-offset 700000/
 - Aggregator `analysis/scripts/experiment7_rank.py` (+tests) under
   construction in parallel (offline; no proxy/LLM).
 
+## 2026-05-18 — Stage 1 STOPPED (cot_strict collapse; budget NOT breached)
+
+- **Honest correction:** an interim monitoring grep (`400|budget`,
+  case-insensitive) reported "2 budget-error lines" and was treated as a
+  possible stop-signal. Direct inspection disproved it: a precise scan
+  (`Budget has been exceeded|BudgetExceeded|status_code 400`) returns
+  **0**. The proxy cap was NOT hit. The earlier count was a false
+  positive (the substring "400"/"budget" in benign attempt/seed-count
+  fields). Recorded so the log is not misleading.
+- **Real finding — `cot_strict` is non-viable for codestral-22b on
+  RE2.** 3 cells censored by the parse-failure cap
+  ("synthesis capped: cell skipped (too many parse failures)"):
+  `v0_none`=18, `v1_src`=14, `v2_src_tests`=32 seeds (<150). `v3_all`
+  reached 124 and was still short when the run was stopped;
+  `v4_src_gaps` and all `few_shot` cells were never reached (the
+  strategy loop runs `cot_strict` across all variants first). The
+  4-step labelled-CoT template, with codestral on the regex-JSON
+  format, parses far below the rate needed to fill 150 — the same
+  "format-compliance separates usable from unusable" failure mode seen
+  in experiment2_1 (llama-3.3-70b) and experiment1_4 (exp1_gaps_only).
+- **Cost (cost_audit, ground truth):** litellm $14.39 → **$15.16**
+  (+$0.77; +492 cache entries). Cap ($25) never threatened; cost is
+  NOT the blocker — the blocker is censored-cell unusability.
+- **Action:** the run was intentionally `pkill`-ed (the
+  background-task "failed exit 144" notice is that deliberate stop, not
+  an experiment error) to avoid spending more proxy budget grinding
+  `cot_strict`/`prompt_chain` toward the 300-attempt cap on cells that
+  cannot reach 150. Stages 2/3 NOT launched. Per the staged plan + the
+  user's "stop and surface rather than push through" instruction, this
+  is surfaced for a scope decision before any further generation.
+- Aggregator `analysis/scripts/experiment7_rank.py` (+15 passing tests,
+  ruff clean) completed and is committed; it already classifies sub-150
+  cells as CENSORED (not padded — invariant 4), so a "cot_strict
+  collapses" outcome is representable in the ranking as a disclosed
+  negative result.
+
 <!-- subsequent entries appended below as work proceeds -->
