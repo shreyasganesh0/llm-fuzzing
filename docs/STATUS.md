@@ -1,9 +1,8 @@
 # Project Status — LLM-Guided Fuzzing Seed Corpora
 
 _Living handoff doc. Rewritten whenever state changes. If you're picking
-this up cold: read this first, then `docs/experiment1.md` (RE2 A/B + generalization),
-`docs/experiment2.md` (multi-model ablation + campaigns),
-`docs/experiment3.md` (prompt-strategy axis); the
+this up cold: read this first, then `docs/EXPERIMENTS.md` (the unified,
+replication-grade index of all seven experiment lines); the
 `docs/research_document_v3.md` and `docs/plan_v3.md` are the
 authoritative specs._
 
@@ -40,72 +39,65 @@ not rewritten: the pre-registration/run commits and the branches on
 unchanged. Full note + the immutable-provenance caveat:
 `docs/EXPERIMENTS.md` → "Numbering & git-provenance note".
 
-**Last updated:** 2026-05-18 — experiment4 (ESSS) + experiment5 (SVA)
-landed; see `docs/experiment{4,5}/RESULTS.md` and `docs/EXPERIMENTS.md`.
+**Last updated:** 2026-05-21 — documentation streamlining: README +
+walkthrough refreshed for experiments 4–7, `docs/EXPERIMENTS.md` is the
+single experiment index, dangling references to external review briefs
+removed (see §11).
 
 ---
 
 ## 1. TL;DR — where we are right now
 
-We have an end-to-end pipeline that:
-1. Builds a coverage-instrumented RE2, extracts upstream tests, computes
-   baseline coverage + gaps.
-2. Calls an LLM (llama-3.1-8b-instruct via UF LiteLLM proxy) to synthesise
-   seed inputs in two variants — **exp1** (gap-targeted) and **exp2**
-   (source-only).
-3. Measures per-seed-corpus coverage on a standalone `seed_replay` binary
-   and emits a set-wise diff.
+Seven experiment lines have run end-to-end; **nothing is in progress.**
+The pipeline builds coverage-instrumented RE2 / harfbuzz, extracts
+upstream tests, computes coverage gaps, prompts an LLM under a 5-variant
+context ablation, and scores **M1** (union edges) + **M2** (hard-branch
+hit rate) on a standalone `seed_replay` binary.
 
-The 2026-04-13 regex-format A/B shows exp1 wins by **+110 edges
-in-distribution** on RE2 (1243 vs 1133). Follow-up generalization
-experiments run the same day show this advantage is **largely
-fixture-specific**:
+`docs/EXPERIMENTS.md` is the replication-grade index of all seven. The
+short version:
 
-- **Random baseline:** 980 edges. Both LLM cells clear the floor.
-- **Experiment A — held-out source subset:** restricting exp1's gap list to
-  parser files (set A) and measuring coverage on execution files (set B),
-  `exp1_heldout` (581) *loses* to `exp2_source` (596) by 15 edges; the
-  in-distribution +110 collapses to **+3** on held-out files. Hypothesis
-  "exp2 generalizes better" supported.
-  (`dataset/fixtures/re2_ab/ab_coverage/heldout_summary.md`)
-- **Experiment B — prompt ablation (7 cells):** new leader is
-  `exp2_plus_gaps` (1250 > `exp1_full`=1243). Source code is the
-  load-bearing context; gaps amplify it; `exp1_gaps_only` collapsed
-  (879, loop aborts). Hypothesis supported with nuance: exp2's recipe +
-  cheap gap add is the efficient frontier.
-  (`dataset/fixtures/re2_ab/ab_coverage/ablation_summary.md`)
-- **Experiment C (1h × 3-trial libFuzzer campaigns):** deferred. Requires
-  building `build/fuzzer/` variant + ~9 CPU-hours. Current A+B evidence
-  was judged sufficient; revisit if campaign-time data is requested.
+- **experiment1** — RE2 single-model A/B (llama-3.1-8b). Gap-targeted
+  prompt beats source-only in-distribution (+110 edges) but the lead
+  collapses to +3 on held-out files; `exp2_plus_gaps` is the efficient
+  recipe.
+- **experiment2** — the headline multi-model 5-variant × 7-model ×
+  2-target ablation (`experiment2_1`) + concept-proof real-fuzzer
+  campaigns. RE2 best M2 0.867; harfbuzz best M2 0.640; random M2 = 0.000.
+- **experiment3** — prompt-strategy axis added; the end-to-end scored
+  sweep was blocked on the UF proxy $25 cap (closed later by experiment5).
+- **experiment4 (ESSS)** — per-seed payload entropy does not predict M2
+  in the pre-registered direction; the data leans low-entropy.
+- **experiment5 (SVA)** — no prompt strategy beats `default`; the lever
+  is strategy *reliability*, not M2-of-filled.
+- **experiment6 / 7 (follow-ups A/B)** — the `cot_strict` diversity
+  collapse is caused by the static in-template example list, not the
+  rigid labels; the rigid labels still impose a general M2 penalty.
 
-**Nothing is actively in-progress** at time of writing. Pipeline is green,
-A+B artifacts on disk, slide deck built (still reflects 2-cell A/B — not
-yet regenerated for the new experiments).
+Pipeline is green; all artifacts on disk. The review slide deck still
+reflects the 2-cell A/B and has **not** been regenerated for the later
+experiments.
 
 ---
 
-## 2. Planned next (ordered by payoff / cost)
+## 2. Planned next
 
-1. **Write up A+B results** — held-out + ablation tables now folded into
-   `docs/experiment1.md` (sub-versions `experiment1_3` and `experiment1_4`).
-   Slide deck regeneration is unwired in the current cleanup.
-2. **Experiment C (1h × 3-trial libFuzzer campaign)** — deferred
-   2026-04-13 after A+B. Needs `build/fuzzer/` variant (empty dir right
-   now; run `build_instrumented.sh`) + ~9 CPU-hours. Revisit if reviewers
-   want campaign-time data.
-3. **Follow-ups flagged in ablation_summary.md:**
-   - rerun `exp1_gaps_only` with `--samples 6` to give it n≈20–30 past
-     the loop-abort rate; confirm the 879-edge collapse is stable.
-   - rerun `exp2_plus_gaps` with `--samples 6` (n≈60) to test whether
-     its +7 lead over `exp1_full` is stochastic noise.
-4. **Frontier-model smoke run** (GPT-4o or Claude Sonnet on regex
-   format, exp1 + exp2 on RE2) — ~$5-10. Tells us whether llama's
-   residual 1/6 loop rate is hiding an effect. Higher priority now that
-   `exp1_gaps_only` collapsed on llama specifically.
-5. **Second target A/B** — weeks of work. Requires pinned SHAs, a new
-   fixture, a new target-specific prompt template.
-6. **24h libFuzzer campaign per seed set** — blocked on 29,440 CPU-hour
-   cluster allocation.
+No experiment is queued. Candidate next steps, each with full reasoning
+and cost estimates in its source doc:
+
+1. **Iteration follow-ups' own "what next"** —
+   `docs/experiment_iteration_summary.md §4`: ship the example-list
+   template fix (L2) as a default-template change, test its generality
+   across models, and run the zero-LLM union-complementarity check.
+   Cheapest, highest-value.
+2. **Pending experiments** — `docs/FUTURE_DIRECTIONS.md` derives each
+   future direction from a specific observation in the data, with cost
+   estimates.
+3. **Blocked on external resources** — see §8 below (24h libFuzzer
+   campaigns, frontier-model budget, fine-tuning GPUs, second-target
+   generalization).
+4. **Slide deck** — `docs/slides/llm_fuzzing_review.pptx` still reflects
+   the 2-cell A/B; regeneration for experiments 2–7 is unwired.
 
 ---
 
@@ -418,6 +410,28 @@ pair.
 
 ## 11. Changelog of this doc
 
+- **2026-05-21** — **documentation streamlining** (branch
+  `experiment-followups`). `docs/EXPERIMENTS.md` is now the single
+  replication-grade index of all seven experiment lines; `README.md` and
+  `docs/EXPERIMENT_WALKTHROUGH.md` were refreshed to cover experiments
+  4–7 (both previously stopped at experiment3 and called experiment2 the
+  "current" work); §1/§2 of this doc were rewritten (the TL;DR still
+  described the experiment1 era as "where we are right now"). Five
+  external review / brainstorming / prompt-generation working docs
+  (`EXPERIMENT_DEEP_DIVE.md`, `EXPERIMENT_DEEP_DIVE_FOLLOWUPS.md`,
+  `PROJECT_CONTEXT_FOR_WEB.md`, `PROMPT_IDEAS_DOCUMENT.md`,
+  `PROMPT_REPORT_GENERATION.md`) were moved out of `docs/` into the
+  gitignored `scratch/` dir — they are idea-generation aids, deliberately
+  kept out of git history. Every tracked doc's reference to them was
+  rewritten to be self-contained; frozen pre-registration artifacts and
+  fixtures were left byte-for-byte intact and are explained by a note in
+  `docs/EXPERIMENTS.md` ("External working-doc references"). No code,
+  results, or experiment numbers changed. Verify: `.venv/bin/pytest -q`
+  still green; `git grep -l EXPERIMENT_DEEP_DIVE PROJECT_CONTEXT_FOR_WEB`
+  returns only frozen artifacts (`experiment*/MANIFEST.json`,
+  `experiment*/METHODS.md`, `experiment4/EXECUTION_LOG.md`,
+  `cot_examples_pool.json`) and explanatory text (the `EXPERIMENTS.md`
+  note + this changelog) — never a dangling pointer in a living doc.
 - **2026-05-18** — **Follow-ups A/B/C** (branch `experiment-followups`,
   pre-registered+frozen `44d8104` before any run; cost-gated; ≈$0.7
   total, $25 proxy cap never approached). **experiment6 (A)**: 3 new
@@ -430,7 +444,7 @@ pair.
   collapse. **experiment4 FOLLOWUP (C)**: no-LLM per-seed analysis →
   experiment4's low-entropy→M2 effect is **union-level complementarity,
   not a per-seed reach mechanism** (deep-reach & per-seed M1 flat across
-  entropy quartiles). Supersedes `EXPERIMENT_DEEP_DIVE.md §6.1`. New
+  entropy quartiles). Supersedes the earlier rigid-CoT-labels inference. New
   code: 3 strategies + templates + `dataset/fixtures/cot_examples_pool.json`
   + `analysis/scripts/experiment4_followup.py` (+tests); phase9/CLI
   drift-guards updated in lockstep (426 passed). Detail:

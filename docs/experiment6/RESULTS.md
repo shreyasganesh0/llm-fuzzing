@@ -20,7 +20,7 @@ run. Impl `a3dc0cf`; run RE2×v3_all×codestral-22b×{3 new strategies},
 (`cot_strict` reference = 0.103). † CENSORED M2 (n<150) is corpus-size-
 dependent and NOT comparable to a 150 cell — shown for audit only.
 
-## Top-5 realized-regex histograms (the key §6.1-style diagnostic)
+## Top-5 realized-regex histograms (the key diversity diagnostic)
 
 - `cot_strict` (exp5, reference): collapse onto `(?P<x>a+)` / `(a*)*` /
   `\p{Greek}+` / `a{1000,}` / `[^a-zA-Z0-9]` — **byte-identical to the
@@ -36,9 +36,9 @@ dependent and NOT comparable to a 150 cell — shown for audit only.
 
 ## Adjudication vs the frozen pre-registration — **ALL 3 PREDICTIONS FALSIFIED**
 
-The pre-registered (and EXPERIMENT_DEEP_DIVE §6.1) hypothesis was "the
-rigid 4-step labels, not the example list, cause the collapse." Every
-directional prediction was wrong:
+The pre-registered hypothesis was "the rigid 4-step labels, not the
+example list, cause the collapse." Every directional prediction was
+wrong:
 
 | pre-registered prediction | outcome |
 |---|---|
@@ -65,8 +65,8 @@ list but only informal numbered *hints* (no mandated multi-clause
 reasoning field) and escapes; `cot_strict` and `cot_strict_no_labels`
 pair the static list with a mandated rationale field → the model leans
 on the anchor and mode-collapses; `no_examples` / `rotated` break the
-anchor → diversity returns. This cleanly **falsifies EXPERIMENT_DEEP_DIVE
-§6.1's "labels are the cause"** and directly **supports lever L2**
+anchor → diversity returns. This cleanly **falsifies the prior "labels
+are the cause" inference** and directly **supports lever L2**
 (remove/rotate the in-template example list) — and shows the cot_strict
 *scaffold itself* is not harmful on RE2 once the anchor is removed
 (`no_examples` ties `default` at M2 0.800).
@@ -75,9 +75,9 @@ anchor → diversity returns. This cleanly **falsifies EXPERIMENT_DEEP_DIVE
 
 - Pre-registration falsified — reported as-is (the design declared all
   outcomes admissible; this is the high-information outcome). The prior
-  EXPERIMENT_DEEP_DIVE §6.1 inference (from default-vs-cot_strict alone)
-  was wrong because it did not account for `default`'s lack of a
-  mandated reasoning field.
+  rigid-labels inference (from default-vs-`cot_strict` alone) was wrong
+  because it did not account for `default`'s lack of a mandated
+  reasoning field.
 - CENSORED M2 values are non-comparable (n<150) and excluded from the
   primary claims; the diversity-recovery flag + the realized-regex
   histograms are the comparable evidence.

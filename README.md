@@ -6,25 +6,46 @@ prompts an LLM to synthesize inputs targeting those branches, and evaluates the 
 via seed-time coverage metrics (M1: total edges, M2: hard-branch hit rate).
 
 **Resuming work?** Read `docs/STATUS.md` first (living handoff), then
-`docs/experiment2.md` for the latest results and
-`docs/FUTURE_DIRECTIONS.md` for pending experiments.
+`docs/EXPERIMENTS.md` — the unified, replication-grade index of every
+experiment — and `docs/FUTURE_DIRECTIONS.md` for pending experiments.
 
 ## Current status
 
-Two targets, 7 models, 5-variant ablation (150 seeds/cell). LiteLLM-served
-open models are fully run on both targets; Claude Sonnet/Haiku on harfbuzz
-is partial. Numbers below are from `experiment2_1` (the current headline);
-each row links to the per-target themes section in `experiment2.md`.
+Seven experiment lines have run on this codebase; all are complete and
+none are in progress. The replication-grade index of all of them —
+question, scope, headline numbers, repro recipe, and provenance per
+experiment — is [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
+
+**Headline run (`experiment2_1`)** — two targets, 7 models, 5-variant
+ablation (150 seeds/cell). LiteLLM-served open models are fully run on
+both targets; Claude Sonnet/Haiku on harfbuzz is partial. Each row links
+to the per-target themes section in `experiment2.md`.
 
 | Target | Format | Best M1 vs random | Best M2 | Detail |
 |---|---|---|---|---|
 | RE2 (regex engine) | text | **+335 edges (+28.9%)** at `v2_src_tests` (codestral-22b) | **0.867** at `v1_src` (nemotron-120b) | [§4.1 RE2 themes »](docs/experiment2.md#re2-themes) |
 | harfbuzz (font shaper) | binary | **+444 edges (+80%)** at `v0_none` (sonnet) | **0.640** at `v0_none` (sonnet) | [§4.2 harfbuzz themes »](docs/experiment2.md#hb-themes) |
 
-Cumulative LLM spend on disk (`.cache/llm/`): **$100.09** across 14,161
-cached responses (Anthropic $86.25, UF LiteLLM-accounted $13.83). See
-`results/cost_audit/summary.md` — regenerate with
-`.venv/bin/python -m analysis.scripts.cost_audit`.
+**Iteration experiments (`experiment4`–`experiment7`)** — pre-registered,
+cost-gated follow-ups; full detail in each `docs/experiment{4,5,6,7}/` dir
+and indexed in `docs/EXPERIMENTS.md`.
+
+| # | What | Headline outcome |
+|---|---|---|
+| 4 | ESSS — does per-seed payload entropy predict which seeds carry M2? | Pre-registered "high-entropy carries M2" **falsified**; the data leans **low**-entropy (v3_all S_low M2 0.50 vs random 0.26). |
+| 5 | SVA — does any prompt strategy beat `default`? | **No strategy beats `default`** at any variant; the dominant effect is strategy *reliability* (`cot_strict` mode-collapses; `self_critique`/`prompt_chain` rarely fill 150). |
+| 6 | Follow-up A — what in `cot_strict` causes the diversity collapse? | The **static in-template example list**, not the rigid labels (`cot_strict_no_examples` ties `default` at M2 0.800). |
+| 7 | Follow-up B — is the `cot_strict` penalty target-general? | `cot_strict@harfbuzz` fills 150 (no collapse) but M2 0.120 vs `default` 0.260 — a general rigid-label M2 penalty. |
+
+One-page cross-experiment synthesis: `docs/experiment_iteration_summary.md`.
+
+Cumulative LLM spend through `experiment2_1` (`.cache/llm/` audit):
+**$100.09** across 14,161 cached responses (Anthropic $86.25, UF
+LiteLLM-accounted $13.83). The `experiment4`–`experiment7` iteration runs
+added ≈$5 more (each cost-gated; see the per-experiment `RESULTS.md`).
+Regenerate the exact current figure with
+`.venv/bin/python -m analysis.scripts.cost_audit` —
+output lands in `results/cost_audit/summary.md`.
 
 ## Quick start (env + tests)
 
@@ -58,11 +79,15 @@ section.
 
 ## Usage — pick an experiment
 
-Three experiment lines have run on this codebase. Each has a one-doc
-writeup with **all flag detail, every sub-version, all per-cell
-numbers**, and full reproduction commands. The blocks below are the
-**default-flags happy path** — enough to start the canonical run
-without reading anything else.
+Seven experiment lines have run on this codebase; `docs/EXPERIMENTS.md`
+is the replication-grade index of all of them. Experiments 1–3 each have
+a one-doc writeup (`docs/experiment{1,2,3}.md`) with **all flag detail,
+every sub-version, all per-cell numbers**, and full reproduction
+commands; the blocks below are the **default-flags happy path** for those
+three. Experiments 4–7 are pre-registered iteration follow-ups — their
+exact repro recipes live in each `docs/experiment{4,5,6,7}/METHODS.md §7`
+(summarised in the [Experiments 4–7](#experiments-47--iteration-follow-ups)
+section below).
 
 ### Experiment 1 — RE2 single-model A/B (RE2 + llama-3.1-8b)
 
@@ -296,8 +321,32 @@ with [per-strategy rationale](docs/experiment3.md#strategy-axis)) and
 including the [push-button command](docs/experiment3.md#exp3_1-push-button)
 and the [budget-cap env vars](docs/experiment3.md#exp3_1-budget-env)).
 
+### Experiments 4–7 — iteration follow-ups
+
+Four pre-registered, cost-gated iteration experiments. Each was frozen
+(pre-registration committed before any scoring), staged under the UF
+LiteLLM $25-proxy-cap cost gate, and ships a replication-grade doc set
+under `docs/experiment{N}/` (`MANIFEST.json`, `METHODS.md`,
+`EXECUTION_LOG.md`, `RESULTS.md`). They run via the **unmodified**
+ablation orchestrators with redirected output roots — the exact
+copy-paste commands are in each experiment's `METHODS.md §7`.
+
+| # | Codename | Question | Outcome |
+|---|---|---|---|
+| [`experiment4`](docs/experiment4/RESULTS.md) | ESSS | Does per-seed payload entropy predict which seeds carry M2? | "High-entropy carries M2" **falsified**; the data leans low-entropy. |
+| [`experiment5`](docs/experiment5/RESULTS.md) | SVA | Does any prompt strategy beat `default`? | **No** — the dominant effect is strategy *reliability*, not M2-of-filled. |
+| [`experiment6`](docs/experiment6/RESULTS.md) | Follow-up A | What in `cot_strict` drives the diversity collapse? | The **static in-template example list**, not the rigid labels. |
+| [`experiment7`](docs/experiment7/RESULTS.md) | Follow-up B | Is the `cot_strict` penalty target-general? | Fills on harfbuzz (no collapse) but carries a general rigid-label M2 penalty. |
+
+`docs/experiment4/FOLLOWUP.md` (Follow-up C) checks experiment4's
+mechanism; `docs/experiment_iteration_summary.md` is the one-page
+synthesis of follow-ups A/B/C. Full index, headline numbers, and
+Built/Added/Removed provenance: [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
+
 ## Supporting docs
 
+- [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) — unified, replication-grade index of every experiment (question, scope, headline numbers, repro recipe, provenance). **Start here for results.**
+- [`docs/experiment_iteration_summary.md`](docs/experiment_iteration_summary.md) — one-page cross-experiment synthesis of the iteration follow-ups.
 - [`docs/EXPERIMENT_WALKTHROUGH.md`](docs/EXPERIMENT_WALKTHROUGH.md) — directory-by-directory framework reference.
 - [`docs/STATUS.md`](docs/STATUS.md) — living handoff for the current state.
 - [`docs/FUTURE_DIRECTIONS.md`](docs/FUTURE_DIRECTIONS.md) — pending experiments + cost estimates.
@@ -438,12 +487,16 @@ synthesis/results/          Synthesised seed corpora (gitignored)
 secrets/                    API keys (gitignored — never commit, never log)
 
 docs/
-  STATUS.md                 Living handoff (read first)
+  EXPERIMENTS.md            Unified replication-grade index of every experiment (start here for results)
+  STATUS.md                 Living handoff (read first when resuming)
   experiment1.md            RE2 single-model A/B + generalization (sub-versions experiment1_0..1_5)
   experiment2.md            Multi-model 5-variant ablation + real-fuzzer campaigns (experiment2_0..2_2)
   experiment3.md            Prompt-strategy axis + 5-cell prompt optimization (experiment3_0..3_1)
+  experiment4/ … experiment7/  Per-experiment doc sets for the iteration follow-ups (MANIFEST/METHODS/EXECUTION_LOG/RESULTS)
+  experiment_iteration_summary.md  One-page synthesis of iteration follow-ups A/B/C
   EXPERIMENT_WALKTHROUGH.md Framework reference (directories, commands, axes)
   FUTURE_DIRECTIONS.md      Pending experiments with cost estimates
+  head_to_head_plan.md      Draft design: LLM seeds vs RL mutation policy (not yet started)
   research_document_v3.md   Authoritative research spec
   plan_v3.md                Authoritative execution plan
 ```

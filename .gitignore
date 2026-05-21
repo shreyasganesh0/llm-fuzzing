@@ -70,6 +70,12 @@ AGENTS.md
 .continue/
 .github/copilot-instructions.md
 
+# Brainstorming / external-review / prompt-generation working docs.
+# Never committed: these are idea-generation and experiment-generation
+# aids, not the maintained experiment record. The authoritative record
+# lives under docs/ (see docs/EXPERIMENTS.md).
+scratch/
+
 # Personal notes (gitignored individually, not by pattern)
 llm_fuzzing_summary_for_interview_prep.md
 default.profraw

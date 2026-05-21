@@ -36,6 +36,22 @@ never touched). Only experiment *identity* labels were renumbered; any
 a renumbered label refers to the experiment identity — resolve the
 actual VCS branch via the map above + the commit hash.
 
+**External working-doc references.** A few frozen experiment artifacts —
+pre-registration docs (`experiment*/MANIFEST.json`,
+`experiment*/METHODS.md`), append-only execution logs
+(`experiment*/EXECUTION_LOG.md`), and the frozen
+`dataset/fixtures/cot_examples_pool.json` — cite external review briefs
+by bare filename (`EXPERIMENT_DEEP_DIVE.md`,
+`PROJECT_CONTEXT_FOR_WEB.md`). Those were idea- and
+report-generation working aids, never part of the tracked repo, and are
+deliberately kept out of git history (brainstorming artifacts are not
+committed); on the author's machine they live under the gitignored
+`scratch/` dir. The frozen artifacts are left byte-for-byte intact. Every
+pre-registered hypothesis they informed is restated self-containedly in
+the relevant `experiment*/RESULTS.md` and in
+`docs/experiment_iteration_summary.md`, so no tracked result depends on
+them.
+
 ---
 
 ## 0. Global prerequisites (replication, once)
@@ -58,7 +74,8 @@ extractors raise, never synthesize. (2) M2 hard-branch filter is
 `attempt+offset`; bump `--attempt-offset` ≥ 5000 on restart. (9)
 `default`-strategy cache key is byte-identical to pre-strategy code;
 non-default strategies append `,strategy=<name>`. Detail + the incident
-behind each: `docs/PROJECT_CONTEXT_FOR_WEB.md §6`.
+behind each: `docs/EXPERIMENT_WALKTHROUGH.md §7` (invariants) and
+`docs/experiment2.md §3` (the `experiment2_0` M2-filter incident).
 
 ---
 
@@ -76,8 +93,7 @@ behind each: `docs/PROJECT_CONTEXT_FOR_WEB.md §6`.
 - **Replicate.** `docs/STATUS.md §7` has the exact command block
   (generate_inputs / generate_source_inputs / measure_coverage /
   ab_coverage_diff). Cost ≈ $0.01, ~2 min.
-- **Detail / numbers.** `docs/experiment1.md` (authoritative);
-  `docs/PROJECT_CONTEXT_FOR_WEB.md §5.1`.
+- **Detail / numbers.** `docs/experiment1.md` (authoritative).
 - **Provenance.** Historical (on `master`); built/added/removed is in
   `docs/experiment1.md` + `docs/STATUS.md §11` changelog + git history.
 
@@ -248,8 +264,9 @@ Frozen headline numbers: `docs/experiment{1,2,3}.md`,
 Per-cell ground truth: the on-disk
 `results/ablation_<target>[/<strategy>]/m{1,2}/<variant>/<model>/summary.json`
 (gitignored — regenerate). Cost ground truth:
-`analysis/scripts/cost_audit.py`. Cross-experiment narrative & the
-load-bearing-invariant incident history: `docs/PROJECT_CONTEXT_FOR_WEB.md`.
+`analysis/scripts/cost_audit.py`. Cross-experiment narrative:
+`docs/experiment_iteration_summary.md`. Load-bearing-invariant incident
+history: `docs/EXPERIMENT_WALKTHROUGH.md §7`.
 Living "what is running now": `docs/STATUS.md` (or `docs/RESUME.md`).
 
 ## 8/9 + experiment4-FOLLOWUP — iteration follow-ups (branch `experiment-followups`)
@@ -276,7 +293,8 @@ Living "what is running now": `docs/STATUS.md` (or `docs/RESUME.md`).
     complementarity**, the per-seed "valid→reaches deep" mechanism is
     **FALSIFIED**.
   - Cross-experiment 1-pager: `docs/experiment_iteration_summary.md`.
-    Supersedes `EXPERIMENT_DEEP_DIVE.md §6.1`.
+    Supersedes the earlier default-vs-`cot_strict` inference that rigid
+    CoT labels caused the collapse.
 - **Built/Added/Removed (git, branch `experiment-followups`).** Added:
   `core/prompt_strategies.py` (+3 strategy classes & registry entries);
   `synthesis/prompts/ablation_synthesis_regex_cot_{noex,rot,nolbl}.j2`;

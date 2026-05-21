@@ -36,7 +36,7 @@ hard branches). Net: for codestral on structured targets, *corpus-level
 diversity/complementarity* — not per-seed reasoning depth, per-seed
 validity, or scaffolding — is the dominant lever.
 
-## 3. L1–L9 levers (EXPERIMENT_DEEP_DIVE.md §7) — what the data now says
+## 3. Change-levers (L1–L9) — what the data now says
 
 - **L2 (cot_strict self-anchoring example list): STRONGLY SUPPORTED.**
   Direct cause confirmed; remove or rotate the in-template example list
@@ -62,9 +62,9 @@ validity, or scaffolding — is the dominant lever.
 - **L3, L4, L6, L9: SILENT** (not probed by A/B/C). L6 fail-safe
   performed correctly (aborted `no_labels` at 60 attempts; nothing to
   revise yet).
-- The original EXPERIMENT_DEEP_DIVE §6.1 "rigid labels cause the
-  collapse" claim is now **FALSIFIED** and should be superseded by §2
-  above.
+- The earlier "rigid labels cause the collapse" inference (from
+  default-vs-`cot_strict` alone) is now **FALSIFIED** and is superseded
+  by §2 above.
 
 ## 4. What I would do next (with cost estimates)
 

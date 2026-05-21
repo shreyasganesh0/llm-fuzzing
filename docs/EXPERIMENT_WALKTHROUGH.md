@@ -268,7 +268,7 @@ shared infrastructure and `scripts/` providing the orchestrators.
 | `secrets/` | API keys (`claude_key` for Anthropic). **Gitignored — never log, never commit.** |
 | `results/` | All experiment outputs (`ablation_<target>/`, `cost_audit/`, `probes/`, `prediction/`, `synthesis/`, `transfer/`, etc.). **Gitignored** — large JSON / `.profraw`. |
 | `.cache/llm/` | LLM response cache, sha256-keyed by `(model, messages, temperature, top_p, max_tokens, cache_salt)`. **Gitignored.** |
-| `docs/` | Specs (`research_document_v3.md`, `plan_v3.md`), living handoff (`STATUS.md`), per-experiment writeups (`experiment{1,2,3}.md`), pending experiments (`FUTURE_DIRECTIONS.md`), this walkthrough. **Read `STATUS.md` first when resuming.** |
+| `docs/` | Specs (`research_document_v3.md`, `plan_v3.md`), living handoff (`STATUS.md`), the experiment index (`EXPERIMENTS.md`), per-experiment writeups (`experiment{1,2,3}.md` + the `experiment{4,5,6,7}/` dirs), pending experiments (`FUTURE_DIRECTIONS.md`), this walkthrough. **Read `STATUS.md` first when resuming, then `EXPERIMENTS.md`.** |
 | `.venv/` | Pre-populated virtualenv. **Do not reinstall**; `requirements.txt` is recorded for reference. |
 
 ### 4.7 Key root files
@@ -287,12 +287,15 @@ shared infrastructure and `scripts/` providing the orchestrators.
 
 ## 5. The two ablation experiments — what's actually running
 
-The repo has accumulated multiple experiments, fully cataloged in
-`experiment{1,2,3}.md`. The **current, active** experiment is the
+The repo has accumulated seven experiment lines, fully cataloged in
+`docs/EXPERIMENTS.md` (the replication-grade index) and written up in
+`experiment{1,2,3}.md` plus the per-experiment `experiment{4,5,6,7}/`
+dirs. Nothing is in progress. The **headline** experiment is the
 5-variant × 7-model × 2-target ablation (`experiment2_1`) orchestrated
-by `scripts/run_ablation_{re2,harfbuzz}.py`. Older experiments
-(the 2026-04-13 regex A/B, now `experiment1_1`) are archived but still
-reproducible from their fixtures.
+by `scripts/run_ablation_{re2,harfbuzz}.py`; experiments 4–7 are
+pre-registered iteration follow-ups that reuse that same orchestrator.
+Older experiments (the 2026-04-13 regex A/B, now `experiment1_1`) are
+archived but still reproducible from their fixtures.
 
 ### 5.1 Live ablation status snapshot (per `experiment2_1`)
 
@@ -538,14 +541,19 @@ incident behind it.
 In priority order if you are picking this up cold:
 
 1. `docs/STATUS.md` — living handoff, what's actively running.
-2. `docs/experiment2.md` — current headline (multi-model ablation, both targets).
-3. `docs/experiment1.md` — earlier RE2 A/B + generalization follow-ups.
-4. `docs/experiment3.md` — prompt-strategy axis (most recent addition).
-5. `docs/research_document_v3.md` — authoritative research design.
-6. `docs/plan_v3.md` — authoritative execution plan (the full roadmap;
+2. `docs/EXPERIMENTS.md` — unified replication-grade index of every
+   experiment (1–7): question, scope, headline numbers, repro recipe.
+3. `docs/experiment2.md` — the headline run (multi-model ablation, both
+   targets).
+4. `docs/experiment1.md` — earlier RE2 A/B + generalization follow-ups.
+5. `docs/experiment3.md` — prompt-strategy axis.
+6. `docs/experiment{4,5,6,7}/` + `docs/experiment_iteration_summary.md` —
+   the pre-registered iteration follow-ups and their one-page synthesis.
+7. `docs/research_document_v3.md` — authoritative research design.
+8. `docs/plan_v3.md` — authoritative execution plan (the full roadmap;
    the ablation is one slice of it).
-7. `docs/FUTURE_DIRECTIONS.md` — pending experiments with cost
+9. `docs/FUTURE_DIRECTIONS.md` — pending experiments with cost
    estimates.
-8. The per-directory `README.md` files under `dataset/`, `synthesis/`,
-   `analysis/`, `prediction/`, `transfer/`, `finetuning/` — package-level
-   notes on conventions and invariants.
+10. The per-directory `README.md` files under `dataset/`, `synthesis/`,
+   `analysis/`, `prediction/`, `transfer/`, `finetuning/` —
+   package-level notes on conventions and invariants.
