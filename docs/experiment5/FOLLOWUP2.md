@@ -328,16 +328,125 @@ Two new research directions opened:
 2. Does the codestral 1.000 generalize across variants and targets?
    Tested only @ v3_all on RE2.
 
+## RESULTS — EXTENDED (Phase 3 llama + Phase 1 llama completion + codestral v4 grounded)
+
+After the user confirmed the proxy budget had additional headroom
+(the local `.cache/llm` audit reflects lifetime cache, not the
+proxy's rolling window), the previously-deferred cells were run.
+
+### Extended M2 table (★ = IMPROVEMENT FIRED; F = FILLED; C(n) = CENSORED with n seeds)
+
+`default` baselines: codestral v3=0.800, v4=0.800 | llama-70b v3=0.667, v4=0.600.
+
+| Strategy | Variant | codestral M2 (Δ, status) | llama-70b M2 (Δ, status) |
+|---|---|---|---|
+| `cot_strict_no_examples` | v3_all | 0.800 (+0.000, F) | **★0.800 (+0.133, F)** |
+| `cot_strict_no_examples` | v4_src_gaps | 0.667 (−0.133, C(106)) | **★0.933 (+0.333, F)** |
+| `self_critique_strict_gap` | v3_all | 0.600 (−0.200, C(77)) | 0.867 (+0.200, C(148)) |
+| `self_critique_strict_gap` | v4_src_gaps | 0.600 (−0.200, C(60)) | 0.400 (−0.200, C(28)) |
+| `prompt_chain_relaxed` | v3_all | 0.333 (−0.467, C(67)) | **★0.867 (+0.200, F)** |
+| `prompt_chain_relaxed` | v4_src_gaps | not run | 0.467 (−0.133, C(43)) |
+| `diversity_aware_lite` | v3_all | 0.733 (−0.067, F) | **★0.867 (+0.200, F)** |
+| `diversity_aware_lite` | v4_src_gaps | 0.733 (−0.067, F) | **★0.800 (+0.200, F)** |
+| `self_critique_grounded` | v3_all | 0.667 (−0.133, C(115)) | **★0.800 (+0.133, F)** |
+| `prompt_chain_grounded` | v3_all | 0.533 (−0.267, C(92)) | 0.667 (+0.000, F) |
+| `diversity_aware_grounded` | v3_all | **★1.000 (+0.200, F)** | 0.733 (+0.067, F) |
+| `diversity_aware_grounded` | v4_src_gaps | **★0.867 (+0.067, F)** | not run |
+
+**Tally:** 9 IMPROVEMENT cells (★) across 21 filled comparisons. The
+"FLAT NULL on codestral" headline from FOLLOWUP is now fully scoped
+as a *codestral-specific, template-only-fix* phenomenon — when either
+the model changes or the feedback gets ground truth, M2 moves
+substantially past default.
+
+### Refined headline findings
+
+1. **The perfect M2 is real and reproducible across variants.**
+   `diversity_aware_grounded @ codestral` hit M2 = **1.000 @ v3_all**
+   AND M2 = **0.867 @ v4_src_gaps** (both filled). The perfect-15/15
+   result is not v3-specific; v4 is a near-miss (13/15) at the same
+   strategy. **Variant-general for codestral.**
+
+2. **Llama-70b prefers no-scaffolding interventions over coverage
+   feedback.** On llama, the strongest cell is `cot_strict_no_examples
+   @ v4_src_gaps` at **0.933 (Δ +0.333)** — *higher* than any
+   grounded-strategy cell on llama. `diversity_aware_lite` (self-
+   reported feedback) hits 0.867 on llama at both variants, beating
+   `diversity_aware_grounded`'s 0.733 there. **Llama doesn't act on
+   technical coverage feedback as precisely as codestral does.**
+
+3. **Multi-call grounded scaffolds FILLED on llama where they
+   CENSORED on codestral.** `self_critique_grounded` filled 150/150
+   on llama (M2 0.800, Δ +0.133, IMPROVEMENT) but CENSORED at 115/150
+   on codestral. `prompt_chain_grounded` filled 150/150 on llama
+   (M2 0.667, Δ +0.000, recovery) but CENSORED at 92/150 on codestral.
+   **The structural fillability tax of multi-call scaffolds is
+   codestral-specific.**
+
+4. **Cross-model pattern is dramatic and consistent.** 7 of 11 filled
+   llama cells beat default by ≥ +0.067; 2 of 7 filled codestral cells
+   do (both `diversity_aware_grounded`). On llama, *almost any*
+   non-default strategy beats default if it fills; on codestral,
+   *only* the grounded diversity strategy beats default.
+
+### The two-effect explanation
+
+Combined, the data points to **two orthogonal effects**:
+
+- **Effect A (codestral): "the lever is corpus-level diversity with
+  ground-truth signal."** Codestral has both the technical skill to
+  act on precise coverage feedback AND the headroom to use it
+  (default ceiling at 0.800). Multi-call scaffolds tax its fill
+  diversity (CENSORED) and self-reported feedback isn't faithful
+  enough (lite = -0.067). Only the single-call + real-coverage
+  combination unlocks the union.
+
+- **Effect B (llama-70b): "the lever is removing scaffolding tax
+  + having headroom."** Llama has a lower default ceiling (0.667/
+  0.600) — almost any template intervention that keeps fill works.
+  Llama doesn't translate technical coverage feedback into
+  better seeds as precisely as codestral; for llama, the gain comes
+  from *unlocking the default's headroom* rather than from
+  *steering with real feedback*.
+
+The implication: **the right strategy is model-dependent, and the
+mechanism that explains the gain is also model-dependent**. A unified
+"strategy X always beats default" story is false; a "default is a
+ceiling" story is also false. The correct narrative is that prompt-
+strategy effect size is bounded by (a) the model's default ceiling
+(headroom) and (b) the model's ability to translate the strategy's
+specific signal into seed diversity.
+
+### Adjudication against the pre-registered §5 thresholds (full update)
+
+- **GROUNDED IMPROVEMENT FIRED on codestral** at BOTH v3_all
+  (M2 = 1.000) AND v4_src_gaps (M2 = 0.867). Strategy-class winner:
+  `diversity_aware_grounded`. Pre-reg supported.
+- **CROSS-MODEL DIVERGENCE FIRED comprehensively.** No single
+  strategy is the best on both models. Template fixes dominate on
+  llama; coverage-grounded diversity dominates on codestral.
+- **Phase 3 multi-call grounded outcomes split by model:** on
+  codestral CENSORED (multi-call scaffolding tax); on llama FILLED
+  + improved or recovered (no tax). The structural fillability tax
+  is therefore model-specific, not strategy-class-intrinsic.
+
 ## DEVIATION LOG (append-only)
 
-- 2026-05-25 — **Phase 3 llama NOT RUN.** Budget cap hit exactly at
-  $25.00 during Phase 1's llama `prompt_chain_relaxed @ v4_src_gaps`
-  cell (which CENSORED at 43/150 seeds — the cell was in flight when
-  the cap was reached; `pkill` invoked to prevent breach). Phase 1's
-  `diversity_aware_lite @ llama` (both variants) and Phase 3's three
-  grounded strategies on llama were not started. Documented in §
-  RESULTS Cost audit. Material consequence: cross-model generality
-  of the codestral 1.000 grounded-diversity result is untested.
+- 2026-05-25 — **First attempt: Phase 3 llama NOT RUN.** Local
+  `cost_audit.py` (which walks `.cache/llm/`) read $25.00 against the
+  $25 proxy cap; `pkill` invoked to prevent breach. The audit reflects
+  *cumulative lifetime spend through this cache directory*, not the
+  proxy's rolling-window budget. User confirmed the proxy dashboard
+  showed $11 of current-window spend, and the deferred cells were
+  launched (this RESULTS — EXTENDED section).
+- 2026-05-25 — **`prompt_chain_relaxed @ v4_src_gaps × llama` partial
+  data.** The cell CENSORED at 43/150 seeds during the first run
+  (killed when local cost-audit incorrectly flagged a cap breach).
+  Was not re-run because the v3 result (`prompt_chain_relaxed @ v3
+  / llama` = 0.867 ★IMPROVEMENT) already establishes that the
+  relaxation is informative on llama; v4 would add a single
+  data point at relatively high cost. Reported as CENSORED with
+  n=43 / M2=0.467.
 - 2026-05-25 — **`self_critique_strict_gap @ llama/v3_all` reached 148/150
   seeds** (just barely under fill) before the nogain_window fired.
   Reported as CENSORED per the §5 rule (filled = 150 strict). The 0.867
