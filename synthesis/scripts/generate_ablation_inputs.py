@@ -100,6 +100,19 @@ _TEMPLATE_SUFFIX_BY_STRATEGY: dict[str, str] = {
     # (sketch) and 3 (finalize) use the "_sketch" / "_finalize" suffixes
     # below, which are resolved explicitly inside the prompt_chain branch.
     "prompt_chain": "_plan",
+    # experiment5/FOLLOWUP — self_critique_strict_gap reuses the default
+    # base template for the draft (round 1) and the _scgap.j2 template
+    # for the gap-pivoting refine (round 2; resolved explicitly inside
+    # the dispatch branch, NOT via this map).
+    "self_critique_strict_gap": "",
+    # experiment5/FOLLOWUP — prompt_chain_relaxed uses _pcrlx_plan for
+    # round 1, _pcrlx_sketch / _pcrlx_finalize for rounds 2/3 (resolved
+    # explicitly inside the dispatch branch).
+    "prompt_chain_relaxed": "_pcrlx_plan",
+    # experiment5/FOLLOWUP — diversity_aware_lite reuses the diversity
+    # base template (_div.j2) which expects prior_claimed_gaps /
+    # prior_seed_count kwargs assembled by the dispatch branch.
+    "diversity_aware_lite": "_div",
     # tool_use reuses the DefaultStrategy base template on every turn
     # (turn 0 = initial, turn i = refinement after the i-th oracle call).
     # The refinement prompts are assembled inline in run_ablation by
@@ -114,6 +127,11 @@ _TEMPLATE_SUFFIX_BY_STRATEGY: dict[str, str] = {
 _REFINE_TEMPLATE_SUFFIX = "_refine"  # only self_critique
 _CHAIN_SKETCH_SUFFIX = "_sketch"  # only prompt_chain
 _CHAIN_FINALIZE_SUFFIX = "_finalize"  # only prompt_chain
+# experiment5/FOLLOWUP additions
+_SCGAP_REFINE_SUFFIX = "_scgap"  # only self_critique_strict_gap (round 2)
+_PCRLX_SKETCH_SUFFIX = "_pcrlx_sketch"  # only prompt_chain_relaxed (round 2)
+_PCRLX_FINALIZE_SUFFIX = "_pcrlx_finalize"  # only prompt_chain_relaxed (round 3)
+_DIV_SUFFIX = "_div"  # only diversity_aware_lite
 
 
 def _default_template_name(fmt: str, *, strategy: str = DEFAULT_STRATEGY_NAME) -> str:
@@ -144,6 +162,24 @@ def _chain_finalize_template_name(fmt: str) -> str:
     """Return the Phase-6 prompt_chain finalize template filename."""
     base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
     return f"{base}{_CHAIN_FINALIZE_SUFFIX}.j2"
+
+
+def _scgap_refine_template_name(fmt: str) -> str:
+    """Return the self_critique_strict_gap refine template filename."""
+    base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
+    return f"{base}{_SCGAP_REFINE_SUFFIX}.j2"
+
+
+def _pcrlx_sketch_template_name(fmt: str) -> str:
+    """Return the prompt_chain_relaxed sketch template filename."""
+    base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
+    return f"{base}{_PCRLX_SKETCH_SUFFIX}.j2"
+
+
+def _pcrlx_finalize_template_name(fmt: str) -> str:
+    """Return the prompt_chain_relaxed finalize template filename."""
+    base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
+    return f"{base}{_PCRLX_FINALIZE_SUFFIX}.j2"
 
 
 # experiment6 (Follow-up A) — cot_strict_rotated_examples support.
@@ -192,6 +228,11 @@ def build_ablation_prompt(
     plan_target_gap: str | None = None,
     sketch_content: str | None = None,
     sketch_reasoning: str | None = None,
+    # experiment5/FOLLOWUP kwargs (additive; gated by template suffix)
+    draft_claimed_gaps: list | None = None,
+    unclaimed_gaps_sample: list | None = None,
+    prior_claimed_gaps: list | None = None,
+    prior_seed_count: int | None = None,
 ) -> str:
     fmt = _resolve_input_format(target, input_format)
     system_prompt = SYSTEM_PROMPT_PATH.read_text()
@@ -254,6 +295,26 @@ def build_ablation_prompt(
     if resolved_template.endswith(f"{_REFINE_TEMPLATE_SUFFIX}.j2"):
         render_kwargs["draft_content"] = draft_content or ""
         render_kwargs["draft_reasoning"] = draft_reasoning or ""
+    # experiment5/FOLLOWUP — self_critique_strict_gap refine template
+    # additionally needs draft_claimed_gaps + unclaimed_gaps_sample.
+    if resolved_template.endswith(f"{_SCGAP_REFINE_SUFFIX}.j2"):
+        render_kwargs["draft_content"] = draft_content or ""
+        render_kwargs["draft_reasoning"] = draft_reasoning or ""
+        render_kwargs["draft_claimed_gaps"] = draft_claimed_gaps or []
+        render_kwargs["unclaimed_gaps_sample"] = unclaimed_gaps_sample or []
+    # experiment5/FOLLOWUP — prompt_chain_relaxed sketch/finalize.
+    if resolved_template.endswith(f"{_PCRLX_SKETCH_SUFFIX}.j2"):
+        render_kwargs["plan_text"] = plan_text or ""
+        render_kwargs["plan_target_gap"] = plan_target_gap or ""
+    elif resolved_template.endswith(f"{_PCRLX_FINALIZE_SUFFIX}.j2"):
+        render_kwargs["plan_text"] = plan_text or ""
+        render_kwargs["plan_target_gap"] = plan_target_gap or ""
+        render_kwargs["sketch_content"] = sketch_content or ""
+        render_kwargs["sketch_reasoning"] = sketch_reasoning or ""
+    # experiment5/FOLLOWUP — diversity_aware_lite base template.
+    if resolved_template.endswith(f"{_DIV_SUFFIX}.j2"):
+        render_kwargs["prior_claimed_gaps"] = prior_claimed_gaps or []
+        render_kwargs["prior_seed_count"] = prior_seed_count or 0
     # Phase-6 prompt_chain templates:
     #   _plan.j2      — no extra vars (uses only base render_kwargs).
     #   _sketch.j2    — needs plan_text + plan_target_gap.
@@ -365,6 +426,29 @@ def _write_logprob_sidecars(
     return written
 
 
+def _parse_plan_response_relaxed(text: str) -> tuple[str, str] | None:
+    """Permissive plan parser for prompt_chain_relaxed.
+
+    Same shape as :func:`_parse_plan_response` but accepts the literal
+    ``unspecified`` (case-insensitive) as a valid ``target_gap`` value.
+    Empty / missing target_gap is also coerced to ``unspecified`` so
+    that a slightly off-schema response still progresses to the
+    sketch stage (the relaxed strategy's whole point is to reduce the
+    plan-stage failure surface).
+    """
+    from synthesis.scripts.parse_synthesis import _extract_json
+    data = _extract_json(text)
+    if not isinstance(data, dict):
+        return None
+    plan = data.get("plan")
+    target_gap = data.get("target_gap") or data.get("target") or "unspecified"
+    if not isinstance(plan, str) or not plan.strip():
+        return None
+    if not isinstance(target_gap, str) or not target_gap.strip():
+        target_gap = "unspecified"
+    return plan.strip()[:1500], target_gap.strip()[:200]
+
+
 def _parse_plan_response(text: str) -> tuple[str, str] | None:
     """Extract ``(plan, target_gap)`` from a prompt_chain plan response.
 
@@ -466,7 +550,11 @@ def run_ablation(
                       plan_target_gap: str | None = None,
                       sketch_content: str | None = None,
                       sketch_reasoning: str | None = None,
-                      cot_rotated_examples: list | None = None) -> str:
+                      cot_rotated_examples: list | None = None,
+                      draft_claimed_gaps: list | None = None,
+                      unclaimed_gaps_sample: list | None = None,
+                      prior_claimed_gaps: list | None = None,
+                      prior_seed_count: int | None = None) -> str:
         return build_ablation_prompt(
             target,
             dataset_root=dataset_root,
@@ -488,6 +576,10 @@ def run_ablation(
             plan_target_gap=plan_target_gap,
             sketch_content=sketch_content,
             sketch_reasoning=sketch_reasoning,
+            draft_claimed_gaps=draft_claimed_gaps,
+            unclaimed_gaps_sample=unclaimed_gaps_sample,
+            prior_claimed_gaps=prior_claimed_gaps,
+            prior_seed_count=prior_seed_count,
         )
 
     base_template = _default_template_name(fmt, strategy=strategy)
@@ -731,6 +823,263 @@ def run_ablation(
                             },
                         )
             resp = used_resp
+        elif strategy == "self_critique_strict_gap":
+            # experiment5/FOLLOWUP — round 1 identical to default (cheap),
+            # round 2 receives draft's claimed gaps + sample of unclaimed
+            # gaps and is instructed to pivot.
+            draft_resp = client.complete(
+                messages=[
+                    {"role": "system", "content": ""},
+                    {"role": "user", "content": rendered},
+                ],
+                model=model,
+                temperature=SYNTHESIS_TEMPERATURE,
+                top_p=SYNTHESIS_TOP_P,
+                max_tokens=max_tokens,
+                cache_salt=make_cache_salt(
+                    model=model, sample=k, cell=cell,
+                    run_offset=run_id, strategy=strategy, round="draft",
+                ),
+                response_format=response_format,
+            )
+            draft_inputs, draft_status = parse_fn(
+                draft_resp.content,
+                target=target, model=model,
+                temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                experiment=experiment,
+            )
+            if draft_status != "ok" or not draft_inputs:
+                inputs, status, used_resp = [], "parse_failure", draft_resp
+                logger.info(
+                    "self_critique_strict_gap draft parse failure",
+                    extra={"cell": cell, "model": model, "sample": k},
+                )
+            else:
+                draft_content_str = _draft_content_for_refine(draft_inputs, fmt)
+                draft_reasoning_str = (draft_inputs[0].reasoning or "")[:1500]
+                # Pull the draft's claimed gaps (list of "file:line" strings)
+                claimed = list({
+                    str(g) for inp in draft_inputs for g in (inp.target_gaps or [])
+                    if g
+                })
+                # Build the unclaimed sample by walking the cell's gaps
+                # list and excluding claimed. The driver re-loads gaps
+                # here so we don't widen the build_ablation_prompt API.
+                unclaimed: list[dict] = []
+                try:
+                    gaps_report = _load_gaps(dataset_root, target)
+                    if gaps_report is not None:
+                        for g in gaps_report.gap_branches:
+                            file_line = f"{g.file}:{g.line}"
+                            if file_line in claimed:
+                                continue
+                            unclaimed.append({
+                                "file": g.file,
+                                "line": g.line,
+                                "uncovered_side": getattr(g, "uncovered_side", None),
+                                "condition_description": (
+                                    getattr(g, "condition_description", "") or ""
+                                )[:200],
+                            })
+                            if len(unclaimed) >= 8:
+                                break
+                except Exception:
+                    unclaimed = []
+                refine_rendered = _build_prompt(
+                    template=_scgap_refine_template_name(fmt),
+                    draft_content=draft_content_str,
+                    draft_reasoning=draft_reasoning_str,
+                    draft_claimed_gaps=claimed,
+                    unclaimed_gaps_sample=unclaimed,
+                )
+                refine_resp = client.complete(
+                    messages=[
+                        {"role": "system", "content": ""},
+                        {"role": "user", "content": refine_rendered},
+                    ],
+                    model=model,
+                    temperature=SYNTHESIS_TEMPERATURE,
+                    top_p=SYNTHESIS_TOP_P,
+                    max_tokens=max_tokens,
+                    cache_salt=make_cache_salt(
+                        model=model, sample=k, cell=cell,
+                        run_offset=run_id, strategy=strategy, round="refine",
+                    ),
+                    response_format=response_format,
+                )
+                refine_inputs, refine_status = parse_fn(
+                    refine_resp.content,
+                    target=target, model=model,
+                    temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                    experiment=experiment,
+                )
+                if refine_status == "ok" and refine_inputs:
+                    inputs, status, used_resp = refine_inputs, refine_status, refine_resp
+                else:
+                    inputs, status, used_resp = draft_inputs, draft_status, draft_resp
+                    logger.info(
+                        "self_critique_strict_gap refine parse failure; using draft",
+                        extra={"cell": cell, "model": model, "sample": k},
+                    )
+            resp = used_resp
+        elif strategy == "prompt_chain_relaxed":
+            # experiment5/FOLLOWUP — same 3-call shape as prompt_chain
+            # but uses _pcrlx_* templates and the permissive plan parser.
+            plan_resp = client.complete(
+                messages=[
+                    {"role": "system", "content": ""},
+                    {"role": "user", "content": rendered},
+                ],
+                model=model,
+                temperature=SYNTHESIS_TEMPERATURE,
+                top_p=SYNTHESIS_TOP_P,
+                max_tokens=max_tokens,
+                cache_salt=make_cache_salt(
+                    model=model, sample=k, cell=cell,
+                    run_offset=run_id, strategy=strategy, round="plan",
+                ),
+                response_format=response_format,
+            )
+            parsed_plan = _parse_plan_response_relaxed(plan_resp.content)
+            if parsed_plan is None:
+                inputs, status, used_resp = [], "parse_failure", plan_resp
+                logger.info(
+                    "prompt_chain_relaxed plan parse failure",
+                    extra={"cell": cell, "model": model, "sample": k,
+                           "fallback_stage": "plan"},
+                )
+            else:
+                plan_text, plan_target_gap = parsed_plan
+                sketch_rendered = _build_prompt(
+                    template=_pcrlx_sketch_template_name(fmt),
+                    plan_text=plan_text,
+                    plan_target_gap=plan_target_gap,
+                )
+                sketch_resp = client.complete(
+                    messages=[
+                        {"role": "system", "content": ""},
+                        {"role": "user", "content": sketch_rendered},
+                    ],
+                    model=model,
+                    temperature=SYNTHESIS_TEMPERATURE,
+                    top_p=SYNTHESIS_TOP_P,
+                    max_tokens=max_tokens,
+                    cache_salt=make_cache_salt(
+                        model=model, sample=k, cell=cell,
+                        run_offset=run_id, strategy=strategy, round="sketch",
+                    ),
+                    response_format=response_format,
+                )
+                sketch_inputs, sketch_status = parse_fn(
+                    sketch_resp.content,
+                    target=target, model=model,
+                    temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                    experiment=experiment,
+                )
+                if sketch_status != "ok" or not sketch_inputs:
+                    inputs, status, used_resp = [], "parse_failure", sketch_resp
+                    logger.info(
+                        "prompt_chain_relaxed sketch parse failure",
+                        extra={"cell": cell, "model": model, "sample": k,
+                               "fallback_stage": "sketch"},
+                    )
+                else:
+                    sketch_content_str = _sketch_content_for_finalize(sketch_inputs, fmt)
+                    sketch_reasoning_str = (sketch_inputs[0].reasoning or "")[:1500]
+                    finalize_rendered = _build_prompt(
+                        template=_pcrlx_finalize_template_name(fmt),
+                        plan_text=plan_text,
+                        plan_target_gap=plan_target_gap,
+                        sketch_content=sketch_content_str,
+                        sketch_reasoning=sketch_reasoning_str,
+                    )
+                    finalize_resp = client.complete(
+                        messages=[
+                            {"role": "system", "content": ""},
+                            {"role": "user", "content": finalize_rendered},
+                        ],
+                        model=model,
+                        temperature=SYNTHESIS_TEMPERATURE,
+                        top_p=SYNTHESIS_TOP_P,
+                        max_tokens=max_tokens,
+                        cache_salt=make_cache_salt(
+                            model=model, sample=k, cell=cell,
+                            run_offset=run_id, strategy=strategy, round="finalize",
+                        ),
+                        response_format=response_format,
+                    )
+                    finalize_inputs, finalize_status = parse_fn(
+                        finalize_resp.content,
+                        target=target, model=model,
+                        temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                        experiment=experiment,
+                    )
+                    if finalize_status == "ok" and finalize_inputs:
+                        inputs, status, used_resp = (
+                            finalize_inputs, finalize_status, finalize_resp,
+                        )
+                    else:
+                        # Fall back to the sketch — at least we have
+                        # SOMETHING parseable in 2 calls instead of 3.
+                        inputs, status, used_resp = (
+                            sketch_inputs, sketch_status, sketch_resp,
+                        )
+                        logger.info(
+                            "prompt_chain_relaxed finalize parse failure; using sketch",
+                            extra={"cell": cell, "model": model, "sample": k,
+                                   "fallback_stage": "finalize"},
+                        )
+            resp = used_resp
+        elif strategy == "diversity_aware_lite":
+            # experiment5/FOLLOWUP — read existing sample_*.json sidecars
+            # to assemble a deduplicated, count-weighted summary of
+            # prior-seed claimed gaps; embed in the prompt; single call.
+            prior_seed_count = 0
+            gap_counts: dict[str, int] = {}
+            try:
+                for sample_path in synthesis_dir.glob("sample_*.json"):
+                    try:
+                        rec = json.loads(sample_path.read_text())
+                    except (OSError, ValueError):
+                        continue
+                    for inp in rec.get("inputs", []):
+                        prior_seed_count += 1
+                        for g in (inp.get("target_gaps") or []):
+                            if not isinstance(g, str) or not g:
+                                continue
+                            gap_counts[g] = gap_counts.get(g, 0) + 1
+            except Exception:
+                pass
+            # Cap to top-N most-claimed to keep the prompt bounded.
+            sorted_gaps = sorted(
+                gap_counts.items(), key=lambda kv: (-kv[1], kv[0])
+            )[:30]
+            prior_claimed = [{"gap": g, "count": c} for g, c in sorted_gaps]
+            div_rendered = _build_prompt(
+                template=_default_template_name(fmt, strategy=strategy),
+                prior_claimed_gaps=prior_claimed,
+                prior_seed_count=prior_seed_count,
+            )
+            resp = client.complete(
+                messages=[
+                    {"role": "system", "content": ""},
+                    {"role": "user", "content": div_rendered},
+                ],
+                model=model,
+                temperature=SYNTHESIS_TEMPERATURE,
+                top_p=SYNTHESIS_TOP_P,
+                max_tokens=max_tokens,
+                cache_salt=make_cache_salt(
+                    model=model, sample=k, cell=cell,
+                    run_offset=run_id, strategy=strategy,
+                ),
+            )
+            inputs, status = parse_fn(
+                resp.content,
+                target=target, model=model,
+                temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                experiment=experiment,
+            )
         elif strategy in ("tool_use", "tool_use_retrieval"):
             # Iterative tool-use loop. Shared body for both strategies; they
             # differ in (a) which tools are exposed, (b) max_tool_turns, and

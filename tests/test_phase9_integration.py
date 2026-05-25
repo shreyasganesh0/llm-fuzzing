@@ -67,6 +67,9 @@ _EXPECTED_STRATEGY_NAMES = {
     # experiment6 (Follow-up A)
     "cot_strict_no_examples", "cot_strict_rotated_examples",
     "cot_strict_no_labels",
+    # experiment5/FOLLOWUP — implementation-fix probes
+    "self_critique_strict_gap", "prompt_chain_relaxed",
+    "diversity_aware_lite",
 }
 
 _EXPECTED_CALL_BUDGETS = {
@@ -81,6 +84,10 @@ _EXPECTED_CALL_BUDGETS = {
     "cot_strict_no_examples": 1,
     "cot_strict_rotated_examples": 1,
     "cot_strict_no_labels": 1,
+    # experiment5/FOLLOWUP
+    "self_critique_strict_gap": 2,
+    "prompt_chain_relaxed": 3,
+    "diversity_aware_lite": 1,
 }
 
 
@@ -520,8 +527,12 @@ def test_all_strategies_execute_single_seed_end_to_end(
         "cot_strict_no_examples",
         "cot_strict_rotated_examples",
         "cot_strict_no_labels",
+        # experiment5/FOLLOWUP — same scope as exp6 (RE2 only)
+        "self_critique_strict_gap",
+        "prompt_chain_relaxed",
+        "diversity_aware_lite",
     }:
-        pytest.skip("RE2-only experiment6 strategy; no binary template by design")
+        pytest.skip("RE2-only strategy; no binary template by design")
 
     # tool_use / tool_use_retrieval must run against a model whose supports_tool_use is True.
     _tool_use_strategies = {"tool_use", "tool_use_retrieval"}

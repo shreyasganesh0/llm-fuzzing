@@ -692,6 +692,220 @@ class ToolUseRetrievalStrategy:
         )
 
 
+@dataclass
+class SelfCritiqueStrictGapStrategy:
+    """Variant of self_critique whose refine prompt explicitly enumerates
+    the draft's claimed gaps and forbids reusing them.
+
+    Round 1 (draft): identical to DefaultStrategy / SelfCritiqueStrategy
+    round 1 (no rigid scaffolding — same prompt the cache already covers
+    for ``default``, but distinct cache salt because the strategy name
+    appends ``,strategy=self_critique_strict_gap``).
+    Round 2 (refine): uses ``ablation_synthesis_regex_scgap.j2`` —
+    receives the draft's ``target_gaps`` self-report AND a sample of
+    unclaimed gaps from the cell's gap list. The model is instructed to
+    pivot to one of those unclaimed gaps.
+
+    Hypothesis (experiment5/FOLLOWUP, post-experiment4 mechanism
+    revision): the original ``self_critique`` underperforms because the
+    refine round re-reads the same static context as the draft and gets
+    no real feedback signal. Showing the draft's self-claimed gaps and
+    forcing a pivot is the cheapest possible "feedback that depends on
+    the draft" without an in-loop coverage replay.
+
+    Cache behaviour: salt is
+    ``,strategy=self_critique_strict_gap,round=<draft|refine>``.
+    Orchestration: 2 API calls per seed; dispatched by an explicit branch
+    in ``generate_ablation_inputs.run_ablation`` (NOT the
+    ``self_critique`` branch — kept distinct so the legacy strategy's
+    cache is untouched).
+    """
+    name: str = "self_critique_strict_gap"
+    n_calls_per_seed: int = 2
+    supports_tool_use: bool = False
+    description: str = "self_critique whose refine pivots to a gap unclaimed by the draft"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import build_ablation_prompt
+
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        rendered = build_ablation_prompt(
+            ctx.target.name,
+            dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=ctx.extra.get("input_format"),
+        )
+        return [
+            {"role": "system", "content": ""},
+            {"role": "user", "content": rendered},
+        ]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "SelfCritiqueStrictGapStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver orchestrates draft + gap-pivot refine."
+        )
+
+
+@dataclass
+class PromptChainRelaxedStrategy:
+    """Variant of prompt_chain that drops the rigid file:line commit in
+    the plan stage and lets sketch/finalize pivot freely.
+
+    Round 1 (plan): uses ``ablation_synthesis_regex_pcrlx_plan.j2`` —
+    the model may emit a free-form plan and either name a specific
+    ``file:line`` target or the literal ``unspecified`` (a soft commit).
+    Round 2 (sketch): uses ``..._pcrlx_sketch.j2`` — allowed to pivot
+    off the plan's gap.
+    Round 3 (finalize): uses ``..._pcrlx_finalize.j2`` — allowed to
+    rename the ``target_gaps`` to whatever the sketch actually targeted.
+
+    Hypothesis: prompt_chain collapsed at v3_all (6/150 seeds) because
+    the rigid 3-stage commit funnel was too narrow. Relaxing the
+    plan-stage commit and letting downstream stages pivot should
+    restore fill without losing the multi-stage reasoning benefit.
+
+    Cache behaviour: salt is
+    ``,strategy=prompt_chain_relaxed,round=<plan|sketch|finalize>``.
+    Orchestration: 3 API calls per seed; dispatched by an explicit
+    branch in ``generate_ablation_inputs.run_ablation`` that mirrors
+    the ``prompt_chain`` branch but uses the relaxed template names
+    and a more permissive plan parser.
+    """
+    name: str = "prompt_chain_relaxed"
+    n_calls_per_seed: int = 3
+    supports_tool_use: bool = False
+    description: str = "plan->sketch->finalize with soft (or no) file:line commit"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name,
+            _resolve_input_format,
+            build_ablation_prompt,
+        )
+
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(
+            ctx.target.name, ctx.extra.get("input_format"),
+        )
+        rendered = build_ablation_prompt(
+            ctx.target.name,
+            dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+        )
+        return [
+            {"role": "system", "content": ""},
+            {"role": "user", "content": rendered},
+        ]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "PromptChainRelaxedStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver orchestrates the relaxed plan/sketch/finalize."
+        )
+
+
+@dataclass
+class DiversityAwareLiteStrategy:
+    """Single-call strategy that injects prior-seed claimed_gaps into the
+    prompt to encourage corpus-level complementarity (experiment4
+    FOLLOWUP mechanism).
+
+    Each prompt extends the default template with a
+    "COVERAGE FROM OTHER SEEDS IN THIS BATCH" block listing the
+    deduplicated ``target_gaps`` self-reported by every ``sample_*.json``
+    already on disk in this cell's ``synthesis_dir``. The model is
+    instructed to target a gap NOT in that list.
+
+    Caveat (architectural honesty): self-reported ``target_gaps`` are an
+    unreliable signal — a draft can claim a gap and not actually hit it.
+    The "lite" suffix marks this as the cheap version; a full
+    coverage-grounded diversity strategy would replay each seed through
+    llvm-cov before threading the result back, which is a separate
+    architectural project. This is the cheapest test of L1/L7 (corpus
+    complementarity as a first-class lever, per experiment_iteration_
+    summary §3) achievable without an in-loop coverage hook.
+
+    Cache: prompt depends on disk history, so cache hits within a single
+    cell run are near-zero by design. Restarts must bump
+    ``--attempt-offset`` >=5000 as usual (invariant 5).
+
+    Worker concurrency: ``AblationRunner`` dispatches up to
+    ``worker_count`` synthesis subprocesses in parallel. Each subprocess
+    reads whatever sample_*.json sidecars exist at prompt-build time —
+    order is non-deterministic across workers but each call sees a
+    valid (possibly partial) snapshot. The union metric M2 doesn't
+    depend on per-seed ordering, so eventual consistency is acceptable.
+
+    Cache salt: ``,strategy=diversity_aware_lite`` (no round; single-call).
+    Dispatched by an explicit branch in
+    ``generate_ablation_inputs.run_ablation`` that reads the
+    synthesis_dir before assembling the prompt.
+    """
+    name: str = "diversity_aware_lite"
+    n_calls_per_seed: int = 1
+    supports_tool_use: bool = False
+    description: str = "default + prior-seed gap-history (self-reported, cheap)"
+    history_window: int = 30  # cap on prior-claim summary length
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        # Driver builds the actual messages with history injected;
+        # this method is only used by tests that exercise the strategy
+        # outside the driver (and they pass empty history).
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name,
+            _resolve_input_format,
+            build_ablation_prompt,
+        )
+
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(
+            ctx.target.name, ctx.extra.get("input_format"),
+        )
+        rendered = build_ablation_prompt(
+            ctx.target.name,
+            dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+            prior_claimed_gaps=ctx.extra.get("prior_claimed_gaps", []),
+            prior_seed_count=ctx.extra.get("prior_seed_count", 0),
+        )
+        return [
+            {"role": "system", "content": ""},
+            {"role": "user", "content": rendered},
+        ]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "DiversityAwareLiteStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver orchestrates the history-aware prompt build."
+        )
+
+
 STRATEGIES: dict[str, PromptStrategy] = {
     DEFAULT_STRATEGY_NAME: DefaultStrategy(),
     "cot_strict": CotStrictStrategy(),
@@ -700,7 +914,10 @@ STRATEGIES: dict[str, PromptStrategy] = {
     "cot_strict_no_labels": CotStrictNoLabelsStrategy(),
     "few_shot": FewShotStrategy(),
     "self_critique": SelfCritiqueStrategy(),
+    "self_critique_strict_gap": SelfCritiqueStrictGapStrategy(),
     "prompt_chain": PromptChainStrategy(),
+    "prompt_chain_relaxed": PromptChainRelaxedStrategy(),
+    "diversity_aware_lite": DiversityAwareLiteStrategy(),
     "tool_use": ToolUseStrategy(),
     "tool_use_retrieval": ToolUseRetrievalStrategy(),
 }

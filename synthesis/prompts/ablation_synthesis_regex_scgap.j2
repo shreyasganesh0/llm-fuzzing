@@ -1,0 +1,105 @@
+{{ system_prompt }}
+
+You are REVISING a previously-generated REGEX PATTERN for {{ target_name }}.
+{{ target_name }} is a C++ regex engine; the hard-to-reach code lives in
+the PARSER and COMPILER (not the matcher), so novel regex syntax is more
+valuable than exotic input strings.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex. **Produce the REGEX STRING ONLY**, as
+plain text UTF-8. Do NOT base64-encode. Do NOT escape. Do NOT wrap in
+quotes. Just the pattern itself.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
+Code:
+```{{ source_language }}
+{{ gap.code_context }}
+```
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+
+=== DRAFT UNDER REVIEW ===
+A previous round produced this draft regex.
+
+Draft regex: {{ draft_content }}
+Draft reasoning:
+{{ draft_reasoning }}
+
+=== DRAFT'S CLAIMED GAPS (DO NOT REPEAT THESE) ===
+The draft above claimed to target the following gaps:
+{% if draft_claimed_gaps %}{% for g in draft_claimed_gaps %}  - {{ g }}
+{% endfor %}{% else %}  (the draft claimed no specific gap)
+{% endif %}
+
+=== UNCLAIMED GAPS YOU MUST CHOOSE FROM ===
+These uncovered branches were NOT claimed by the draft. Your revised
+regex MUST target one of these instead — picking the same gap as the
+draft is a parse failure.
+{% if unclaimed_gaps_sample %}{% for g in unclaimed_gaps_sample %}  - {{ g.file }}:{{ g.line }} ({{ g.uncovered_side | upper if g.uncovered_side else "UNCOVERED" }} side){% if g.condition_description %} — {{ g.condition_description }}{% endif %}
+{% endfor %}{% else %}  (no unclaimed gaps available; pick any gap from the UNCOVERED BRANCHES section above other than the draft's)
+{% endif %}
+
+=== CRITIQUE TASK ===
+For your single revised regex, do ALL of the following in the `reasoning`
+field, IN ORDER:
+
+  1. **Pivot**: in one sentence, name the UNCLAIMED gap you are
+     pivoting to (use its exact `file:line`).
+  2. **Why-not-draft**: in one sentence, state why the draft's chosen
+     gap is exhausted from your perspective (a parser-side reason —
+     e.g. "draft already covers it"; "draft pattern can't reach the
+     other side").
+  3. **Approach**: state the specific regex-syntax change that targets
+     the new gap.
+
+Then produce ONE revised regex in `regexes[0]` — not multiple. Keep it
+1-60 characters. Put the new (unclaimed) `file:line` in `target_gaps`,
+not the draft's gap. Never emit fewer than 1 input, never more than
+{{ num_inputs }}.
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain AT MOST {{ num_inputs }} entries.
+- `regex` is plain text, NOT base64, NOT escaped JSON — just the raw
+  pattern. If it contains `"` or `\`, escape them using standard JSON
+  string-escape rules.
+- The `target_gaps` entry MUST be an unclaimed gap (not in the
+  draft's claimed list above).
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["<unclaimed file>:<line>"],
+      "reasoning": "Pivot: <unclaimed file:line>. Why-not-draft: <reason>. Approach: <syntax change>."
+    }
+  ]
+}
