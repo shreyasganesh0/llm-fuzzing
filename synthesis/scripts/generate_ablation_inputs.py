@@ -113,6 +113,12 @@ _TEMPLATE_SUFFIX_BY_STRATEGY: dict[str, str] = {
     # base template (_div.j2) which expects prior_claimed_gaps /
     # prior_seed_count kwargs assembled by the dispatch branch.
     "diversity_aware_lite": "_div",
+    # experiment5/FOLLOWUP2 — grounded strategies. Draft/sketch rounds
+    # reuse the default base template; the grounded refine/finalize
+    # templates are resolved explicitly inside their dispatch branches.
+    "self_critique_grounded": "",
+    "prompt_chain_grounded": "_pcrlx_plan",  # plan is identical to relaxed
+    "diversity_aware_grounded": "_divgnd",
     # tool_use reuses the DefaultStrategy base template on every turn
     # (turn 0 = initial, turn i = refinement after the i-th oracle call).
     # The refinement prompts are assembled inline in run_ablation by
@@ -132,6 +138,10 @@ _SCGAP_REFINE_SUFFIX = "_scgap"  # only self_critique_strict_gap (round 2)
 _PCRLX_SKETCH_SUFFIX = "_pcrlx_sketch"  # only prompt_chain_relaxed (round 2)
 _PCRLX_FINALIZE_SUFFIX = "_pcrlx_finalize"  # only prompt_chain_relaxed (round 3)
 _DIV_SUFFIX = "_div"  # only diversity_aware_lite
+# experiment5/FOLLOWUP2 — grounded strategy suffixes
+_GROUNDED_REFINE_SUFFIX = "_grounded_refine"  # self_critique_grounded round 2
+_GROUNDED_FINALIZE_SUFFIX = "_grounded_finalize"  # prompt_chain_grounded round 3
+_DIVGND_SUFFIX = "_divgnd"  # diversity_aware_grounded base template
 
 
 def _default_template_name(fmt: str, *, strategy: str = DEFAULT_STRATEGY_NAME) -> str:
@@ -180,6 +190,18 @@ def _pcrlx_finalize_template_name(fmt: str) -> str:
     """Return the prompt_chain_relaxed finalize template filename."""
     base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
     return f"{base}{_PCRLX_FINALIZE_SUFFIX}.j2"
+
+
+def _grounded_refine_template_name(fmt: str) -> str:
+    """Return the self_critique_grounded refine template filename."""
+    base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
+    return f"{base}{_GROUNDED_REFINE_SUFFIX}.j2"
+
+
+def _grounded_finalize_template_name(fmt: str) -> str:
+    """Return the prompt_chain_grounded finalize template filename."""
+    base = "ablation_synthesis_regex" if fmt == "regex" else "ablation_synthesis_binary"
+    return f"{base}{_GROUNDED_FINALIZE_SUFFIX}.j2"
 
 
 # experiment6 (Follow-up A) — cot_strict_rotated_examples support.
@@ -233,6 +255,8 @@ def build_ablation_prompt(
     unclaimed_gaps_sample: list | None = None,
     prior_claimed_gaps: list | None = None,
     prior_seed_count: int | None = None,
+    # experiment5/FOLLOWUP2 kwargs — real coverage feedback strings
+    coverage_feedback: str | None = None,
 ) -> str:
     fmt = _resolve_input_format(target, input_format)
     system_prompt = SYSTEM_PROMPT_PATH.read_text()
@@ -315,6 +339,22 @@ def build_ablation_prompt(
     if resolved_template.endswith(f"{_DIV_SUFFIX}.j2"):
         render_kwargs["prior_claimed_gaps"] = prior_claimed_gaps or []
         render_kwargs["prior_seed_count"] = prior_seed_count or 0
+    # experiment5/FOLLOWUP2 — grounded templates each need coverage_feedback.
+    if (resolved_template.endswith(f"{_GROUNDED_REFINE_SUFFIX}.j2")
+            or resolved_template.endswith(f"{_GROUNDED_FINALIZE_SUFFIX}.j2")
+            or resolved_template.endswith(f"{_DIVGND_SUFFIX}.j2")):
+        render_kwargs["coverage_feedback"] = coverage_feedback or "[no coverage feedback available]"
+    # _grounded_refine.j2 additionally needs draft_*; _grounded_finalize.j2
+    # additionally needs plan_*/sketch_*. Gate them so missing kwargs on
+    # the other templates don't trip StrictUndefined.
+    if resolved_template.endswith(f"{_GROUNDED_REFINE_SUFFIX}.j2"):
+        render_kwargs["draft_content"] = draft_content or ""
+        render_kwargs["draft_reasoning"] = draft_reasoning or ""
+    if resolved_template.endswith(f"{_GROUNDED_FINALIZE_SUFFIX}.j2"):
+        render_kwargs["plan_text"] = plan_text or ""
+        render_kwargs["plan_target_gap"] = plan_target_gap or ""
+        render_kwargs["sketch_content"] = sketch_content or ""
+        render_kwargs["sketch_reasoning"] = sketch_reasoning or ""
     # Phase-6 prompt_chain templates:
     #   _plan.j2      — no extra vars (uses only base render_kwargs).
     #   _sketch.j2    — needs plan_text + plan_target_gap.
@@ -554,7 +594,8 @@ def run_ablation(
                       draft_claimed_gaps: list | None = None,
                       unclaimed_gaps_sample: list | None = None,
                       prior_claimed_gaps: list | None = None,
-                      prior_seed_count: int | None = None) -> str:
+                      prior_seed_count: int | None = None,
+                      coverage_feedback: str | None = None) -> str:
         return build_ablation_prompt(
             target,
             dataset_root=dataset_root,
@@ -580,6 +621,7 @@ def run_ablation(
             unclaimed_gaps_sample=unclaimed_gaps_sample,
             prior_claimed_gaps=prior_claimed_gaps,
             prior_seed_count=prior_seed_count,
+            coverage_feedback=coverage_feedback,
         )
 
     base_template = _default_template_name(fmt, strategy=strategy)
@@ -1030,6 +1072,254 @@ def run_ablation(
                                    "fallback_stage": "finalize"},
                         )
             resp = used_resp
+        elif strategy == "self_critique_grounded":
+            # experiment5/FOLLOWUP2 — round 1 identical to default; between
+            # rounds the driver replays the draft through the RE2 coverage
+            # build and embeds REAL hit/miss feedback in round 2.
+            draft_resp = client.complete(
+                messages=[{"role": "system", "content": ""},
+                          {"role": "user", "content": rendered}],
+                model=model, temperature=SYNTHESIS_TEMPERATURE,
+                top_p=SYNTHESIS_TOP_P, max_tokens=max_tokens,
+                cache_salt=make_cache_salt(
+                    model=model, sample=k, cell=cell,
+                    run_offset=run_id, strategy=strategy, round="draft",
+                ),
+                response_format=response_format,
+            )
+            draft_inputs, draft_status = parse_fn(
+                draft_resp.content, target=target, model=model,
+                temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                experiment=experiment,
+            )
+            if draft_status != "ok" or not draft_inputs:
+                inputs, status, used_resp = [], "parse_failure", draft_resp
+                logger.info("self_critique_grounded draft parse failure",
+                            extra={"cell": cell, "model": model, "sample": k})
+            else:
+                # Replay the draft seed for ground-truth coverage feedback.
+                # Tolerant: replay failure → empty feedback string, falls
+                # through to a no-signal refine which still beats raising.
+                cov_feedback = "[no coverage signal — replay unavailable]"
+                try:
+                    import base64 as _b64
+                    from analysis.scripts.per_seed_coverage import (
+                        per_seed_hits, format_coverage_feedback,
+                    )
+                    seed_bytes = _b64.b64decode(draft_inputs[0].content_b64)
+                    hits, recs = per_seed_hits(seed_bytes, idx=k)
+                    cov_feedback = format_coverage_feedback(hits, recs)
+                except Exception as exc:  # noqa: BLE001
+                    logger.warning(
+                        "self_critique_grounded per_seed_hits failed",
+                        extra={"cell": cell, "model": model, "sample": k,
+                               "error": str(exc)[:200]},
+                    )
+                draft_content_str = _draft_content_for_refine(draft_inputs, fmt)
+                draft_reasoning_str = (draft_inputs[0].reasoning or "")[:1500]
+                refine_rendered = _build_prompt(
+                    template=_grounded_refine_template_name(fmt),
+                    draft_content=draft_content_str,
+                    draft_reasoning=draft_reasoning_str,
+                    coverage_feedback=cov_feedback,
+                )
+                refine_resp = client.complete(
+                    messages=[{"role": "system", "content": ""},
+                              {"role": "user", "content": refine_rendered}],
+                    model=model, temperature=SYNTHESIS_TEMPERATURE,
+                    top_p=SYNTHESIS_TOP_P, max_tokens=max_tokens,
+                    cache_salt=make_cache_salt(
+                        model=model, sample=k, cell=cell,
+                        run_offset=run_id, strategy=strategy, round="refine",
+                    ),
+                    response_format=response_format,
+                )
+                refine_inputs, refine_status = parse_fn(
+                    refine_resp.content, target=target, model=model,
+                    temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                    experiment=experiment,
+                )
+                if refine_status == "ok" and refine_inputs:
+                    inputs, status, used_resp = refine_inputs, refine_status, refine_resp
+                else:
+                    inputs, status, used_resp = draft_inputs, draft_status, draft_resp
+                    logger.info(
+                        "self_critique_grounded refine parse failure; using draft",
+                        extra={"cell": cell, "model": model, "sample": k},
+                    )
+            resp = used_resp
+        elif strategy == "prompt_chain_grounded":
+            # experiment5/FOLLOWUP2 — same 3-call shape as prompt_chain_relaxed,
+            # but between sketch and finalize the driver replays the sketch
+            # through the coverage build and embeds REAL hit/miss in finalize.
+            plan_resp = client.complete(
+                messages=[{"role": "system", "content": ""},
+                          {"role": "user", "content": rendered}],
+                model=model, temperature=SYNTHESIS_TEMPERATURE,
+                top_p=SYNTHESIS_TOP_P, max_tokens=max_tokens,
+                cache_salt=make_cache_salt(
+                    model=model, sample=k, cell=cell,
+                    run_offset=run_id, strategy=strategy, round="plan",
+                ),
+                response_format=response_format,
+            )
+            parsed_plan = _parse_plan_response_relaxed(plan_resp.content)
+            if parsed_plan is None:
+                inputs, status, used_resp = [], "parse_failure", plan_resp
+            else:
+                plan_text, plan_target_gap = parsed_plan
+                sketch_rendered = _build_prompt(
+                    template=_pcrlx_sketch_template_name(fmt),
+                    plan_text=plan_text, plan_target_gap=plan_target_gap,
+                )
+                sketch_resp = client.complete(
+                    messages=[{"role": "system", "content": ""},
+                              {"role": "user", "content": sketch_rendered}],
+                    model=model, temperature=SYNTHESIS_TEMPERATURE,
+                    top_p=SYNTHESIS_TOP_P, max_tokens=max_tokens,
+                    cache_salt=make_cache_salt(
+                        model=model, sample=k, cell=cell,
+                        run_offset=run_id, strategy=strategy, round="sketch",
+                    ),
+                    response_format=response_format,
+                )
+                sketch_inputs, sketch_status = parse_fn(
+                    sketch_resp.content, target=target, model=model,
+                    temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                    experiment=experiment,
+                )
+                if sketch_status != "ok" or not sketch_inputs:
+                    inputs, status, used_resp = [], "parse_failure", sketch_resp
+                else:
+                    cov_feedback = "[no coverage signal — replay unavailable]"
+                    try:
+                        import base64 as _b64
+                        from analysis.scripts.per_seed_coverage import (
+                            per_seed_hits, format_coverage_feedback,
+                        )
+                        sketch_bytes = _b64.b64decode(sketch_inputs[0].content_b64)
+                        hits, recs = per_seed_hits(sketch_bytes, idx=k)
+                        cov_feedback = format_coverage_feedback(hits, recs)
+                    except Exception as exc:  # noqa: BLE001
+                        logger.warning(
+                            "prompt_chain_grounded per_seed_hits failed",
+                            extra={"cell": cell, "model": model, "sample": k,
+                                   "error": str(exc)[:200]},
+                        )
+                    sketch_content_str = _sketch_content_for_finalize(sketch_inputs, fmt)
+                    sketch_reasoning_str = (sketch_inputs[0].reasoning or "")[:1500]
+                    finalize_rendered = _build_prompt(
+                        template=_grounded_finalize_template_name(fmt),
+                        plan_text=plan_text, plan_target_gap=plan_target_gap,
+                        sketch_content=sketch_content_str,
+                        sketch_reasoning=sketch_reasoning_str,
+                        coverage_feedback=cov_feedback,
+                    )
+                    finalize_resp = client.complete(
+                        messages=[{"role": "system", "content": ""},
+                                  {"role": "user", "content": finalize_rendered}],
+                        model=model, temperature=SYNTHESIS_TEMPERATURE,
+                        top_p=SYNTHESIS_TOP_P, max_tokens=max_tokens,
+                        cache_salt=make_cache_salt(
+                            model=model, sample=k, cell=cell,
+                            run_offset=run_id, strategy=strategy, round="finalize",
+                        ),
+                        response_format=response_format,
+                    )
+                    finalize_inputs, finalize_status = parse_fn(
+                        finalize_resp.content, target=target, model=model,
+                        temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                        experiment=experiment,
+                    )
+                    if finalize_status == "ok" and finalize_inputs:
+                        inputs, status, used_resp = (
+                            finalize_inputs, finalize_status, finalize_resp,
+                        )
+                    else:
+                        # Fall back to the sketch (which we KNOW we have coverage for)
+                        inputs, status, used_resp = (
+                            sketch_inputs, sketch_status, sketch_resp,
+                        )
+            resp = used_resp
+        elif strategy == "diversity_aware_grounded":
+            # experiment5/FOLLOWUP2 — single-call diversity-aware whose
+            # prompt embeds the REAL corpus-level coverage union of prior
+            # seeds in this cell. Reads existing seed_*.bin files, replays
+            # any without a cached coverage sidecar, unions all sidecars,
+            # passes the still-uncovered branches into the prompt.
+            cov_feedback = "[no prior seeds yet — you are the first]"
+            try:
+                import base64 as _b64
+                from analysis.scripts.per_seed_coverage import (
+                    per_seed_hits, format_corpus_coverage_feedback,
+                )
+                cov_dir = synthesis_dir / "_coverage_sidecars"
+                cov_dir.mkdir(parents=True, exist_ok=True)
+                # Find all seeds written so far for this cell.
+                all_seeds = sorted(seeds_dir.glob("seed_*.bin"))
+                union_hits: list[bool] | None = None
+                target_records: list[dict] | None = None
+                n_seeds_so_far = len(all_seeds)
+                for seed_path in all_seeds:
+                    sidecar = cov_dir / f"{seed_path.stem}_cov.json"
+                    if sidecar.exists():
+                        try:
+                            payload = json.loads(sidecar.read_text())
+                            hits = payload.get("hits")
+                            target_records = payload.get("targets")
+                        except (OSError, ValueError):
+                            hits = None
+                    else:
+                        hits, target_records = per_seed_hits(
+                            seed_path.read_bytes(), idx=hash(seed_path.name) & 0xFFFF,
+                        )
+                        if hits is not None and target_records is not None:
+                            try:
+                                sidecar.write_text(json.dumps({
+                                    "hits": hits, "targets": target_records,
+                                }))
+                            except OSError:
+                                pass
+                    if hits is None:
+                        continue
+                    if union_hits is None:
+                        union_hits = list(hits)
+                    else:
+                        union_hits = [a or b for a, b in zip(union_hits, hits)]
+                if union_hits is not None and target_records is not None:
+                    cov_feedback = format_corpus_coverage_feedback(
+                        union_hits, target_records, n_seeds_so_far,
+                    )
+                elif n_seeds_so_far > 0:
+                    cov_feedback = (
+                        f"[{n_seeds_so_far} prior seeds in cell but coverage "
+                        "replay unavailable; falling back to gap list above]"
+                    )
+            except Exception as exc:  # noqa: BLE001
+                logger.warning(
+                    "diversity_aware_grounded union build failed",
+                    extra={"cell": cell, "model": model, "sample": k,
+                           "error": str(exc)[:200]},
+                )
+            div_rendered = _build_prompt(
+                template=_default_template_name(fmt, strategy=strategy),
+                coverage_feedback=cov_feedback,
+            )
+            resp = client.complete(
+                messages=[{"role": "system", "content": ""},
+                          {"role": "user", "content": div_rendered}],
+                model=model, temperature=SYNTHESIS_TEMPERATURE,
+                top_p=SYNTHESIS_TOP_P, max_tokens=max_tokens,
+                cache_salt=make_cache_salt(
+                    model=model, sample=k, cell=cell,
+                    run_offset=run_id, strategy=strategy,
+                ),
+            )
+            inputs, status = parse_fn(
+                resp.content, target=target, model=model,
+                temperature=SYNTHESIS_TEMPERATURE, sample_index=k,
+                experiment=experiment,
+            )
         elif strategy == "diversity_aware_lite":
             # experiment5/FOLLOWUP — read existing sample_*.json sidecars
             # to assemble a deduplicated, count-weighted summary of

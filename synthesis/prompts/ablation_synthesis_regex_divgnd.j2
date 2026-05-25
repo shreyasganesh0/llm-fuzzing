@@ -1,0 +1,88 @@
+{{ system_prompt }}
+
+You are generating REGEX PATTERNS to exercise code paths in the
+{{ target_name }} regular-expression library. {{ target_name }} is a C++
+regex engine; the hard-to-reach code lives in the PARSER and COMPILER
+(not the matcher), so novel regex syntax is more valuable than exotic
+input strings.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex.
+
+**YOUR JOB**: produce the REGEX STRING ONLY, as plain text UTF-8.
+**DO NOT** base64-encode. **DO NOT** escape. **DO NOT** wrap in quotes
+inside the regex field. Just the pattern itself.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage. Each branch below has ONE
+side that the upstream tests NEVER took.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch** (the side upstream tests never reached)
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+
+=== REAL CORPUS-LEVEL COVERAGE FROM PRIOR SEEDS (replayed, NOT self-reported) ===
+{{ coverage_feedback }}
+
+To maximize the BATCH UNION (the M2 metric), your regex MUST target a
+branch the corpus has not yet hit — pick one from the
+"STILL-UNCOVERED branches" list above. If that list is empty, target
+the most under-covered branch class.
+
+=== YOUR TASK ==={% if include_gaps and coverage_gaps %}
+Your PRIMARY GOAL is to produce a regex that takes the
+**previously-uncovered side** of one of the still-uncovered branches
+listed in the REAL CORPUS-LEVEL COVERAGE block above. Adding a new
+branch to the union is worth more than re-hitting an already-covered
+branch.
+
+For your regex, think step by step:
+  1. Which STILL-UNCOVERED branch am I targeting?
+  2. What regex syntax would cause the parser/compiler to reach that
+     branch on its uncovered side?
+
+Produce {{ num_inputs }} regex pattern(s). Keep each 1-60 characters.
+{% else %}
+Produce {{ num_inputs }} regex pattern(s) likely to exercise code paths
+NOT already covered by the prior seeds. Keep each 1-60 characters.
+{% endif %}
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain AT MOST {{ num_inputs }} entries.
+- Every `regex` must be UNIQUE.
+- `regex` is plain text, NOT base64, NOT escaped JSON.
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["<still-uncovered file:line you targeted>"],
+      "reasoning": "<which still-uncovered branch, why this regex reaches it>"
+    }
+  ]
+}

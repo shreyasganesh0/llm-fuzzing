@@ -906,6 +906,164 @@ class DiversityAwareLiteStrategy:
         )
 
 
+@dataclass
+class SelfCritiqueGroundedStrategy:
+    """self_critique whose refine round receives REAL coverage of the draft.
+
+    Round 1 (draft): same prompt shape as default.
+    Between rounds: the driver replays the draft seed through the RE2
+    coverage build (analysis.scripts.per_seed_coverage.per_seed_hits)
+    and produces a ground-truth hit/miss summary against the frozen
+    15-target set.
+    Round 2 (refine): uses ``ablation_synthesis_regex_grounded_refine.j2``
+    — the refine prompt embeds the actual coverage feedback (NOT the
+    model's self-report). The model is instructed to pivot to one of
+    the branches its draft actually missed.
+
+    Cache: salt = ``,strategy=self_critique_grounded,round=<draft|refine>``.
+    The refine prompt's text depends on the draft's actual coverage,
+    which is deterministic given (draft bytes, coverage binary), so
+    cache hits remain meaningful within an attempt block.
+
+    Cost overhead: ~0.5s of CPU per seed (one extra llvm-cov replay
+    between calls). For a 150-seed cell that's ~75s of extra wall clock.
+    """
+    name: str = "self_critique_grounded"
+    n_calls_per_seed: int = 2
+    supports_tool_use: bool = False
+    description: str = "self_critique whose refine sees REAL replay-coverage of the draft"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import build_ablation_prompt
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        rendered = build_ablation_prompt(
+            ctx.target.name,
+            dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=ctx.extra.get("input_format"),
+        )
+        return [{"role": "system", "content": ""}, {"role": "user", "content": rendered}]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "SelfCritiqueGroundedStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver orchestrates draft + per-seed-replay + refine."
+        )
+
+
+@dataclass
+class PromptChainGroundedStrategy:
+    """prompt_chain whose finalize round receives REAL coverage of the sketch.
+
+    Plan (round 1): same as prompt_chain_relaxed plan (allows
+    `unspecified` target).
+    Sketch (round 2): produces a candidate regex; allowed to pivot.
+    Between sketch and finalize: replay the sketch seed → coverage
+    feedback.
+    Finalize (round 3): uses ``..._grounded_finalize.j2`` with real
+    coverage of the sketch embedded.
+
+    Cache: ``,strategy=prompt_chain_grounded,round=<plan|sketch|finalize>``.
+    """
+    name: str = "prompt_chain_grounded"
+    n_calls_per_seed: int = 3
+    supports_tool_use: bool = False
+    description: str = "plan -> sketch -> replay -> grounded finalize"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name, _resolve_input_format, build_ablation_prompt,
+        )
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(ctx.target.name, ctx.extra.get("input_format"))
+        rendered = build_ablation_prompt(
+            ctx.target.name,
+            dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+        )
+        return [{"role": "system", "content": ""}, {"role": "user", "content": rendered}]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "PromptChainGroundedStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver orchestrates plan -> sketch -> replay -> finalize."
+        )
+
+
+@dataclass
+class DiversityAwareGroundedStrategy:
+    """Single-call diversity-aware strategy whose prompt embeds REAL
+    corpus-level coverage (replayed) of prior seeds in the cell.
+
+    Before each call, the driver:
+      1. Enumerates seed_*.bin in this cell's seeds_dir.
+      2. For each seed without a cached coverage sidecar, replays it
+         and writes a sidecar `seed_<id>_cov.json` containing the
+         15-element boolean hit vector.
+      3. Unions all sidecars to build the corpus_union vector.
+      4. Embeds the still-uncovered branches in the prompt.
+
+    Concurrency: workers race-reading the sidecar dir is fine (union is
+    monotonic, eventual consistency is acceptable for M2). Each worker
+    pays for its own missing-sidecar replays — the duplicate work is
+    bounded because once a sidecar exists, future workers skip it.
+
+    Cache: ``,strategy=diversity_aware_grounded`` (no round; single call).
+    Note: the rendered prompt depends on cell state, so cache hits
+    within a cell run are essentially zero by design (this is the cost
+    of grounded diversity).
+    """
+    name: str = "diversity_aware_grounded"
+    n_calls_per_seed: int = 1
+    supports_tool_use: bool = False
+    description: str = "diversity-aware with REAL replay-coverage union of prior seeds"
+
+    def build_messages(self, ctx: CellContext, sample_index: int) -> list[dict]:
+        from synthesis.scripts.generate_ablation_inputs import (
+            _default_template_name, _resolve_input_format, build_ablation_prompt,
+        )
+        dataset_root = ctx.dataset_root or ctx.target.prep_dataset_root
+        fmt = _resolve_input_format(ctx.target.name, ctx.extra.get("input_format"))
+        rendered = build_ablation_prompt(
+            ctx.target.name,
+            dataset_root=dataset_root,
+            include_tests=ctx.variant.include_tests,
+            include_gaps=ctx.variant.include_gaps,
+            include_source=ctx.variant.include_source,
+            model=ctx.model,
+            source_max_files=ctx.extra.get("source_max_files", 40),
+            source_token_budget=ctx.extra.get("source_token_budget"),
+            num_inputs=ctx.extra.get("num_inputs", 1),
+            max_gaps=ctx.extra.get("max_gaps", 30),
+            input_format=fmt,
+            template_name=_default_template_name(fmt, strategy=self.name),
+            coverage_feedback=ctx.extra.get("coverage_feedback", ""),
+        )
+        return [{"role": "system", "content": ""}, {"role": "user", "content": rendered}]
+
+    def run_one_seed(self, client: Any, ctx: CellContext, sample_index: int) -> Any:
+        raise NotImplementedError(
+            "DiversityAwareGroundedStrategy.run_one_seed is intentionally unused; "
+            "the subprocess driver assembles corpus-union coverage per call."
+        )
+
+
 STRATEGIES: dict[str, PromptStrategy] = {
     DEFAULT_STRATEGY_NAME: DefaultStrategy(),
     "cot_strict": CotStrictStrategy(),
@@ -915,9 +1073,12 @@ STRATEGIES: dict[str, PromptStrategy] = {
     "few_shot": FewShotStrategy(),
     "self_critique": SelfCritiqueStrategy(),
     "self_critique_strict_gap": SelfCritiqueStrictGapStrategy(),
+    "self_critique_grounded": SelfCritiqueGroundedStrategy(),
     "prompt_chain": PromptChainStrategy(),
     "prompt_chain_relaxed": PromptChainRelaxedStrategy(),
+    "prompt_chain_grounded": PromptChainGroundedStrategy(),
     "diversity_aware_lite": DiversityAwareLiteStrategy(),
+    "diversity_aware_grounded": DiversityAwareGroundedStrategy(),
     "tool_use": ToolUseStrategy(),
     "tool_use_retrieval": ToolUseRetrievalStrategy(),
 }

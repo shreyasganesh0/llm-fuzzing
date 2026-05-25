@@ -1,0 +1,88 @@
+{{ system_prompt }}
+
+You are FINALIZING the regex seed for the {{ target_name }} regex library.
+This is STAGE 3 of a 3-stage GROUNDED pipeline: PLAN → SKETCH → FINALIZE.
+Stage 1's plan and Stage 2's sketch are below — AND the actual coverage
+of the sketch, replayed through the RE2 coverage build. Your job is to
+emit the FINAL regex with that ground-truth in hand.
+
+=== HARNESS FORMAT (READ THIS CAREFULLY) ===
+The libFuzzer harness consumes `[2 flag bytes][regex string bytes]` and
+invokes RE2::Compile on the regex.
+
+**YOUR JOB**: produce the FINAL REGEX STRING ONLY, as plain text UTF-8.
+**DO NOT** base64-encode. **DO NOT** escape. **DO NOT** wrap in quotes
+inside the regex field. Just the pattern itself.
+
+Harness source:
+```{{ source_language }}
+{{ harness_code }}
+```
+{% if include_tests and few_shot_examples %}
+=== WHAT THE UPSTREAM TESTS LOOK LIKE ==={% for example in few_shot_examples %}
+From {{ example.upstream_file }}:{{ example.upstream_line }}:
+{{ example.test_code }}
+{% endfor %}{% endif %}
+{% if include_gaps and coverage_gaps %}
+=== UNCOVERED BRANCHES ===
+The upstream test suite ({{ total_upstream_tests }} tests) achieves
+{{ union_coverage_pct }}% branch coverage.
+
+{% for gap in coverage_gaps[:max_gaps] %}
+Gap {{ loop.index }}: {{ gap.file }}:{{ gap.line }}
+Target: take the **{{ gap.uncovered_side | upper if gap.uncovered_side else "UNCOVERED" }} branch**
+Hint: {{ gap.condition_description }}
+
+{% endfor %}{% endif %}
+{% if include_source and source_files %}
+[LIBRARY SOURCE CODE]
+{% for file in source_files %}
+=== {{ file.path }} ===
+{{ file.content }}
+
+{% endfor %}{% endif %}
+
+=== ATTACK PLAN (FROM STAGE 1) ===
+Plan committed target: `{{ plan_target_gap }}` (may be `unspecified`).
+Plan text:
+{{ plan_text }}
+
+=== SKETCH UNDER REVIEW ===
+Sketch regex: {{ sketch_content }}
+Sketch reasoning:
+{{ sketch_reasoning }}
+
+=== REAL COVERAGE FEEDBACK FOR THE SKETCH (NOT SELF-REPORTED) ===
+{{ coverage_feedback }}
+
+=== YOUR TASK (STAGE 3 OF 3: FINALIZE — GROUNDED) ===
+Use the ACTUAL coverage feedback above to decide:
+
+  - If the sketch hit ≥ 1 frozen target: keep the sketch's `regex`
+    unchanged; the sketch is sound. Set `target_gaps` to ALL the
+    branches the feedback says the sketch hit.
+  - If the sketch hit 0 targets: emit a corrected regex aimed at a
+    specific MISSED branch from the feedback list (use its exact
+    `file:line`). Briefly state WHY the sketch missed (parse rejection,
+    matcher-only path, wrong feature).
+
+In the `reasoning` field (2-3 sentences):
+  1. State sketch hit COUNT/15 per the feedback.
+  2. Say kept-or-fixed and why.
+
+OUTPUT RULES — violations cause parse failure:
+- Emit EXACTLY ONE JSON object. Stop after the closing `}`.
+- Do NOT wrap in markdown code fences.
+- `regexes` must contain EXACTLY ONE entry.
+- `regex` is plain text, NOT base64, NOT escaped JSON.
+
+Schema:
+{
+  "regexes": [
+    {
+      "regex": "<raw pattern text, 1-60 chars>",
+      "target_gaps": ["<file:line>"],
+      "reasoning": "<sketch hit N/15; kept/fixed because ...>"
+    }
+  ]
+}

@@ -70,6 +70,9 @@ _EXPECTED_STRATEGY_NAMES = {
     # experiment5/FOLLOWUP — implementation-fix probes
     "self_critique_strict_gap", "prompt_chain_relaxed",
     "diversity_aware_lite",
+    # experiment5/FOLLOWUP2 — coverage-grounded probes
+    "self_critique_grounded", "prompt_chain_grounded",
+    "diversity_aware_grounded",
 }
 
 _EXPECTED_CALL_BUDGETS = {
@@ -88,6 +91,10 @@ _EXPECTED_CALL_BUDGETS = {
     "self_critique_strict_gap": 2,
     "prompt_chain_relaxed": 3,
     "diversity_aware_lite": 1,
+    # experiment5/FOLLOWUP2 — grounded variants share call counts with relaxed
+    "self_critique_grounded": 2,
+    "prompt_chain_grounded": 3,
+    "diversity_aware_grounded": 1,
 }
 
 
@@ -531,6 +538,10 @@ def test_all_strategies_execute_single_seed_end_to_end(
         "self_critique_strict_gap",
         "prompt_chain_relaxed",
         "diversity_aware_lite",
+        # experiment5/FOLLOWUP2 — RE2 only (coverage hook is RE2-bound)
+        "self_critique_grounded",
+        "prompt_chain_grounded",
+        "diversity_aware_grounded",
     }:
         pytest.skip("RE2-only strategy; no binary template by design")
 
