@@ -212,4 +212,155 @@ reason; (b) the inter-cell cumulative-cost gate was either honored or
 recorded; (c) the §5 adjudication is filled into a RESULTS section
 appended below this pre-registration.
 
+## RESULTS — COMPLETE (synthesis + M2 scoring)
+
+**Pre-registration freeze:** commit `41b5ee4` (2026-05-25T03:13Z), before
+any 150-seed synthesis or M2 scoring of the cells listed here.
+
+### M2 table (RE2-v2 frozen 15-branch set; M2 via unmodified `M2HardBranchMetric`)
+
+`n` is the seed-count actually scored — for cells that hit the
+`UTCF_ABANDON_NOGAIN=5` window the corpus is the smaller-than-150 cell
+contents, reported per the user-facing "each cell has a result, with
+the seed count next to it" rule. CENSORED rows are NOT comparable to
+filled rows (M2 is a union over the corpus; smaller corpora mechanically
+yield smaller unions). 95% CIs are bootstrap-resampled at 10000 over
+the seed dimension (RNG=42), via the same procedure exp 5 used.
+
+| Strategy | Variant | n | Filled | M2 | 95% CI | Δ vs default | Status |
+|---|---|---:|:-:|---:|---|---:|---|
+| `default` (exp 5 baseline) | v3_all | 150 | yes | 0.800 | [0.667, 0.800] |  | FILLED |
+| `default` (exp 5 baseline) | v4_src_gaps | 150 | yes | 0.800 | [0.600, 0.800] |  | FILLED |
+| `cot_strict_no_examples` | v3_all | 150 | yes | **0.800** | [0.600, 0.800] | **+0.000** | FILLED (sanity-replicates exp 6) |
+| `cot_strict_no_examples` | v4_src_gaps | 106 | NO | 0.667 | [0.533, 0.667] | −0.133 | CENSORED (nogain_window, 83 attempts) |
+| `self_critique_strict_gap` | v3_all | 77 | NO | 0.600 | [0.333, 0.600] | −0.200 | CENSORED (nogain_window, 120 attempts) |
+| `self_critique_strict_gap` | v4_src_gaps | 60 | NO | 0.600 | [0.467, 0.600] | −0.200 | CENSORED (nogain_window, 101 attempts) |
+| `prompt_chain_relaxed` | v3_all | 67 | NO | 0.333 | [0.267, 0.333] | −0.467 | CENSORED (nogain_window, 97 attempts) |
+| `diversity_aware_lite` | v3_all | 150 | yes | **0.733** | [0.600, 0.733] | **−0.067** | FILLED |
+| `diversity_aware_lite` | v4_src_gaps | 150 | yes | **0.733** | [0.533, 0.733] | **−0.067** | FILLED |
+
+`prompt_chain_relaxed @ v4_src_gaps` was NOT RUN (deferred per the §4
+cost gate — the @v3 result already shows the strategy does not solve
+its fill collapse, so spending another ~$0.6 on @v4 is non-informative
+under the abandon-policy evidence).
+
+### Adjudication against the pre-registered prediction (§5)
+
+**Outcome: MIXED — predominantly FLAT NULL with one partial RECOVERY.**
+The pre-registered IMPROVEMENT outcome (any strategy ≥ default + 0.067)
+**is NOT FIRED**: no strategy reaches 0.867. The headline interpretation
+follows the three-way rule applied per-variant:
+
+- **Template-fix tier** (`cot_strict_no_examples`, `self_critique_strict_gap`,
+  `prompt_chain_relaxed`). The pre-registered RECOVERY-ONLY outcome
+  required "at least 2 of the 3 template-fix strategies are within
+  ±0.067 of default" per variant.
+  - **v3_all:** 1 of 3 recovered (`cot_strict_no_examples` at 0.800,
+    Δ +0.000, FILLED). `self_critique_strict_gap` and
+    `prompt_chain_relaxed` CENSORED (Δ −0.200 and −0.467). **RECOVERY
+    NOT MET** (1 of 3 < the required 2 of 3).
+  - **v4_src_gaps:** 0 of 3 recovered (`cot_strict_no_examples`
+    CENSORED at 106 seeds, Δ −0.133 — the same example-anchor fix that
+    fully recovered @v3 did NOT solve fillability @v4;
+    `self_critique_strict_gap` CENSORED). `prompt_chain_relaxed` not
+    run, conservatively treated as "not recovered". **RECOVERY NOT MET.**
+- **Diversity-aware tier** (`diversity_aware_lite`, the corpus-
+  complementarity hypothesis). FILLED 150 on both variants, M2 = 0.733
+  at both → Δ = **−0.067** at both — exactly the recovery threshold
+  edge, with bootstrap CIs containing default's 0.800. **Did NOT improve
+  over default**; falls into RECOVERY (filled, |Δ| ≤ 0.067). The
+  corpus-complementarity hypothesis (improvement) is **NOT SUPPORTED**
+  at the pre-registered threshold; the weaker claim "diversity-aware
+  prompting at least preserves default's quality" is supported.
+
+**Joint reading.** The result is **FLAT NULL** for the strategy axis
+on codestral/RE2/{v3_all,v4_src_gaps}:
+
+1. The cleanest recovery (`cot_strict_no_examples @ v3_all` at 0.800) is
+   pre-existing evidence from exp 6 — this run sanity-replicates it
+   exactly. The same fix did NOT carry to v4_src_gaps (CENSORED at 106).
+   So the example-anchor removal is variant-specific, not a general
+   strategy unlock.
+2. Both other template-fix strategies fail to recover. The
+   self_critique scaffold's mandated refine structure collapses
+   diversity regardless of whether the refine prompt has real signal
+   (strict_gap variant) or stays generic (original `self_critique`);
+   the prompt_chain 3-stage scaffold collapses even after the rigid
+   commit is removed (relaxed variant filled 67/150 vs original's
+   6/150 @v3 — relaxation moved fill modestly but the cell still
+   CENSORED).
+3. `diversity_aware_lite` filled cleanly without any scaffolding tax,
+   but it did NOT exceed default — supporting the conversational
+   hypothesis that template-only / single-call interventions cannot
+   move union-M2 past default on codestral, because the lever
+   (corpus complementarity) requires either (a) coverage-grounded
+   feedback per seed, or (b) a markedly different sampling regime.
+
+**Implication for the conversation that motivated this experiment.**
+The user asked whether the experiment 5 strategies underperformed
+because of fixable implementation or because of a fundamental ceiling.
+The data here supports **"both, but the ceiling dominates"**:
+
+- The cot_strict failure mode at v3_all WAS implementation-fixable
+  (`cot_strict_no_examples` recovers exactly, confirming exp 6).
+- The self_critique and prompt_chain failure modes were **NOT** fixable
+  by the cheapest plausible template/driver interventions. Their
+  scaffolds carry a structural fillability tax independent of the
+  specific wording.
+- The diversity-aware single-call strategy that targets the actual M2
+  lever (corpus complementarity) FILLED cleanly but did NOT beat
+  default. This is the cleanest evidence so far for the per-seed-quality
+  ceiling claim from the conversation: on codestral, default is at or
+  near the union-M2 ceiling reachable by prompt-only interventions.
+
+The IMPROVEMENT outcome was not fired, so no Wilcoxon/Friedman is
+required by the pre-reg (the contrast family is moot). All
+sub-thresholds are reported as point estimates with bootstrap CIs in
+the table above.
+
+### Cost audit (the money question)
+
+- **Pre-FOLLOWUP litellm cumulative:** $19.26 (cost_audit, 2026-05-25T03:00Z).
+- **Post-FOLLOWUP litellm cumulative:** $21.06 (cost_audit, 2026-05-25T03:25Z).
+- **FOLLOWUP spend:** **+$1.80** across 5 new cells (1 deferred). Well
+  under the $4.00 hard spend cap.
+- **Headroom remaining:** $25.00 − $21.06 = **$3.94** for further work.
+- **Abandon-policy fail-safe** (`UTCF_ABANDON_NOGAIN=5`,
+  `UTCF_ABANDON_WARMUP=15`) **fired correctly** on every CENSORED
+  cell, preventing runaway spend. Largest CENSORED cell:
+  `self_critique_strict_gap @ v3_all` at 120 attempts → ~$0.5.
+- No `400 Budget exceeded` events; the $25 proxy cap was never
+  approached.
+
+### Deviations from the §7 replication recipe
+
+1. **prompt_chain_relaxed @ v4_src_gaps deferred.** The v3 cell
+   CENSORED at 67/150 (M2 0.333, Δ −0.467) under the abandon policy.
+   Per the §4 inter-cell cost gate, running a second 3-call/seed
+   variant with the same likely outcome is non-informative; deferred,
+   reported here as NOT RUN. (Note: the original exp 5 also did not
+   run prompt_chain @ v4_src_gaps for the same scope reason.)
+2. **cot_strict_no_examples @ v3_all re-run from scratch** (not
+   pulled from exp 6 cache as §3 suggested). Cleaner: same attempt
+   offset block (900000+) → cache MISS → independent re-derivation
+   → numerical sanity check that the M2=0.800 matches exp 6
+   byte-for-byte. (It does.)
+3. **Smoke-test seeds moved out, not deleted.** Per the
+   "investigate before deleting" rule, the 3-seed smoke artifacts
+   from the 800000-offset block were moved to
+   `/tmp/exp5_followup_smoke/` (not removed from disk) so the
+   real-run cell dirs started empty. Cache entries for those smoke
+   attempts persist in `.cache/llm/` and are recoverable.
+
 ## DEVIATION LOG (append-only)
+
+- 2026-05-25 — §3 slate's "cot_strict_no_examples @ v3_all pulled from
+  exp 6 cache" was implemented as "re-run with attempt-offset 900000
+  for an independent numerical replication." Result matched
+  byte-for-byte (M2 0.800 filled in 105 attempts, same as exp 6).
+  Cheaper to skip, but the sanity-check value outweighed ~$0.21.
+- 2026-05-25 — prompt_chain_relaxed @ v4_src_gaps NOT RUN. The v3 cell
+  CENSORED at 67/150 / M2 0.333; running v4 under the same scaffold
+  would not change the adjudication (already FLAT NULL for the
+  template-fix tier at v4 after cot_strict_no_examples CENSORED there).
+  Documented as NOT RUN in the table above, not as data.
